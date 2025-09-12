@@ -14,3 +14,4 @@ Route::get('/{page}', function ($page) {
         abort(404);
     }
 })->where('page', '.*\.html');
+

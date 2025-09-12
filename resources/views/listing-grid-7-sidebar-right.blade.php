@@ -188,20 +188,20 @@
 												</ul>
 											</li>
 											<li><span><a href="#">Men</a></span>
-												<ul>
-													<li><a href="listing-grid-7-sidebar-right.html">Offers</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Shoes</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Clothing</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Accessories</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Equipment</a></li>
-												</ul>
+												    <ul>
+											        <li><a href="listing-grid-7-sidebar-right.html">Offers</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Shoes</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Clothing</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Accessories</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Equipment</a></li>
+											    </ul>
 											</li>
 											<li><span><a href="#">Women</a></span>
 												<ul>
-													<li><a href="listing-grid-1-full.html">Best Sellers</a></li>
-													<li><a href="listing-grid-2-full.html">Clothing</a></li>
-													<li><a href="listing-grid-3.html">Accessories</a></li>
-													<li><a href="listing-grid-4-sidebar-left.html">Shoes</a></li>
+													<li><a href="listing-grid-2-full.blade.php">Best Sellers</a></li>
+													<li><a href="listing-grid-2-full.blade.php">Clothing</a></li>
+													<li><a href="listing-grid-2-full.blade.php">Accessories</a></li>
+													<li><a href="listing-grid-2-full.blade.php">Shoes</a></li>
 												</ul>
 											</li>
 											<li><span><a href="#">Boys</a></span>

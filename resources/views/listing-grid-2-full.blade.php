@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,14 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Ansonika">
-    <title>Allaia | Bootstrap eCommerce Template - ThemeForest777777</title>
+    <title>Allaia | Bootstrap eCommerce Template - ThemeForest81</title>
 
     <!-- Favicons-->
-    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
-    <link rel="apple-touch-icon" type="image/x-icon" href="{{ asset('img/apple-touch-icon-57x57-precomposed.png') }}">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('img/apple-touch-icon-72x72-precomposed.png') }}">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('img/apple-touch-icon-114x114-precomposed.png') }}">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('img/apple-touch-icon-144x144-precomposed.png') }}">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
 	
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,14 +22,14 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- BASE CSS -->
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
 	<!-- SPECIFIC CSS -->
-    <link href="{{ asset('css/listing.css') }}" rel="stylesheet">
+    <link href="css/listing.css" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
 
 </head>
 
@@ -45,7 +44,7 @@
 				<div class="row small-gutters">
 					<div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
 						<div id="logo">
-							<a href="index.html"><img src="{{ asset('img/logo.svg') }}" alt="" width="100" height="35"></a>
+							<a href="index.html"><img src="img/logo.svg" alt="" width="100" height="35"></a>
 						</div>
 					</div>
 					<nav class="col-xl-6 col-lg-7">
@@ -59,7 +58,7 @@
 						<!-- Mobile menu button -->
 						<div class="main-menu">
 							<div id="header_menu">
-								<a href="index.html"><img src="{{ asset('img/logo_black.svg') }}" alt="" width="100" height="35"></a>
+								<a href="index.html"><img src="img/logo_black.svg" alt="" width="100" height="35"></a>
 								<a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
 							</div>
 							<ul>
@@ -91,7 +90,7 @@
 											<div class="col-lg-3">
 												<h3>Listing row &amp; Product</h3>
 												<ul>
-													<li><a href="listing-grid-7-sidebar-right.html">Row Sidebar Left</a></li>
+													<li><a href="listing-row-1-sidebar-left.html">Row Sidebar Left</a></li>
 													<li><a href="listing-row-2-sidebar-right.html">Row Sidebar Right</a></li>
 													<li><a href="listing-row-3-sidebar-left.html">Row Sidebar Left 2</a></li>
 													<li><a href="listing-row-4-sidebar-extended.html">Row Sidebar Extended</a></li>
@@ -116,7 +115,7 @@
 											<div class="col-lg-3 d-xl-block d-lg-block d-md-none d-sm-none d-none">
 												<div class="banner_menu">
 													<a href="#0">
-														<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('img/banner_menu.jpg') }}" width="400" height="550" alt="" class="img-fluid lazy">
+														<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/banner_menu.jpg" width="400" height="550" alt="" class="img-fluid lazy">
 													</a>
 												</div>
 											</div>
@@ -189,20 +188,20 @@
 												</ul>
 											</li>
 											<li><span><a href="#">Men</a></span>
-												<ul>
-													<li><a href="listing-grid-7-sidebar-right.html">Offers</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Shoes</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Clothing</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Accessories</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Equipment</a></li>
-												</ul>
+												    <ul>
+											        <li><a href="listing-grid-7-sidebar-right.html">Offers</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Shoes</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Clothing</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Accessories</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Equipment</a></li>
+											    </ul>
 											</li>
 											<li><span><a href="#">Women</a></span>
 												<ul>
-													<li><a href="listing-grid-1-full.html">Best Sellers</a></li>
-													<li><a href="listing-grid-2-full.html">Clothing</a></li>
-													<li><a href="listing-grid-3.html">Accessories</a></li>
-													<li><a href="listing-grid-4-sidebar-left.html">Shoes</a></li>
+													<li><a href="listing-grid-2-full.blade.php">Best Sellers</a></li>
+													<li><a href="listing-grid-2-full.blade.php">Clothing</a></li>
+													<li><a href="listing-grid-2-full.blade.php">Accessories</a></li>
+													<li><a href="listing-grid-2-full.blade.php">Shoes</a></li>
 												</ul>
 											</li>
 											<li><span><a href="#">Boys</a></span>
@@ -250,14 +249,14 @@
 										<ul>
 											<li>
 												<a href="product-detail-1.html">
-													<figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/thumb/1.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
+													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/1.jpg" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Air x Fear</span>$90.00</strong>
 												</a>
 												<a href="#0" class="action"><i class="ti-trash"></i></a>
 											</li>
 											<li>
 												<a href="product-detail-1.html">
-													<figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/thumb/2.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
+													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/2.jpg" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Okwahn II</span>$110.00</strong>
 												</a>
 												<a href="0" class="action"><i class="ti-trash"></i></a>
@@ -326,20 +325,13 @@
 	<!-- /header -->
 		
 	<main>
-		<div class="top_banner">
-			<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.3)">
+		<div class="top_banner version_2">
+			<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0)">
 				<div class="container">
-					<div class="breadcrumbs">
-						<ul>
-							<li><a href="#">Home</a></li>
-							<li><a href="#">Category</a></li>
-							<li>Page active</li>
-						</ul>
-					</div>
-					<h1>Shoes - Grid listing</h1>
+					<div class="d-flex justify-content-center"><h1>Shoes - Grid listing</h1></div>
 				</div>
 			</div>
-			<img src="{{ asset('img/bg_cat_shoes.jpg') }}" class="img-fluid" alt="">
+			<img src="img/bg_cat_shoes.jpg" class="img-fluid" alt="">
 		</div>
 		<!-- /top_banner -->
 		
@@ -529,7 +521,7 @@
 						<figure>
 							<span class="ribbon off">-30%</span>
 							<a href="product-detail-1.html">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/1.jpg') }}" alt="">
+								<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/1.jpg" alt="">
 							</a>
 							<div data-countdown="2019/05/15" class="countdown"></div>
 						</figure>
@@ -555,7 +547,7 @@
 						<span class="ribbon off">-30%</span>
 						<figure>
 							<a href="product-detail-1.html">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/2.jpg') }}" alt="">
+								<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/2.jpg" alt="">
 							</a>
 							<div data-countdown="2019/05/10" class="countdown"></div>
 						</figure>
@@ -581,7 +573,7 @@
 						<span class="ribbon off">-50%</span>
 						<figure>
 							<a href="product-detail-1.html">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/3.jpg') }}" alt="">
+								<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/3.jpg" alt="">
 							</a>
 							<div data-countdown="2019/05/21" class="countdown"></div>
 						</figure>
@@ -607,7 +599,7 @@
 						<span class="ribbon new">New</span>
 						<figure>
 							<a href="product-detail-1.html">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/4.jpg') }}" alt="">
+								<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/4.jpg" alt="">
 							</a>
 						</figure>
 						<a href="product-detail-1.html">
@@ -631,7 +623,7 @@
 						<span class="ribbon new">New</span>
 						<figure>
 							<a href="product-detail-1.html">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/5.jpg') }}" alt="">
+								<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/5.jpg" alt="">
 							</a>
 						</figure>
 						<a href="product-detail-1.html">
@@ -655,7 +647,7 @@
 						<span class="ribbon new">New</span>
 						<figure>
 							<a href="product-detail-1.html">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/6.jpg') }}" alt="">
+								<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/6.jpg" alt="">
 							</a>
 						</figure>
 						<a href="product-detail-1.html">
@@ -679,7 +671,7 @@
 						<span class="ribbon hot">Hot</span>
 						<figure>
 							<a href="product-detail-1.html">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/7.jpg') }}" alt="">
+								<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/7.jpg" alt="">
 							</a>
 						</figure>
 						<a href="product-detail-1.html">
@@ -703,7 +695,7 @@
 						<span class="ribbon hot">Hot</span>
 						<figure>
 							<a href="product-detail-1.html">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/8.jpg') }}" alt="">
+								<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/8.jpg" alt="">
 							</a>
 						</figure>
 						<a href="product-detail-1.html">
@@ -832,7 +824,7 @@
 								</select>
 							</div>
 						</li>
-						<li><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('img/cards_all.svg') }}" alt="" width="198" height="30" class="lazy"></li>
+						<li><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/cards_all.svg" alt="" width="198" height="30" class="lazy"></li>
 					</ul>
 				</div>
 				<div class="col-lg-6">
@@ -852,12 +844,12 @@
 	<div id="toTop"></div><!-- Back to top button -->
 	
 	<!-- COMMON SCRIPTS -->
-    <script src="{{ asset('js/common_scripts.min.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="js/common_scripts.min.js"></script>
+    <script src="js/main.js"></script>
 	
 	<!-- SPECIFIC SCRIPTS -->
-	<script src="{{ asset('js/sticky_sidebar.min.js') }}"></script>
-	<script src="{{ asset('js/specific_listing.js') }}"></script>
+	<script src="js/sticky_sidebar.min.js"></script>
+	<script src="js/specific_listing.js"></script>
 		
 </body>
 </html>
