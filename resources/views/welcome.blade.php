@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Ansonika">
-    <title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
+    <title>Allaia | Bootstrap eCommerce Template - ThemeForest85858</title>
 
     <!-- Favicons-->
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -180,7 +180,7 @@
 										<ul>
 											<li><span><a href="#0">Collections</a></span>
 												<ul>
-													<li><a href="listing-grid-1-full.html">Trending</a></li>
+													<li><a href="listing-grid-1-full.html">2313</a></li>
 													<li><a href="listing-grid-2-full.html">Life style</a></li>
 													<li><a href="listing-grid-3.html">Running</a></li>
 													<li><a href="listing-grid-4-sidebar-left.html">Training</a></li>

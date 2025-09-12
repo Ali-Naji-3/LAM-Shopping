@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Ansonika">
-    <title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
-
+    <title>Allaia | Bootstrap eCommerce Template - ThemeForest99999</title>
+ <!--sasdasdassdasdasda>
     <!-- Favicons-->
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
@@ -58,17 +58,17 @@
 						<!-- Mobile menu button -->
 						<div class="main-menu">
 							<div id="header_menu">
-								<a href="index.html"><img src="img/logo_black.svg" alt="" width="100" height="35"></a>
+								<a href="{{ url('/') }}"><img src="img/logo_black.svg" alt="" width="100" height="35"></a>
 								<a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
 							</div>
 							<ul>
 								<li class="submenu">
 									<a href="javascript:void(0);" class="show-submenu">Home</a>
 									<ul>
-										<li><a href="index.html">Slider</a></li>
-										<li><a href="index-2.html">Video Background</a></li>
-										<li><a href="index-3.html">Vertical Slider</a></li>
-										<li><a href="index-4.html">GDPR Cookie Bar</a></li>
+										<li><a href="{{ url('index.html') }}">Slider</a></li>
+										<li><a href="{{ url('/') }}">Video Background</a></li>
+										<li><a href="{{ url('index-3.html') }}">Vertical Slider</a></li>
+										<li><a href="{{ url('index-4.html') }}">GDPR Cookie Bar</a></li>
 									</ul>
 								</li>
 								<li class="megamenu submenu">
@@ -78,38 +78,38 @@
 											<div class="col-lg-3">
 												<h3>Listing grid</h3>
 												<ul>
-													<li><a href="listing-grid-1-full.html">Grid Full Width</a></li>
-													<li><a href="listing-grid-2-full.html">Grid Full Width 2</a></li>
-													<li><a href="listing-grid-3.html">Grid Boxed</a></li>
-													<li><a href="listing-grid-4-sidebar-left.html">Grid Sidebar Left</a></li>
-													<li><a href="listing-grid-5-sidebar-right.html">Grid Sidebar Right</a></li>
-													<li><a href="listing-grid-6-sidebar-left.html">Grid Sidebar Left 2</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Grid Sidebar Right 2</a></li>
+													<li><a href="{{ url('listing-grid-1-full.html') }}">Grid Full Width</a></li>
+													<li><a href="{{ url('listing-grid-2-full.html') }}">Grid Full Width 2</a></li>
+													<li><a href="{{ url('listing-grid-3.html') }}">Grid Boxed</a></li>
+													<li><a href="{{ url('listing-grid-4-sidebar-left.html') }}">Grid Sidebar Left</a></li>
+													<li><a href="{{ url('listing-grid-5-sidebar-right.html') }}">Grid Sidebar Right</a></li>
+													<li><a href="{{ url('listing-grid-6-sidebar-left.html') }}">Grid Sidebar Left 2</a></li>
+													<li><a href="{{ url('listing-grid-7-sidebar-right.html') }}">Grid Sidebar Right 2</a></li>
 												</ul>
 											</div>
 											<div class="col-lg-3">
 												<h3>Listing row &amp; Product</h3>
 												<ul>
-													<li><a href="listing-row-1-sidebar-left.html">Row Sidebar Left</a></li>
-													<li><a href="listing-row-2-sidebar-right.html">Row Sidebar Right</a></li>
-													<li><a href="listing-row-3-sidebar-left.html">Row Sidebar Left 2</a></li>
-													<li><a href="listing-row-4-sidebar-extended.html">Row Sidebar Extended</a></li>
-													<li><a href="product-detail-1.html">Product Large Image</a></li>
-													<li><a href="product-detail-2.html">Product Carousel</a></li>
-													<li><a href="product-detail-3.html">Product Sticky Info</a></li>
+													<li><a href="{{ url('listing-row-1-sidebar-left.html') }}">Row Sidebar Left</a></li>
+													<li><a href="{{ url('listing-row-2-sidebar-right.html') }}">Row Sidebar Right</a></li>
+													<li><a href="{{ url('listing-row-3-sidebar-left.html') }}">Row Sidebar Left 2</a></li>
+													<li><a href="{{ url('listing-row-4-sidebar-extended.html') }}">Row Sidebar Extended</a></li>
+													<li><a href="{{ url('product-detail-1.html') }}">Product Large Image</a></li>
+													<li><a href="{{ url('product-detail-2.html') }}">Product Carousel</a></li>
+													<li><a href="{{ url('product-detail-3.html') }}">Product Sticky Info</a></li>
 												</ul>
 											</div>
 											<div class="col-lg-3">
 												<h3>Other pages</h3>
 												<ul>
-													<li><a href="cart.html">Cart Page</a></li>
-													<li><a href="checkout.html">Check Out Page</a></li>
-													<li><a href="confirm.html">Confirm Purchase Page</a></li>
-													<li><a href="account.html">Create Account Page</a></li>
-													<li><a href="track-order.html">Track Order</a></li>
-													<li><a href="help.html">Help Page</a></li>
-													<li><a href="help-2.html">Help Page 2</a></li>
-													<li><a href="leave-review.html">Leave a Review</a></li>
+													<li><a href="{{ url('cart.html') }}">Cart Page</a></li>
+													<li><a href="{{ url('checkout.html') }}">Check Out Page</a></li>
+													<li><a href="{{ url('confirm.html') }}">Confirm Purchase Page</a></li>
+													<li><a href="{{ url('account.html') }}">Create Account Page</a></li>
+													<li><a href="{{ url('track-order.html') }}">Track Order</a></li>
+													<li><a href="{{ url('help.html') }}">Help Page</a></li>
+													<li><a href="{{ url('help-2.html') }}">Help Page 2</a></li>
+													<li><a href="{{ url('leave-review.html') }}">Leave a Review</a></li>
 												</ul>
 											</div>
 											<div class="col-lg-3 d-xl-block d-lg-block d-md-none d-sm-none d-none">
@@ -127,22 +127,21 @@
 								<li class="submenu">
 									<a href="javascript:void(0);" class="show-submenu">Extra Pages</a>
 									<ul>
-										<li><a href="header-2.html">Header Style 2</a></li>
-										<li><a href="header-3.html">Header Style 3</a></li>
-										<li><a href="header-4.html">Header Style 4</a></li>
-										<li><a href="header-5.html">Header Style 5</a></li>
-										<li><a href="404.html">404 Page</a></li>
-										<li><a href="sign-in-modal.html">Sign In Modal</a></li>
-										<li><a href="contacts.html">Contact Us</a></li>
-										<li><a href="about.html">About 1</a></li>
-										<li><a href="about-2.html">About 2</a></li>
-										<li><a href="modal-advertise.html">Modal Advertise</a></li>
-										<li><a href="modal-newsletter.html">Modal Newsletter</a></li>
-										<li><a href="gallery.html">Gallery Page</a></li>
+										<li><a href="{{ url('header-2.html') }}">Header Style 2</a></li>
+										<li><a href="{{ url('header-3.html') }}">Header Style 3</a></li>
+										<li><a href="{{ url('header-4.html') }}">Header Style 4</a></li>
+										<li><a href="{{ url('header-5.html') }}">Header Style 5</a></li>
+										<li><a href="{{ url('404.html') }}">404 Page</a></li>
+										<li><a href="{{ url('sign-in-modal.html') }}">Sign In Modal</a></li>
+										<li><a href="{{ url('contacts.html') }}">Contact Us</a></li>
+										<li><a href="{{ url('about-us.html') }}">About Us</a></li>
+										<li><a href="{{ url('modal-advertise.html') }}">Modal Advertise</a></li>
+										<li><a href="{{ url('modal-newsletter.html') }}">Modal Newsletter</a></li>
+										<li><a href="{{ url('gallery.html') }}">Gallery Page</a></li>
 									</ul>
 								</li>
 								<li>
-									<a href="blog.html">Blog</a>
+									<a href="{{ url('blog.html') }}">Blog</a>
 								</li>
 								<li>
 									<a href="#0">Buy Template</a>
@@ -181,20 +180,20 @@
 											<li><span><a href="#0">Collections</a></span>
 												<ul>
 													<li><a href="listing-grid-1-full.html">Trending</a></li>
-													<li><a href="listing-grid-2-full.html">Life style</a></li>
-													<li><a href="listing-grid-3.html">Running</a></li>
-													<li><a href="listing-grid-4-sidebar-left.html">Training</a></li>
-													<li><a href="listing-grid-5-sidebar-right.html">View all Collections</a></li>
+													<li><a href="listing-grid-1-full.html">Life style</a></li>
+													<li><a href="listing-grid-1-full.html">Running</a></li>
+													<li><a href="listing-grid-1-full.html">Training</a></li>
+													<li><a href="listing-grid-1-full.html">View all Collections</a></li>
 												</ul>
 											</li>
 											<li><span><a href="#">Men</a></span>
-												<ul>
-													<li><a href="listing-grid-6-sidebar-left.html">Offers</a></li>
-													<li><a href="listing-grid-7-sidebar-right.html">Shoes</a></li>
-													<li><a href="listing-row-1-sidebar-left.html">Clothing</a></li>
-													<li><a href="listing-row-3-sidebar-left.html">Accessories</a></li>
-													<li><a href="listing-row-4-sidebar-extended.html">Equipment</a></li>
-												</ul>
+												    <ul>
+											        <li><a href="listing-grid-7-sidebar-right.html">Offers</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Shoes</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Clothing</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Accessories</a></li>
+											        <li><a href="listing-grid-7-sidebar-right.html">Equipment</a></li>
+											    </ul>
 											</li>
 											<li><span><a href="#">Women</a></span>
 												<ul>
@@ -786,12 +785,12 @@
 					<h3 data-bs-target="#collapse_1">Quick Links</h3>
 					<div class="collapse dont-collapse-sm links" id="collapse_1">
 						<ul>
-							<li><a href="about.html">About us</a></li>
-							<li><a href="help.html">Faq</a></li>
-							<li><a href="help.html">Help</a></li>
-							<li><a href="account.html">My account</a></li>
-							<li><a href="blog.html">Blog</a></li>
-							<li><a href="contacts.html">Contacts</a></li>
+							<li><a href="{{ url('about-us.html') }}">About us</a></li>
+							<li><a href="{{ url('help.html') }}">Faq</a></li>
+							<li><a href="{{ url('help.html') }}">Help</a></li>
+							<li><a href="{{ url('account.html') }}">My account</a></li>
+							<li><a href="{{ url('blog.html') }}">Blog</a></li>
+							<li><a href="{{ url('contacts.html') }}">Contacts</a></li>
 						</ul>
 					</div>
 				</div>
@@ -799,12 +798,12 @@
 					<h3 data-bs-target="#collapse_2">Categories</h3>
 					<div class="collapse dont-collapse-sm links" id="collapse_2">
 						<ul>
-							<li><a href="listing-grid-1-full.html">Clothes</a></li>
-							<li><a href="listing-grid-2-full.html">Electronics</a></li>
-							<li><a href="listing-grid-1-full.html">Furniture</a></li>
-							<li><a href="listing-grid-3.html">Glasses</a></li>
-							<li><a href="listing-grid-1-full.html">Shoes</a></li>
-							<li><a href="listing-grid-1-full.html">Watches</a></li>
+							<li><a href="{{ url('listing-grid-1-full.html') }}">Clothes</a></li>
+							<li><a href="{{ url('listing-grid-2-full.html') }}">Electronics</a></li>
+							<li><a href="{{ url('listing-grid-1-full.html') }}">Furniture</a></li>
+							<li><a href="{{ url('listing-grid-3.html') }}">Glasses</a></li>
+							<li><a href="{{ url('listing-grid-1-full.html') }}">Shoes</a></li>
+							<li><a href="{{ url('listing-grid-1-full.html') }}">Watches</a></li>
 						</ul>
 					</div>
 				</div>
