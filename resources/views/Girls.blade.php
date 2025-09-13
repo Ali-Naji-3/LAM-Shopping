@@ -200,18 +200,18 @@
 						<ul class="top_tools">
 							<li>
 								<div class="dropdown dropdown-cart">
-									<a href="cart.html" class="cart_bt"><strong>2</strong></a>
+									<a href="{{ url('cart') }}" class="cart_bt"><strong>2</strong></a>
 									<div class="dropdown-menu">
 										<ul>
 											<li>
-												<a href="product-detail-1.html">
+												<a href="{{ url('product-detail-2') }}">
 													<figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/thumb/1.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Air x Fear</span>$90.00</strong>
 												</a>
 												<a href="#0" class="action"><i class="ti-trash"></i></a>
 											</li>
 											<li>
-												<a href="product-detail-1.html">
+												<a href="{{ url('product-detail-2') }}">
 													<figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/thumb/2.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Okwahn II</span>$110.00</strong>
 												</a>
@@ -220,32 +220,32 @@
 										</ul>
 										<div class="total_drop">
 											<div class="clearfix"><strong>Total</strong><span>$200.00</span></div>
-											<a href="cart.html" class="btn_1 outline">View Cart</a><a href="checkout.html" class="btn_1">Checkout</a>
+											<a href="{{ url('cart') }}" class="btn_1 outline">View Cart</a><a href="{{ url('checkout') }}" class="btn_1">Checkout</a>
 										</div>
 									</div>
 								</div>
 								<!-- /dropdown-cart-->
 							</li>
 							<li>
-								<a href="my-wishlist.html" class="wishlist"><span>Wishlist</span></a>
+								<a href="{{ url('my-wishlist') }}" class="wishlist"><span>Wishlist</span></a>
 							</li>
 							<li>
 								<div class="dropdown dropdown-access">
-									<a href="account.html" class="access_link"><span>Account</span></a>
+									<a href="{{ url('account') }}" class="access_link"><span>Account</span></a>
 									<div class="dropdown-menu">
-										<a href="account.html" class="btn_1">Sign In or Sign Up</a>
+										<a href="{{ url('account') }}" class="btn_1">Sign In or Sign Up</a>
 										<ul>
 											<li>
-												<a href="track-order.html"><i class="ti-truck"></i>Track your Order</a>
+												<a href="{{ url('track-order') }}"><i class="ti-truck"></i>Track your Order</a>
 											</li>
 											<li>
-												<a href="my-orders.html"><i class="ti-package"></i>My Orders</a>
+												<a href="{{ url('my-orders') }}"><i class="ti-package"></i>My Orders</a>
 											</li>
 											<li>
-												<a href="profile-page.html"><i class="ti-user"></i>My Profile</a>
+												<a href="{{ url('profile-page') }}"><i class="ti-user"></i>My Profile</a>
 											</li>
 											<li>
-												<a href="help.html"><i class="ti-help-alt"></i>Help and Faq</a>
+												<a href="{{ url('help') }}"><i class="ti-help-alt"></i>Help and Faq</a>
 											</li>
 										</ul>
 									</div>
@@ -483,12 +483,12 @@
 					<div class="grid_item">
 						<figure>
 							<span class="ribbon off">-30%</span>
-							<a href="product-detail-1.html">
+							<a href="{{ url('product-detail-2') }}">
 								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/1.jpg') }}" alt="">
 							</a>
 							<div data-countdown="2019/05/15" class="countdown"></div>
 						</figure>
-						<a href="product-detail-1.html">
+						<a href="{{ url('product-detail-2') }}">
 							<h3>Armor Air x Fear</h3>
 						</a>
 						<div class="price_box">
@@ -509,12 +509,12 @@
 					<div class="grid_item">
 						<span class="ribbon off">-30%</span>
 						<figure>
-							<a href="product-detail-1.html">
+							<a href="{{ url('product-detail-2') }}">
 								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/2.jpg') }}" alt="">
 							</a>
 							<div data-countdown="2019/05/10" class="countdown"></div>
 						</figure>
-						<a href="product-detail-1.html">
+						<a href="{{ url('product-detail-2') }}">
 							<h3>Armor Okwahn II</h3>
 						</a>
 						<div class="price_box">
@@ -535,12 +535,12 @@
 					<div class="grid_item">
 						<span class="ribbon off">-50%</span>
 						<figure>
-							<a href="product-detail-1.html">
+							<a href="{{ url('product-detail-2') }}">
 								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/3.jpg') }}" alt="">
 							</a>
 							<div data-countdown="2019/05/21" class="countdown"></div>
 						</figure>
-						<a href="product-detail-1.html">
+						<a href="{{ url('product-detail-2') }}">
 							<h3>Armor Air Wildwood ACG</h3>
 						</a>
 						<div class="price_box">
@@ -561,11 +561,11 @@
 					<div class="grid_item">
 						<span class="ribbon new">New</span>
 						<figure>
-							<a href="product-detail-1.html">
+							<a href="{{ url('product-detail-2') }}">
 								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/4.jpg') }}" alt="">
 							</a>
 						</figure>
-						<a href="product-detail-1.html">
+						<a href="{{ url('product-detail-2') }}">
 							<h3>Armor ACG React Terra</h3>
 						</a>
 						<div class="price_box">
@@ -585,11 +585,11 @@
 					<div class="grid_item">
 						<span class="ribbon new">New</span>
 						<figure>
-							<a href="product-detail-1.html">
+							<a href="{{ url('product-detail-2') }}">
 								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/5.jpg') }}" alt="">
 							</a>
 						</figure>
-						<a href="product-detail-1.html">
+						<a href="{{ url('product-detail-2') }}">
 							<h3>Armor Air Zoom Alpha</h3>
 						</a>
 						<div class="price_box">
@@ -609,11 +609,11 @@
 					<div class="grid_item">
 						<span class="ribbon new">New</span>
 						<figure>
-							<a href="product-detail-1.html">
+							<a href="{{ url('product-detail-2') }}">
 								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/6.jpg') }}" alt="">
 							</a>
 						</figure>
-						<a href="product-detail-1.html">
+						<a href="{{ url('product-detail-2') }}">
 							<h3>Armor Air Alpha</h3>
 						</a>
 						<div class="price_box">
@@ -633,11 +633,11 @@
 					<div class="grid_item">
 						<span class="ribbon hot">Hot</span>
 						<figure>
-							<a href="product-detail-1.html">
+							<a href="{{ url('product-detail-2') }}">
 								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/7.jpg') }}" alt="">
 							</a>
 						</figure>
-						<a href="product-detail-1.html">
+						<a href="{{ url('product-detail-2') }}">
 							<h3>Armor Air 98</h3>
 						</a>
 						<div class="price_box">
@@ -657,11 +657,11 @@
 					<div class="grid_item">
 						<span class="ribbon hot">Hot</span>
 						<figure>
-							<a href="product-detail-1.html">
+							<a href="{{ url('product-detail-2') }}">
 								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/8.jpg') }}" alt="">
 							</a>
 						</figure>
-						<a href="product-detail-1.html">
+						<a href="{{ url('product-detail-2') }}">
 							<h3>Armor Air 720</h3>
 						</a>
 						<div class="price_box">
@@ -711,9 +711,9 @@
 					<div class="collapse dont-collapse-sm links" id="collapse_1">
 						<ul>
 							<li><a href="about.html">About us</a></li>
-							<li><a href="help.html">Faq</a></li>
-							<li><a href="help.html">Help</a></li>
-							<li><a href="account.html">My account</a></li>
+							<li><a href="{{ url('help') }}">Faq</a></li>
+							<li><a href="{{ url('help') }}">Help</a></li>
+							<li><a href="{{ url('account') }}">My account</a></li>
 							<li><a href="blog.html">Blog</a></li>
 							<li><a href="contacts.html">Contacts</a></li>
 						</ul>

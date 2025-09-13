@@ -37,6 +37,50 @@ Route::get('/girls', function () {
     return view('Girls');
 });
 
+Route::get('/product-detail-2', function () {
+    return view('product-detail-2');
+});
+
+Route::get('/cart', function () {
+    return view('cart');
+});
+
+Route::get('/checkout', function () {
+    return view('checkout');
+});
+
+Route::get('/confirm', function () {
+    return view('confirm');
+});
+
+Route::get('/account', function () {
+    return view('account');
+});
+
+Route::get('/track-order', function () {
+    return view('track-order');
+});
+
+Route::get('/help', function () {
+    return view('help');
+});
+
+Route::get('/leave-review', function () {
+    return view('leave-review');
+});
+
+Route::get('/my-orders', function () {
+    return view('my-orders');
+});
+
+Route::get('/profile-page', function () {
+    return view('profile-page');
+});
+
+Route::get('/my-wishlist', function () {
+    return view('my-wishlist');
+});
+
 Route::get('/{page}', function ($page) {
     // Construct the view name from the page parameter
     $viewName = str_replace('.html', '', $page);
