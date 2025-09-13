@@ -21,6 +21,22 @@ Route::get('/listing-grid-2-full', function () {
     return view('listing-grid-2-full');
 });
 
+Route::get('/listing-grid-7-sidebar-right', function () {
+    return view('listing-grid-7-sidebar-right');
+});
+
+Route::get('/listing-grid-1-full', function () {
+    return view('listing-grid-1-full');
+});
+
+Route::get('/listing-grid-3', function () {
+    return view('listing-grid-3');
+});
+
+Route::get('/girls', function () {
+    return view('Girls');
+});
+
 Route::get('/{page}', function ($page) {
     // Construct the view name from the page parameter
     $viewName = str_replace('.html', '', $page);
