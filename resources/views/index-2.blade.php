@@ -44,7 +44,7 @@
 				<div class="row small-gutters">
 					<div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
 						<div id="logo">
-							<a href="index.html"><img src="img/logo.svg" alt="" width="100" height="35"></a>
+							<a href="{{ url('/') }}"><img src="img/logo.svg" alt="" width="100" height="35"></a>
 						</div>
 					</div>
 					<nav class="col-xl-6 col-lg-7">
@@ -62,89 +62,20 @@
 								<a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
 							</div>
 							<ul>
-								<li class="submenu">
-									<a href="javascript:void(0);" class="show-submenu">Home</a>
-									<ul>
-										<li><a href="{{ url('index.html') }}">Slider</a></li>
-										<li><a href="{{ url('/') }}">Video Background</a></li>
-										<li><a href="{{ url('index-3.html') }}">Vertical Slider</a></li>
-										<li><a href="{{ url('index-4.html') }}">GDPR Cookie Bar</a></li>
-									</ul>
-								</li>
-								<li class="megamenu submenu">
-									<a href="javascript:void(0);" class="show-submenu-mega">Pages</a>
-									<div class="menu-wrapper">
-										<div class="row small-gutters">
-											<div class="col-lg-3">
-												<h3>Listing grid</h3>
-												<ul>
-													<li><a href="{{ url('listing-grid-1-full.html') }}">Grid Full Width</a></li>
-													<li><a href="{{ url('listing-grid-2-full.html') }}">Grid Full Width 2</a></li>
-													<li><a href="{{ url('listing-grid-3.html') }}">Grid Boxed</a></li>
-													<li><a href="{{ url('listing-grid-4-sidebar-left.html') }}">Grid Sidebar Left</a></li>
-													<li><a href="{{ url('listing-grid-5-sidebar-right.html') }}">Grid Sidebar Right</a></li>
-													<li><a href="{{ url('listing-grid-6-sidebar-left.html') }}">Grid Sidebar Left 2</a></li>
-													<li><a href="{{ url('listing-grid-7-sidebar-right.html') }}">Grid Sidebar Right 2</a></li>
-												</ul>
-											</div>
-											<div class="col-lg-3">
-												<h3>Listing row &amp; Product</h3>
-												<ul>
-													<li><a href="{{ url('listing-row-1-sidebar-left.html') }}">Row Sidebar Left</a></li>
-													<li><a href="{{ url('listing-row-2-sidebar-right.html') }}">Row Sidebar Right</a></li>
-													<li><a href="{{ url('listing-row-3-sidebar-left.html') }}">Row Sidebar Left 2</a></li>
-													<li><a href="{{ url('listing-row-4-sidebar-extended.html') }}">Row Sidebar Extended</a></li>
-													<li><a href="{{ url('product-detail-1.html') }}">Product Large Image</a></li>
-													<li><a href="{{ url('product-detail-2.html') }}">Product Carousel</a></li>
-													<li><a href="{{ url('product-detail-3.html') }}">Product Sticky Info</a></li>
-												</ul>
-											</div>
-											<div class="col-lg-3">
-												<h3>Other pages</h3>
-												<ul>
-													<li><a href="{{ url('cart.html') }}">Cart Page</a></li>
-													<li><a href="{{ url('checkout.html') }}">Check Out Page</a></li>
-													<li><a href="{{ url('confirm.html') }}">Confirm Purchase Page</a></li>
-													<li><a href="{{ url('account.html') }}">Create Account Page</a></li>
-													<li><a href="{{ url('track-order.html') }}">Track Order</a></li>
-													<li><a href="{{ url('help.html') }}">Help Page</a></li>
-													<li><a href="{{ url('help-2.html') }}">Help Page 2</a></li>
-													<li><a href="{{ url('leave-review.html') }}">Leave a Review</a></li>
-												</ul>
-											</div>
-											<div class="col-lg-3 d-xl-block d-lg-block d-md-none d-sm-none d-none">
-												<div class="banner_menu">
-													<a href="#0">
-														<img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/banner_menu.jpg" width="400" height="550" alt="" class="img-fluid lazy">
-													</a>
-												</div>
-											</div>
-										</div>
-										<!-- /row -->
-									</div>
-									<!-- /menu-wrapper -->
-								</li>
-								<li class="submenu">
-									<a href="javascript:void(0);" class="show-submenu">Extra Pages</a>
-									<ul>
-										<li><a href="{{ url('header-2.html') }}">Header Style 2</a></li>
-										<li><a href="{{ url('header-3.html') }}">Header Style 3</a></li>
-										<li><a href="{{ url('header-4.html') }}">Header Style 4</a></li>
-										<li><a href="{{ url('header-5.html') }}">Header Style 5</a></li>
-										<li><a href="{{ url('404.html') }}">404 Page</a></li>
-										<li><a href="{{ url('sign-in-modal.html') }}">Sign In Modal</a></li>
-										<li><a href="{{ url('contacts.html') }}">Contact Us</a></li>
-										<li><a href="{{ url('about-us.html') }}">About Us</a></li>
-										<li><a href="{{ url('modal-advertise.html') }}">Modal Advertise</a></li>
-										<li><a href="{{ url('modal-newsletter.html') }}">Modal Newsletter</a></li>
-										<li><a href="{{ url('gallery.html') }}">Gallery Page</a></li>
-									</ul>
+								<li>
+									<a href="{{ url('/') }}">Home</a>
 								</li>
 								<li>
-									<a href="{{ url('blog.html') }}">Blog</a>
+									<a href="{{ url('listing-grid-3') }}">Men</a>
 								</li>
 								<li>
-									<a href="#0">Buy Template</a>
+									<a href="{{ url('listing-grid-1-full') }}">Woman</a>
+								</li>
+								<li>
+									<a href="{{ url('listing-grid-2-full') }}">Boys</a>
+								</li>
+								<li>
+									<a href="{{ url('girls') }}">Girls</a>
 								</li>
 							</ul>
 						</div>
@@ -337,10 +268,10 @@
 		<div class="container margin_60_35">
 			<div class="row small-gutters categories_grid">
 				<div class="col-sm-12 col-md-6">
-					<a href="listing-grid-1-full.html">
-						<img src="img/img_cat_home_1_placeholder.png" data-src="img/img_cat_home_1.jpg" alt="" class="img-fluid lazy">
+					<a href="{{ url('listing-grid-7-sidebar-right') }}">
+						<img src="{{ asset('img/img_cat_home_1_placeholder.png') }}" data-src="{{ asset('img/img_cat_home_1.jpg') }}" alt="" class="img-fluid lazy">
 						<div class="wrapper">
-							<h2>Life Style</h2>
+							<h2>Collections</h2>
 							<p>115 Products</p>
 						</div>
 					</a>
@@ -348,26 +279,26 @@
 				<div class="col-sm-12 col-md-6">
 					<div class="row small-gutters mt-md-0 mt-sm-2">
 						<div class="col-sm-6">
-							<a href="listing-grid-1-full.html">
-								<img src="img/img_cat_home_2_placeholder.png" data-src="img/img_cat_home_2.jpg" alt="" class="img-fluid lazy">
+							<a href="{{ url('listing-grid-1-full') }}">
+								<img src="{{ asset('img/img_cat_home_1_placeholder.png') }}" data-src="{{ asset('img/img_cat_home_1.jpg') }}" alt="" class="img-fluid lazy">
 								<div class="wrapper">
-									<h2>Running</h2>
+									<h2>Woman</h2>
 									<p>150 Products</p>
 								</div>
 							</a>
 						</div>
 						<div class="col-sm-6">
-							<a href="listing-grid-1-full.html">
-								<img src="img/img_cat_home_2_placeholder.png" data-src="img/img_cat_home_3.jpg" alt="" class="img-fluid lazy">
+							<a href="{{ url('listing-grid-2-full') }}">
+								<img src="{{ asset('img/img_cat_home_2_placeholder.png') }}" data-src="{{ asset('img/img_cat_home_3.jpg') }}" alt="" class="img-fluid lazy">
 								<div class="wrapper">
-									<h2>Football</h2>
+									<h2>Boys</h2>
 									<p>90 Products</p>
 								</div>
 							</a>
 						</div>
 						<div class="col-sm-12 mt-sm-2">
-							<a href="listing-grid-1-full.html">
-								<img src="img/img_cat_home_4_placeholder.png" data-src="img/img_cat_home_4.jpg" alt="" class="img-fluid lazy">
+							<a href="{{ url('listing-grid-7-sidebar-right') }}">
+								<img src="{{ asset('img/img_cat_home_4_placeholder.png') }}" data-src="{{ asset('img/img_cat_home_4.jpg') }}" alt="" class="img-fluid lazy">
 								<div class="wrapper">
 									<h2>Training</h2>
 									<p>120 Products</p>
@@ -656,79 +587,7 @@
 				</div><!-- /carousel -->
 			</div><!-- /container -->
 		</div>
-		<!-- /bg_gray -->
 		
-		<div class="container margin_60_35">
-			<div class="main_title">
-				<h2>Latest News</h2>
-				<span>Blog</span>
-				<p>Cum doctus civibus efficiantur in imperdiet deterruisset</p>
-			</div>
-			<div class="row">
-				<div class="col-lg-6">
-					<a class="box_news" href="blog.html">
-						<figure>
-							<img src="img/blog-thumb-placeholder.jpg" data-src="img/blog-thumb-1.jpg" alt="" width="400" height="266" class="lazy">
-							<figcaption><strong>28</strong>Dec</figcaption>
-						</figure>
-						<ul>
-							<li>by Mark Twain</li>
-							<li>20.11.2017</li>
-						</ul>
-						<h4>Pri oportere scribentur eu</h4>
-						<p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
-					</a>
-				</div>
-				<!-- /box_news -->
-				<div class="col-lg-6">
-					<a class="box_news" href="blog.html">
-						<figure>
-							<img src="img/blog-thumb-placeholder.jpg" data-src="img/blog-thumb-2.jpg" alt="" width="400" height="266" class="lazy">
-							<figcaption><strong>28</strong>Dec</figcaption>
-						</figure>
-						<ul>
-							<li>By Jhon Doe</li>
-							<li>20.11.2017</li>
-						</ul>
-						<h4>Duo eius postea suscipit ad</h4>
-						<p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
-					</a>
-				</div>
-				<!-- /box_news -->
-				<div class="col-lg-6">
-					<a class="box_news" href="blog.html">
-						<figure>
-							<img src="img/blog-thumb-placeholder.jpg" data-src="img/blog-thumb-3.jpg" alt="" width="400" height="266" class="lazy">
-							<figcaption><strong>28</strong>Dec</figcaption>
-						</figure>
-						<ul>
-							<li>By Luca Robinson</li>
-							<li>20.11.2017</li>
-						</ul>
-						<h4>Elitr mandamus cu has</h4>
-						<p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
-					</a>
-				</div>
-				<!-- /box_news -->
-				<div class="col-lg-6">
-					<a class="box_news" href="blog.html">
-						<figure>
-							<img src="img/blog-thumb-placeholder.jpg" data-src="img/blog-thumb-4.jpg" alt="" width="400" height="266" class="lazy">
-							<figcaption><strong>28</strong>Dec</figcaption>
-						</figure>
-						<ul>
-							<li>By Paula Rodrigez</li>
-							<li>20.11.2017</li>
-						</ul>
-						<h4>Id est adhuc ignota delenit</h4>
-						<p>Cu eum alia elit, usu in eius appareat, deleniti sapientem honestatis eos ex. In ius esse ullum vidisse....</p>
-					</a>
-				</div>
-				<!-- /box_news -->
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
 		
 	</main>
 	<!-- /main -->
