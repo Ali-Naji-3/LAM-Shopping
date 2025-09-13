@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index-2');
 });
+
+Route::get('/listing-grid-2-full', function () {
+    return view('listing-grid-2-full');
+});
+
 Route::get('/{page}', function ($page) {
     // Construct the view name from the page parameter
     $viewName = str_replace('.html', '', $page);
