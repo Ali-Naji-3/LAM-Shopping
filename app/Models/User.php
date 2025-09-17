@@ -20,7 +20,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'mobile',
         'password',
+        'u_type',
     ];
 
     /**
@@ -44,5 +46,21 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Helper methods for user roles
+    public function isAdmin()
+    {
+        return $this->u_type === 'ADM';
+    }
+
+    public function isManager()
+    {
+        return $this->u_type === 'MGR';
+    }
+
+    public function isUser()
+    {
+        return $this->u_type === 'USR';
     }
 }

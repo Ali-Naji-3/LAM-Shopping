@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('mobile', 20)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('u_type', ['USR', 'ADM', 'MGR'])->default('USR');
             $table->rememberToken();
             $table->timestamps();
         });

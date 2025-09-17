@@ -160,9 +160,9 @@
 							</li>
 							<li>
 								<div class="dropdown dropdown-access">
-									<a href="{{ url('account') }}" class="access_link"><span>Account</span></a>
+									<a href="{{ url('login') }}" class="access_link"><span>Account</span></a>
 									<div class="dropdown-menu">
-										<a href="{{ url('account') }}" class="btn_1">Sign In or Sign Up</a>
+										<a href="{{ url('login') }}" class="btn_1">Sign In or Sign Up</a>
 										<ul>
 											<li>
 												<a href="{{ url('track-order') }}"><i class="ti-truck"></i>Track your Order</a>
@@ -244,7 +244,7 @@
 							<li><a href="about.html">About us</a></li>
 							<li><a href="{{ url('help') }}">Faq</a></li>
 							<li><a href="{{ url('help') }}">Help</a></li>
-							<li><a href="{{ url('account') }}">My account</a></li>
+							<li><a href="{{ url('login') }}">My account</a></li>
 							<li><a href="blog.html">Blog</a></li>
 							<li><a href="contacts.html">Contacts</a></li>
 						</ul>
