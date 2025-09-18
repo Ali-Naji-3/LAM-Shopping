@@ -17,12 +17,33 @@
     <!-- Bootstrap CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     
-    <!-- Custom Admin CSS -->
+    <!-- Custom Admin CSS - Professional Corporate Theme -->
     <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --info-color: #0891b2;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background-color: #1e1e2e;
-            color: #ffffff;
+            background-color: var(--light-bg);
+            color: var(--text-primary);
             font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
         }
         
         .sidebar {
@@ -30,142 +51,393 @@
             top: 0;
             left: 0;
             height: 100vh;
-            width: 250px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 270px;
+            background: var(--white);
+            border-right: 2px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
             z-index: 1000;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
         
         .sidebar .logo {
-            padding: 20px;
+            padding: 25px 20px;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 2px solid var(--border-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         }
         
         .sidebar .logo img {
-            max-width: 120px;
+            max-width: 140px;
             filter: brightness(0) invert(1);
         }
         
+        .sidebar .logo h4 {
+            color: var(--white);
+            margin: 10px 0 0 0;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
         .sidebar .nav-links {
-            padding: 20px 0;
+            padding: 25px 0;
         }
         
         .sidebar .nav-links li {
             list-style: none;
+            margin-bottom: 5px;
         }
         
         .sidebar .nav-links li a {
-            display: block;
+            display: flex;
+            align-items: center;
             padding: 15px 25px;
-            color: #ffffff;
+            color: var(--text-primary);
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border-radius: 0 25px 25px 0;
+            margin-right: 15px;
         }
         
         .sidebar .nav-links li a:hover,
         .sidebar .nav-links li a.active {
-            background-color: rgba(255,255,255,0.1);
-            padding-left: 35px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            transform: translateX(10px);
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar .nav-links li a .icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
         }
         
         .main-content {
-            margin-left: 250px;
-            padding: 20px;
+            margin-left: 270px;
+            padding: 0;
             min-height: 100vh;
+            background: var(--light-bg);
         }
         
         .top-navbar {
-            background: #2d2d44;
-            padding: 15px 30px;
-            margin: -20px -20px 30px -20px;
-            border-radius: 0 0 10px 10px;
+            background: var(--white);
+            padding: 20px 30px;
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-navbar h4 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .content-area {
+            padding: 30px;
         }
         
         .stats-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
+            background: var(--white);
+            border-radius: 16px;
             padding: 30px;
-            margin-bottom: 30px;
-            color: white;
+            margin-bottom: 25px;
             text-align: center;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
         }
         
         .stats-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+        
+        .stats-card.users::before {
+            background: linear-gradient(90deg, var(--success-color) 0%, #10b981 100%);
+        }
+
+        .stats-card.admins::before {
+            background: linear-gradient(90deg, var(--warning-color) 0%, #f59e0b 100%);
+        }
+
+        .stats-card.total::before {
+            background: linear-gradient(90deg, var(--info-color) 0%, #06b6d4 100%);
         }
         
         .stats-card .icon {
-            font-size: 48px;
+            font-size: 3rem;
             margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stats-card.users .icon {
+            background: linear-gradient(135deg, var(--success-color) 0%, #10b981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-card.admins .icon {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-card.total .icon {
+            background: linear-gradient(135deg, var(--info-color) 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .stats-card .number {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
         
         .stats-card .label {
-            font-size: 16px;
-            opacity: 0.9;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .welcome-card {
-            background: #2d2d44;
-            border-radius: 15px;
+        .welcome-card, .info-card {
+            background: var(--white);
+            border-radius: 16px;
             padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
+            margin-bottom: 25px;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        .welcome-card h2, .info-card h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .welcome-card p {
+            color: var(--text-secondary);
+            margin: 0;
         }
         
         .btn-logout {
-            background: #dc3545;
+            background: linear-gradient(135deg, var(--danger-color) 0%, #ef4444 100%);
             border: none;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 5px;
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 8px;
             text-decoration: none;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: var(--shadow);
         }
         
         .btn-logout:hover {
-            background: #c82333;
-            color: white;
+            background: linear-gradient(135deg, #b91c1c 0%, var(--danger-color) 100%);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary, .btn-info, .btn-success, .btn-warning {
+            border-radius: 8px;
+            font-weight: 500;
+            padding: 12px 20px;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info-color) 0%, #06b6d4 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #10b981 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #f59e0b 100%);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
         
         .alert {
-            border-radius: 10px;
+            border-radius: 12px;
             border: none;
+            box-shadow: var(--shadow);
+            font-weight: 500;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .user-info strong {
+            color: var(--primary-color);
         }
         
         @media (max-width: 768px) {
             .sidebar {
-                margin-left: -250px;
+                margin-left: -270px;
             }
             
             .main-content {
                 margin-left: 0;
             }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .top-navbar {
+                padding: 15px 20px;
+            }
+        }
+
+        /* Smooth animations */
+        * {
+            transition: all 0.3s ease;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Skip to Content Accessibility */
+        .skip-to-content {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 9999;
+            transition: top 0.3s ease;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+        }
+
+        .skip-to-content:focus {
+            top: 6px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .skip-to-content:hover {
+            background: var(--secondary-color);
+            color: white;
         }
     </style>
 </head>
 
 <body>
     
+    <!-- Skip to Content (Accessibility) -->
+    <a href="#main-content" class="skip-to-content">Skip to Content</a>
+    
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
             <img src="{{ asset('img/logo.svg') }}" alt="Collection Store">
+            <h4>Collection Store</h4>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ route('admin.dashboard') }}" class="active">📊 Dashboard</a></li>
-            <li><a href="#">👥 Users</a></li>
-            <li><a href="#">🛍️ Products</a></li>
-            <li><a href="#">📦 Orders</a></li>
-            <li><a href="#">📊 Analytics</a></li>
-            <li><a href="#">⚙️ Settings</a></li>
+            <li><a href="{{ route('admin.dashboard') }}" class="active">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a></li>
+            <li><a href="#users-section">
+                <span class="icon">👥</span>
+                <span>Users</span>
+            </a></li>
+            <li><a href="#products-section">
+                <span class="icon">🛍️</span>
+                <span>Products</span>
+            </a></li>
+            <li><a href="#orders-section">
+                <span class="icon">📦</span>
+                <span>Orders</span>
+            </a></li>
+            <li><a href="#analytics-section">
+                <span class="icon">📈</span>
+                <span>Analytics</span>
+            </a></li>
+            <li><a href="#system-info">
+                <span class="icon">⚙️</span>
+                <span>System Info</span>
+            </a></li>
+            <li><a href="{{ url('/') }}" target="_blank">
+                <span class="icon">🏪</span>
+                <span>View Store</span>
+            </a></li>
         </ul>
     </div>
 
@@ -175,14 +447,17 @@
         <!-- Top Navbar -->
         <div class="top-navbar d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Admin Dashboard</h4>
-            <div class="d-flex align-items-center">
-                <span class="me-3">Welcome, {{ auth()->user()->name }}!</span>
+            <div class="d-flex align-items-center user-info">
+                <span class="me-3">Welcome, <strong>{{ auth()->user()->name }}</strong>!</span>
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">
                     @csrf
                     <button type="submit" class="btn-logout">Logout</button>
                 </form>
             </div>
         </div>
+
+        <!-- Content Area -->
+        <div class="content-area" id="main-content">
 
         <!-- Alerts -->
         @if (session('success'))
@@ -206,23 +481,23 @@
         </div>
 
         <!-- Statistics Cards -->
-        <div class="row">
+        <div class="row" id="users-section">
             <div class="col-lg-4 col-md-6">
-                <div class="stats-card">
+                <div class="stats-card users">
                     <div class="icon">👥</div>
                     <div class="number">{{ $stats['total_users'] }}</div>
                     <div class="label">Total Users</div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="stats-card">
+                <div class="stats-card admins">
                     <div class="icon">👨‍💼</div>
                     <div class="number">{{ $stats['total_admins'] }}</div>
                     <div class="label">Admins & Managers</div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
-                <div class="stats-card">
+                <div class="stats-card total">
                     <div class="icon">📊</div>
                     <div class="number">{{ $stats['total_all_users'] }}</div>
                     <div class="label">All Users</div>
@@ -231,22 +506,326 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="row">
+        <div class="row" id="products-section">
             <div class="col-12">
-                <div class="welcome-card">
+                <div class="info-card">
                     <h3>🚀 Quick Actions</h3>
                     <div class="row mt-4">
                         <div class="col-md-3">
-                            <a href="#" class="btn btn-primary w-100 mb-2">Add Product</a>
+                            <a href="#" class="btn btn-primary w-100 mb-2">📦 Add Product</a>
+                        </div>
+                        <div class="col-md-3" id="orders-section">
+                            <a href="#" class="btn btn-info w-100 mb-2">📋 View Orders</a>
+                        </div>
+                        <div class="col-md-3" id="analytics-section">
+                            <a href="#" class="btn btn-success w-100 mb-2">📈 Analytics</a>
                         </div>
                         <div class="col-md-3">
-                            <a href="#" class="btn btn-info w-100 mb-2">View Orders</a>
+                            <a href="{{ url('/') }}" class="btn btn-warning w-100 mb-2" target="_blank">🏪 View Store</a>
                         </div>
-                        <div class="col-md-3">
-                            <a href="#" class="btn btn-success w-100 mb-2">Manage Users</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database ERD -->
+        <div class="row" id="database-erd">
+            <div class="col-12">
+                <div class="info-card">
+                    <h3>🗄️ Database Entity Relationship Diagram</h3>
+                    <p class="text-muted mb-4">Visual representation of the e-commerce database structure with relationships</p>
+                    
+                    <div class="erd-container" style="overflow-x: auto; background: #f8f9fa; border-radius: 10px; padding: 20px;">
+                        <div class="erd-diagram" style="min-width: 1200px; position: relative;">
+                            
+                            <!-- Users Table -->
+                            <div class="erd-table" style="position: absolute; top: 20px; left: 50px; background: #fff; border: 2px solid #2563eb; border-radius: 8px; padding: 15px; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #2563eb; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    👤 Users
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div>name</div>
+                                    <div>email</div>
+                                    <div>mobile</div>
+                                    <div>password</div>
+                                    <div>u_type</div>
+                                    <div>email_verified_at</div>
+                                </div>
+                            </div>
+
+                            <!-- Categories Table -->
+                            <div class="erd-table" style="position: absolute; top: 20px; left: 280px; background: #fff; border: 2px solid #059669; border-radius: 8px; padding: 15px; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #059669; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    📁 Categories
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div>name</div>
+                                    <div>slug</div>
+                                    <div>image</div>
+                                    <div>description</div>
+                                    <div>parent_id - FK</div>
+                                    <div>is_active</div>
+                                    <div>order</div>
+                                </div>
+                            </div>
+
+                            <!-- Brands Table -->
+                            <div class="erd-table" style="position: absolute; top: 20px; left: 510px; background: #fff; border: 2px solid #d97706; border-radius: 8px; padding: 15px; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #d97706; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    🏷️ Brands
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div>name</div>
+                                    <div>slug</div>
+                                    <div>image</div>
+                                    <div>description</div>
+                                    <div>is_active</div>
+                                </div>
+                            </div>
+
+                            <!-- Products Table (Central) -->
+                            <div class="erd-table" style="position: absolute; top: 200px; left: 280px; background: #fff; border: 3px solid #dc2626; border-radius: 8px; padding: 15px; min-width: 200px; box-shadow: 0 6px 12px rgba(0,0,0,0.15);">
+                                <div class="erd-table-header" style="background: #dc2626; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold; text-align: center;">
+                                    🛍️ Products (CORE)
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div>name, slug, sku</div>
+                                    <div>description</div>
+                                    <div>regular_price</div>
+                                    <div>sale_price</div>
+                                    <div>featured, status</div>
+                                    <div>quantity, image</div>
+                                    <div><strong>category_id</strong> - FK</div>
+                                    <div><strong>brand_id</strong> - FK</div>
+                                    <div>weight, dimensions</div>
+                                    <div>meta_title, meta_desc</div>
+                                </div>
+                            </div>
+
+                            <!-- Orders Table -->
+                            <div class="erd-table" style="position: absolute; top: 200px; left: 50px; background: #fff; border: 2px solid #7c3aed; border-radius: 8px; padding: 15px; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #7c3aed; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    📦 Orders
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div><strong>user_id</strong> - FK</div>
+                                    <div>order_number</div>
+                                    <div>subtotal, total_amount</div>
+                                    <div>customer_name</div>
+                                    <div>customer_email</div>
+                                    <div>shipping_address</div>
+                                    <div>status</div>
+                                    <div>payment_status</div>
+                                </div>
+                            </div>
+
+                            <!-- Order Items Table -->
+                            <div class="erd-table" style="position: absolute; top: 380px; left: 150px; background: #fff; border: 2px solid #7c3aed; border-radius: 8px; padding: 15px; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #7c3aed; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    📋 Order Items
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div><strong>order_id</strong> - FK</div>
+                                    <div><strong>product_id</strong> - FK</div>
+                                    <div>quantity</div>
+                                    <div>unit_price</div>
+                                    <div>total_price</div>
+                                    <div>attributes</div>
+                                </div>
+                            </div>
+
+                            <!-- Reviews Table -->
+                            <div class="erd-table" style="position: absolute; top: 380px; left: 380px; background: #fff; border: 2px solid #0891b2; border-radius: 8px; padding: 15px; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #0891b2; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    ⭐ Reviews
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div><strong>user_id</strong> - FK</div>
+                                    <div><strong>product_id</strong> - FK</div>
+                                    <div>rating</div>
+                                    <div>title</div>
+                                    <div>comment</div>
+                                    <div>is_approved</div>
+                                </div>
+                            </div>
+
+                            <!-- Attributes -->
+                            <div class="erd-table" style="position: absolute; top: 20px; left: 740px; background: #fff; border: 2px solid #ec4899; border-radius: 8px; padding: 15px; min-width: 160px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #ec4899; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    🎨 Attributes
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div>name</div>
+                                    <div>slug</div>
+                                    <div>type</div>
+                                    <div>is_required</div>
+                                </div>
+                            </div>
+
+                            <!-- Attribute Values -->
+                            <div class="erd-table" style="position: absolute; top: 150px; left: 740px; background: #fff; border: 2px solid #ec4899; border-radius: 8px; padding: 15px; min-width: 160px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #ec4899; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    🎯 Attr Values
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div><strong>attribute_id</strong> - FK</div>
+                                    <div>value</div>
+                                </div>
+                            </div>
+
+                            <!-- Product Attributes -->
+                            <div class="erd-table" style="position: absolute; top: 280px; left: 540px; background: #fff; border: 2px solid #ec4899; border-radius: 8px; padding: 15px; min-width: 160px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #ec4899; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    🔗 Prod Attributes
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div><strong>product_id</strong> - FK</div>
+                                    <div><strong>attribute_value_id</strong> - FK</div>
+                                    <div>additional_price</div>
+                                </div>
+                            </div>
+
+                            <!-- Warehouses -->
+                            <div class="erd-table" style="position: absolute; top: 380px; left: 600px; background: #fff; border: 2px solid #16a34a; border-radius: 8px; padding: 15px; min-width: 160px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #16a34a; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    🏬 Warehouses
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div>name</div>
+                                    <div>code</div>
+                                    <div>location</div>
+                                    <div>manager</div>
+                                    <div>is_active</div>
+                                </div>
+                            </div>
+
+                            <!-- Inventory -->
+                            <div class="erd-table" style="position: absolute; top: 380px; left: 800px; background: #fff; border: 2px solid #16a34a; border-radius: 8px; padding: 15px; min-width: 160px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #16a34a; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    📊 Inventory
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div><strong>product_id</strong> - FK</div>
+                                    <div><strong>warehouse_id</strong> - FK</div>
+                                    <div>quantity</div>
+                                    <div>minimum_stock</div>
+                                    <div>reorder_level</div>
+                                </div>
+                            </div>
+
+                            <!-- Sliders -->
+                            <div class="erd-table" style="position: absolute; top: 20px; left: 950px; background: #fff; border: 2px solid #f59e0b; border-radius: 8px; padding: 15px; min-width: 160px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #f59e0b; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    🎠 Sliders
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div>title</div>
+                                    <div>subtitle</div>
+                                    <div>image</div>
+                                    <div>link</div>
+                                    <div>button_text</div>
+                                    <div>is_active</div>
+                                    <div>order</div>
+                                </div>
+                            </div>
+
+                            <!-- Transactions -->
+                            <div class="erd-table" style="position: absolute; top: 200px; left: 950px; background: #fff; border: 2px solid #8b5cf6; border-radius: 8px; padding: 15px; min-width: 160px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                <div class="erd-table-header" style="background: #8b5cf6; color: white; padding: 8px; margin: -15px -15px 10px -15px; border-radius: 6px 6px 0 0; font-weight: bold;">
+                                    💳 Transactions
+                                </div>
+                                <div class="erd-fields" style="font-size: 12px; line-height: 1.4;">
+                                    <div><strong>id</strong> - PK</div>
+                                    <div><strong>user_id</strong> - FK</div>
+                                    <div><strong>order_id</strong> - FK</div>
+                                    <div>transaction_id</div>
+                                    <div>amount</div>
+                                    <div>payment_method</div>
+                                    <div>status</div>
+                                </div>
+                            </div>
+
+                            <!-- Relationship Lines (SVG) -->
+                            <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;" viewBox="0 0 1200 600">
+                                <!-- Users -> Orders -->
+                                <line x1="140" y1="120" x2="140" y2="200" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Orders -> Order Items -->
+                                <line x1="140" y1="350" x2="240" y2="380" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Products -> Order Items -->
+                                <line x1="330" y1="350" x2="330" y2="380" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Categories -> Products -->
+                                <line x1="370" y1="170" x2="370" y2="200" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Brands -> Products -->
+                                <line x1="500" y1="170" x2="400" y2="200" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Users -> Reviews -->
+                                <line x1="140" y1="120" x2="470" y2="380" stroke="#666" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Products -> Reviews -->
+                                <line x1="380" y1="350" x2="470" y2="380" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Attributes -> Attribute Values -->
+                                <line x1="820" y1="120" x2="820" y2="150" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Products -> Product Attributes -->
+                                <line x1="480" y1="280" x2="540" y2="280" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Attribute Values -> Product Attributes -->
+                                <line x1="740" y1="200" x2="620" y2="280" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Products -> Inventory -->
+                                <line x1="480" y1="320" x2="800" y2="380" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Warehouses -> Inventory -->
+                                <line x1="760" y1="380" x2="800" y2="380" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Users -> Transactions -->
+                                <line x1="230" y1="80" x2="950" y2="200" stroke="#666" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Orders -> Transactions -->
+                                <line x1="230" y1="250" x2="950" y2="250" stroke="#666" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                                
+                                <!-- Arrow marker definition -->
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+                                    </marker>
+                                </defs>
+                            </svg>
                         </div>
-                        <div class="col-md-3">
-                            <a href="{{ url('/') }}" class="btn btn-warning w-100 mb-2">View Store</a>
+                    </div>
+                    
+                    <!-- Legend -->
+                    <div class="mt-4">
+                        <h5>📖 Legend</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Solid Lines:</strong> Direct relationships (Foreign Keys)</p>
+                                <p><strong>Dashed Lines:</strong> Optional relationships</p>
+                                <p><strong>PK:</strong> Primary Key</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>FK:</strong> Foreign Key</p>
+                                <p><strong>Core Table:</strong> Products (central to e-commerce)</p>
+                                <p><strong>Colors:</strong> Different entity groups</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -254,9 +833,9 @@
         </div>
 
         <!-- System Info -->
-        <div class="row">
+        <div class="row" id="system-info">
             <div class="col-12">
-                <div class="welcome-card">
+                <div class="info-card">
                     <h3>📋 System Information</h3>
                     <div class="row text-start">
                         <div class="col-md-6">
@@ -272,6 +851,7 @@
             </div>
         </div>
 
+        </div> <!-- End content-area -->
     </div>
 
     <!-- Bootstrap JS -->
@@ -286,6 +866,71 @@
                 bsAlert.close();
             });
         }, 5000);
+
+        // Enhanced Sidebar Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarLinks = document.querySelectorAll('.sidebar .nav-links a');
+            const sections = document.querySelectorAll('[id]');
+            
+            // Handle sidebar navigation clicks
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    
+                    // Only handle internal links (starting with #)
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        
+                        // Remove active class from all links
+                        sidebarLinks.forEach(l => l.classList.remove('active'));
+                        
+                        // Add active class to clicked link
+                        this.classList.add('active');
+                        
+                        // Scroll to target section
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Highlight active section on scroll
+            window.addEventListener('scroll', function() {
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (window.pageYOffset >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                // Update active link based on current section
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+
+                // Keep dashboard link active if no other section is active
+                if (!current) {
+                    const dashboardLink = document.querySelector('.sidebar .nav-links a[href*="dashboard"]');
+                    if (dashboardLink) {
+                        dashboardLink.classList.add('active');
+                    }
+                }
+            });
+        });
     </script>
 </body>
 
