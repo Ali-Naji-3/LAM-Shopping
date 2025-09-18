@@ -15,6 +15,7 @@ use App\Http\Controllers\Frontend\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/product', [DashboardController::class, 'product'])->name('admin.product');
 
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
