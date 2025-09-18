@@ -1,92 +1,74 @@
 @extends('admin.dashboard')
 
 @section('content')
-<div class="main-content">
-    <div class="main-content-inner">
-        <div class="main-content-wrap">
-            <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                <h3>All Products</h3>
-                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
-                    <li>
-                        <a href="index.html">
-                            <div class="text-tiny">Dashboard</div>
-                        </a>
-                    </li>
-                    <li>
-                        <i class="icon-chevron-right"></i>
-                    </li>
-                    <li>
-                        <div class="text-tiny">All Products</div>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="wg-box">
-                <div class="flex items-center justify-between gap10 flex-wrap">
-                    <div class="wg-filter flex-grow">
-                        <form class="form-search">
-                            <fieldset class="name">
-                                <input type="text" placeholder="Search here..." name="name" required>
-                            </fieldset>
-                            <div class="button-submit">
-                                <button type="submit"><i class="icon-search"></i></button>
-                            </div>
-                        </form>
-                    </div>
-                    <a class="tf-button style-1 w208" href="add-product.html"><i class="icon-plus"></i>Add new</a>
-                </div>
-
-                <div class="table-responsive mt-3">
-                    <table class="table table-striped table-bordered align-middle">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>SalePrice</th>
-                                <th>SKU</th>
-                                <th>Category</th>
-                                <th>Brand</th>
-                                <th>Featured</th>
-                                <th>Stock</th>
-                                <th>Quantity</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>6</td>
-                                <td class="pname">
-                                    <div class="image">
-                                        <img src="1718623519.html" alt="" width="40">
-                                    </div>
-                                    <div class="name">
-                                        <a href="#" class="body-title-2">Product6</a>
-                                        <div class="text-tiny mt-3">product6</div>
-                                    </div>
-                                </td>
-                                <td>$128.00</td>
-                                <td>$110.00</td>
-                                <td>SKU7868</td>
-                                <td>Category3</td>
-                                <td>Brand2</td>
-                                <td>Yes</td>
-                                <td>instock</td>
-                                <td>11</td>
-                                <td class="text-center">
-                                    <a href="#" class="text-primary me-3 fs-5"><i class="bi bi-eye"></i></a>
-                                    <a href="#" class="text-success me-3 fs-5"><i class="bi bi-pencil"></i></a>
-                                    <a href="#" class="text-danger fs-5"><i class="bi bi-trash"></i></a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="divider"></div>
-                <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination"></div>
-            </div>
-        </div>
+<div class="container my-4">
+    <h2 class="mb-3">Create Table</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle" role="table" aria-label="Product Table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Slug</th>
+                    {{-- <th scope="col">SKU</th> --}}
+                    {{-- <th scope="col">Short Description</th> --}}
+                    <th scope="col">Description</th>
+                    <th scope="col">Regular Price</th>
+                    <th scope="col">Sale Price</th>
+                    <th scope="col">Featured</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Image</th>
+                    {{-- <th scope="col">Images</th> --}}
+                    <th scope="col">Category ID</th>
+                    <th scope="col">Brand ID</th>
+                    {{-- <th scope="col">Weight</th> --}}
+                    {{-- <th scope="col">Created At</th> --}}
+                    {{-- <th scope="col">Updated At</th> --}}
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Sample Product</td>
+                    <td>sample-product</td>
+                    {{-- <td>SKU123</td> --}}
+                    {{-- <td>Short preview...</td> --}}
+                    <td>Full description text here</td>
+                    <td>$100.00</td>
+                    <td>$80.00</td>
+                    <td><span class="badge bg-success">Yes</span></td>
+                    <td><span class="badge bg-primary">Active</span></td>
+                    <td>50</td>
+                    <td>
+                        <img src="https://via.placeholder.com/48" class="rounded" width="48" height="48" alt="image">
+                    </td>
+                    {{-- <td>
+                        <img src="https://via.placeholder.com/32" class="rounded me-1" width="32" height="32" alt="img">
+                        <img src="https://via.placeholder.com/32" class="rounded me-1" width="32" height="32" alt="img">
+                        <span class="badge bg-secondary">+2</span>
+                    </td> --}}
+                    <td>10</td>
+                    <td>5</td>
+                    {{-- <td>1.2kg</td> --}}
+                    {{-- <td>2025-09-18</td> --}}
+                    {{-- <td>2025-09-18</td> --}}
+                   <td class="text-nowrap">
+                    <button class="btn btn-sm btn-outline-primary rounded-circle" title="View">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-warning rounded-circle" title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger rounded-circle" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+                </tr>
+                <!-- Repeat rows dynamically -->
+            </tbody>
+        </table>
     </div>
 </div>
 @endsection
