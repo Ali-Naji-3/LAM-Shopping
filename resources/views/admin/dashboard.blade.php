@@ -9,10 +9,10 @@
     <!-- Favicons-->
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
     
-    <!-- GOOGLE WEB FONT -->
+    <!-- GOOGLE WEB FONT - Professional Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -33,6 +33,57 @@
             --border-color: #e5e7eb;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            
+            /* Typography Variables - Clean & Authoritative */
+            --font-primary: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-secondary: 'Roboto', sans-serif;
+            
+            /* Font Sizes - Harmonious Scale */
+            --text-xs: 0.75rem;    /* 12px */
+            --text-sm: 0.875rem;   /* 14px */
+            --text-base: 1rem;     /* 16px */
+            --text-lg: 1.125rem;   /* 18px */
+            --text-xl: 1.25rem;    /* 20px */
+            --text-2xl: 1.5rem;    /* 24px */
+            --text-3xl: 1.875rem;  /* 30px */
+            --text-4xl: 2.25rem;   /* 36px */
+            
+            /* Font Weights - Professional Hierarchy */
+            --font-light: 300;
+            --font-normal: 400;
+            --font-medium: 500;
+            --font-semibold: 600;
+            --font-bold: 700;
+            
+            /* Line Heights - Comfortable Reading */
+            --leading-tight: 1.25;
+            --leading-normal: 1.5;
+            --leading-relaxed: 1.625;
+            
+            /* Layout & Spacing Variables - Structured & Spacious */
+            --space-1: 0.25rem;    /* 4px */
+            --space-2: 0.5rem;     /* 8px */
+            --space-3: 0.75rem;    /* 12px */
+            --space-4: 1rem;       /* 16px */
+            --space-5: 1.25rem;    /* 20px */
+            --space-6: 1.5rem;     /* 24px */
+            --space-8: 2rem;       /* 32px */
+            --space-10: 2.5rem;    /* 40px */
+            --space-12: 3rem;      /* 48px */
+            --space-16: 4rem;      /* 64px */
+            --space-20: 5rem;      /* 80px */
+            
+            /* Layout Dimensions */
+            --sidebar-width: 280px;
+            --content-max-width: 1200px;
+            --card-border-radius: 12px;
+            --button-border-radius: 8px;
+            
+            /* Container Spacing */
+            --container-padding: var(--space-8);
+            --section-spacing: var(--space-12);
+            --card-padding: var(--space-8);
+            --grid-gap: var(--space-6);
         }
 
         html {
@@ -42,8 +93,151 @@
         body {
             background-color: var(--light-bg);
             color: var(--text-primary);
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
+            font-family: var(--font-primary);
+            font-size: var(--text-base);
+            line-height: var(--leading-normal);
+            font-weight: var(--font-normal);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Typography Hierarchy - Clean & Authoritative */
+        h1, .h1 {
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            line-height: var(--leading-tight);
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+
+        h2, .h2 {
+            font-size: var(--text-3xl);
+            font-weight: var(--font-semibold);
+            line-height: var(--leading-tight);
+            color: var(--text-primary);
+            margin-bottom: 0.875rem;
+            letter-spacing: -0.025em;
+        }
+
+        h3, .h3 {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-semibold);
+            line-height: var(--leading-tight);
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        h4, .h4 {
+            font-size: var(--text-xl);
+            font-weight: var(--font-medium);
+            line-height: var(--leading-normal);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        h5, .h5 {
+            font-size: var(--text-lg);
+            font-weight: var(--font-medium);
+            line-height: var(--leading-normal);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        h6, .h6 {
+            font-size: var(--text-base);
+            font-weight: var(--font-medium);
+            line-height: var(--leading-normal);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        p, .text-body {
+            font-size: var(--text-base);
+            font-weight: var(--font-normal);
+            line-height: var(--leading-relaxed);
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .text-small {
+            font-size: var(--text-sm);
+            line-height: var(--leading-normal);
+        }
+
+        .text-large {
+            font-size: var(--text-lg);
+            line-height: var(--leading-normal);
+        }
+
+        .text-muted {
+            color: var(--text-secondary);
+        }
+
+        .text-bold {
+            font-weight: var(--font-semibold);
+        }
+
+        .text-light {
+            font-weight: var(--font-light);
+        }
+
+        /* Layout Grid System - Structured & Spacious */
+        .dashboard-grid {
+            display: grid;
+            gap: var(--grid-gap);
+            margin-bottom: var(--section-spacing);
+        }
+
+        .dashboard-section {
+            margin-bottom: var(--section-spacing);
+        }
+
+        .dashboard-section:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Responsive Grid for Stats Cards */
+        @media (min-width: 768px) {
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: var(--grid-gap);
+            }
+            
+            .stats-grid .col-lg-4,
+            .stats-grid .col-md-6 {
+                margin-bottom: 0;
+            }
+        }
+
+        /* Button Improvements */
+        .btn {
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--button-border-radius);
+            font-family: var(--font-primary);
+            font-weight: var(--font-medium);
+            font-size: var(--text-sm);
+            line-height: var(--leading-normal);
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+        }
+
+        /* User Info Section */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .user-info span {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
         }
         
         .sidebar {
@@ -51,19 +245,22 @@
             top: 0;
             left: 0;
             height: 100vh;
-            width: 270px;
+            width: var(--sidebar-width);
             background: var(--white);
             border-right: 2px solid var(--border-color);
             box-shadow: var(--shadow-lg);
             z-index: 1000;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
         
         .sidebar .logo {
-            padding: 25px 20px;
+            padding: var(--space-8) var(--space-6);
             text-align: center;
-            border-bottom: 2px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            flex-shrink: 0;
         }
         
         .sidebar .logo img {
@@ -73,30 +270,36 @@
         
         .sidebar .logo h4 {
             color: var(--white);
-            margin: 10px 0 0 0;
-            font-weight: 600;
-            font-size: 1.1rem;
+            margin: var(--space-3) 0 0 0;
+            font-weight: var(--font-semibold);
+            font-size: var(--text-lg);
+            line-height: var(--leading-tight);
+            letter-spacing: -0.025em;
         }
         
         .sidebar .nav-links {
-            padding: 25px 0;
+            padding: var(--space-8) 0;
+            flex: 1;
+            overflow-y: auto;
         }
         
         .sidebar .nav-links li {
             list-style: none;
-            margin-bottom: 5px;
+            margin-bottom: var(--space-1);
         }
         
         .sidebar .nav-links li a {
             display: flex;
             align-items: center;
-            padding: 15px 25px;
+            padding: var(--space-4) var(--space-6);
             color: var(--text-primary);
             text-decoration: none;
             transition: all 0.3s ease;
-            font-weight: 500;
-            border-radius: 0 25px 25px 0;
-            margin-right: 15px;
+            font-weight: var(--font-medium);
+            font-size: var(--text-sm);
+            line-height: var(--leading-normal);
+            border-radius: 0 var(--space-6) var(--space-6) 0;
+            margin-right: var(--space-4);
         }
         
         .sidebar .nav-links li a:hover,
@@ -108,50 +311,65 @@
         }
 
         .sidebar .nav-links li a .icon {
-            margin-right: 12px;
-            font-size: 1.2rem;
-            width: 20px;
+            margin-right: var(--space-3);
+            font-size: var(--text-lg);
+            width: var(--space-5);
             text-align: center;
+            flex-shrink: 0;
         }
         
         .main-content {
-            margin-left: 270px;
+            margin-left: var(--sidebar-width);
             padding: 0;
             min-height: 100vh;
             background: var(--light-bg);
+            display: flex;
+            flex-direction: column;
         }
         
         .top-navbar {
             background: var(--white);
-            padding: 20px 30px;
-            border-bottom: 2px solid var(--border-color);
+            padding: var(--space-6) var(--container-padding);
+            border-bottom: 1px solid var(--border-color);
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
+            flex-shrink: 0;
         }
 
         .top-navbar h4 {
             color: var(--text-primary);
-            font-weight: 600;
+            font-weight: var(--font-semibold);
+            font-size: var(--text-2xl);
+            line-height: var(--leading-tight);
             margin: 0;
+            letter-spacing: -0.025em;
         }
 
         .content-area {
-            padding: 30px;
+            padding: var(--container-padding);
+            flex: 1;
+            max-width: var(--content-max-width);
+            margin: 0 auto;
+            width: 100%;
         }
         
         .stats-card {
             background: var(--white);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 25px;
+            border-radius: var(--card-border-radius);
+            padding: var(--card-padding);
+            margin-bottom: var(--grid-gap);
             text-align: center;
             transition: all 0.3s ease;
-            border: 2px solid var(--border-color);
+            border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
             position: relative;
             overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .stats-card::before {
@@ -210,26 +428,29 @@
         }
         
         .stats-card .number {
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: var(--text-4xl);
+            font-weight: var(--font-bold);
+            line-height: var(--leading-tight);
             margin-bottom: 8px;
             color: var(--text-primary);
+            letter-spacing: -0.025em;
         }
         
         .stats-card .label {
-            font-size: 1rem;
+            font-size: var(--text-base);
             color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: var(--font-medium);
+            line-height: var(--leading-normal);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.05em;
         }
         
         .welcome-card, .info-card {
             background: var(--white);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 2px solid var(--border-color);
+            border-radius: var(--card-border-radius);
+            padding: var(--card-padding);
+            margin-bottom: var(--section-spacing);
+            border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
             position: relative;
         }
@@ -246,8 +467,8 @@
 
         .welcome-card h2, .info-card h3 {
             color: var(--text-primary);
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-weight: var(--font-semibold);
+            margin-bottom: var(--space-4);
         }
 
         .welcome-card p {
@@ -259,11 +480,14 @@
             background: linear-gradient(135deg, var(--danger-color) 0%, #ef4444 100%);
             border: none;
             color: var(--white);
-            padding: 10px 20px;
-            border-radius: 8px;
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--button-border-radius);
             text-decoration: none;
+            font-family: var(--font-primary);
+            font-weight: var(--font-medium);
+            font-size: var(--text-sm);
+            line-height: var(--leading-normal);
             transition: all 0.3s ease;
-            font-weight: 500;
             box-shadow: var(--shadow);
         }
         
