@@ -20,4 +20,8 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', compact('stats'));
     }
+function product()
+{
+    return view('admin.product');
+}
 }

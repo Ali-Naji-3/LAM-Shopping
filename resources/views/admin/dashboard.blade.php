@@ -8,7 +8,7 @@
 
     <!-- Favicons-->
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
-    
+
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,267 +16,76 @@
 
     <!-- Bootstrap CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    
-    <!-- Custom Admin CSS -->
-    <style>
-        body {
-            background-color: #1e1e2e;
-            color: #ffffff;
-            font-family: 'Roboto', sans-serif;
-        }
-        
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 250px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            z-index: 1000;
-            transition: all 0.3s;
-        }
-        
-        .sidebar .logo {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .sidebar .logo img {
-            max-width: 120px;
-            filter: brightness(0) invert(1);
-        }
-        
-        .sidebar .nav-links {
-            padding: 20px 0;
-        }
-        
-        .sidebar .nav-links li {
-            list-style: none;
-        }
-        
-        .sidebar .nav-links li a {
-            display: block;
-            padding: 15px 25px;
-            color: #ffffff;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .sidebar .nav-links li a:hover,
-        .sidebar .nav-links li a.active {
-            background-color: rgba(255,255,255,0.1);
-            padding-left: 35px;
-        }
-        
-        .main-content {
-            margin-left: 250px;
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .top-navbar {
-            background: #2d2d44;
-            padding: 15px 30px;
-            margin: -20px -20px 30px -20px;
-            border-radius: 0 0 10px 10px;
-        }
-        
-        .stats-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            color: white;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .stats-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .stats-card .icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-        
-        .stats-card .number {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        
-        .stats-card .label {
-            font-size: 16px;
-            opacity: 0.9;
-        }
-        
-        .welcome-card {
-            background: #2d2d44;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .btn-logout {
-            background: #dc3545;
-            border: none;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .btn-logout:hover {
-            background: #c82333;
-            color: white;
-        }
-        
-        .alert {
-            border-radius: 10px;
-            border: none;
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                margin-left: -250px;
-            }
-            
-            .main-content {
-                margin-left: 0;
-            }
-        }
-    </style>
+
+    <!-- Custom Admin CSS - Professional Corporate Theme -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+      <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+      <link rel="stylesheet" type="text/css" href="{{asset('cssd/animate.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cssd/animation.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cssd/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cssd/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('cssd/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('font/fonts.css') }}">
+    <link rel="stylesheet" href="{{ asset('icon/style.css') }}">
 </head>
 
 <body>
-    
+
+    <!-- Skip to Content (Accessibility) -->
+    <a href="#main-content" class="skip-to-content">Skip to Content</a>
+
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
             <img src="{{ asset('img/logo.svg') }}" alt="Collection Store">
+            <h4>Collection Store</h4>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ route('admin.dashboard') }}" class="active">📊 Dashboard</a></li>
-            <li><a href="#">👥 Users</a></li>
-            <li><a href="#">🛍️ Products</a></li>
-            <li><a href="#">📦 Orders</a></li>
-            <li><a href="#">📊 Analytics</a></li>
-            <li><a href="#">⚙️ Settings</a></li>
+            <li><a href="{{ route('admin.dashboard') }}" class="active">
+                <span class="icon">📊</span>
+                <span>Dashboard</span>
+            </a></li>
+            <li><a href="#users-section">
+                <span class="icon">👥</span>
+                <span>Users</span>
+            </a></li>
+            <li><a href="{{route('admin.product')}}">
+                <span class="icon">🛍️</span>
+                <span>Products</span>
+            </a></li>
+            <li><a href="#orders-section">
+                <span class="icon">📦</span>
+                <span>Orders</span>
+            </a></li>
+            <li><a href="#analytics-section">
+                <span class="icon">📈</span>
+                <span>Analytics</span>
+            </a></li>
+            <li><a href="#system-info">
+                <span class="icon">⚙️</span>
+                <span>System Info</span>
+            </a></li>
+            <li><a href="{{ url('/') }}" target="_blank">
+                <span class="icon">🏪</span>
+                <span>View Store</span>
+            </a></li>
         </ul>
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
-        
-        <!-- Top Navbar -->
-        <div class="top-navbar d-flex justify-content-between align-items-center">
-            <h4 class="mb-0">Admin Dashboard</h4>
-            <div class="d-flex align-items-center">
-                <span class="me-3">Welcome, {{ auth()->user()->name }}!</span>
-                <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn-logout">Logout</button>
-                </form>
-            </div>
-        </div>
 
-        <!-- Alerts -->
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        <!-- Welcome Card -->
-        <div class="welcome-card">
-            <h2>🎉 Welcome to Collection Store Admin Dashboard!</h2>
-            <p class="mb-0">You are logged in as <strong>{{ strtoupper(auth()->user()->u_type) }}</strong> - {{ auth()->user()->name }}</p>
-        </div>
-
-        <!-- Statistics Cards -->
-        <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="stats-card">
-                    <div class="icon">👥</div>
-                    <div class="number">{{ $stats['total_users'] }}</div>
-                    <div class="label">Total Users</div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="stats-card">
-                    <div class="icon">👨‍💼</div>
-                    <div class="number">{{ $stats['total_admins'] }}</div>
-                    <div class="label">Admins & Managers</div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="stats-card">
-                    <div class="icon">📊</div>
-                    <div class="number">{{ $stats['total_all_users'] }}</div>
-                    <div class="label">All Users</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="row">
-            <div class="col-12">
-                <div class="welcome-card">
-                    <h3>🚀 Quick Actions</h3>
-                    <div class="row mt-4">
-                        <div class="col-md-3">
-                            <a href="#" class="btn btn-primary w-100 mb-2">Add Product</a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#" class="btn btn-info w-100 mb-2">View Orders</a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="#" class="btn btn-success w-100 mb-2">Manage Users</a>
-                        </div>
-                        <div class="col-md-3">
-                            <a href="{{ url('/') }}" class="btn btn-warning w-100 mb-2">View Store</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- System Info -->
-        <div class="row">
-            <div class="col-12">
-                <div class="welcome-card">
-                    <h3>📋 System Information</h3>
-                    <div class="row text-start">
-                        <div class="col-md-6">
-                            <p><strong>Laravel Version:</strong> {{ app()->version() }}</p>
-                            <p><strong>PHP Version:</strong> {{ PHP_VERSION }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>Environment:</strong> {{ app()->environment() }}</p>
-                            <p><strong>Current Time:</strong> {{ now()->format('Y-m-d H:i:s') }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
+    @yield('content')
 
     <!-- Bootstrap JS -->
+      <script src="{{ asset('jsd/jquery.min.js') }}"></script>
+    <script src="{{ asset('jsd/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('jsd/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('jsd/sweetalert.min.js') }}"></script>
+    <script src="{{ asset('jsd/apexcharts/apexcharts.js') }}"></script>
+    <script src="{{ asset('jsd/main.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    
+
     <script>
         // Auto dismiss alerts after 5 seconds
         setTimeout(function() {
@@ -286,6 +95,71 @@
                 bsAlert.close();
             });
         }, 5000);
+
+        // Enhanced Sidebar Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarLinks = document.querySelectorAll('.sidebar .nav-links a');
+            const sections = document.querySelectorAll('[id]');
+
+            // Handle sidebar navigation clicks
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+
+                    // Only handle internal links (starting with #)
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+
+                        // Remove active class from all links
+                        sidebarLinks.forEach(l => l.classList.remove('active'));
+
+                        // Add active class to clicked link
+                        this.classList.add('active');
+
+                        // Scroll to target section
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Highlight active section on scroll
+            window.addEventListener('scroll', function() {
+                let current = '';
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+
+                    if (window.pageYOffset >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                // Update active link based on current section
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+
+                // Keep dashboard link active if no other section is active
+                if (!current) {
+                    const dashboardLink = document.querySelector('.sidebar .nav-links a[href*="dashboard"]');
+                    if (dashboardLink) {
+                        dashboardLink.classList.add('active');
+                    }
+                }
+            });
+        });
     </script>
 </body>
 
