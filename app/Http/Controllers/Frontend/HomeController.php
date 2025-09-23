@@ -29,7 +29,7 @@ class HomeController extends Controller
             ->get();
 
         $categories = Category::active()
-            ->parent()
+            ->rootCategories()
             ->ordered()
             ->limit(6)
             ->get();
@@ -104,7 +104,7 @@ class HomeController extends Controller
         }
 
         $products = $query->paginate(12);
-        $categories = Category::active()->parent()->ordered()->get();
+        $categories = Category::active()->rootCategories()->ordered()->get();
         $brands = Brand::active()->get();
 
         return view('listing-grid-2-full', compact('products', 'categories', 'brands'));

@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Admin Dashboard - Collection Store</title>
 
     <!-- Favicons-->
@@ -20,12 +21,12 @@
     <!-- Custom Admin CSS -->
     <style>
         :root {
-            /* Dark Mode Professional - Sophisticated & Dark Theme */
-            --primary-color: #3b82f6;
-            --primary-hover: #2563eb;
-            --secondary-color: #1e40af;
-            --accent-color: #06b6d4;
-            --accent-hover: #0891b2;
+            /* Enhanced Corporate Navy - Professional & Sophisticated Theme */
+            --primary-color: #1e293b;
+            --primary-hover: #0f172a;
+            --secondary-color: #334155;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
             
             --success-color: #10b981;
             --success-hover: #059669;
@@ -33,47 +34,55 @@
             --warning-hover: #d97706;
             --danger-color: #ef4444;
             --danger-hover: #dc2626;
-            --info-color: #06b6d4;
-            --info-hover: #0891b2;
+            --info-color: #3b82f6;
+            --info-hover: #2563eb;
             
-            /* Dark Theme Background Colors */
-            --bg-primary: #0f172a;        /* Very dark blue-gray */
-            --bg-secondary: #1e293b;      /* Dark slate */
+            /* Enhanced Corporate Navy Background Colors */
+            --bg-primary: #0f172a;        /* Deep navy */
+            --bg-secondary: #1e293b;      /* Corporate navy */
             --bg-tertiary: #334155;       /* Medium slate */
             --bg-card: #1e293b;           /* Card background */
             --bg-card-hover: #334155;     /* Card hover */
+            --bg-light: #f8fafc;          /* Light background */
+            --bg-white: #ffffff;          /* Pure white */
             
-            /* Dark Theme Text Colors */
-            --text-primary: #f1f5f9;      /* Light gray */
+            /* Enhanced Text Colors */
+            --text-primary: #f8fafc;      /* Light slate */
             --text-secondary: #cbd5e1;    /* Medium gray */
             --text-muted: #94a3b8;        /* Muted gray */
-            --text-inverse: #0f172a;      /* Dark text for light backgrounds */
+            --text-inverse: #1e293b;      /* Dark text for light backgrounds */
+            --text-white: #ffffff;        /* Pure white text */
             
-            /* Dark Theme Border & Accent Colors */
+            /* Enhanced Border & Accent Colors */
             --border-color: #475569;      /* Slate border */
-            --border-light: #334155;      /* Light border */
+            --border-light: #e2e8f0;      /* Light border */
             --border-accent: #3b82f6;     /* Accent border */
+            --border-navy: #334155;       /* Navy border */
             
-            /* Dark Theme Shadows & Glows */
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            /* Enhanced Shadows & Effects */
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-navy: 0 4px 6px rgba(30, 41, 59, 0.2);
             --glow: 0 0 20px rgba(59, 130, 246, 0.3);
             --glow-hover: 0 0 30px rgba(59, 130, 246, 0.5);
             
-            /* Typography Variables */
-            --font-primary: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            /* Professional Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             --text-xs: 0.75rem;    /* 12px */
             --text-sm: 0.875rem;   /* 14px */
             --text-base: 1rem;     /* 16px */
             --text-lg: 1.125rem;   /* 18px */
             --text-xl: 1.25rem;    /* 20px */
             --text-2xl: 1.5rem;    /* 24px */
+            --font-light: 300;
+            --font-normal: 400;
             --font-medium: 500;
             --font-semibold: 600;
+            --font-bold: 700;
             --leading-normal: 1.5;
             
-            /* Layout & Spacing Variables */
+            /* Enhanced Layout & Spacing */
             --space-1: 0.25rem;    /* 4px */
             --space-2: 0.5rem;     /* 8px */
             --space-3: 0.75rem;    /* 12px */
@@ -81,16 +90,46 @@
             --space-5: 1.25rem;    /* 20px */
             --space-6: 1.5rem;     /* 24px */
             --space-8: 2rem;       /* 32px */
+            --space-10: 2.5rem;    /* 40px */
+            --space-12: 3rem;      /* 48px */
             
-            /* Layout Dimensions */
-            --button-border-radius: 8px;
+            /* Enhanced Layout Dimensions */
+            --button-border-radius: 12px;
+            --card-border-radius: 16px;
+            --input-border-radius: 8px;
+            --sidebar-width: 280px;
+            
+            /* Professional Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.2s ease;
+            --transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body {
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background: 
+                linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%),
+                radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(30, 41, 59, 0.08) 0%, transparent 50%);
             color: var(--text-primary);
             font-family: var(--font-primary);
             min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Subtle texture overlay for professional depth */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.02) 1px, transparent 0);
+            background-size: 24px 24px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
         }
 
         .sidebar {
@@ -98,22 +137,41 @@
             top: 0;
             left: 0;
             height: 100vh;
-            width: 280px;
-            background: var(--bg-secondary);
-            border-right: 2px solid var(--border-accent);
-            box-shadow: var(--shadow-xl);
+            width: var(--sidebar-width);
+            background: 
+                linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%),
+                linear-gradient(45deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+            border-right: 1px solid var(--border-navy);
+            box-shadow: var(--shadow-xl), inset -1px 0 0 rgba(59, 130, 246, 0.1);
             z-index: 1000;
-            transition: all 0.3s ease;
+            transition: var(--transition-slow);
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(10px);
         }
 
         .sidebar .logo {
-            padding: var(--space-8) var(--space-6);
+            padding: var(--space-10) var(--space-6);
             text-align: center;
-            border-bottom: 2px solid var(--border-accent);
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-bottom: 1px solid var(--border-navy);
+            background: 
+                linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%),
+                linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
             flex-shrink: 0;
+            position: relative;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Logo glow effect */
+        .sidebar .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            opacity: 0.6;
         }
         
         .sidebar .logo h4 {
@@ -142,32 +200,56 @@
         .sidebar .nav-links li a {
             display: flex;
             align-items: center;
-            padding: var(--space-4) var(--space-6);
+            padding: var(--space-5) var(--space-6);
             color: var(--text-secondary);
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: var(--transition-slow);
             font-weight: var(--font-medium);
             font-size: var(--text-sm);
             line-height: var(--leading-normal);
-            border-radius: 0 var(--space-6) var(--space-6) 0;
+            border-radius: 0 var(--button-border-radius) var(--button-border-radius) 0;
             margin-right: var(--space-4);
             position: relative;
             overflow: hidden;
         }
+        
+        /* Navigation link hover effects */
+        .sidebar .nav-links li a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: var(--accent-color);
+            transform: scaleY(0);
+            transition: var(--transition-normal);
+            transform-origin: bottom;
+        }
 
         .sidebar .nav-links li a:hover,
         .sidebar .nav-links li a.active {
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            transform: translateX(8px);
-            box-shadow: var(--glow);
-            border-left: 3px solid var(--primary-color);
+            background: 
+                linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(51, 65, 85, 0.8) 100%),
+                linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            color: var(--text-white);
+            transform: translateX(12px);
+            box-shadow: var(--shadow-navy), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar .nav-links li a:hover::before,
+        .sidebar .nav-links li a.active::before {
+            transform: scaleY(1);
+            transform-origin: top;
         }
         
         .sidebar .nav-links li a.active {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            color: var(--text-primary);
-            box-shadow: var(--glow-hover);
+            background: 
+                linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%),
+                linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            color: var(--text-white);
+            box-shadow: var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            font-weight: var(--font-semibold);
         }
         
         /* Navigation Section Titles */
@@ -197,23 +279,30 @@
         }
 
         .main-content {
-            margin-left: 280px;
+            margin-left: var(--sidebar-width);
             padding: 0;
             min-height: 100vh;
-            background: var(--bg-primary);
+            background: 
+                linear-gradient(135deg, var(--bg-light) 0%, rgba(248, 250, 252, 0.95) 100%),
+                radial-gradient(circle at 30% 70%, rgba(30, 41, 59, 0.03) 0%, transparent 50%);
             display: flex;
             flex-direction: column;
+            position: relative;
+            z-index: 1;
         }
 
         .top-navbar {
-            background: var(--bg-secondary);
+            background: 
+                linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%),
+                linear-gradient(45deg, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
             padding: var(--space-6) var(--space-8);
-            border-bottom: 2px solid var(--border-accent);
-            box-shadow: var(--shadow-lg);
+            border-bottom: 1px solid var(--border-navy);
+            box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             position: sticky;
             top: 0;
             z-index: 100;
             flex-shrink: 0;
+            backdrop-filter: blur(12px);
         }
 
         .top-navbar h4 {
@@ -224,74 +313,130 @@
         }
 
         .stats-card {
-            background: var(--bg-card);
-            border-radius: 12px;
+            background: 
+                linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%),
+                linear-gradient(45deg, rgba(30, 41, 59, 0.02) 0%, transparent 50%);
+            border-radius: var(--card-border-radius);
             padding: var(--space-8);
             margin-bottom: var(--space-6);
             text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-lg);
+            transition: var(--transition-slow);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.8);
             position: relative;
             overflow: hidden;
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+        
+        /* Stats card glow effect */
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            opacity: 0;
+            transition: var(--transition-normal);
+        }
+        
+        .stats-card:hover::before {
+            opacity: 0.6;
         }
 
         .stats-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: var(--glow-hover);
-            border-color: var(--border-accent);
-            background: var(--bg-card-hover);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: var(--shadow-lg), 0 0 20px rgba(59, 130, 246, 0.15);
+            border-color: var(--accent-color);
+            background: 
+                linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%),
+                linear-gradient(45deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
         }
 
         .stats-card .icon {
             font-size: 3rem;
             margin-bottom: var(--space-4);
-            color: var(--primary-color);
+            color: var(--accent-color);
+            text-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
         }
 
         .stats-card .number {
             font-size: 2.25rem;
-            font-weight: var(--font-semibold);
+            font-weight: var(--font-bold);
             margin-bottom: var(--space-2);
-            color: var(--text-primary);
+            color: var(--text-inverse);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .stats-card .label {
             font-size: var(--text-base);
-            color: var(--text-secondary);
+            color: var(--text-muted);
             font-weight: var(--font-medium);
         }
 
         .welcome-card, .info-card {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: var(--space-8);
+            background: 
+                linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%),
+                linear-gradient(45deg, rgba(30, 41, 59, 0.02) 0%, transparent 50%);
+            border-radius: var(--card-border-radius);
+            padding: var(--space-10) var(--space-8);
             margin-bottom: var(--space-8);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.8);
             position: relative;
-            transition: all 0.3s ease;
+            transition: var(--transition-slow);
+            backdrop-filter: blur(8px);
+            overflow: hidden;
+        }
+        
+        /* Welcome card special styling */
+        .welcome-card {
+            background: 
+                linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%),
+                linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+            color: var(--text-white);
+            border: 1px solid var(--border-navy);
+            box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            opacity: 0.8;
         }
         
         .welcome-card:hover, .info-card:hover {
-            box-shadow: var(--glow);
-            border-color: var(--border-accent);
-            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl), 0 0 25px rgba(59, 130, 246, 0.2);
+            border-color: var(--accent-color);
+            transform: translateY(-3px);
         }
 
         .welcome-card h2, .info-card h3 {
-            color: var(--text-primary);
-            font-weight: var(--font-semibold);
+            color: var(--text-white);
+            font-weight: var(--font-bold);
             margin-bottom: var(--space-4);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .info-card h3 {
+            color: var(--text-inverse);
+            text-shadow: none;
         }
 
         .welcome-card p {
-            color: var(--text-secondary);
+            color: var(--text-primary);
             margin: 0;
+            opacity: 0.95;
         }
 
         .content-area {
@@ -300,6 +445,8 @@
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+            position: relative;
+            z-index: 2;
         }
 
         /* Navigation Section Titles */
@@ -529,67 +676,67 @@
             
             <!-- CATALOG MANAGEMENT -->
             <li class="nav-section-title">CATALOG</li>
-            <li><a href="#">
+            <li><a href="{{ route('admin.categories.index') }}">
                 <span class="icon">📂</span>
                 <span>Categories</span>
             </a></li>
-            <li><a href="#">
+            <li><a href="{{ route('admin.brands.index') }}">
                 <span class="icon">🏷️</span>
                 <span>Brands</span>
             </a></li>
-            <li><a href="{{route('admin.product')}}">
+            <li><a href="{{ route('admin.products.index') }}">
                 <span class="icon">🛍️</span>
                 <span>Products</span>
             </a></li>
-            <li><a href="#">
-                <span class="icon">🔧</span>
-                <span>Attributes</span>
-            </a></li>
-            <li><a href="#">
-                <span class="icon">📝</span>
-                <span>Attribute Values</span>
-            </a></li>
-            <li><a href="#">
+                    <li><a href="{{ route('admin.attributes.index') }}">
+                        <span class="icon">🔧</span>
+                        <span>Attributes</span>
+                    </a></li>
+                    <li><a href="{{ route('admin.attributeValues.index') }}">
+                        <span class="icon">📝</span>
+                        <span>Attribute Values</span>
+                    </a></li>
+            <li><a href="{{ route('admin.productAttributes.index') }}">
                 <span class="icon">🔗</span>
                 <span>Product Attributes</span>
             </a></li>
-            <li><a href="#">
+            <li><a href="{{ route('admin.reviews.index') }}">
                 <span class="icon">⭐</span>
                 <span>Reviews</span>
             </a></li>
             
             <!-- CONTENT MANAGEMENT -->
             <li class="nav-section-title">CONTENT</li>
-            <li><a href="#">
+            <li><a href="{{ route('admin.sliders.index') }}">
                 <span class="icon">🖼️</span>
                 <span>Sliders</span>
             </a></li>
             
-            <!-- ORDER MANAGEMENT -->
-            <li class="nav-section-title">ORDERS</li>
-            <li><a href="#">
-                <span class="icon">📦</span>
-                <span>Orders</span>
-            </a></li>
-            <li><a href="#">
-                <span class="icon">📋</span>
-                <span>Order Items</span>
-            </a></li>
+        <!-- ORDER MANAGEMENT -->
+        <li class="nav-section-title">ORDERS</li>
+        <li><a href="{{ route('admin.orders.index') }}">
+            <span class="icon">📦</span>
+            <span>Orders</span>
+        </a></li>
+        <li><a href="{{ route('admin.orderItems.index') }}">
+            <span class="icon">📋</span>
+            <span>Order Items</span>
+        </a></li>
             
-            <!-- INVENTORY MANAGEMENT -->
-            <li class="nav-section-title">INVENTORY</li>
-            <li><a href="#">
-                <span class="icon">🏪</span>
-                <span>Warehouses</span>
-            </a></li>
-            <li><a href="#">
-                <span class="icon">📊</span>
-                <span>Inventory</span>
-            </a></li>
+        <!-- INVENTORY MANAGEMENT -->
+        <li class="nav-section-title">INVENTORY</li>
+        <li><a href="{{ route('admin.warehouses.index') }}">
+            <span class="icon">🏪</span>
+            <span>Warehouses</span>
+        </a></li>
+        <li><a href="{{ route('admin.inventory.index') }}">
+            <span class="icon">📦</span>
+            <span>Inventory</span>
+        </a></li>
             
             <!-- FINANCIAL -->
             <li class="nav-section-title">FINANCIAL</li>
-            <li><a href="#">
+            <li><a href="{{ route('admin.transactions.index') }}">
                 <span class="icon">💳</span>
                 <span>Transactions</span>
             </a></li>
@@ -638,6 +785,45 @@
     <script src="{{ asset('jsd/apexcharts/apexcharts.js') }}"></script>
     <script src="{{ asset('jsd/main.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    
+    <!-- Fix modal backdrop issues globally -->
+    <script>
+        // Global function to clear modal backdrops
+        function clearModalBackdrops() {
+            document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                backdrop.remove();
+            });
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            console.log('Modal backdrops cleared');
+        }
+        
+        // Immediate backdrop cleanup
+        document.addEventListener('DOMContentLoaded', function() {
+            // Clear on page load
+            clearModalBackdrops();
+            
+            // Clear on window focus (when returning to tab)
+            window.addEventListener('focus', clearModalBackdrops);
+            
+            // Clear on page visibility change
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    clearModalBackdrops();
+                }
+            });
+            
+            // Emergency clear on any click if backdrop exists but no modal is open
+            document.addEventListener('click', function(e) {
+                setTimeout(function() {
+                    if (!document.querySelector('.modal.show') && document.querySelector('.modal-backdrop')) {
+                        clearModalBackdrops();
+                    }
+                }, 100);
+            });
+        });
+    </script>
 
     <script>
         // Auto dismiss alerts after 5 seconds
