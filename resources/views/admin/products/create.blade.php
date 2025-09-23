@@ -488,7 +488,7 @@
                 <div class="card" style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;">
                     <div class="card-body" style="padding: 2rem !important;">
                         <div class="d-grid gap-2">
-                            <button type="submit" name="action" value="save" class="btn btn-primary btn-lg" 
+                            <button type="submit" name="action" value="save" class="btn btn-primary btn-lg" id="create-product-btn"
                                     style="background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important; border: 2px solid #3182ce !important; color: #ffffff !important; padding: 16px 24px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 16px !important; transition: all 0.2s ease !important;"
                                     onmouseover="this.style.background='linear-gradient(135deg, #2c5aa0 0%, #2a4a8a 100%) !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(49, 130, 206, 0.3) !important';"
                                     onmouseout="this.style.background='linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
@@ -601,6 +601,54 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Debug form submission
+    const form = document.querySelector('form');
+    const submitBtn = document.getElementById('create-product-btn');
+    
+    console.log('Form found:', form);
+    console.log('Submit button found:', submitBtn);
+    
+    // Add click event listener to button
+    if (submitBtn) {
+        submitBtn.addEventListener('click', function(e) {
+            console.log('Create Product button clicked!');
+            
+            // Prevent multiple submissions
+            if (this.disabled) {
+                e.preventDefault();
+                return false;
+            }
+            
+            // Check if all required fields are filled
+            const requiredFields = form.querySelectorAll('[required]');
+            let allFieldsValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    console.log('Required field empty:', field.name);
+                    allFieldsValid = false;
+                    field.style.borderColor = '#e53e3e';
+                } else {
+                    field.style.borderColor = '#e2e8f0';
+                }
+            });
+            
+            if (!allFieldsValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields (marked with *)');
+                return false;
+            }
+            
+            console.log('All fields valid, submitting form...');
+            // Add loading state and disable button
+            this.disabled = true;
+            this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Creating Product...';
+            
+            // Submit the form
+            form.submit();
+        });
+    }
+    
     // Auto-generate slug from name
     const nameInput = document.getElementById('name');
     const slugInput = document.getElementById('slug');

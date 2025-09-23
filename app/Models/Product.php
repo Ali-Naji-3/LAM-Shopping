@@ -30,6 +30,27 @@ class Product extends Model
         'deleted_at' => 'datetime',
     ];
 
+    // Auto-generate slug from name if not provided
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+        
+        // Generate slug if not already set
+        if (empty($this->attributes['slug'])) {
+            $slug = \Str::slug($value);
+            
+            // Ensure slug uniqueness
+            $originalSlug = $slug;
+            $counter = 1;
+            while (static::where('slug', $slug)->where('id', '!=', $this->id ?? 0)->exists()) {
+                $slug = $originalSlug . '-' . $counter;
+                $counter++;
+            }
+            
+            $this->attributes['slug'] = $slug;
+        }
+    }
+
     // Model Events for Data Synchronization
     protected static function booted()
     {

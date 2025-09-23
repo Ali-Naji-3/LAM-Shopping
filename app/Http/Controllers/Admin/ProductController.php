@@ -113,14 +113,21 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        // Debug: Log the request data
+        \Log::info('Product creation request received', [
+            'method' => $request->method(),
+            'data' => $request->all()
+        ]);
+        
+        try {
+            $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255|unique:products,slug',
             'sku' => 'required|string|max:255|unique:products,sku',
             'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string',
             'regular_price' => 'required|numeric|min:0',
-            'sale_price' => 'nullable|numeric|min:0|lt:regular_price',
+            'sale_price' => 'nullable|numeric|min:0',
             'quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
@@ -141,14 +148,14 @@ class ProductController extends Controller
         // Generate slug if not provided
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
-            
-            // Ensure slug uniqueness
-            $originalSlug = $validated['slug'];
-            $counter = 1;
-            while (Product::where('slug', $validated['slug'])->exists()) {
-                $validated['slug'] = $originalSlug . '-' . $counter;
-                $counter++;
-            }
+        }
+        
+        // Ensure slug uniqueness
+        $originalSlug = $validated['slug'];
+        $counter = 1;
+        while (Product::where('slug', $validated['slug'])->exists()) {
+            $validated['slug'] = $originalSlug . '-' . $counter;
+            $counter++;
         }
 
         // Handle dimensions
@@ -175,10 +182,30 @@ class ProductController extends Controller
             $validated['images'] = $imagesPaths;
         }
 
-        $product = Product::create($validated);
+            $product = Product::create($validated);
 
-        return redirect()->route('admin.products.index')
-            ->with('success', 'Product created successfully!');
+            return redirect()->route('admin.products.index')
+                ->with('success', "Product '{$product->name}' created successfully!");
+                
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation failed', [
+                'errors' => $e->errors(),
+                'request_data' => $request->all()
+            ]);
+            
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        } catch (\Exception $e) {
+            \Log::error('Product creation failed', [
+                'error' => $e->getMessage(),
+                'request_data' => $request->all()
+            ]);
+            
+            return redirect()->back()
+                ->withErrors(['error' => 'Failed to create product: ' . $e->getMessage()])
+                ->withInput();
+        }
     }
 
     /**
@@ -233,7 +260,7 @@ class ProductController extends Controller
             'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string',
             'regular_price' => 'required|numeric|min:0',
-            'sale_price' => 'nullable|numeric|min:0|lt:regular_price',
+            'sale_price' => 'nullable|numeric|min:0',
             'quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',

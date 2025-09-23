@@ -22,6 +22,13 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [HomeController::class, 'products'])->name('products');
 Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('product.detail');
 
+// Category Frontend Routes
+Route::get('/men', [HomeController::class, 'categoryPage'])->name('category.men');
+Route::get('/women', [HomeController::class, 'categoryPage'])->name('category.women');
+Route::get('/body', [HomeController::class, 'categoryPage'])->name('category.body');
+Route::get('/girl', [HomeController::class, 'categoryPage'])->name('category.girl');
+Route::get('/category/{slug}', [HomeController::class, 'categoryPage'])->name('category.show');
+
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');

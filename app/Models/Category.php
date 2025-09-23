@@ -12,11 +12,12 @@ class Category extends Model
     use SoftDeletes;
     
     protected $fillable = [
-        'name', 'slug', 'description', 'image', 'parent_id', 'is_active', 'order'
+        'name', 'slug', 'description', 'image', 'parent_id', 'is_active', 'order', 'frontend_page_url', 'is_root_category'
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_root_category' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
@@ -146,7 +147,7 @@ class Category extends Model
         return $query->where('is_active', true);
     }
 
-    public function scopeRootCategories($query)
+    public function scopeParentCategories($query)
     {
         return $query->whereNull('parent_id');
     }
@@ -159,5 +160,40 @@ class Category extends Model
     public function scopeWithProducts($query)
     {
         return $query->has('products');
+    }
+
+    public function scopeRootCategories($query)
+    {
+        return $query->where('is_root_category', true);
+    }
+
+    // Helper method to get root category for navigation
+    public function getRootCategory()
+    {
+        if ($this->is_root_category) {
+            return $this;
+        }
+        
+        $parent = $this->parent;
+        while ($parent && !$parent->is_root_category) {
+            $parent = $parent->parent;
+        }
+        
+        return $parent;
+    }
+
+    // Helper method to get frontend URL
+    public function getFrontendUrl()
+    {
+        if ($this->frontend_page_url) {
+            return $this->frontend_page_url;
+        }
+        
+        $rootCategory = $this->getRootCategory();
+        if ($rootCategory && $rootCategory->frontend_page_url) {
+            return $rootCategory->frontend_page_url . '/' . $this->slug;
+        }
+        
+        return '/category/' . $this->slug;
     }
 }
