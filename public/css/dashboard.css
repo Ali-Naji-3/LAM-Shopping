@@ -343,11 +343,7 @@
             background: var(--primary-color);
             border-radius: 4px;
         }
- {{-- <td>
-                        <img src="https://via.placeholder.com/32" class="rounded me-1" width="32" height="32" alt="img">
-                        <img src="https://via.placeholder.com/32" class="rounded me-1" width="32" height="32" alt="img">
-                        <span class="badge bg-secondary">+2</span>
-                    </td>
+
         ::-webkit-scrollbar-thumb:hover {
             background: var(--secondary-color);
         }

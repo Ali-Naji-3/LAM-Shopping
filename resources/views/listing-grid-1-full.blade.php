@@ -16,7 +16,7 @@
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('img/apple-touch-icon-72x72-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('img/apple-touch-icon-114x114-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('img/apple-touch-icon-144x144-precomposed.png') }}">
-	
+
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,9 +35,9 @@
 </head>
 
 <body>
-	
+
 	<div id="page">
-		
+
 	<header class="version_1">
 		<div class="layer"></div><!-- Mobile menu overlay mask -->
 		<div class="main_header">
@@ -209,7 +209,7 @@
 		<!-- /main_nav -->
 	</header>
 	<!-- /header -->
-		
+
 	<main>
 		<div class="top_banner">
 			<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.3)">
@@ -223,11 +223,13 @@
 					</div>
 				</div>
 			</div>
-			<img src="{{ asset('img/bg_cat_shoes.jpg') }}" class="img-fluid" alt="">
+<img src="{{ asset('img/hero/cropwoman.webp') }}"
+     alt="woman"
+     s>
 		</div>
 		<!-- /top_banner -->
-		
-			<div id="stick_here"></div>		
+
+			<div id="stick_here"></div>
 			<div class="toolbox elemento_stick">
 				<div class="container">
 				<ul class="clearfix">
@@ -238,7 +240,7 @@
                                     <option value="rating">Sort by average rating</option>
                                     <option value="date">Sort by newness</option>
                                     <option value="price">Sort by price: low to high</option>
-                                    <option value="price-desc">Sort by price: high to 
+                                    <option value="price-desc">Sort by price: high to
 							</select>
 						</div>
 					</li>
@@ -400,7 +402,7 @@
 						</div>
 					</div>
 					<!-- /dropdown -->
-			
+
 				</div></div></div>
 				</div>
 			</div>
@@ -433,7 +435,7 @@
 					<!-- /grid_item -->
 				</div>
 				<!-- /col -->
-				
+
 				<div class="col-6 col-md-4 col-xl-3">
 					<div class="grid_item">
 						<span class="ribbon off">-30%</span>
@@ -459,7 +461,7 @@
 					<!-- /grid_item -->
 				</div>
 				<!-- /col -->
-				
+
 				<div class="col-6 col-md-4 col-xl-3">
 					<div class="grid_item">
 						<span class="ribbon off">-50%</span>
@@ -485,7 +487,7 @@
 					<!-- /grid_item -->
 				</div>
 				<!-- /col -->
-				
+
 				<div class="col-6 col-md-4 col-xl-3">
 					<div class="grid_item">
 						<span class="ribbon new">New</span>
@@ -509,7 +511,7 @@
 					<!-- /grid_item -->
 				</div>
 				<!-- /col -->
-				
+
 				<div class="col-6 col-md-4 col-xl-3">
 					<div class="grid_item">
 						<span class="ribbon new">New</span>
@@ -533,7 +535,7 @@
 					<!-- /grid_item -->
 				</div>
 				<!-- /col -->
-				
+
 				<div class="col-6 col-md-4 col-xl-3">
 					<div class="grid_item">
 						<span class="ribbon new">New</span>
@@ -557,7 +559,7 @@
 					<!-- /grid_item -->
 				</div>
 				<!-- /col -->
-				
+
 				<div class="col-6 col-md-4 col-xl-3">
 					<div class="grid_item">
 						<span class="ribbon hot">Hot</span>
@@ -581,7 +583,7 @@
 					<!-- /grid_item -->
 				</div>
 				<!-- /col -->
-				
+
 				<div class="col-6 col-md-4 col-xl-3">
 					<div class="grid_item">
 						<span class="ribbon hot">Hot</span>
@@ -604,10 +606,10 @@
 					</div>
 					<!-- /grid_item -->
 				</div>
-				<!-- /col -->				
+				<!-- /col -->
 			</div>
 			<!-- /row -->
-				
+
 			<div class="pagination__wrapper">
 				<ul class="pagination">
 					<li><a href="#0" class="prev" title="previous page">&#10094;</a></li>
@@ -626,12 +628,12 @@
 					<li><a href="#0" class="next" title="next page">&#10095;</a></li>
 				</ul>
 			</div>
-				
+
 		</div>
 		<!-- /container -->
 	</main>
 	<!-- /main -->
-	
+
 	<footer class="revealed">
 		<div class="container">
 			<div class="row">
@@ -732,16 +734,16 @@
 	<!--/footer-->
 	</div>
 	<!-- page -->
-	
+
 	<div id="toTop"></div><!-- Back to top button -->
-	
+
 	<!-- COMMON SCRIPTS -->
     <script src="{{ asset('js/common_scripts.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-	
+
 	<!-- SPECIFIC SCRIPTS -->
 	<script src="{{ asset('js/sticky_sidebar.min.js') }}"></script>
 	<script src="{{ asset('js/specific_listing.js') }}"></script>
-		
+
 </body>
 </html>

@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +18,36 @@ use App\Http\Controllers\Frontend\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+ Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+
+
+
+
+     Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
+     Route::get('/permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
+     Route::post('/permissions', [PermissionController::class, 'store'])->name('permissions.store');
+     Route::post('/permissions/{id}', [PermissionController::class, 'update'])->name('permissions.update');
+     Route::delete('/permissions', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+
+  Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+
+     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+     Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
+     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
+     Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+
+      Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users', [userController::class, 'destroy'])->name('users.destroy');
+        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+
+
 Route::get('/product', [DashboardController::class, 'product'])->name('admin.product');
+Route::get('/addproduct', [DashboardController::class, 'add_product'])->name('admin.create');
+Route::get('/editproduct', [DashboardController::class, 'edit_product'])->name('admin.edit');
 
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,7 +63,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Admin Routes (protected by auth and admin middleware)
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.layouts.dashboard');
     // Add more admin routes here
 });
 

@@ -9,7 +9,7 @@
 
         <!-- Statistics Cards -->
         <div class="row">
-            {{-- <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <div class="stats-card">
                     <div class="icon">👥</div>
                     <div class="number">{{ $stats['total_users'] }}</div>
@@ -29,7 +29,7 @@
                     <div class="number">{{ $stats['total_all_users'] }}</div>
                     <div class="label">All Users</div>
                 </div>
-            </div> --}}
+            </div>
         </div>
 
         <!-- Quick Actions -->
