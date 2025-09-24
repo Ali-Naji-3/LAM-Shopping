@@ -285,24 +285,86 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('transactions/analytics/dashboard', [App\Http\Controllers\Admin\TransactionsController::class, 'analytics'])->name('admin.transactions.analytics');
 });
 
-Route::get('/listing-grid-2-full', function () {
-    return view('listing-grid-2-full');
+Route::get('/listing-grid-2-full', function() {
+    // Boys Collection - Dynamic
+    $products = \App\Models\Product::active()
+        ->whereHas('category', function($q) {
+            $q->where('name', 'boy');
+        })
+        ->with(['category', 'brand'])
+        ->orderBy('featured', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->paginate(12);
+    
+    $categories = \App\Models\Category::active()->rootCategories()->ordered()->get();
+    $brands = \App\Models\Brand::active()->get();
+    
+    return view('listing-grid-2-full', compact('products', 'categories', 'brands'));
 });
 
 Route::get('/listing-grid-7-sidebar-right', function () {
     return view('listing-grid-7-sidebar-right');
 });
 
-Route::get('/listing-grid-1-full', function () {
-    return view('listing-grid-1-full');
+Route::get('/listing-grid-1-full', function() {
+    // Women's Collection - Dynamic (including subcategories)
+    $womenCategory = \App\Models\Category::where('name', 'Women')->first();
+    $categoryIds = [$womenCategory->id];
+    
+    // Get all subcategories of Women
+    $subcategories = \App\Models\Category::where('parent_id', $womenCategory->id)->pluck('id');
+    $categoryIds = array_merge($categoryIds, $subcategories->toArray());
+    
+    $products = \App\Models\Product::active()
+        ->whereIn('category_id', $categoryIds)
+        ->with(['category', 'brand'])
+        ->orderBy('featured', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->paginate(12);
+    
+    $categories = \App\Models\Category::active()->rootCategories()->ordered()->get();
+    $brands = \App\Models\Brand::active()->get();
+    
+    return view('listing-grid-1-full', compact('products', 'categories', 'brands'));
 });
 
-Route::get('/listing-grid-3', function () {
-    return view('listing-grid-3');
-});
+Route::get('/listing-grid-3', function() {
+    // Men's Collection - Dynamic (including subcategories)
+    $menCategory = \App\Models\Category::where('name', 'Men')->first();
+    $categoryIds = [$menCategory->id];
+    
+    // Get all subcategories of Men
+    $subcategories = \App\Models\Category::where('parent_id', $menCategory->id)->pluck('id');
+    $categoryIds = array_merge($categoryIds, $subcategories->toArray());
+    
+    $products = \App\Models\Product::active()
+        ->whereIn('category_id', $categoryIds)
+        ->with(['category', 'brand'])
+        ->orderBy('featured', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->paginate(12);
+    
+    $categories = \App\Models\Category::active()->rootCategories()->ordered()->get();
+    $brands = \App\Models\Brand::active()->get();
+    
+    return view('listing-grid-3', compact('products', 'categories', 'brands'));
+})->name('listing.grid3');
 
-Route::get('/girls', function () {
-    return view('Girls');
+Route::get('/girls', function() {
+    // Girl's Collection - Dynamic
+    $products = \App\Models\Product::active()
+        ->whereHas('category', function($q) {
+            $q->where('name', 'Girl');
+        })
+        ->with(['category', 'brand'])
+        ->orderBy('featured', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->paginate(12);
+    
+    $categories = \App\Models\Category::active()->rootCategories()->ordered()->get();
+    $brands = \App\Models\Brand::active()->get();
+    
+    return view('girls', compact('products', 'categories', 'brands'));
 });
 
 Route::get('/product-detail-2', function () {

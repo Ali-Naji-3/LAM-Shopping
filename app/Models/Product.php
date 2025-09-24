@@ -37,17 +37,7 @@ class Product extends Model
         
         // Generate slug if not already set
         if (empty($this->attributes['slug'])) {
-            $slug = \Str::slug($value);
-            
-            // Ensure slug uniqueness
-            $originalSlug = $slug;
-            $counter = 1;
-            while (static::where('slug', $slug)->where('id', '!=', $this->id ?? 0)->exists()) {
-                $slug = $originalSlug . '-' . $counter;
-                $counter++;
-            }
-            
-            $this->attributes['slug'] = $slug;
+            $this->attributes['slug'] = \Str::slug($value);
         }
     }
 

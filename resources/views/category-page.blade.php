@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Ansonika">
-    <title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
+    <title>{{ $category->name }} Collection | Allaia</title>
 
     <!-- Favicons-->
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
@@ -55,31 +55,37 @@
 								</div>
 							</div>
 						</a>
-						<!-- Mobile menu button -->
+						<!-- /open_close -->
 						<div class="main-menu">
 							<div id="header_menu">
-								<a href="{{ url('/') }}"><img src="img/logo_black.svg" alt="" width="100" height="35"></a>
-								<a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
+								<a class="open_close" href="javascript:void(0);">
+									<div class="hamburger hamburger--spin">
+										<div class="hamburger-box">
+											<div class="hamburger-inner"></div>
+										</div>
+									</div>
+								</a>
+								<a href="{{ url('/') }}"><img src="img/logo.svg" alt="" width="100" height="35"></a>
 							</div>
 							<ul>
-								<li>
-									<a href="{{ url('/') }}">Home</a>
+								<li class="submenu">
+									<a href="{{ url('/') }}" class="show-submenu">Home</a>
 								</li>
-								<li>
-									<a href="{{ url('listing-grid-3') }}">Men</a>
+								<li class="submenu">
+									<a href="{{ url('/men') }}" class="show-submenu {{ request()->is('men') ? 'active' : '' }}">Men</a>
 								</li>
-								<li>
-									<a href="{{ url('listing-grid-1-full') }}">Woman</a>
+								<li class="submenu">
+									<a href="{{ url('/women') }}" class="show-submenu {{ request()->is('women') ? 'active' : '' }}">Women</a>
 								</li>
-								<li>
-									<a href="{{ url('listing-grid-2-full') }}">Boys</a>
+								<li class="submenu">
+									<a href="{{ url('/body') }}" class="show-submenu {{ request()->is('body') ? 'active' : '' }}">Body</a>
 								</li>
-								<li>
-									<a href="{{ url('girls') }}">Girls</a>
+								<li class="submenu">
+									<a href="{{ url('/girl') }}" class="show-submenu {{ request()->is('girl') ? 'active' : '' }}">Girl</a>
 								</li>
 							</ul>
 						</div>
-						<!--/main-menu -->
+						<!-- /main-menu -->
 					</nav>
 					<div class="col-xl-3 col-lg-2 d-lg-flex align-items-center justify-content-end text-end">
 						<a class="phone_top" href="tel://9438843343"><strong><span>Need Help?</span>+94 423-23-221</strong></a>
@@ -89,8 +95,7 @@
 			</div>
 		</div>
 		<!-- /main_header -->
-
-		<div class="main_nav inner">
+		<div class="main_nav">
 			<div class="container">
 				<div class="row small-gutters">
 					<div class="col-xl-3 col-lg-3 col-md-3">
@@ -103,18 +108,15 @@
 													<span class="hamburger-inner"></span>
 												</span>
 											</span>
-											Categories
+											<span>Categories</span>
 										</a>
 									</span>
-									<div id="menu">
-										<ul>
-											<li><span><a href="{{ url('listing-grid-7-sidebar-right') }}">Collections</a></span></li>
-											<li><span><a href="{{ url('listing-grid-3') }}">Men</a></span></li>
-											<li><span><a href="{{ url('listing-grid-1-full') }}">Women</a></span></li>
-											<li><span><a href="{{ url('listing-grid-2-full') }}">Boys</a></span></li>
-											<li><span><a href="{{ url('girls') }}">Girls</a></span></li>
-										</ul>
-									</div>
+									<ul>
+										<li><a href="{{ url('/men') }}">Men</a></li>
+										<li><a href="{{ url('/women') }}">Women</a></li>
+										<li><a href="{{ url('/body') }}">Body</a></li>
+										<li><a href="{{ url('/girl') }}">Girl</a></li>
+									</ul>
 								</li>
 							</ul>
 						</nav>
@@ -134,17 +136,17 @@
 										<ul>
 											<li>
 												<a href="{{ url('product-detail-2') }}">
-													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/1.jpg" alt="" width="50" height="50" class="lazy"></figure>
+													<figure><img src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/thumb/1.jpg" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Air x Fear</span>$90.00</strong>
 												</a>
 												<a href="#0" class="action"><i class="ti-trash"></i></a>
 											</li>
 											<li>
 												<a href="{{ url('product-detail-2') }}">
-													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/2.jpg" alt="" width="50" height="50" class="lazy"></figure>
+													<figure><img src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/thumb/2.jpg" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Okwahn II</span>$110.00</strong>
 												</a>
-												<a href="0" class="action"><i class="ti-trash"></i></a>
+												<a href="#0" class="action"><i class="ti-trash"></i></a>
 											</li>
 										</ul>
 										<div class="total_drop">
@@ -152,47 +154,25 @@
 											<a href="{{ url('cart') }}" class="btn_1 outline">View Cart</a><a href="{{ url('checkout') }}" class="btn_1">Checkout</a>
 										</div>
 									</div>
+									<!-- /dropdown-menu-->
 								</div>
 								<!-- /dropdown-cart-->
 							</li>
 							<li>
-								<a href="{{ url('my-wishlist') }}" class="wishlist"><span>Wishlist</span></a>
+								<a href="#" class="wishlist"><span>Wishlist</span></a>
 							</li>
 							<li>
 								<div class="dropdown dropdown-access">
-									<a href="{{ url('login') }}" class="access_link"><span>Account</span></a>
+									<a href="#" class="access_link"><span>Account</span></a>
 									<div class="dropdown-menu">
-										<a href="{{ url('login') }}" class="btn_1">Sign In or Sign Up</a>
-										<ul>
-											<li>
-												<a href="{{ url('track-order') }}"><i class="ti-truck"></i>Track your Order</a>
-											</li>
-											<li>
-												<a href="{{ url('my-orders') }}"><i class="ti-package"></i>My Orders</a>
-											</li>
-											<li>
-												<a href="{{ url('profile-page') }}"><i class="ti-user"></i>My Profile</a>
-											</li>
-											<li>
-												<a href="{{ url('help') }}"><i class="ti-help-alt"></i>Help and Faq</a>
-											</li>
-										</ul>
+										<a href="{{ url('login') }}" class="btn_1">Sign In</a>
+										<a href="{{ url('register') }}" class="btn_1">Sign Up</a>
 									</div>
 								</div>
 								<!-- /dropdown-access-->
 							</li>
 							<li>
 								<a href="javascript:void(0);" class="btn_search_mob"><span>Search</span></a>
-							</li>
-							<li>
-								<a href="#menu" class="btn_cat_mob">
-									<div class="hamburger hamburger--spin" id="hamburger">
-										<div class="hamburger-box">
-											<div class="hamburger-inner"></div>
-										</div>
-									</div>
-									Categories
-								</a>
 							</li>
 						</ul>
 					</div>
@@ -216,10 +196,15 @@
 		        <div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0)">
 		            <div class="container">
 		                <div class="d-flex justify-content-center">
+		                    <h1>{{ $category->name }} Collection</h1>
 		                </div>
 		            </div>
 		        </div>
-		        <img src="img/bg_cat_shoes.jpg" class="img-fluid" alt="">
+		        @if($category->image)
+		            <img src="{{ asset('storage/' . $category->image) }}" class="img-fluid" alt="{{ $category->name }}">
+		        @else
+		            <img src="img/bg_cat_shoes.jpg" class="img-fluid" alt="{{ $category->name }}">
+		        @endif
 		    </div>
 		    <!-- /top_banner -->
 		    <div id="stick_here"></div>
@@ -233,7 +218,7 @@
 		                            <option value="rating">Sort by average rating</option>
 		                            <option value="date">Sort by newness</option>
 		                            <option value="price">Sort by price: low to high</option>
-		                            <option value="price-desc">Sort by price: high to
+		                            <option value="price-desc">Sort by price: high to low</option>
 		                        </select>
 		                    </div>
 		                </li>
@@ -247,161 +232,93 @@
 		                    </a>
 		                </li>
 		            </ul>
-		            <div class="collapse" id="filters">
-		                <div class="row small-gutters filters_listing_1">
-		                    <div class="col-lg-3 col-md-6 col-sm-6">
-		                        <div class="dropdown">
-		                            <a href="#" data-bs-toggle="dropdown" class="drop">Categories</a>
-		                            <div class="dropdown-menu">
-		                                <div class="filter_type">
-		                                    <ul>
-		                                        <li>
-		                                            <label class="container_check">Men <small>12</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Women <small>24</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Running <small>23</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Training <small>11</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                    </ul>
-		                                    <a href="#0" class="apply_filter">Apply</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                        <!-- /dropdown -->
-		                    </div>
-		                    <div class="col-lg-3 col-md-6 col-sm-6">
-		                        <div class="dropdown">
-		                            <a href="#" data-bs-toggle="dropdown" class="drop">Color</a>
-		                            <div class="dropdown-menu">
-		                                <div class="filter_type">
-		                                    <ul>
-		                                        <li>
-		                                            <label class="container_check">Blue <small>06</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Red <small>12</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Orange <small>17</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Black <small>43</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                    </ul>
-		                                    <a href="#0" class="apply_filter">Apply</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                        <!-- /dropdown -->
-		                    </div>
-		                    <div class="col-lg-3 col-md-6 col-sm-6">
-		                        <div class="dropdown">
-		                            <a href="#" data-bs-toggle="dropdown" class="drop">Brand</a>
-		                            <div class="dropdown-menu">
-		                                <div class="filter_type">
-		                                    <ul>
-		                                        <li>
-		                                            <label class="container_check">Adidas <small>11</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Nike <small>08</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Vans <small>05</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">Puma <small>18</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                    </ul>
-		                                    <a href="#0" class="apply_filter">Apply</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                        <!-- /dropdown -->
-		                    </div>
-		                    <div class="col-lg-3 col-md-6 col-sm-6">
-		                        <div class="dropdown">
-		                            <a href="#" data-bs-toggle="dropdown" class="drop">Price</a>
-		                            <div class="dropdown-menu">
-		                                <div class="filter_type">
-		                                    <ul>
-		                                        <li>
-		                                            <label class="container_check">$0 — $50<small>11</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">$50 — $100<small>08</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">$100 — $150<small>05</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                        <li>
-		                                            <label class="container_check">$150 — $200<small>18</small>
-		                                                <input type="checkbox">
-		                                                <span class="checkmark"></span>
-		                                            </label>
-		                                        </li>
-		                                    </ul>
-		                                    <a href="#0" class="apply_filter">Apply</a>
-		                                </div>
-		                            </div>
-		                        </div>
-		                        <!-- /dropdown -->
-		                    </div>
-		                </div>
-		            </div>
 		        </div>
 		    </div>
 		    <!-- /toolbox -->
+		    <div class="collapse" id="filters">
+		        <div class="row small-gutters filters_listing_1">
+		            @if($subcategories->count() > 0)
+		            <div class="col-lg-3 col-md-6 col-sm-6">
+		                <div class="dropdown">
+		                    <a href="#" data-bs-toggle="dropdown" class="drop">Subcategories</a>
+		                    <div class="dropdown-menu">
+		                        <div class="filter_type">
+		                            <ul>
+		                                @foreach($subcategories as $subcategory)
+		                                <li>
+		                                    <label class="container_check">{{ $subcategory->name }}
+		                                        <input type="checkbox">
+		                                        <span class="checkmark"></span>
+		                                    </label>
+		                                </li>
+		                                @endforeach
+		                            </ul>
+		                        </div>
+		                    </div>
+		                    <!-- /dropdown -->
+		                </div>
+		            </div>
+		            @endif
+		            <div class="col-lg-3 col-md-6 col-sm-6">
+		                <div class="dropdown">
+		                    <a href="#" data-bs-toggle="dropdown" class="drop">Brand</a>
+		                    <div class="dropdown-menu">
+		                        <div class="filter_type">
+		                            <ul>
+		                                @foreach($brands as $brand)
+		                                <li>
+		                                    <label class="container_check">{{ $brand->name }}
+		                                        <input type="checkbox">
+		                                        <span class="checkmark"></span>
+		                                    </label>
+		                                </li>
+		                                @endforeach
+		                            </ul>
+		                        </div>
+		                    </div>
+		                    <!-- /dropdown -->
+		                </div>
+		            </div>
+		            <div class="col-lg-3 col-md-6 col-sm-6">
+		                <div class="dropdown">
+		                    <a href="#" data-bs-toggle="dropdown" class="drop">Price</a>
+		                    <div class="dropdown-menu">
+		                        <div class="filter_type">
+		                            <ul>
+		                                <li>
+		                                    <label class="container_check">$0 — $50 <small>({{ $products->where('regular_price', '<=', 50)->count() }})</small>
+		                                        <input type="checkbox">
+		                                        <span class="checkmark"></span>
+		                                    </label>
+		                                </li>
+		                                <li>
+		                                    <label class="container_check">$50 — $100 <small>({{ $products->where('regular_price', '>', 50)->where('regular_price', '<=', 100)->count() }})</small>
+		                                        <input type="checkbox">
+		                                        <span class="checkmark"></span>
+		                                    </label>
+		                                </li>
+		                                <li>
+		                                    <label class="container_check">$100 — $200 <small>({{ $products->where('regular_price', '>', 100)->where('regular_price', '<=', 200)->count() }})</small>
+		                                        <input type="checkbox">
+		                                        <span class="checkmark"></span>
+		                                    </label>
+		                                </li>
+		                                <li>
+		                                    <label class="container_check">$200+ <small>({{ $products->where('regular_price', '>', 200)->count() }})</small>
+		                                        <input type="checkbox">
+		                                        <span class="checkmark"></span>
+		                                    </label>
+		                                </li>
+		                            </ul>
+		                        </div>
+		                    </div>
+		                    <!-- /dropdown -->
+		                </div>
+		            </div>
+		        </div>
+		        <!-- /filters_listing_1 -->
+		    </div>
+		    <!-- /filters -->
 			<div class="row small-gutters">
 				@forelse($products as $product)
 				<div class="col-6 col-md-4 col-xl-3">
@@ -421,7 +338,7 @@
 								@if($product->image)
 									<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
 								@else
-									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
+									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" alt="{{ $product->name }}">
 								@endif
 							</a>
 							<div data-countdown="{{ $product->created_at->addDays(30)->format('Y/m/d') }}" class="countdown"></div>
@@ -449,8 +366,8 @@
 				@empty
 				<div class="col-12">
 					<div class="text-center py-5">
-						<h3>No Men's products found</h3>
-						<p>We're working on adding more Men's products. Check back soon!</p>
+						<h3>No {{ $category->name }} products found</h3>
+						<p>We're working on adding more {{ $category->name }} products. Check back soon!</p>
 						<a href="{{ url('/') }}" class="btn_1">Back to Home</a>
 					</div>
 				</div>
@@ -572,7 +489,7 @@
 								</select>
 							</div>
 						</li>
-						<li><img src="{{ asset('img/cards_all.svg') }}" alt=""></li>
+						<li><img src="img/cards_all.svg" alt=""></li>
 					</ul>
 				</div>
 				<div class="col-lg-6">
@@ -591,8 +508,8 @@
 	<!-- Opacity Mask Menu Mobile -->
 
 	<!-- COMMON SCRIPTS -->
-	<script src="{{ asset('js/common_scripts.min.js') }}"></script>
-	<script src="{{ asset('js/main.js') }}"></script>
+	<script src="js/common_scripts.min.js"></script>
+	<script src="js/main.js"></script>
 
 </body>
 </html>

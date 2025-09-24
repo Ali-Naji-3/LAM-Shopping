@@ -114,7 +114,7 @@ class HomeController extends Controller
     {
         $product = Product::active()
             ->where('slug', $slug)
-            ->with(['category', 'brand', 'reviews.user', 'attributeValues.attribute'])
+            ->with(['category', 'brand', 'reviews.user', 'productAttributes.attributeValue.attribute'])
             ->firstOrFail();
 
         $relatedProducts = Product::active()

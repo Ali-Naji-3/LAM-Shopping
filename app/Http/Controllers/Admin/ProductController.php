@@ -122,7 +122,7 @@ class ProductController extends Controller
         try {
             $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug',
+            'slug' => 'nullable|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku',
             'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string',
@@ -150,12 +150,17 @@ class ProductController extends Controller
             $validated['slug'] = Str::slug($validated['name']);
         }
         
-        // Ensure slug uniqueness
-        $originalSlug = $validated['slug'];
-        $counter = 1;
-        while (Product::where('slug', $validated['slug'])->exists()) {
-            $validated['slug'] = $originalSlug . '-' . $counter;
-            $counter++;
+        // Check for similar slugs and warn user (but allow creation)
+        $similarSlugs = Product::where('slug', 'like', '%' . $validated['slug'] . '%')
+            ->orWhere('slug', 'like', '%' . Str::slug($validated['name']) . '%')
+            ->pluck('slug')
+            ->toArray();
+        
+        if (!empty($similarSlugs)) {
+            \Log::info('Similar slugs found', [
+                'new_slug' => $validated['slug'],
+                'similar_slugs' => $similarSlugs
+            ]);
         }
 
         // Handle dimensions
@@ -255,7 +260,7 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug,' . $product->id,
+            'slug' => 'nullable|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku,' . $product->id,
             'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string',
@@ -283,14 +288,20 @@ class ProductController extends Controller
         // Generate slug if not provided
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
-            
-            // Ensure slug uniqueness (excluding current product)
-            $originalSlug = $validated['slug'];
-            $counter = 1;
-            while (Product::where('slug', $validated['slug'])->where('id', '!=', $product->id)->exists()) {
-                $validated['slug'] = $originalSlug . '-' . $counter;
-                $counter++;
-            }
+        }
+        
+        // Check for similar slugs and warn user (but allow creation)
+        $similarSlugs = Product::where('slug', 'like', '%' . $validated['slug'] . '%')
+            ->where('id', '!=', $product->id)
+            ->pluck('slug')
+            ->toArray();
+        
+        if (!empty($similarSlugs)) {
+            \Log::info('Similar slugs found during update', [
+                'new_slug' => $validated['slug'],
+                'similar_slugs' => $similarSlugs,
+                'product_id' => $product->id
+            ]);
         }
 
         // Handle dimensions
