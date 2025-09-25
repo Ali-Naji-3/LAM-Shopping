@@ -10,7 +10,7 @@
             </h2>
             <p class="mb-0" style="color: #4a5568 !important; font-size: 14px !important;">Add a new product with attributes (like frontend display)</p>
         </div>
-        <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary" 
+        <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary"
            style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
            onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
            onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
@@ -246,7 +246,7 @@
                                     ⚖️ Weight
                                 </label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="attribute_values[weight]" placeholder="e.g., 0.6kg" 
+                                    <input type="text" class="form-control" name="attribute_values[weight]" placeholder="e.g., 0.6kg"
                                            onchange="updatePreview('weight', this.value)"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important;">
                                     <span class="input-group-text" style="background: #f8fafc !important; border: 2px solid #e2e8f0 !important; color: #4a5568 !important; font-weight: 600 !important;">kg</span>
@@ -258,7 +258,7 @@
                                 <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 12px !important;">
                                     🏭 Manufacturer
                                 </label>
-                                <input type="text" class="form-control" name="attribute_values[manufacturer]" placeholder="e.g., Nike, Adidas, etc." 
+                                <input type="text" class="form-control" name="attribute_values[manufacturer]" placeholder="e.g., Nike, Adidas, etc."
                                        onchange="updatePreview('manufacturer', this.value)"
                                        style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important;">
                             </div>
@@ -494,7 +494,7 @@
                                     onmouseout="this.style.background='linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                                 <i class="bi bi-check-circle me-2"></i>Create Product
                             </button>
-                            <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary" 
+                            <a href="{{ route('admin.products.index') }}" class="btn btn-outline-secondary"
                                style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 14px 24px !important; border-radius: 10px !important; font-weight: 600 !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                                onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
                                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
@@ -604,25 +604,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Debug form submission
     const form = document.querySelector('form');
     const submitBtn = document.getElementById('create-product-btn');
-    
+
     console.log('Form found:', form);
     console.log('Submit button found:', submitBtn);
-    
+
     // Add click event listener to button
     if (submitBtn) {
         submitBtn.addEventListener('click', function(e) {
             console.log('Create Product button clicked!');
-            
+
             // Prevent multiple submissions
             if (this.disabled) {
                 e.preventDefault();
                 return false;
             }
-            
+
             // Check if all required fields are filled
             const requiredFields = form.querySelectorAll('[required]');
             let allFieldsValid = true;
-            
+
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
                     console.log('Required field empty:', field.name);
@@ -632,27 +632,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     field.style.borderColor = '#e2e8f0';
                 }
             });
-            
+
             if (!allFieldsValid) {
                 e.preventDefault();
                 alert('Please fill in all required fields (marked with *)');
                 return false;
             }
-            
+
             console.log('All fields valid, submitting form...');
             // Add loading state and disable button
             this.disabled = true;
             this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Creating Product...';
-            
+
             // Submit the form
             form.submit();
         });
     }
-    
+
     // Auto-generate slug from name
     const nameInput = document.getElementById('name');
     const slugInput = document.getElementById('slug');
-    
+
     if (nameInput && slugInput) {
         nameInput.addEventListener('input', function() {
             if (!slugInput.dataset.manuallyEdited) {
@@ -665,12 +665,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 slugInput.value = slug;
             }
         });
-        
+
         slugInput.addEventListener('input', function() {
             this.dataset.manuallyEdited = 'true';
         });
     }
-    
+
     // Attributes are now loaded directly in HTML
 });
 
@@ -685,19 +685,19 @@ function selectColor(element, color) {
         option.style.boxShadow = 'none';
         option.classList.remove('active');
     });
-    
+
     // Add active state to selected color (like frontend)
     element.style.borderColor = '#3182ce !important';
     element.style.transform = 'scale(1.1) !important';
     element.style.boxShadow = '0 4px 8px rgba(49, 130, 206, 0.25) !important';
     element.classList.add('active');
-    
+
     // Set hidden input value
     document.getElementById('selected_color').value = color;
-    
+
     // Update frontend preview
     updatePreview('color', color);
-    
+
     console.log('Selected color (like frontend):', color);
 }
 
@@ -719,13 +719,13 @@ function selectSize(element, size) {
         element.style.color = '#ffffff !important';
         element.classList.add('active');
     }
-    
+
     // Update hidden input
     document.getElementById('selected_sizes').value = selectedSizes.join(',');
-    
+
     // Update frontend preview
     updatePreview('size', selectedSizes.join(', '));
-    
+
     console.log('Selected sizes (like frontend):', selectedSizes);
 }
 
@@ -748,7 +748,7 @@ function updatePreview(attribute, value) {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -757,43 +757,43 @@ function updatePreview(attribute, value) {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .form-control::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     /* Color and Size Options (Like Frontend) */
     .color-option:hover {
         transform: scale(1.1) !important;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
     }
-    
+
     .size-option:hover {
         border-color: #3182ce !important;
         background-color: #f0f9ff !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .form-check-input:checked {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
-    
+
     .input-group-text {
         border-left: 2px solid #e2e8f0 !important;
         border-top: 2px solid #e2e8f0 !important;
         border-bottom: 2px solid #e2e8f0 !important;
         border-radius: 10px 0 0 10px !important;
     }
-    
+
     /* Professional Modal Styling */
     .modal-content {
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
     }
-    
+
     .table-striped tbody tr:nth-of-type(odd) {
         background-color: #f8fafc !important;
     }

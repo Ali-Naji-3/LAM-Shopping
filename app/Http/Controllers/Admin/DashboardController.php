@@ -18,10 +18,18 @@ class DashboardController extends Controller
             // Add more stats as needed
         ];
 
-        return view('admin.dashboard', compact('stats'));
+        return view('admin.layouts.dashboard', compact('stats'));
     }
 function product()
 {
-    return view('admin.product');
+    return view('admin.products.product');
+}
+function Add_product()
+{
+    return view('admin.products.create');
+}
+function Edit_product()
+{
+    return view('admin.products.edit');
 }
 }

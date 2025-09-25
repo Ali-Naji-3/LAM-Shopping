@@ -16,10 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('attribute_id'); // BIGINT FK → attributes.id, not null
             $table->string('value', 255); // VARCHAR(255), not null
             $table->timestamps(); // created_at, updated_at TIMESTAMP, nullable
-            
+
             // Foreign key constraint
             $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
-            
+
             // Indexes for performance
             $table->index('attribute_id');
             $table->index(['attribute_id', 'value']);

@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
-	
+
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,9 +34,9 @@
 </head>
 
 <body>
-	
+
 	<div id="page">
-		
+
 	<header class="version_1">
 		<div class="layer"></div><!-- Mobile menu overlay mask -->
 		<div class="main_header">
@@ -226,7 +226,11 @@
 					</div>
 				</div>
 			</div>
-			<img src="img/video_fix.png" alt="" class="header-video--media" data-video-src="video/intro" data-teaser-source="video/intro" data-provider="" data-video-width="1920" data-video-height="960">
+			<video autoplay muted loop playsinline class="header-video--media">
+    <source src="{{ asset('video/hero.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
 		</div>
 		<!-- /header-video -->
 
@@ -264,12 +268,12 @@
 			</div>
 		</div>
 		<!--/feat-->
-		
+
 		<div class="container margin_60_35">
 			<div class="row small-gutters categories_grid">
 				<div class="col-sm-12 col-md-6">
 					<a href="{{ url('listing-grid-7-sidebar-right') }}">
-						<img src="{{ asset('img/img_cat_home_1_placeholder.png') }}" data-src="{{ asset('img/img_cat_home_1.jpg') }}" alt="" class="img-fluid lazy">
+						<img src="{{ asset('img/hero/main.png') }}" data-src="{{ asset('img/hero/main.png') }}" alt="" class="img-fluid lazy">
 						<div class="wrapper">
 							<h2>Collections</h2>
 							<p>115 Products</p>
@@ -280,7 +284,7 @@
 					<div class="row small-gutters mt-md-0 mt-sm-2">
 						<div class="col-sm-6">
 							<a href="{{ url('listing-grid-1-full') }}">
-								<img src="{{ asset('img/img_cat_home_1_placeholder.png') }}" data-src="{{ asset('img/img_cat_home_1.jpg') }}" alt="" class="img-fluid lazy">
+								<img src="{{ asset('img/hero/woman.jpg') }}" data-src="{{ asset('img/hero/woman.jpg') }}" alt="" class="img-fluid lazy">
 								<div class="wrapper">
 									<h2>Woman</h2>
 									<p>150 Products</p>
@@ -288,19 +292,19 @@
 							</a>
 						</div>
 						<div class="col-sm-6">
-							<a href="{{ url('listing-grid-2-full') }}">
-								<img src="{{ asset('img/img_cat_home_2_placeholder.png') }}" data-src="{{ asset('img/img_cat_home_3.jpg') }}" alt="" class="img-fluid lazy">
+							<a href="{{ url('listing-grid-3') }}">
+								<img src="{{ asset('img/hero/man.jpg') }}" data-src="{{ asset('img/hero/man.jpg') }}" alt="" class="img-fluid lazy">
 								<div class="wrapper">
-									<h2>Boys</h2>
+									<h2>Men</h2>
 									<p>90 Products</p>
 								</div>
 							</a>
 						</div>
 						<div class="col-sm-12 mt-sm-2">
-							<a href="{{ url('listing-grid-7-sidebar-right') }}">
-								<img src="{{ asset('img/img_cat_home_4_placeholder.png') }}" data-src="{{ asset('img/img_cat_home_4.jpg') }}" alt="" class="img-fluid lazy">
+							<a href="{{ url('listing-grid-2-full') }}">
+								<img src="{{ asset('img/hero/kid.avif') }}" data-src="{{ asset('img/hero/kid.avif') }}" alt="" class="img-fluid lazy">
 								<div class="wrapper">
-									<h2>Training</h2>
+									<h2>Kids</h2>
 									<p>120 Products</p>
 								</div>
 							</a>
@@ -313,7 +317,7 @@
 		<!-- /container -->
 
 		<hr class="mb-0">
-		
+
 		<div class="container margin_60_35">
 			<div class="main_title mb-4">
 				<h2>New Arrival</h2>
@@ -541,7 +545,7 @@
 			<!-- /isotope-wrapper -->
 		</div>
 		<!-- /container -->
-		
+
 		<div class="featured lazy" data-bg="url(img/featured_home.jpg)">
 			<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.5)">
 				<div class="container margin_60">
@@ -562,7 +566,7 @@
 			</div>
 		</div>
 		<!-- /featured -->
-		
+
 		<div class="bg_gray">
 			<div class="container margin_30">
 				<div id="brands" class="owl-carousel owl-theme">
@@ -583,15 +587,15 @@
 					</div><!-- /item -->
 					<div class="item">
 						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_6.png" alt="" class="owl-lazy"></a>
-					</div><!-- /item --> 
+					</div><!-- /item -->
 				</div><!-- /carousel -->
 			</div><!-- /container -->
 		</div>
-		
-		
+
+
 	</main>
 	<!-- /main -->
-		
+
 	<footer class="revealed">
 		<div class="container">
 			<div class="row">
@@ -692,13 +696,13 @@
 	<!--/footer-->
 	</div>
 	<!-- page -->
-	
+
 	<div id="toTop"></div><!-- Back to top button -->
-	
+
 	<!-- COMMON SCRIPTS -->
     <script src="js/common_scripts.min.js"></script>
     <script src="js/main.js"></script>
-	
+
 	<!-- SPECIFIC SCRIPTS -->
 	<script src="js/modernizr.js"></script>
 	<script src="js/video_header.min.js"></script>

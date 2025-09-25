@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
-	
+
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,9 +34,9 @@
 </head>
 
 <body>
-	
+
 	<div id="page">
-		
+
 	<header class="version_1">
 		<div class="layer"></div><!-- Mobile menu overlay mask -->
 		<div class="main_header">
@@ -208,7 +208,7 @@
 		<!-- /main_nav -->
 	</header>
 	<!-- /header -->
-		
+
 
 	<main>
 		<div class="top_banner version_2">
@@ -217,11 +217,11 @@
 					<div class="d-flex justify-content-center"></div>
 				</div>
 			</div>
-			<img src="img/bg_cat_shoes.jpg" class="img-fluid" alt="">
+			<img src="img/hero/kidss.webp" class="img-fluid" alt="">
 		</div>
 		<!-- /top_banner -->
-		
-			<div id="stick_here"></div>		
+
+			<div id="stick_here"></div>
 			<div class="toolbox elemento_stick">
 				<div class="container">
 				<ul class="clearfix">
@@ -232,7 +232,7 @@
                                     <option value="rating">Sort by average rating</option>
                                     <option value="date">Sort by newness</option>
                                     <option value="price">Sort by price: low to high</option>
-                                    <option value="price-desc">Sort by price: high to 
+                                    <option value="price-desc">Sort by price: high to
 							</select>
 						</div>
 					</li>
@@ -394,7 +394,7 @@
 						</div>
 					</div>
 					<!-- /dropdown -->
-			
+
 				</div></div></div>
 				</div>
 			</div>
@@ -456,7 +456,7 @@
 				@endforelse
 			</div>
 			<!-- /row -->
-			
+
 			<!-- Pagination -->
 			@if($products->hasPages())
 			<div class="pagination__wrapper">
@@ -466,7 +466,7 @@
 					@else
 						<li><a href="{{ $products->previousPageUrl() }}">&laquo;</a></li>
 					@endif
-					
+
 					@foreach($products->getUrlRange(1, $products->lastPage()) as $page => $url)
 						@if($page == $products->currentPage())
 							<li class="active"><span>{{ $page }}</span></li>
@@ -474,7 +474,7 @@
 							<li><a href="{{ $url }}">{{ $page }}</a></li>
 						@endif
 					@endforeach
-					
+
 					@if($products->hasMorePages())
 						<li><a href="{{ $products->nextPageUrl() }}">&raquo;</a></li>
 					@else
@@ -489,7 +489,7 @@
 	</main>
 	<!-- /main -->
 
-	<footer>
+	<footer class="revealed">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 col-md-6">

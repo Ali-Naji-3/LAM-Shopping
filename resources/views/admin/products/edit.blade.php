@@ -46,29 +46,29 @@
                     <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
                                         <i class="fas fa-box text-primary me-1"></i> Product Name *
                                     </label>
-                                    <input type="text" 
-                                           class="form-control @error('name') is-invalid @enderror" 
+                                    <input type="text"
+                                           class="form-control @error('name') is-invalid @enderror"
                                            name="name" value="{{ old('name', $product->name) }}" required>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
                                         <i class="fas fa-barcode text-info me-1"></i> SKU *
                                     </label>
-                                    <input type="text" 
-                                           class="form-control @error('sku') is-invalid @enderror" 
+                                    <input type="text"
+                                           class="form-control @error('sku') is-invalid @enderror"
                                            name="sku" value="{{ old('sku', $product->sku) }}" required>
                                     @error('sku')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -83,36 +83,36 @@
                                     <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
                                         <i class="fas fa-dollar-sign text-success me-1"></i> Regular Price *
                                     </label>
-                                    <input type="number" step="0.01" 
-                                           class="form-control @error('regular_price') is-invalid @enderror" 
+                                    <input type="number" step="0.01"
+                                           class="form-control @error('regular_price') is-invalid @enderror"
                                            name="regular_price" value="{{ old('regular_price', $product->regular_price) }}" required>
                                     @error('regular_price')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <div class="form-group mb-3">
                                     <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
                                         <i class="fas fa-tag text-warning me-1"></i> Sale Price
                                     </label>
-                                    <input type="number" step="0.01" 
-                                           class="form-control @error('sale_price') is-invalid @enderror" 
+                                    <input type="number" step="0.01"
+                                           class="form-control @error('sale_price') is-invalid @enderror"
                                            name="sale_price" value="{{ old('sale_price', $product->sale_price) }}">
                                     @error('sale_price')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <div class="form-group mb-3">
                                     <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
                                         <i class="fas fa-cubes text-info me-1"></i> Quantity
                                     </label>
-                                    <input type="number" 
-                                           class="form-control @error('quantity') is-invalid @enderror" 
+                                    <input type="number"
+                                           class="form-control @error('quantity') is-invalid @enderror"
                                            name="quantity" value="{{ old('quantity', $product->quantity) }}">
                                     @error('quantity')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -140,7 +140,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">

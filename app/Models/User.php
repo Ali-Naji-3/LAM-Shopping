@@ -3,16 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -59,21 +60,21 @@ class User extends Authenticatable
         // When user is being deleted
         static::deleting(function ($user) {
             \Log::info("🗑️ Deleting user: {$user->name} ({$user->email})");
-            
+
             // Check for active orders
             $activeOrdersCount = $user->orders()
                 ->whereIn('status', ['pending', 'confirmed', 'processing', 'shipped'])
                 ->count();
-                
+
             if ($activeOrdersCount > 0) {
                 throw new \Exception("Cannot delete user '{$user->name}': {$activeOrdersCount} active orders. Please complete or cancel orders first.");
             }
-            
+
             // Transfer completed orders to a "Guest User" account
             $completedOrders = $user->orders()
                 ->whereIn('status', ['delivered', 'cancelled'])
                 ->count();
-                
+
             if ($completedOrders > 0) {
                 // Create or get guest user
                 $guestUser = User::firstOrCreate(
@@ -86,12 +87,12 @@ class User extends Authenticatable
                         'email_verified_at' => now(),
                     ]
                 );
-                
+
                 $user->orders()->whereIn('status', ['delivered', 'cancelled'])
                     ->update(['user_id' => $guestUser->id]);
                 \Log::info("📦 Transferred {$completedOrders} completed orders to guest user");
             }
-            
+
             // Archive user reviews (keep for product history)
             $reviewsCount = $user->reviews()->count();
             if ($reviewsCount > 0) {
@@ -101,7 +102,7 @@ class User extends Authenticatable
                 ]);
                 \Log::info("⭐ Anonymized {$reviewsCount} reviews");
             }
-            
+
             // Transfer transactions to guest user for financial records
             $transactionsCount = $user->transactions()->count();
             if ($transactionsCount > 0) {
@@ -109,7 +110,7 @@ class User extends Authenticatable
                 $user->transactions()->update(['user_id' => $guestUser->id]);
                 \Log::info("💳 Transferred {$transactionsCount} transactions to guest user");
             }
-            
+
             // Archive contacts
             $contactsCount = $user->contacts()->count();
             if ($contactsCount > 0) {
@@ -121,35 +122,35 @@ class User extends Authenticatable
                 \Log::info("📞 Archived {$contactsCount} contacts");
             }
         });
-        
+
         // When user is updated
         static::updated(function ($user) {
             if ($user->wasChanged('email')) {
                 \Log::info("📧 User email changed: {$user->name}");
-                
+
                 // Update all related orders with new email
                 $user->orders()->update(['customer_email' => $user->email]);
             }
-            
+
             if ($user->wasChanged('name')) {
                 \Log::info("👤 User name changed: {$user->email}");
-                
+
                 // Update all related orders with new name
                 $user->orders()->update(['customer_name' => $user->name]);
             }
-            
+
             if ($user->wasChanged('mobile')) {
                 \Log::info("📱 User mobile changed: {$user->name}");
-                
+
                 // Update all related orders with new mobile
                 $user->orders()->update(['customer_phone' => $user->mobile]);
             }
         });
-        
+
         // When user is restored
         static::restored(function ($user) {
             \Log::info("♻️ User restored: {$user->name}");
-            
+
             // Restore reviews if they were anonymized
             $user->reviews()->where('title', 'LIKE', '[Anonymous]%')
                 ->update([

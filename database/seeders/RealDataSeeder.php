@@ -26,10 +26,10 @@ class RealDataSeeder extends Seeder
     public function run()
     {
         $this->command->info('🚀 Creating REAL data for your Collection Store...');
-        
+
         // Clear existing data safely
         $this->clearExistingData();
-        
+
         // Create data in dependency order
         $this->createUsers();
         $this->createCategories();
@@ -46,16 +46,16 @@ class RealDataSeeder extends Seeder
         $this->createTransactions();
         $this->createSliders();
         $this->createContacts();
-        
+
         $this->command->info('✅ REAL data created successfully! Ready for frontend connection.');
     }
-    
+
     private function clearExistingData()
     {
         $this->command->info('🧹 Clearing existing data...');
-        
+
         \DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        
+
         // Clear in reverse dependency order
         Contact::truncate();
         Slider::truncate();
@@ -72,14 +72,14 @@ class RealDataSeeder extends Seeder
         Category::truncate();
         Warehouse::truncate();
         // Don't truncate users - keep admin accounts
-        
+
         \DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
-    
+
     private function createUsers()
     {
         $this->command->info('👥 Creating real users...');
-        
+
         // Create realistic customers
         $customers = [
             ['name' => 'Ahmed Hassan', 'email' => 'ahmed.hassan@example.com', 'mobile' => '+201234567890'],
@@ -91,7 +91,7 @@ class RealDataSeeder extends Seeder
             ['name' => 'Youssef Tarek', 'email' => 'youssef.tarek@example.com', 'mobile' => '+201234567896'],
             ['name' => 'Mona Farouk', 'email' => 'mona.farouk@example.com', 'mobile' => '+201234567897'],
         ];
-        
+
         foreach ($customers as $customer) {
             User::create([
                 'name' => $customer['name'],

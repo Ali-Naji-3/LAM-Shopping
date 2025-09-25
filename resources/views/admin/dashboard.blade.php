@@ -27,7 +27,7 @@
             --secondary-color: #334155;
             --accent-color: #3b82f6;
             --accent-hover: #2563eb;
-            
+
             --success-color: #10b981;
             --success-hover: #059669;
             --warning-color: #f59e0b;
@@ -36,7 +36,7 @@
             --danger-hover: #dc2626;
             --info-color: #3b82f6;
             --info-hover: #2563eb;
-            
+
             /* Enhanced Corporate Navy Background Colors */
             --bg-primary: #0f172a;        /* Deep navy */
             --bg-secondary: #1e293b;      /* Corporate navy */
@@ -45,20 +45,20 @@
             --bg-card-hover: #334155;     /* Card hover */
             --bg-light: #f8fafc;          /* Light background */
             --bg-white: #ffffff;          /* Pure white */
-            
+
             /* Enhanced Text Colors */
             --text-primary: #f8fafc;      /* Light slate */
             --text-secondary: #cbd5e1;    /* Medium gray */
             --text-muted: #94a3b8;        /* Muted gray */
             --text-inverse: #1e293b;      /* Dark text for light backgrounds */
             --text-white: #ffffff;        /* Pure white text */
-            
+
             /* Enhanced Border & Accent Colors */
             --border-color: #475569;      /* Slate border */
             --border-light: #e2e8f0;      /* Light border */
             --border-accent: #3b82f6;     /* Accent border */
             --border-navy: #334155;       /* Navy border */
-            
+
             /* Enhanced Shadows & Effects */
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -66,7 +66,7 @@
             --shadow-navy: 0 4px 6px rgba(30, 41, 59, 0.2);
             --glow: 0 0 20px rgba(59, 130, 246, 0.3);
             --glow-hover: 0 0 30px rgba(59, 130, 246, 0.5);
-            
+
             /* Professional Typography */
             --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             --text-xs: 0.75rem;    /* 12px */
@@ -81,7 +81,7 @@
             --font-semibold: 600;
             --font-bold: 700;
             --leading-normal: 1.5;
-            
+
             /* Enhanced Layout & Spacing */
             --space-1: 0.25rem;    /* 4px */
             --space-2: 0.5rem;     /* 8px */
@@ -92,13 +92,13 @@
             --space-8: 2rem;       /* 32px */
             --space-10: 2.5rem;    /* 40px */
             --space-12: 3rem;      /* 48px */
-            
+
             /* Enhanced Layout Dimensions */
             --button-border-radius: 12px;
             --card-border-radius: 16px;
             --input-border-radius: 8px;
             --sidebar-width: 280px;
-            
+
             /* Professional Transitions */
             --transition-fast: 0.15s ease;
             --transition-normal: 0.2s ease;
@@ -106,7 +106,7 @@
         }
 
         body {
-            background: 
+            background:
                 linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%),
                 radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 80% 20%, rgba(30, 41, 59, 0.08) 0%, transparent 50%);
@@ -115,7 +115,7 @@
             min-height: 100vh;
             position: relative;
         }
-        
+
         /* Subtle texture overlay for professional depth */
         body::before {
             content: '';
@@ -124,7 +124,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 1px 1px, rgba(59, 130, 246, 0.02) 1px, transparent 0);
             background-size: 24px 24px;
             pointer-events: none;
@@ -138,7 +138,7 @@
             left: 0;
             height: 100vh;
             width: var(--sidebar-width);
-            background: 
+            background:
                 linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%),
                 linear-gradient(45deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
             border-right: 1px solid var(--border-navy);
@@ -154,14 +154,14 @@
             padding: var(--space-10) var(--space-6);
             text-align: center;
             border-bottom: 1px solid var(--border-navy);
-            background: 
+            background:
                 linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%),
                 linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
             flex-shrink: 0;
             position: relative;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-        
+
         /* Logo glow effect */
         .sidebar .logo::after {
             content: '';
@@ -173,7 +173,7 @@
             background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
             opacity: 0.6;
         }
-        
+
         .sidebar .logo h4 {
             color: var(--text-primary);
             margin: var(--space-3) 0 0 0;
@@ -212,7 +212,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         /* Navigation link hover effects */
         .sidebar .nav-links li a::before {
             content: '';
@@ -229,29 +229,29 @@
 
         .sidebar .nav-links li a:hover,
         .sidebar .nav-links li a.active {
-            background: 
+            background:
                 linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(51, 65, 85, 0.8) 100%),
                 linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
             color: var(--text-white);
             transform: translateX(12px);
             box-shadow: var(--shadow-navy), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-        
+
         .sidebar .nav-links li a:hover::before,
         .sidebar .nav-links li a.active::before {
             transform: scaleY(1);
             transform-origin: top;
         }
-        
+
         .sidebar .nav-links li a.active {
-            background: 
+            background:
                 linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%),
                 linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
             color: var(--text-white);
             box-shadow: var(--glow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             font-weight: var(--font-semibold);
         }
-        
+
         /* Navigation Section Titles */
         .sidebar .nav-links .nav-section-title {
             color: var(--text-muted);
@@ -264,11 +264,11 @@
             border-bottom: 1px solid var(--border-light);
             list-style: none;
         }
-        
+
         .sidebar .nav-links .nav-section-title:first-of-type {
             margin-top: var(--space-2);
         }
-        
+
         /* Navigation Icons */
         .sidebar .nav-links li a .icon {
             margin-right: var(--space-3);
@@ -282,7 +282,7 @@
             margin-left: var(--sidebar-width);
             padding: 0;
             min-height: 100vh;
-            background: 
+            background:
                 linear-gradient(135deg, var(--bg-light) 0%, rgba(248, 250, 252, 0.95) 100%),
                 radial-gradient(circle at 30% 70%, rgba(30, 41, 59, 0.03) 0%, transparent 50%);
             display: flex;
@@ -292,7 +292,7 @@
         }
 
         .top-navbar {
-            background: 
+            background:
                 linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%),
                 linear-gradient(45deg, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
             padding: var(--space-6) var(--space-8);
@@ -313,7 +313,7 @@
         }
 
         .stats-card {
-            background: 
+            background:
                 linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%),
                 linear-gradient(45deg, rgba(30, 41, 59, 0.02) 0%, transparent 50%);
             border-radius: var(--card-border-radius);
@@ -331,7 +331,7 @@
             justify-content: center;
             backdrop-filter: blur(8px);
         }
-        
+
         /* Stats card glow effect */
         .stats-card::before {
             content: '';
@@ -344,7 +344,7 @@
             opacity: 0;
             transition: var(--transition-normal);
         }
-        
+
         .stats-card:hover::before {
             opacity: 0.6;
         }
@@ -353,7 +353,7 @@
             transform: translateY(-4px) scale(1.01);
             box-shadow: var(--shadow-lg), 0 0 20px rgba(59, 130, 246, 0.15);
             border-color: var(--accent-color);
-            background: 
+            background:
                 linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%),
                 linear-gradient(45deg, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
         }
@@ -380,7 +380,7 @@
         }
 
         .welcome-card, .info-card {
-            background: 
+            background:
                 linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%),
                 linear-gradient(45deg, rgba(30, 41, 59, 0.02) 0%, transparent 50%);
             border-radius: var(--card-border-radius);
@@ -393,17 +393,17 @@
             backdrop-filter: blur(8px);
             overflow: hidden;
         }
-        
+
         /* Welcome card special styling */
         .welcome-card {
-            background: 
+            background:
                 linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%),
                 linear-gradient(45deg, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
             color: var(--text-white);
             border: 1px solid var(--border-navy);
             box-shadow: var(--shadow-lg), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-        
+
         .welcome-card::before {
             content: '';
             position: absolute;
@@ -414,7 +414,7 @@
             background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
             opacity: 0.8;
         }
-        
+
         .welcome-card:hover, .info-card:hover {
             box-shadow: var(--shadow-xl), 0 0 25px rgba(59, 130, 246, 0.2);
             border-color: var(--accent-color);
@@ -427,7 +427,7 @@
             margin-bottom: var(--space-4);
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-        
+
         .info-card h3 {
             color: var(--text-inverse);
             text-shadow: none;
@@ -461,7 +461,7 @@
             border-bottom: 1px solid var(--border-light);
             list-style: none;
         }
-        
+
         .sidebar .nav-links .nav-section-title:first-of-type {
             margin-top: var(--space-2);
         }
@@ -673,7 +673,7 @@
                 <span class="icon">📊</span>
                 <span>Dashboard</span>
             </a></li>
-            
+
             <!-- CATALOG MANAGEMENT -->
             <li class="nav-section-title">CATALOG</li>
             <li><a href="{{ route('admin.categories.index') }}">
@@ -704,14 +704,14 @@
                 <span class="icon">⭐</span>
                 <span>Reviews</span>
             </a></li>
-            
+
             <!-- CONTENT MANAGEMENT -->
             <li class="nav-section-title">CONTENT</li>
             <li><a href="{{ route('admin.sliders.index') }}">
                 <span class="icon">🖼️</span>
                 <span>Sliders</span>
             </a></li>
-            
+
         <!-- ORDER MANAGEMENT -->
         <li class="nav-section-title">ORDERS</li>
         <li><a href="{{ route('admin.orders.index') }}">
@@ -722,7 +722,35 @@
             <span class="icon">📋</span>
             <span>Order Items</span>
         </a></li>
-            
+        <li class="nav-item">
+  <a
+    class="nav-link d-flex justify-content-between align-items-center"
+    data-bs-toggle="collapse"
+    data-bs-target="#adminSettings"
+    role="button"
+    aria-expanded="false"
+    aria-controls="adminSettings"
+  >
+    <span><span class="me-2">🏷️</span> SettingAdmin</span>
+    <span class="small">▸</span>
+  </a>
+
+  <div class="collapse" id="adminSettings">
+    <ul class="nav flex-column ms-3">
+      <li class="nav-item">
+        <a href="{{ route('permissions.index') }}" class="nav-link">Permissions</a>
+      </li>
+      <li class="nav-item">
+        <a href="{{route('roles.index')}}" class="nav-link">Roles</a>
+      </li>
+      <li class="nav-item">
+        <a href="{{route('users.index')}}" class="nav-link">Users</a>
+      </li>
+    </ul>
+  </div>
+</li>
+
+
         <!-- INVENTORY MANAGEMENT -->
         <li class="nav-section-title">INVENTORY</li>
         <li><a href="{{ route('admin.warehouses.index') }}">
@@ -733,14 +761,14 @@
             <span class="icon">📦</span>
             <span>Inventory</span>
         </a></li>
-            
+
             <!-- FINANCIAL -->
             <li class="nav-section-title">FINANCIAL</li>
             <li><a href="{{ route('admin.transactions.index') }}">
                 <span class="icon">💳</span>
                 <span>Transactions</span>
             </a></li>
-            
+
         </ul>
     </div>
 
@@ -785,56 +813,8 @@
     <script src="{{ asset('jsd/apexcharts/apexcharts.js') }}"></script>
     <script src="{{ asset('jsd/main.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    
-    <!-- Fix modal backdrop issues globally -->
-    <script>
-        // Global function to clear modal backdrops
-        function clearModalBackdrops() {
-            document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
-                backdrop.remove();
-            });
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
-            document.body.style.paddingRight = '';
-            console.log('Modal backdrops cleared');
-        }
-        
-        // Immediate backdrop cleanup
-        document.addEventListener('DOMContentLoaded', function() {
-            // Clear on page load
-            clearModalBackdrops();
-            
-            // Clear on window focus (when returning to tab)
-            window.addEventListener('focus', clearModalBackdrops);
-            
-            // Clear on page visibility change
-            document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) {
-                    clearModalBackdrops();
-                }
-            });
-            
-            // Emergency clear on any click if backdrop exists but no modal is open
-            document.addEventListener('click', function(e) {
-                setTimeout(function() {
-                    if (!document.querySelector('.modal.show') && document.querySelector('.modal-backdrop')) {
-                        clearModalBackdrops();
-                    }
-                }, 100);
-            });
-        });
-    </script>
 
-    <script>
-        // Auto dismiss alerts after 5 seconds
-        setTimeout(function() {
-            var alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                var bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
-    </script>
+       @extends('components.script')
 </body>
 
 </html>

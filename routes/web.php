@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +18,36 @@ use App\Http\Controllers\Frontend\HomeController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+ Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+
+
+
+
+     Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
+     Route::get('/permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
+     Route::post('/permissions', [PermissionController::class, 'store'])->name('permissions.store');
+     Route::post('/permissions/{id}', [PermissionController::class, 'update'])->name('permissions.update');
+     Route::delete('/permissions', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+
+  Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+
+     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+     Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+     Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
+     Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
+     Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+
+      Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users', [userController::class, 'destroy'])->name('users.destroy');
+        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+
+
 Route::get('/product', [DashboardController::class, 'product'])->name('admin.product');
+Route::get('/addproduct', [DashboardController::class, 'add_product'])->name('admin.create');
+Route::get('/editproduct', [DashboardController::class, 'edit_product'])->name('admin.edit');
 
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -39,7 +71,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Admin Routes (protected by auth and admin middleware)
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    
+
     // Categories Management
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class)->names([
         'index' => 'admin.categories.index',
@@ -50,87 +82,87 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         'update' => 'admin.categories.update',
         'destroy' => 'admin.categories.destroy'
     ]);
-    
+
     // Additional Categories Routes
     Route::post('categories/bulk-action', [App\Http\Controllers\Admin\CategoryController::class, 'bulkActions'])->name('admin.categories.bulk');
     Route::post('categories/{category}/toggle-status', [App\Http\Controllers\Admin\CategoryController::class, 'toggleStatus'])->name('admin.categories.toggle');
     Route::post('categories/reorder', [App\Http\Controllers\Admin\CategoryController::class, 'reorder'])->name('admin.categories.reorder');
-    
+
            // Contact integration routes for Categories
            Route::get('categories/{category}/contacts', [App\Http\Controllers\Admin\CategoryController::class, 'contacts'])->name('admin.categories.contacts');
            Route::post('categories/{category}/contacts', [App\Http\Controllers\Admin\CategoryController::class, 'storeContact'])->name('admin.categories.contacts.store');
-           
+
            // ENHANCED CATEGORY CONNECTIONS - Complete CRUD Integration
            Route::get('categories/{category}/products', [App\Http\Controllers\Admin\CategoryController::class, 'products'])->name('admin.categories.products');
            Route::get('categories/{category}/brands', [App\Http\Controllers\Admin\CategoryController::class, 'brands'])->name('admin.categories.brands');
            Route::get('categories/{category}/reviews', [App\Http\Controllers\Admin\CategoryController::class, 'reviews'])->name('admin.categories.reviews');
            Route::get('categories/{category}/analytics', [App\Http\Controllers\Admin\CategoryController::class, 'analytics'])->name('admin.categories.analytics');
-           
+
            // Brands Management - Complete CRUD with Connections
            Route::resource('brands', App\Http\Controllers\Admin\BrandController::class)->names([
                'index' => 'admin.brands.index',
-               'create' => 'admin.brands.create', 
+               'create' => 'admin.brands.create',
                'store' => 'admin.brands.store',
                'show' => 'admin.brands.show',
                'edit' => 'admin.brands.edit',
                'update' => 'admin.brands.update',
                'destroy' => 'admin.brands.destroy'
            ]);
-           
+
            // Additional Brands Routes
            Route::post('brands/bulk-action', [App\Http\Controllers\Admin\BrandController::class, 'bulkActions'])->name('admin.brands.bulk');
            Route::post('brands/{brand}/toggle-status', [App\Http\Controllers\Admin\BrandController::class, 'toggleStatus'])->name('admin.brands.toggle');
-           
+
            // Brand Connection Routes
            Route::get('brands/{brand}/products', [App\Http\Controllers\Admin\BrandController::class, 'products'])->name('admin.brands.products');
            Route::get('brands/{brand}/categories', [App\Http\Controllers\Admin\BrandController::class, 'categories'])->name('admin.brands.categories');
            Route::get('brands/{brand}/contacts', [App\Http\Controllers\Admin\BrandController::class, 'contacts'])->name('admin.brands.contacts');
            Route::post('brands/{brand}/contacts', [App\Http\Controllers\Admin\BrandController::class, 'storeContact'])->name('admin.brands.contacts.store');
            Route::get('brands/{brand}/analytics', [App\Http\Controllers\Admin\BrandController::class, 'analytics'])->name('admin.brands.analytics');
-           
+
            // Products Management - Complete CRUD with Connections
            Route::resource('products', App\Http\Controllers\Admin\ProductController::class)->names([
                'index' => 'admin.products.index',
-               'create' => 'admin.products.create', 
+               'create' => 'admin.products.create',
                'store' => 'admin.products.store',
                'show' => 'admin.products.show',
                'edit' => 'admin.products.edit',
                'update' => 'admin.products.update',
                'destroy' => 'admin.products.destroy'
            ]);
-           
+
            // Additional Products Routes
            Route::post('products/bulk-action', [App\Http\Controllers\Admin\ProductController::class, 'bulkActions'])->name('admin.products.bulk');
            Route::post('products/{product}/toggle-status', [App\Http\Controllers\Admin\ProductController::class, 'toggleStatus'])->name('admin.products.toggle');
            Route::post('products/{product}/toggle-featured', [App\Http\Controllers\Admin\ProductController::class, 'toggleFeatured'])->name('admin.products.featured');
-           
+
            // Product Connection Routes
            Route::get('products/{product}/reviews', [App\Http\Controllers\Admin\ProductController::class, 'reviews'])->name('admin.products.reviews');
            Route::get('products/{product}/orders', [App\Http\Controllers\Admin\ProductController::class, 'orders'])->name('admin.products.orders');
            Route::get('products/{product}/inventory', [App\Http\Controllers\Admin\ProductController::class, 'inventory'])->name('admin.products.inventory');
            Route::get('products/{product}/analytics', [App\Http\Controllers\Admin\ProductController::class, 'analytics'])->name('admin.products.analytics');
-           
+
            // Attributes Management - Complete CRUD with Connections
            Route::resource('attributes', App\Http\Controllers\Admin\AttributeController::class)->names([
                'index' => 'admin.attributes.index',
-               'create' => 'admin.attributes.create', 
+               'create' => 'admin.attributes.create',
                'store' => 'admin.attributes.store',
                'show' => 'admin.attributes.show',
                'edit' => 'admin.attributes.edit',
                'update' => 'admin.attributes.update',
                'destroy' => 'admin.attributes.destroy'
            ]);
-           
+
            // Additional Attributes Routes
            Route::post('attributes/bulk-action', [App\Http\Controllers\Admin\AttributeController::class, 'bulkActions'])->name('admin.attributes.bulk');
-           
+
            // Attribute Connection Routes
            Route::get('attributes/{attribute}/values', [App\Http\Controllers\Admin\AttributeController::class, 'values'])->name('admin.attributes.values');
            Route::get('attributes/{attribute}/products', [App\Http\Controllers\Admin\AttributeController::class, 'products'])->name('admin.attributes.products');
            Route::get('attributes/{attribute}/contacts', [App\Http\Controllers\Admin\AttributeController::class, 'contacts'])->name('admin.attributes.contacts');
            Route::post('attributes/{attribute}/contacts', [App\Http\Controllers\Admin\AttributeController::class, 'storeContact'])->name('admin.attributes.contacts.store');
            Route::get('attributes/{attribute}/analytics', [App\Http\Controllers\Admin\AttributeController::class, 'analytics'])->name('admin.attributes.analytics');
-           
+
            // Attribute Values Management - Complete CRUD System
            Route::resource('attributeValues', App\Http\Controllers\Admin\AttributeValuesController::class)->names([
                'index' => 'admin.attributeValues.index',
@@ -141,12 +173,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
                'update' => 'admin.attributeValues.update',
                'destroy' => 'admin.attributeValues.destroy'
            ]);
-           
+
            // Additional Attribute Values Routes
            Route::post('attributeValues/bulk-action', [App\Http\Controllers\Admin\AttributeValuesController::class, 'bulkActions'])->name('admin.attributeValues.bulk');
            Route::post('attributeValues/bulk-import', [App\Http\Controllers\Admin\AttributeValuesController::class, 'bulkImport'])->name('admin.attributeValues.import');
            Route::get('attributeValues/{attributeValue}/products', [App\Http\Controllers\Admin\AttributeValuesController::class, 'products'])->name('admin.attributeValues.products');
-           
+
            // Product Attributes Management - Complete CRUD System
            Route::resource('productAttributes', App\Http\Controllers\Admin\ProductAttributesController::class)->names([
                'index' => 'admin.productAttributes.index',
@@ -157,12 +189,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
                'update' => 'admin.productAttributes.update',
                'destroy' => 'admin.productAttributes.destroy'
            ]);
-           
+
            // Additional Product Attributes Routes
            Route::post('productAttributes/bulk-action', [App\Http\Controllers\Admin\ProductAttributesController::class, 'bulkActions'])->name('admin.productAttributes.bulk');
            Route::post('productAttributes/bulk-assign', [App\Http\Controllers\Admin\ProductAttributesController::class, 'bulkAssign'])->name('admin.productAttributes.bulkAssign');
            Route::get('productAttributes/analytics/dashboard', [App\Http\Controllers\Admin\ProductAttributesController::class, 'analytics'])->name('admin.productAttributes.analytics');
-           
+
            // Reviews Management - Complete CRUD System
            Route::resource('reviews', App\Http\Controllers\Admin\ReviewsController::class)->names([
                'index' => 'admin.reviews.index',
@@ -173,14 +205,14 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
                'update' => 'admin.reviews.update',
                'destroy' => 'admin.reviews.destroy'
            ]);
-           
+
            // Additional Reviews Routes
            Route::post('reviews/bulk-action', [App\Http\Controllers\Admin\ReviewsController::class, 'bulkActions'])->name('admin.reviews.bulk');
            Route::patch('reviews/{review}/toggle-approval', [App\Http\Controllers\Admin\ReviewsController::class, 'toggleApproval'])->name('admin.reviews.toggleApproval');
            Route::get('reviews/product/{product}', [App\Http\Controllers\Admin\ReviewsController::class, 'productReviews'])->name('admin.reviews.product');
            Route::get('reviews/user/{user}', [App\Http\Controllers\Admin\ReviewsController::class, 'userReviews'])->name('admin.reviews.user');
            Route::get('reviews/analytics/dashboard', [App\Http\Controllers\Admin\ReviewsController::class, 'analytics'])->name('admin.reviews.analytics');
-           
+
            // Sliders Management - Complete CRUD System
            Route::resource('sliders', App\Http\Controllers\Admin\SlidersController::class)->names([
                'index' => 'admin.sliders.index',
@@ -191,13 +223,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
                'update' => 'admin.sliders.update',
                'destroy' => 'admin.sliders.destroy'
            ]);
-           
+
            // Additional Sliders Routes
            Route::post('sliders/bulk-action', [App\Http\Controllers\Admin\SlidersController::class, 'bulkActions'])->name('admin.sliders.bulk');
            Route::patch('sliders/{slider}/toggle-status', [App\Http\Controllers\Admin\SlidersController::class, 'toggleStatus'])->name('admin.sliders.toggleStatus');
            Route::post('sliders/reorder', [App\Http\Controllers\Admin\SlidersController::class, 'reorder'])->name('admin.sliders.reorder');
            Route::get('sliders/analytics/dashboard', [App\Http\Controllers\Admin\SlidersController::class, 'analytics'])->name('admin.sliders.analytics');
-           
+
            // Orders Management - Complete CRUD System
            Route::resource('orders', App\Http\Controllers\Admin\OrdersController::class)->names([
                'index' => 'admin.orders.index',
@@ -208,7 +240,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
                'update' => 'admin.orders.update',
                'destroy' => 'admin.orders.destroy'
            ]);
-           
+
     // Additional Orders Routes
     Route::post('orders/bulk-action', [App\Http\Controllers\Admin\OrdersController::class, 'bulkActions'])->name('admin.orders.bulk');
     Route::patch('orders/{order}/update-status', [App\Http\Controllers\Admin\OrdersController::class, 'updateStatus'])->name('admin.orders.updateStatus');
@@ -225,7 +257,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         'update' => 'admin.orderItems.update',
         'destroy' => 'admin.orderItems.destroy'
     ]);
-    
+
     // Additional Order Items Routes
     Route::post('orderItems/bulk-action', [App\Http\Controllers\Admin\OrderItemsController::class, 'bulkActions'])->name('admin.orderItems.bulk');
     Route::get('orderItems/analytics/dashboard', [App\Http\Controllers\Admin\OrderItemsController::class, 'analytics'])->name('admin.orderItems.analytics');
@@ -242,7 +274,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         'update' => 'admin.warehouses.update',
         'destroy' => 'admin.warehouses.destroy'
     ]);
-    
+
     // Additional Warehouses Routes
     Route::post('warehouses/bulk-action', [App\Http\Controllers\Admin\WarehousesController::class, 'bulkActions'])->name('admin.warehouses.bulk');
     Route::patch('warehouses/{warehouse}/toggle-status', [App\Http\Controllers\Admin\WarehousesController::class, 'toggleStatus'])->name('admin.warehouses.toggleStatus');
@@ -260,7 +292,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         'update' => 'admin.inventory.update',
         'destroy' => 'admin.inventory.destroy'
     ]);
-    
+
     // Additional Inventory Routes
     Route::post('inventory/bulk-action', [App\Http\Controllers\Admin\InventoryController::class, 'bulkActions'])->name('admin.inventory.bulk');
     Route::post('inventory/{inventory}/adjust-quantity', [App\Http\Controllers\Admin\InventoryController::class, 'adjustQuantity'])->name('admin.inventory.adjustQuantity');
@@ -277,12 +309,14 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         'update' => 'admin.transactions.update',
         'destroy' => 'admin.transactions.destroy'
     ]);
-    
+
     // Additional Transactions Routes
     Route::post('transactions/bulk-action', [App\Http\Controllers\Admin\TransactionsController::class, 'bulkActions'])->name('admin.transactions.bulk');
     Route::patch('transactions/{transaction}/update-status', [App\Http\Controllers\Admin\TransactionsController::class, 'updateStatus'])->name('admin.transactions.updateStatus');
     Route::post('transactions/{transaction}/refund', [App\Http\Controllers\Admin\TransactionsController::class, 'processRefund'])->name('admin.transactions.refund');
     Route::get('transactions/analytics/dashboard', [App\Http\Controllers\Admin\TransactionsController::class, 'analytics'])->name('admin.transactions.analytics');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    // Add more admin routes here
 });
 
 Route::get('/listing-grid-2-full', function() {
@@ -295,10 +329,10 @@ Route::get('/listing-grid-2-full', function() {
         ->orderBy('featured', 'desc')
         ->orderBy('created_at', 'desc')
         ->paginate(12);
-    
+
     $categories = \App\Models\Category::active()->rootCategories()->ordered()->get();
     $brands = \App\Models\Brand::active()->get();
-    
+
     return view('listing-grid-2-full', compact('products', 'categories', 'brands'));
 });
 
@@ -310,21 +344,21 @@ Route::get('/listing-grid-1-full', function() {
     // Women's Collection - Dynamic (including subcategories)
     $womenCategory = \App\Models\Category::where('name', 'Women')->first();
     $categoryIds = [$womenCategory->id];
-    
+
     // Get all subcategories of Women
     $subcategories = \App\Models\Category::where('parent_id', $womenCategory->id)->pluck('id');
     $categoryIds = array_merge($categoryIds, $subcategories->toArray());
-    
+
     $products = \App\Models\Product::active()
         ->whereIn('category_id', $categoryIds)
         ->with(['category', 'brand'])
         ->orderBy('featured', 'desc')
         ->orderBy('created_at', 'desc')
         ->paginate(12);
-    
+
     $categories = \App\Models\Category::active()->rootCategories()->ordered()->get();
     $brands = \App\Models\Brand::active()->get();
-    
+
     return view('listing-grid-1-full', compact('products', 'categories', 'brands'));
 });
 
@@ -332,21 +366,21 @@ Route::get('/listing-grid-3', function() {
     // Men's Collection - Dynamic (including subcategories)
     $menCategory = \App\Models\Category::where('name', 'Men')->first();
     $categoryIds = [$menCategory->id];
-    
+
     // Get all subcategories of Men
     $subcategories = \App\Models\Category::where('parent_id', $menCategory->id)->pluck('id');
     $categoryIds = array_merge($categoryIds, $subcategories->toArray());
-    
+
     $products = \App\Models\Product::active()
         ->whereIn('category_id', $categoryIds)
         ->with(['category', 'brand'])
         ->orderBy('featured', 'desc')
         ->orderBy('created_at', 'desc')
         ->paginate(12);
-    
+
     $categories = \App\Models\Category::active()->rootCategories()->ordered()->get();
     $brands = \App\Models\Brand::active()->get();
-    
+
     return view('listing-grid-3', compact('products', 'categories', 'brands'));
 })->name('listing.grid3');
 
@@ -360,10 +394,10 @@ Route::get('/girls', function() {
         ->orderBy('featured', 'desc')
         ->orderBy('created_at', 'desc')
         ->paginate(12);
-    
+
     $categories = \App\Models\Category::active()->rootCategories()->ordered()->get();
     $brands = \App\Models\Brand::active()->get();
-    
+
     return view('girls', compact('products', 'categories', 'brands'));
 });
 
