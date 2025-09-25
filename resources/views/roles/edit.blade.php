@@ -1,4 +1,4 @@
-@extends('admin.layouts.dashboard')
+@extends('admin.dashboard')
 
 @section('content')
 
@@ -19,7 +19,7 @@
 
                     <form action="{{ route('roles.update', $role->id) }}" method="POST">
                         @csrf
-                     
+
 
                         <!-- Name Input -->
                         <div class="mb-3">

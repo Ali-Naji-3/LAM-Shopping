@@ -1,4 +1,4 @@
-@extends('admin.layouts.dashboard')
+@extends('admin.dashboard')
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center m-3">
@@ -19,7 +19,7 @@
 
                     <form action="{{ route('permissions.update', $permission->id) }}" method="POST">
                         @csrf
-                      
+
 
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>

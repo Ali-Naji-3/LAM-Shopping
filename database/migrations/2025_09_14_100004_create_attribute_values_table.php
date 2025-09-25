@@ -6,20 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('attribute_values', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('attribute_id')->constrained('attributes')->cascadeOnDelete();
-            $table->string('value');
-            $table->timestamps();
+            $table->id(); // BIGINT PK, auto_increment
+            $table->unsignedBigInteger('attribute_id'); // BIGINT FK → attributes.id, not null
+            $table->string('value', 255); // VARCHAR(255), not null
+            $table->timestamps(); // created_at, updated_at TIMESTAMP, nullable
+
+            // Foreign key constraint
+            $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
+
+            // Indexes for performance
+            $table->index('attribute_id');
+            $table->index(['attribute_id', 'value']);
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('attribute_values');
     }
 };
-
-

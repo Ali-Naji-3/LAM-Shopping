@@ -10,11 +10,11 @@
     <title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
 
     <!-- Favicons-->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="{{ asset('img/apple-touch-icon-57x57-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('img/apple-touch-icon-72x72-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('img/apple-touch-icon-114x114-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('img/apple-touch-icon-144x144-precomposed.png') }}">
 	
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +22,14 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- BASE CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 	<!-- SPECIFIC CSS -->
-    <link href="css/product_page.css" rel="stylesheet">
+    <link href="{{ asset('css/product_page.css') }}" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
-    <link href="css/custom.css" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
 </head>
 
@@ -44,7 +44,7 @@
 				<div class="row small-gutters">
 					<div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
 						<div id="logo">
-							<a href="{{ url('/') }}"><img src="img/logo.svg" alt="" width="100" height="35"></a>
+							<a href="{{ url('/') }}"><img src="{{ asset('img/logo.svg') }}" alt="" width="100" height="35"></a>
 						</div>
 					</div>
 					<nav class="col-xl-6 col-lg-7">
@@ -58,7 +58,7 @@
 						<!-- Mobile menu button -->
 						<div class="main-menu">
 							<div id="header_menu">
-								<a href="{{ url('/') }}"><img src="img/logo_black.svg" alt="" width="100" height="35"></a>
+								<a href="{{ url('/') }}"><img src="{{ asset('img/logo_black.svg') }}" alt="" width="100" height="35"></a>
 								<a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
 							</div>
 							<ul>
@@ -134,14 +134,14 @@
 										<ul>
 											<li>
 												<a href="{{ url('product-detail-2') }}">
-													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/1.jpg" alt="" width="50" height="50" class="lazy"></figure>
+													<figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/thumb/1.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Air x Fear</span>$90.00</strong>
 												</a>
 												<a href="#0" class="action"><i class="ti-trash"></i></a>
 											</li>
 											<li>
 												<a href="{{ url('product-detail-2') }}">
-													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/2.jpg" alt="" width="50" height="50" class="lazy"></figure>
+													<figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/thumb/2.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Okwahn II</span>$110.00</strong>
 												</a>
 												<a href="0" class="action"><i class="ti-trash"></i></a>
@@ -218,24 +218,32 @@
 	                <div class="all">
 	                    <div class="slider">
 	                        <div class="owl-carousel owl-theme main">
-	                            <div style="background-image: url(img/products/shoes/1.jpg);" class="item-box"></div>
-	                            <div style="background-image: url(img/products/shoes/2.jpg);" class="item-box"></div>
-	                            <div style="background-image: url(img/products/shoes/3.jpg);" class="item-box"></div>
-	                            <div style="background-image: url(img/products/shoes/4.jpg);" class="item-box"></div>
-	                            <div style="background-image: url(img/products/shoes/5.jpg);" class="item-box"></div>
-	                            <div style="background-image: url(img/products/shoes/6.jpg);" class="item-box"></div>
+	                            @if($product->image)
+	                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item-box"></div>
+	                            @else
+	                                <div style="background-image: url(img/products/product_placeholder_square_medium.jpg);" class="item-box"></div>
+	                            @endif
+	                            @if($product->images && is_array($product->images))
+	                                @foreach($product->images as $image)
+	                                    <div style="background-image: url({{ asset('storage/' . $image) }});" class="item-box"></div>
+	                                @endforeach
+	                            @endif
 	                        </div>
 	                        <div class="left nonl"><i class="ti-angle-left"></i></div>
 	                        <div class="right"><i class="ti-angle-right"></i></div>
 	                    </div>
 	                    <div class="slider-two">
 	                        <div class="owl-carousel owl-theme thumbs">
-	                            <div style="background-image: url(img/products/shoes/1.jpg);" class="item active"></div>
-	                            <div style="background-image: url(img/products/shoes/2.jpg);" class="item"></div>
-	                            <div style="background-image: url(img/products/shoes/3.jpg);" class="item"></div>
-	                            <div style="background-image: url(img/products/shoes/4.jpg);" class="item"></div>
-	                            <div style="background-image: url(img/products/shoes/5.jpg);" class="item"></div>
-	                            <div style="background-image: url(img/products/shoes/6.jpg);" class="item"></div>
+	                            @if($product->image)
+	                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item active"></div>
+	                            @else
+	                                <div style="background-image: url(img/products/product_placeholder_square_medium.jpg);" class="item active"></div>
+	                            @endif
+	                            @if($product->images && is_array($product->images))
+	                                @foreach($product->images as $image)
+	                                    <div style="background-image: url({{ asset('storage/' . $image) }});" class="item"></div>
+	                                @endforeach
+	                            @endif
 	                        </div>
 	                        <div class="left-t nonl-t"></div>
 	                        <div class="right-t"></div>
@@ -245,16 +253,25 @@
 	            <div class="col-md-6">
 	                <div class="breadcrumbs">
 	                    <ul>
-	                        <li><a href="#">Home</a></li>
-	                        <li><a href="#">Category</a></li>
-	                        <li>Page active</li>
+	                        <li><a href="{{ url('/') }}">Home</a></li>
+	                        <li><a href="{{ $product->category ? url('/category/' . $product->category->slug) : '#' }}">{{ $product->category ? $product->category->name : 'Category' }}</a></li>
+	                        <li>{{ $product->name }}</li>
 	                    </ul>
 	                </div>
 	                <!-- /page_header -->
 	                <div class="prod_info">
-	                    <h1>Armor Air X Fear</h1>
-	                    <span class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i><em>4 reviews</em></span>
-	                    <p><small>SKU: MTKRY-001</small><br>Sed ex labitur adolescens scriptorem. Te saepe verear tibique sed. Et wisi ridens vix, lorem iudico blandit mel cu. Ex vel sint zril oportere, amet wisi aperiri te cum.</p>
+	                    <h1>{{ $product->name }}</h1>
+	                    <span class="rating">
+	                        @for($i = 1; $i <= 5; $i++)
+	                            @if($i <= floor($product->average_rating))
+	                                <i class="icon-star voted"></i>
+	                            @else
+	                                <i class="icon-star"></i>
+	                            @endif
+	                        @endfor
+	                        <em>{{ $product->total_reviews }} reviews</em>
+	                    </span>
+	                    <p><small>SKU: {{ $product->sku }}</small><br>{{ $product->short_description ?: $product->description }}</p>
 	                    <div class="prod_options">
 	                        <div class="row">
 	                            <label class="col-xl-5 col-lg-5  col-md-6 col-6 pt-0"><strong>Color</strong></label>
@@ -291,7 +308,18 @@
 	                    </div>
 	                    <div class="row">
 	                        <div class="col-lg-5 col-md-6">
-	                            <div class="price_main"><span class="new_price">$148.00</span><span class="percentage">-20%</span> <span class="old_price">$160.00</span></div>
+	                            <div class="price_main">
+	                                @if($product->sale_price && $product->sale_price < $product->regular_price)
+	                                    @php
+	                                        $discount = round((($product->regular_price - $product->sale_price) / $product->regular_price) * 100);
+	                                    @endphp
+	                                    <span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
+	                                    <span class="percentage">-{{ $discount }}%</span>
+	                                    <span class="old_price">${{ number_format($product->regular_price, 2) }}</span>
+	                                @else
+	                                    <span class="new_price">${{ number_format($product->regular_price, 2) }}</span>
+	                                @endif
+	                            </div>
 	                        </div>
 	                        <div class="col-lg-4 col-md-6">
 	                            <div class="btn_add_to_cart"><a href="#0" class="btn_1">Add to Cart</a></div>
@@ -349,31 +377,27 @@
 	                                    <p>Vis ei ipsum conclusionemque. Te enim suscipit recusabo mea, ne vis mazim aliquando, everti insolens at sit. Cu vel modo unum quaestio, in vide dicta has. Ut his laudem explicari adversarium, nisl <strong>laboramus hendrerit</strong> te his, alia lobortis vis ea.</p>
 	                                    <p>Perfecto eleifend sea no, cu audire voluptatibus eam. An alii praesent sit, nobis numquam principes ea eos, cu autem constituto suscipiantur eam. Ex graeci elaboraret pro. Mei te omnis tantas, nobis viderer vivendo ex has.</p>
 	                                </div>
-	                                <div class="col-lg-5">
-	                                    <h3>Specifications</h3>
-	                                    <div class="table-responsive">
-	                                        <table class="table table-sm table-striped">
-	                                            <tbody>
-	                                                <tr>
-	                                                    <td><strong>Color</strong></td>
-	                                                    <td>Blue, Purple</td>
-	                                                </tr>
-	                                                <tr>
-	                                                    <td><strong>Size</strong></td>
-	                                                    <td>150x100x100</td>
-	                                                </tr>
-	                                                <tr>
-	                                                    <td><strong>Weight</strong></td>
-	                                                    <td>0.6kg</td>
-	                                                </tr>
-	                                                <tr>
-	                                                    <td><strong>Manifacturer</strong></td>
-	                                                    <td>Manifacturer</td>
-	                                                </tr>
-	                                            </tbody>
-	                                        </table>
-	                                    </div>
-	                                    <!-- /table-responsive -->
+                                <div class="col-lg-5">
+                                    <h3>Specifications</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-striped">
+                                            <tbody>
+                                                @if($product->productAttributes && $product->productAttributes->count() > 0)
+                                                    @foreach($product->productAttributes as $productAttribute)
+                                                        <tr>
+                                                            <td><strong>{{ $productAttribute->attributeValue->attribute->name }}</strong></td>
+                                                            <td>{{ $productAttribute->attributeValue->value }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr>
+                                                        <td colspan="2" class="text-center text-muted">No specifications available</td>
+                                                    </tr>
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /table-responsive -->
 	                                </div>
 	                            </div>
 	                        </div>
@@ -456,20 +480,47 @@
 	            <p>Cum doctus civibus efficiantur in imperdiet deterruisset.</p>
 	        </div>
 	        <div class="owl-carousel owl-theme products_carousel">
+	            @forelse($relatedProducts as $relatedProduct)
 	            <div class="item">
 	                <div class="grid_item">
-	                    <span class="ribbon new">New</span>
+	                    @if($relatedProduct->sale_price && $relatedProduct->sale_price < $relatedProduct->regular_price)
+	                        @php
+	                            $discount = round((($relatedProduct->regular_price - $relatedProduct->sale_price) / $relatedProduct->regular_price) * 100);
+	                        @endphp
+	                        <span class="ribbon off">-{{ $discount }}%</span>
+	                    @elseif($relatedProduct->featured)
+	                        <span class="ribbon hot">Hot</span>
+	                    @elseif($relatedProduct->created_at->diffInDays() < 7)
+	                        <span class="ribbon new">New</span>
+	                    @endif
 	                    <figure>
-	                        <a href="{{ url('product-detail-2') }}">
-	                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/4.jpg" alt="">
+	                        <a href="{{ route('product.detail', $relatedProduct->slug) }}">
+	                            @if($relatedProduct->image)
+	                                <img class="owl-lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('storage/' . $relatedProduct->image) }}" alt="{{ $relatedProduct->name }}">
+	                            @else
+	                                <img class="owl-lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $relatedProduct->name }}">
+	                            @endif
 	                        </a>
 	                    </figure>
-	                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-	                    <a href="{{ url('product-detail-2') }}">
-	                        <h3>ACG React Terra</h3>
+	                    <div class="rating">
+	                        @for($i = 1; $i <= 5; $i++)
+	                            @if($i <= floor($relatedProduct->average_rating))
+	                                <i class="icon-star voted"></i>
+	                            @else
+	                                <i class="icon-star"></i>
+	                            @endif
+	                        @endfor
+	                    </div>
+	                    <a href="{{ route('product.detail', $relatedProduct->slug) }}">
+	                        <h3>{{ $relatedProduct->name }}</h3>
 	                    </a>
 	                    <div class="price_box">
-	                        <span class="new_price">$110.00</span>
+	                        @if($relatedProduct->sale_price && $relatedProduct->sale_price < $relatedProduct->regular_price)
+	                            <span class="new_price">${{ number_format($relatedProduct->sale_price, 2) }}</span>
+	                            <span class="old_price">${{ number_format($relatedProduct->regular_price, 2) }}</span>
+	                        @else
+	                            <span class="new_price">${{ number_format($relatedProduct->regular_price, 2) }}</span>
+	                        @endif
 	                    </div>
 	                    <ul>
 	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
@@ -480,104 +531,14 @@
 	                <!-- /grid_item -->
 	            </div>
 	            <!-- /item -->
-	            <div class="item">
-	                <div class="grid_item">
-	                    <span class="ribbon new">New</span>
-	                    <figure>
-	                        <a href="{{ url('product-detail-2') }}">
-	                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/5.jpg" alt="">
-	                        </a>
-	                    </figure>
-	                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-	                    <a href="{{ url('product-detail-2') }}">
-	                        <h3>Air Zoom Alpha</h3>
-	                    </a>
-	                    <div class="price_box">
-	                        <span class="new_price">$140.00</span>
-	                    </div>
-	                    <ul>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-	                    </ul>
+	            @empty
+	            <div class="col-12">
+	                <div class="text-center py-5">
+	                    <h3>No related products found</h3>
+	                    <p>Check back soon for more products in this category!</p>
 	                </div>
-	                <!-- /grid_item -->
 	            </div>
-	            <!-- /item -->
-	            <div class="item">
-	                <div class="grid_item">
-	                    <span class="ribbon hot">Hot</span>
-	                    <figure>
-	                        <a href="{{ url('product-detail-2') }}">
-	                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/8.jpg" alt="">
-	                        </a>
-	                    </figure>
-	                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-	                    <a href="{{ url('product-detail-2') }}">
-	                        <h3>Air Color 720</h3>
-	                    </a>
-	                    <div class="price_box">
-	                        <span class="new_price">$120.00</span>
-	                    </div>
-	                    <ul>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-	                    </ul>
-	                </div>
-	                <!-- /grid_item -->
-	            </div>
-	            <!-- /item -->
-	            <div class="item">
-	                <div class="grid_item">
-	                    <span class="ribbon off">-30%</span>
-	                    <figure>
-	                        <a href="{{ url('product-detail-2') }}">
-	                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/2.jpg" alt="">
-	                        </a>
-	                    </figure>
-	                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-	                    <a href="{{ url('product-detail-2') }}">
-	                        <h3>Okwahn II</h3>
-	                    </a>
-	                    <div class="price_box">
-	                        <span class="new_price">$90.00</span>
-	                        <span class="old_price">$170.00</span>
-	                    </div>
-	                    <ul>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-	                    </ul>
-	                </div>
-	                <!-- /grid_item -->
-	            </div>
-	            <!-- /item -->
-	            <div class="item">
-	                <div class="grid_item">
-	                    <span class="ribbon off">-50%</span>
-	                    <figure>
-	                        <a href="{{ url('product-detail-2') }}">
-	                            <img class="owl-lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/3.jpg" alt="">
-	                        </a>
-	                    </figure>
-	                    <div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-	                    <a href="{{ url('product-detail-2') }}">
-	                        <h3>Air Wildwood ACG</h3>
-	                    </a>
-	                    <div class="price_box">
-	                        <span class="new_price">$75.00</span>
-	                        <span class="old_price">$155.00</span>
-	                    </div>
-	                    <ul>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-	                        <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-	                    </ul>
-	                </div>
-	                <!-- /grid_item -->
-	            </div>
-	            <!-- /item -->
+	            @endforelse
 	        </div>
 	        <!-- /products_carousel -->
 	    </div>
@@ -705,7 +666,7 @@
 								</select>
 							</div>
 						</li>
-						<li><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/cards_all.svg" alt="" width="198" height="30" class="lazy"></li>
+						<li><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('img/cards_all.svg') }}" alt="" width="198" height="30" class="lazy"></li>
 					</ul>
 				</div>
 				<div class="col-lg-6">
@@ -736,7 +697,7 @@
 	                <div class="col-md-7">
 	                    <div class="item_panel">
 	                        <figure>
-	                            <img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/1.jpg" class="lazy" alt="">
+	                            <img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/1.jpg') }}" class="lazy" alt="">
 	                        </figure>
 	                        <h4>1x Armor Air X Fear</h4>
 	                        <div class="price_panel"><span class="new_price">$148.00</span><span class="percentage">-20%</span> <span class="old_price">$160.00</span></div>
@@ -756,7 +717,7 @@
 	                <div class="item_panel">
 	                    <a href="#0">
 	                        <figure>
-	                            <img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/2.jpg" alt="" class="lazy">
+	                            <img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/2.jpg') }}" alt="" class="lazy">
 	                        </figure>
 	                    </a>
 	                    <a href="#0">
@@ -769,7 +730,7 @@
 	                <div class="item_panel">
 	                    <a href="#0">
 	                        <figure>
-	                            <img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/3.jpg" alt="" class="lazy">
+	                            <img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/3.jpg') }}" alt="" class="lazy">
 	                        </figure>
 	                    </a>
 	                    <a href="#0">
@@ -782,7 +743,7 @@
 	                <div class="item_panel">
 	                    <a href="#0">
 	                        <figure>
-	                            <img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/4.jpg" alt="" class="lazy">
+	                            <img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/4.jpg') }}" alt="" class="lazy">
 	                        </figure>
 	                    </a>
 	                    <a href="#0">
@@ -884,11 +845,11 @@
 	
 	
  	<!-- COMMON SCRIPTS -->
-    <script src="js/common_scripts.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="{{ asset('js/common_scripts.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
   
     <!-- SPECIFIC SCRIPTS -->
-    <script  src="js/carousel_with_thumbs.js"></script>
+    <script src="{{ asset('js/carousel_with_thumbs.js') }}"></script>
 
 </body>
 

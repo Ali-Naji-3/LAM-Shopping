@@ -34,7 +34,7 @@
             <h4>Collection Store</h4>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ route('admin.layouts.dashboard') }}" class="active">
+            {{-- <li><a href="{{ route('admin.layouts.dashboard') }}" class="active"> --}}
                 <span class="icon">📊</span>
                 <span>Dashboard</span>
             </a></li>
@@ -183,86 +183,7 @@
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        // Auto dismiss alerts after 5 seconds
-        setTimeout(function() {
-            var alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                var bsAlert = new bootstrap.Alert(alert);
-                bsAlert.close();
-            });
-        }, 5000);
-        function deleteItem(id){
-    if(confirm('Are you sure to delete?')){
-        $.ajax({
-            url: '{{ route("permissions.destroy") }}',
-            type: 'DELETE',
-            data: {
-                id: id,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response){
-                if(response.status){
-                    window.location.reload(); // refresh page to show changes
-                } else {
-                    alert('Permission not found!');
-                }
-            },
-            error: function(err){
-                console.log(err);
-                alert('Delete failed!');
-            }
-        });
-    }
-}
-        function deleteItemrole(id){
-    if(confirm('Are you sure to delete?')){
-        $.ajax({
-            url: '{{ route("roles.destroy") }}',
-            type: 'DELETE',
-            data: {
-                id: id,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response){
-                if(response.status){
-                    window.location.reload(); // refresh page to show changes
-                } else {
-                    alert('Permission not found!');
-                }
-            },
-            error: function(err){
-                console.log(err);
-                alert('Delete failed!');
-            }
-        });
-    }
-}
-
-function deleteItemuser(id){
-    if(confirm('Are you sure to delete?')){
-        $.ajax({
-            url: '{{ route("users.destroy") }}',
-            type: 'DELETE',
-            data: {
-                id: id,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response){
-                if(response.status){
-                    window.location.reload(); // refresh page to show changes
-                } else {
-                    alert('Roles not found!');
-                }
-            },
-            error: function(err){
-                console.log(err);
-                alert('Delete failed!');
-            }
-        });
-    }
-}
-    </script>
+   @extends('components.script')
 </body>
 
 </html>

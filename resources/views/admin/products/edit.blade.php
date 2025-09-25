@@ -1,189 +1,221 @@
-@extends('admin.layouts.dashboard')
+@extends('admin.dashboard')
 
 @section('content')
+<div class="container-fluid">
+    <!-- Compact Header -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0" style="color: #1a202c; font-weight: 700;">🛍️ Edit Product</h1>
+                    <p style="color: #4a5568; font-size: 14px; margin-bottom: 0;">{{ $product->name }}</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('admin.products.show', $product) }}" class="btn btn-info" style="font-weight: 600;">
+                        <i class="fas fa-eye me-1"></i> View Details
+                    </a>
+                    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary" style="font-weight: 600;">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Products
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Main Form -->
+            <div class="card shadow border-0" style="border-radius: 12px;">
+                <div class="card-header" style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: 15px;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="m-0" style="color: #2d3748; font-weight: 700; font-size: 15px;">Edit Product Information</h6>
+                        <!-- Eye-catching Product Statistics -->
+                        <div class="product-stats" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 12px; border-radius: 8px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+                            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                                ✨ Product Statistics
+                            </div>
+                            <div class="d-flex gap-3" style="font-size: 10px;">
+                                <span style="color: #ffffff; font-weight: 700;">{{ $connectionCounts['reviews_count'] ?? 0 }} Reviews</span>
+                                <span style="color: #ffffff; font-weight: 700;">{{ $connectionCounts['orders_count'] ?? 0 }} Orders</span>
+                                <span style="color: #ffffff; font-weight: 700;">{{ $connectionCounts['inventory_count'] ?? 0 }} Inventory</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-3">
+                    <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
 
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
+                                        <i class="fas fa-box text-primary me-1"></i> Product Name *
+                                    </label>
+                                    <input type="text"
+                                           class="form-control @error('name') is-invalid @enderror"
+                                           name="name" value="{{ old('name', $product->name) }}" required>
+                                    @error('name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-<div class="container my-4">
-    <h2 class="mb-3 text-white"> edit Products</h2>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
+                                        <i class="fas fa-barcode text-info me-1"></i> SKU *
+                                    </label>
+                                    <input type="text"
+                                           class="form-control @error('sku') is-invalid @enderror"
+                                           name="sku" value="{{ old('sku', $product->sku) }}" required>
+                                    @error('sku')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
 
- <form class="tf-section-2 form-add-product" method="POST" enctype="multipart/form-data"
-                                    action="http://localhost:8000/admin/product/store">
-                                    <input type="hidden" name="_token" value="8LNRTO4LPXHvbK2vgRcXqMeLgqtqNGjzWSNru7Xx"
-                                        autocomplete="off">
-                                    <div class="wg-box">
-                                        <fieldset class="name">
-                                            <div class="body-title mb-10">Product name <span class="tf-color-1">*</span>
-                                            </div>
-                                            <input class="mb-10" type="text" placeholder="Enter product name"
-                                                name="name" tabindex="0" value="" aria-required="true" required="">
-                                            <div class="text-tiny">Do not exceed 100 characters when entering the
-                                                product name.</div>
-                                        </fieldset>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
+                                        <i class="fas fa-dollar-sign text-success me-1"></i> Regular Price *
+                                    </label>
+                                    <input type="number" step="0.01"
+                                           class="form-control @error('regular_price') is-invalid @enderror"
+                                           name="regular_price" value="{{ old('regular_price', $product->regular_price) }}" required>
+                                    @error('regular_price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-                                        <fieldset class="name">
-                                            <div class="body-title mb-10">Slug <span class="tf-color-1">*</span></div>
-                                            <input class="mb-10" type="text" placeholder="Enter product slug"
-                                                name="slug" tabindex="0" value="" aria-required="true" required="">
-                                            <div class="text-tiny">Do not exceed 100 characters when entering the
-                                                product name.</div>
-                                        </fieldset>
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
+                                        <i class="fas fa-tag text-warning me-1"></i> Sale Price
+                                    </label>
+                                    <input type="number" step="0.01"
+                                           class="form-control @error('sale_price') is-invalid @enderror"
+                                           name="sale_price" value="{{ old('sale_price', $product->sale_price) }}">
+                                    @error('sale_price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-                                        <div class="gap22 cols">
-                                            <fieldset class="category">
-                                                <div class="body-title mb-10">Category <span class="tf-color-1">*</span>
-                                                </div>
-                                                <div class="select">
-                                                    <select class="" name="category_id">
-                                                        <option>Choose category</option>
-                                                        <option value="1">Category1</option>
-                                                        <option value="2">Category2</option>
-                                                        <option value="3">Category3</option>
-                                                        <option value="4">Category4</option>
+                            <div class="col-md-4">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
+                                        <i class="fas fa-cubes text-info me-1"></i> Quantity
+                                    </label>
+                                    <input type="number"
+                                           class="form-control @error('quantity') is-invalid @enderror"
+                                           name="quantity" value="{{ old('quantity', $product->quantity) }}">
+                                    @error('quantity')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
 
-                                                    </select>
-                                                </div>
-                                            </fieldset>
-                                            <fieldset class="brand">
-                                                <div class="body-title mb-10">Brand <span class="tf-color-1">*</span>
-                                                </div>
-                                                <div class="select">
-                                                    <select class="" name="brand_id">
-                                                        <option>Choose Brand</option>
-                                                        <option value="1">Brand1</option>
-                                                        <option value="2">Brand2</option>
-                                                        <option value="3">Brand3</option>
-                                                        <option value="4">Brand4</option>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
+                                        <i class="fas fa-folder text-primary me-1"></i> Category
+                                    </label>
+                                    <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
+                                        <option value="">Select Category</option>
+                                        @foreach(\App\Models\Category::where('is_active', true)->get() as $category)
+                                            <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('category_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-                                                    </select>
-                                                </div>
-                                            </fieldset>
-                                        </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
+                                        <i class="fas fa-tag text-secondary me-1"></i> Brand
+                                    </label>
+                                    <select class="form-control @error('brand_id') is-invalid @enderror" name="brand_id">
+                                        <option value="">Select Brand</option>
+                                        @foreach(\App\Models\Brand::where('is_active', true)->get() as $brand)
+                                            <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>
+                                                {{ $brand->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('brand_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
 
-                                        <fieldset class="shortdescription">
-                                            <div class="body-title mb-10">Short Description <span
-                                                    class="tf-color-1">*</span></div>
-                                            <textarea class="mb-10 ht-150" name="short_description"
-                                                placeholder="Short Description" tabindex="0" aria-required="true"
-                                                required=""></textarea>
-                                            <div class="text-tiny">Do not exceed 100 characters when entering the
-                                                product name.</div>
-                                        </fieldset>
-
-                                        <fieldset class="description">
-                                            <div class="body-title mb-10">Description <span class="tf-color-1">*</span>
-                                            </div>
-                                            <textarea class="mb-10" name="description" placeholder="Description"
-                                                tabindex="0" aria-required="true" required=""></textarea>
-                                            <div class="text-tiny">Do not exceed 100 characters when entering the
-                                                product name.</div>
-                                        </fieldset>
-                                    </div>
-                                    <div class="wg-box">
-                                        <fieldset>
-                                            <div class="body-title">Upload images <span class="tf-color-1">*</span>
-                                            </div>
-                                            <div class="upload-image flex-grow">
-                                                <div class="item" id="imgpreview" style="display:none">
-                                                    <img src="../../../localhost_8000/images/upload/upload-1.png"
-                                                        class="effect8" alt="">
-                                                </div>
-                                                <div id="upload-file" class="item up-load">
-                                                    <label class="uploadfile" for="myFile">
-                                                        <span class="icon">
-                                                            <i class="icon-upload-cloud"></i>
-                                                        </span>
-                                                        <span class="body-text">Drop your images here or select <span
-                                                                class="tf-color">click to browse</span></span>
-                                                        <input type="file" id="myFile" name="image" accept="image/*">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-
-                                        <fieldset>
-                                            <div class="body-title mb-10">Upload Gallery Images</div>
-                                            <div class="upload-image mb-16">
-                                                <!-- <div class="item">
-                                <img src="images/upload/upload-1.png" alt="">
-                            </div>                                                 -->
-                                                <div id="galUpload" class="item up-load">
-                                                    <label class="uploadfile" for="gFile">
-                                                        <span class="icon">
-                                                            <i class="icon-upload-cloud"></i>
-                                                        </span>
-                                                        <span class="text-tiny">Drop your images here or select <span
-                                                                class="tf-color">click to browse</span></span>
-                                                        <input type="file" id="gFile" name="images[]" accept="image/*"
-                                                            multiple="">
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-
-                                        <div class="cols gap22">
-                                            <fieldset class="name">
-                                                <div class="body-title mb-10">Regular Price <span
-                                                        class="tf-color-1">*</span></div>
-                                                <input class="mb-10" type="text" placeholder="Enter regular price"
-                                                    name="regular_price" tabindex="0" value="" aria-required="true"
-                                                    required="">
-                                            </fieldset>
-                                            <fieldset class="name">
-                                                <div class="body-title mb-10">Sale Price <span
-                                                        class="tf-color-1">*</span></div>
-                                                <input class="mb-10" type="text" placeholder="Enter sale price"
-                                                    name="sale_price" tabindex="0" value="" aria-required="true"
-                                                    required="">
-                                            </fieldset>
-                                        </div>
-
-
-                                        <div class="cols gap22">
-                                            <fieldset class="name">
-                                                <div class="body-title mb-10">SKU <span class="tf-color-1">*</span>
-                                                </div>
-                                                <input class="mb-10" type="text" placeholder="Enter SKU" name="SKU"
-                                                    tabindex="0" value="" aria-required="true" required="">
-                                            </fieldset>
-                                            <fieldset class="name">
-                                                <div class="body-title mb-10">Quantity <span class="tf-color-1">*</span>
-                                                </div>
-                                                <input class="mb-10" type="text" placeholder="Enter quantity"
-                                                    name="quantity" tabindex="0" value="" aria-required="true"
-                                                    required="">
-                                            </fieldset>
-                                        </div>
-
-                                        <div class="cols gap22">
-                                            <fieldset class="name">
-                                                <div class="body-title mb-10">Stock</div>
-                                                <div class="select mb-10">
-                                                    <select class="" name="stock_status">
-                                                        <option value="instock">InStock</option>
-                                                        <option value="outofstock">Out of Stock</option>
-                                                    </select>
-                                                </div>
-                                            </fieldset>
-                                            <fieldset class="name">
-                                                <div class="body-title mb-10">Featured</div>
-                                                <div class="select mb-10">
-                                                    <select class="" name="featured">
-                                                        <option value="0">No</option>
-                                                        <option value="1">Yes</option>
-                                                    </select>
-                                                </div>
-                                            </fieldset>
-                                        </div>
-                                        <div class="cols gap10">
-                                            <button class="tf-button w-full" type="submit">Edit product</button>
-                                        </div>
-                                    </div>
-                                </form>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" style="font-weight: 600; border-radius: 8px; padding: 10px 20px;">
+                                <i class="fas fa-save me-1"></i> Update Product
+                            </button>
+                            <a href="{{ route('admin.products.show', $product) }}" class="btn btn-secondary" style="font-weight: 600; border-radius: 8px; padding: 10px 20px;">
+                                <i class="fas fa-times me-1"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
+@push('styles')
+<style>
+.form-control {
+    border-radius: 6px !important;
+    border: 2px solid #e2e8f0 !important;
+    font-size: 13px !important;
+    transition: all 0.3s ease !important;
+}
 
+.form-control:focus {
+    border-color: #4299e1 !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
 
+.btn {
+    transition: all 0.3s ease !important;
+}
 
+.btn:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
 
+.product-stats {
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+    50% { box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5); }
+    100% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); }
+}
+</style>
+@endpush
+
+@push('scripts')
+<script>
+function viewProductAnalytics() {
+    showNotification('Product analytics feature coming soon!', 'info');
+}
+</script>
+@endpush
 @endsection

@@ -410,21 +410,39 @@
 
 			<div class="container margin_30">
 			<div class="row small-gutters">
+				@forelse($products as $product)
 				<div class="col-6 col-md-4 col-xl-3">
 					<div class="grid_item">
 						<figure>
-							<span class="ribbon off">-30%</span>
-							<a href="{{ url('product-detail-2') }}">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/1.jpg') }}" alt="">
+							@if($product->sale_price && $product->sale_price < $product->regular_price)
+								@php
+									$discount = round((($product->regular_price - $product->sale_price) / $product->regular_price) * 100);
+								@endphp
+								<span class="ribbon off">-{{ $discount }}%</span>
+							@elseif($product->featured)
+								<span class="ribbon hot">Hot</span>
+							@elseif($product->created_at->diffInDays() < 7)
+								<span class="ribbon new">New</span>
+							@endif
+							<a href="{{ route('product.detail', $product->slug) }}">
+								@if($product->image)
+									<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+								@else
+									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
+								@endif
 							</a>
-							<div data-countdown="2019/05/15" class="countdown"></div>
+							<div data-countdown="{{ $product->created_at->addDays(30)->format('Y/m/d') }}" class="countdown"></div>
 						</figure>
-						<a href="{{ url('product-detail-2') }}">
-							<h3>Armor Air x Fear</h3>
+						<a href="{{ route('product.detail', $product->slug) }}">
+							<h3>{{ $product->name }}</h3>
 						</a>
 						<div class="price_box">
-							<span class="new_price">$48.00</span>
-							<span class="old_price">$60.00</span>
+							@if($product->sale_price && $product->sale_price < $product->regular_price)
+								<span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
+								<span class="old_price">${{ number_format($product->regular_price, 2) }}</span>
+							@else
+								<span class="new_price">${{ number_format($product->regular_price, 2) }}</span>
+							@endif
 						</div>
 						<ul>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
@@ -458,8 +476,13 @@
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
 						</ul>
 					</div>
-					<!-- /grid_item -->
 				</div>
+				@endforelse
+			</div>
+			<!-- /row -->
+
+			<!-- Pagination -->
+			@if($products->hasPages())
 				<!-- /col -->
 
 				<div class="col-6 col-md-4 col-xl-3">
@@ -612,22 +635,29 @@
 
 			<div class="pagination__wrapper">
 				<ul class="pagination">
-					<li><a href="#0" class="prev" title="previous page">&#10094;</a></li>
-					<li>
-						<a href="#0" class="active">1</a>
-					</li>
-					<li>
-						<a href="#0">2</a>
-					</li>
-					<li>
-						<a href="#0">3</a>
-					</li>
-					<li>
-						<a href="#0">4</a>
-					</li>
-					<li><a href="#0" class="next" title="next page">&#10095;</a></li>
+					@if($products->onFirstPage())
+						<li class="disabled"><span>&laquo;</span></li>
+					@else
+						<li><a href="{{ $products->previousPageUrl() }}">&laquo;</a></li>
+					@endif
+
+					@foreach($products->getUrlRange(1, $products->lastPage()) as $page => $url)
+						@if($page == $products->currentPage())
+							<li class="active"><span>{{ $page }}</span></li>
+						@else
+							<li><a href="{{ $url }}">{{ $page }}</a></li>
+						@endif
+					@endforeach
+
+					@if($products->hasMorePages())
+						<li><a href="{{ $products->nextPageUrl() }}">&raquo;</a></li>
+					@else
+						<li class="disabled"><span>&raquo;</span></li>
+					@endif
 				</ul>
 			</div>
+			@endif
+			<!-- /pagination -->
 
 		</div>
 		<!-- /container -->
@@ -644,9 +674,9 @@
 							<li><a href="about.html">About us</a></li>
 							<li><a href="{{ url('help') }}">Faq</a></li>
 							<li><a href="{{ url('help') }}">Help</a></li>
-							<li><a href="{{ url('login') }}">My account</a></li>
-							<li><a href="blog.html">Blog</a></li>
-							<li><a href="contacts.html">Contacts</a></li>
+							<li><a href="{{ url('help') }}">My account</a></li>
+							<li><a href="{{ url('help') }}">Create account</a></li>
+							<li><a href="{{ url('help') }}">Contacts</a></li>
 						</ul>
 					</div>
 				</div>
@@ -654,12 +684,10 @@
 					<h3 data-bs-target="#collapse_2">Categories</h3>
 					<div class="collapse dont-collapse-sm links" id="collapse_2">
 						<ul>
-							<li><a href="listing-grid-1-full.html">Clothes</a></li>
-							<li><a href="listing-grid-2-full.html">Electronics</a></li>
-							<li><a href="listing-grid-1-full.html">Furniture</a></li>
-							<li><a href="listing-grid-3.html">Glasses</a></li>
-							<li><a href="listing-grid-1-full.html">Shoes</a></li>
-							<li><a href="listing-grid-1-full.html">Watches</a></li>
+							<li><a href="{{ url('/men') }}">Men</a></li>
+							<li><a href="{{ url('/women') }}">Women</a></li>
+							<li><a href="{{ url('/body') }}">Body</a></li>
+							<li><a href="{{ url('/girl') }}">Girl</a></li>
 						</ul>
 					</div>
 				</div>
@@ -669,7 +697,7 @@
 						<ul>
 							<li><i class="ti-home"></i>97845 Baker st. 567<br>Los Angeles - US</li>
 							<li><i class="ti-headphone-alt"></i>+94 423-23-221</li>
-							<li><i class="ti-email"></i><a href="#0">info@allaia.com</a></li>
+							<li><i class="ti-email"></i>info@allaia.com</li>
 						</ul>
 					</div>
 				</div>
@@ -679,23 +707,21 @@
 						<div id="newsletter">
 						    <div class="form-group">
 						        <input type="email" name="email_newsletter" id="email_newsletter" class="form-control" placeholder="Your email">
-						        <button type="submit" id="submit-newsletter"><i class="ti-angle-double-right"></i></button>
+						        <button type="submit" id="submit-newsletter">Submit</button>
 						    </div>
 						</div>
 						<div class="follow_us">
-							<h5>Follow Us</h5>
 							<ul>
-								<li><a href="#0"><i class="bi bi-facebook"></i></a></li>
-								<li><a href="#0"><i class="bi bi-twitter-x"></i></a></li>
-								<li><a href="#0"><i class="bi bi-instagram"></i></a></li>
-								<li><a href="#0"><i class="bi bi-tiktok"></i></a></li>
-								<li><a href="#0"><i class="bi bi-whatsapp"></i></a></li>
+								<li><a href="#0"><i class="ti-facebook"></i></a></li>
+								<li><a href="#0"><i class="ti-instagram"></i></a></li>
+								<li><a href="#0"><i class="ti-twitter"></i></a></li>
+								<li><a href="#0"><i class="ti-pinterest"></i></a></li>
 							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
-			<!-- /row-->
+			<!-- /row -->
 			<hr>
 			<div class="row add_bottom_25">
 				<div class="col-lg-6">
@@ -713,12 +739,14 @@
 						<li>
 							<div class="styled-select currency-selector">
 								<select>
-									<option value="US Dollars" selected>US Dollars</option>
-									<option value="Euro">Euro</option>
+									<option value="USD" selected>USD</option>
+									<option value="EUR">EUR</option>
+									<option value="GBP">GBP</option>
+									<option value="RUB">RUB</option>
 								</select>
 							</div>
 						</li>
-						<li><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('img/cards_all.svg') }}" alt="" width="198" height="30" class="lazy"></li>
+						<li><img src="{{ asset('img/cards_all.svg') }}" alt=""></li>
 					</ul>
 				</div>
 				<div class="col-lg-6">
@@ -732,18 +760,13 @@
 		</div>
 	</footer>
 	<!--/footer-->
-	</div>
-	<!-- page -->
 
-	<div id="toTop"></div><!-- Back to top button -->
+	<div class="layer"></div>
+	<!-- Opacity Mask Menu Mobile -->
 
 	<!-- COMMON SCRIPTS -->
-    <script src="{{ asset('js/common_scripts.min.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
-
-	<!-- SPECIFIC SCRIPTS -->
-	<script src="{{ asset('js/sticky_sidebar.min.js') }}"></script>
-	<script src="{{ asset('js/specific_listing.js') }}"></script>
+	<script src="{{ asset('js/common_scripts.min.js') }}"></script>
+	<script src="{{ asset('js/main.js') }}"></script>
 
 </body>
 </html>

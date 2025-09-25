@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Men's Products - Collection Store</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f8fafc; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; }
+        .product { border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 8px; }
+        .price { color: #3182ce; font-weight: bold; font-size: 18px; }
+        .category { background: #3182ce; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        h1 { color: #1a202c; text-align: center; }
+        .loading { text-align: center; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Men's Products Test Page</h1>
+        <div id="products" class="loading">Loading products...</div>
+    </div>
+
+    <script>
+        fetch('/api/frontend/products/men')
+            .then(response => response.json())
+            .then(data => {
+                const productsDiv = document.getElementById('products');
+                if (data.data && data.data.length > 0) {
+                    productsDiv.innerHTML = `
+                        <h2>✅ Found ${data.data.length} Men's Products:</h2>
+                        ${data.data.map(product => `
+                            <div class="product">
+                                <h3>${product.name}</h3>
+                                <div class="price">$${product.regular_price}</div>
+                                <span class="category">${product.category.name}</span>
+                                <p><strong>Status:</strong> ${product.status}</p>
+                                <p><strong>SKU:</strong> ${product.sku}</p>
+                                <p>${product.short_description}</p>
+                            </div>
+                        `).join('')}
+                    `;
+                } else {
+                    productsDiv.innerHTML = '<p>❌ No products found</p>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('products').innerHTML = `<p>❌ Error: ${error.message}</p>`;
+            });
+    </script>
+</body>
+</html>

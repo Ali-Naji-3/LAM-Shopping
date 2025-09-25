@@ -1,6 +1,6 @@
 
 
-      @extends('admin.layouts.dashboard')
+      @extends('admin.dashboard')
 
 @section('content')
        <div class="flex justify-between items-center">
