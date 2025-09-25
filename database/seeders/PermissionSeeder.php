@@ -12,17 +12,16 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // الموديولات الأساسية اللي بدك تنشئ لها صلاحيات
         $modules = ['users', 'roles', 'permissions', 'products', 'categories'];
 
-        // أنواع الصلاحيات الأساسية
+
         $actions = ['view', 'create', 'edit', 'delete'];
 
         foreach ($modules as $module) {
             foreach ($actions as $action) {
                 $permissionName = $action . ' ' . $module;
 
-                // إذا ما كانت الصلاحية موجودة، أنشئها
+
                 Permission::firstOrCreate(['name' => $permissionName]);
             }
         }
