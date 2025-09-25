@@ -34,7 +34,7 @@
             <h4>Collection Store</h4>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ route('admin.layouts.dashboard') }}" class="active">
+            {{-- <li><a href="{{ route('admin.layouts.dashboard') }}" class="active"> --}}
                 <span class="icon">📊</span>
                 <span>Dashboard</span>
             </a></li>
