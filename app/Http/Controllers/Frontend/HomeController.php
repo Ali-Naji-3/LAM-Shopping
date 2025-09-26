@@ -200,7 +200,7 @@ class HomeController extends Controller
         // Get subcategories for this category
         $subcategories = $category->children()->active()->ordered()->get();
 
-        return view('category-page', compact(
+        return view('frontend.category-page', compact(
             'category',
             'products',
             'categories',

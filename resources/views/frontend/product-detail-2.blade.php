@@ -251,13 +251,65 @@
 	                </div>
 	            </div>
 	            <div class="col-md-6">
-	                <div class="breadcrumbs">
-	                    <ul>
-	                        <li><a href="{{ url('/') }}">Home</a></li>
-	                        <li><a href="{{ $product->category ? url('/category/' . $product->category->slug) : '#' }}">{{ $product->category ? $product->category->name : 'Category' }}</a></li>
-	                        <li>{{ $product->name }}</li>
-	                    </ul>
-	                </div>
+                <div class="breadcrumbs">
+                    <ul>
+                        <li><a href="{{ url('/') }}">Home</a></li>
+                        @if($product->category)
+                            @php
+                                $categoryName = $product->category->name;
+                                $categoryUrl = '#';
+                                
+                                // Map category names to their respective listing pages
+                                switch(strtolower($categoryName)) {
+                                    case 'men':
+                                        $categoryUrl = url('/listing-grid-3');
+                                        break;
+                                    case 'women':
+                                        $categoryUrl = url('/listing-grid-1-full');
+                                        break;
+                                    case 'boys':
+                                    case 'boy':
+                                        $categoryUrl = url('/listing-grid-2-full');
+                                        break;
+                                    case 'girls':
+                                    case 'girl':
+                                        $categoryUrl = url('/girls');
+                                        break;
+                                    default:
+                                        // For subcategories, try to find parent category
+                                        if($product->category->parent) {
+                                            $parentName = strtolower($product->category->parent->name);
+                                            switch($parentName) {
+                                                case 'men':
+                                                    $categoryUrl = url('/listing-grid-3');
+                                                    $categoryName = 'Men';
+                                                    break;
+                                                case 'women':
+                                                    $categoryUrl = url('/listing-grid-1-full');
+                                                    $categoryName = 'Women';
+                                                    break;
+                                                case 'boys':
+                                                case 'boy':
+                                                    $categoryUrl = url('/listing-grid-2-full');
+                                                    $categoryName = 'Boys';
+                                                    break;
+                                                case 'girls':
+                                                case 'girl':
+                                                    $categoryUrl = url('/girls');
+                                                    $categoryName = 'Girls';
+                                                    break;
+                                            }
+                                        }
+                                        break;
+                                }
+                            @endphp
+                            <li><a href="{{ $categoryUrl }}">{{ $categoryName }}</a></li>
+                        @else
+                            <li><a href="#">Category</a></li>
+                        @endif
+                        <li>{{ $product->name }}</li>
+                    </ul>
+                </div>
 	                <!-- /page_header -->
 	                <div class="prod_info">
 	                    <h1>{{ $product->name }}</h1>
