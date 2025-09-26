@@ -4,15 +4,17 @@
 
 /* Professional Product Grid Container */
 .grid_item {
-    margin-bottom: 25px;
-    text-align: center;
-    position: relative;
-    cursor: pointer;
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: all 0.3s ease;
+    margin-bottom: 25px !important;
+    text-align: center !important;
+    position: relative !important;
+    cursor: pointer !important;
+    background: #fff !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important; /* Ensure full width */
+    display: block !important; /* Ensure proper display */
 }
 
 .grid_item:hover {
@@ -22,51 +24,61 @@
 
 /* Professional Figure Container with Fixed Dimensions */
 .grid_item figure {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
     /* Fixed aspect ratio for consistent sizing */
-    width: 100%;
-    height: 280px; /* Professional height */
-    background: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100% !important;
+    height: 280px !important; /* Professional height - Force override */
+    background: #f8f9fa !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 280px !important; /* Ensure minimum height */
+    max-height: 280px !important; /* Ensure maximum height */
 }
 
 /* Responsive height adjustments */
 @media (max-width: 1200px) {
     .grid_item figure {
-        height: 260px;
+        height: 260px !important;
+        min-height: 260px !important;
+        max-height: 260px !important;
     }
 }
 
 @media (max-width: 992px) {
     .grid_item figure {
-        height: 240px;
+        height: 240px !important;
+        min-height: 240px !important;
+        max-height: 240px !important;
     }
 }
 
 @media (max-width: 768px) {
     .grid_item figure {
-        height: 220px;
+        height: 220px !important;
+        min-height: 220px !important;
+        max-height: 220px !important;
     }
 }
 
 @media (max-width: 576px) {
     .grid_item figure {
-        height: 200px;
+        height: 200px !important;
+        min-height: 200px !important;
+        max-height: 200px !important;
     }
 }
 
 /* Professional Image Styling */
 .grid_item figure img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Maintains aspect ratio while filling container */
-    object-position: center;
-    transition: all 0.4s ease;
-    border-radius: 0;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* Maintains aspect ratio while filling container */
+    object-position: center !important;
+    transition: all 0.4s ease !important;
+    border-radius: 0 !important;
     display: block !important; /* Ensure images are displayed */
     opacity: 1 !important; /* Make sure images are visible */
     visibility: visible !important; /* Ensure images are not hidden */
@@ -74,6 +86,8 @@
     top: auto !important;
     left: auto !important;
     transform: none !important;
+    min-height: 100% !important; /* Ensure full height */
+    max-height: 100% !important; /* Ensure full height */
 }
 
 /* Hover Effects */

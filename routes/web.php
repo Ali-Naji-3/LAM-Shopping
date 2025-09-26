@@ -69,11 +69,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    // GENDER-SPECIFIC CATEGORY ROUTES (MUST BE BEFORE RESOURCE ROUTES)
-    Route::get('categories/men', [App\Http\Controllers\Admin\CategoryController::class, 'men'])->name('admin.categories.men');
-    Route::get('categories/women', [App\Http\Controllers\Admin\CategoryController::class, 'women'])->name('admin.categories.women');
-    Route::get('categories/boys', [App\Http\Controllers\Admin\CategoryController::class, 'boys'])->name('admin.categories.boys');
-    Route::get('categories/girls', [App\Http\Controllers\Admin\CategoryController::class, 'girls'])->name('admin.categories.girls');
 
     // GENDER-SPECIFIC PRODUCT ROUTES (MUST BE BEFORE RESOURCE ROUTES)
     Route::get('products/men', [App\Http\Controllers\Admin\ProductController::class, 'men'])->name('admin.products.men');

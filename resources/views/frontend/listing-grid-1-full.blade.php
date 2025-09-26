@@ -437,7 +437,9 @@
 									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
 								@endif
 							</a>
-							<div data-countdown="{{ $product->created_at->addDays(30)->format('Y/m/d') }}" class="countdown"></div>
+							@if($product->enable_countdown && $product->countdown_date)
+								<div data-countdown="{{ $product->countdown_date->format('Y/m/d') }}" class="countdown"></div>
+							@endif
 						</figure>
 						<a href="{{ route('product.detail', $product->slug) }}">
 							<h3>{{ $product->name }}</h3>

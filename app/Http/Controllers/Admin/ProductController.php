@@ -10,6 +10,9 @@ use App\Models\Contact;
 use App\Models\Review;
 use App\Models\OrderItem;
 use App\Models\Inventory;
+use App\Models\Attribute;
+use App\Models\AttributeValue;
+use App\Models\ProductAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -132,7 +135,13 @@ class ProductController extends Controller
             'status' => 'nullable|boolean',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'gallery_images' => 'nullable|array',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120'
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'enable_countdown' => 'nullable|boolean',
+            'countdown_date' => 'nullable|date',
+            'colors' => 'nullable|array',
+            'colors.*.name' => 'required_with:colors|string|max:255',
+            'colors.*.hex' => 'required_with:colors|string|max:7',
+            'colors.*.stock' => 'nullable|integer|min:0'
         ]);
 
         // Generate slug if not provided
@@ -166,6 +175,8 @@ class ProductController extends Controller
             'status' => $validated['status'] ? 'active' : 'inactive',
             'featured' => false,
             'sku' => 'SKU-' . time() . '-' . Str::random(6), // Generate SKU
+            'enable_countdown' => $validated['enable_countdown'] ?? false,
+            'countdown_date' => $validated['countdown_date'] ?? null,
         ];
 
         // Handle main image upload
@@ -189,8 +200,13 @@ class ProductController extends Controller
 
         $product = Product::create($productData);
 
-            return redirect()->route('admin.products.index')
-                ->with('success', "Product '{$product->name}' created successfully!");
+        // Handle color attributes
+        if ($request->has('colors') && is_array($request->colors)) {
+            $this->handleColorAttributes($product, $request->colors);
+        }
+
+        return redirect()->route('admin.products.index')
+            ->with('success', "Product '{$product->name}' created successfully!");
                 
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('Validation failed', [
@@ -270,7 +286,15 @@ class ProductController extends Controller
             'status' => 'nullable|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'gallery_images' => 'nullable|array',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120'
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'enable_countdown' => 'nullable|boolean',
+            'countdown_date' => 'nullable|date',
+            'colors' => 'nullable|array',
+            'colors.*.name' => 'required_with:colors|string|max:255',
+            'colors.*.hex' => 'required_with:colors|string|max:7',
+            'colors.*.stock' => 'nullable|integer|min:0',
+            'delete_colors' => 'nullable|array',
+            'delete_colors.*' => 'integer|exists:product_attributes,id'
         ]);
 
         // Generate slug if not provided
@@ -303,6 +327,8 @@ class ProductController extends Controller
             'category_id' => $validated['category_id'],
             'brand_id' => $validated['brand_id'],
             'status' => $validated['status'] ? 'active' : 'inactive',
+            'enable_countdown' => $validated['enable_countdown'] ?? false,
+            'countdown_date' => $validated['countdown_date'] ?? null,
         ];
 
         // Handle main image upload
@@ -340,6 +366,9 @@ class ProductController extends Controller
         }
 
         $product->update($productData);
+
+        // Handle color attributes
+        $this->handleColorAttributesUpdate($product, $request);
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product updated successfully!');
@@ -706,5 +735,64 @@ class ProductController extends Controller
         ];
 
         return $themes[$gender] ?? $themes['Men'];
+    }
+
+    /**
+     * Handle color attributes for a product
+     */
+    private function handleColorAttributes(Product $product, array $colors)
+    {
+        // Get or create the Color attribute
+        $colorAttribute = Attribute::firstOrCreate(
+            ['slug' => 'color'],
+            [
+                'name' => 'Color',
+                'slug' => 'color',
+                'type' => 'select',
+                'is_required' => false
+            ]
+        );
+
+        foreach ($colors as $colorData) {
+            if (isset($colorData['name']) && isset($colorData['hex'])) {
+                // Create or get the attribute value
+                $attributeValue = AttributeValue::firstOrCreate(
+                    [
+                        'attribute_id' => $colorAttribute->id,
+                        'value' => $colorData['name']
+                    ]
+                );
+
+                // Create the product attribute relationship
+                ProductAttribute::create([
+                    'product_id' => $product->id,
+                    'attribute_value_id' => $attributeValue->id,
+                    'additional_price' => 0.00
+                ]);
+
+                \Log::info("Color attribute added to product", [
+                    'product_id' => $product->id,
+                    'color_name' => $colorData['name'],
+                    'color_hex' => $colorData['hex']
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Handle color attributes update for a product
+     */
+    private function handleColorAttributesUpdate(Product $product, Request $request)
+    {
+        // Handle color deletions
+        if ($request->has('delete_colors') && is_array($request->delete_colors)) {
+            ProductAttribute::whereIn('id', $request->delete_colors)->delete();
+            \Log::info("Deleted color attributes", ['deleted_ids' => $request->delete_colors]);
+        }
+
+        // Handle new color additions
+        if ($request->has('colors') && is_array($request->colors)) {
+            $this->handleColorAttributes($product, $request->colors);
+        }
     }
 }

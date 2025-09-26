@@ -27,6 +27,117 @@
 
 	<!-- SPECIFIC CSS -->
     <link href="{{ asset('css/product_page.css') }}" rel="stylesheet">
+    
+    <!-- Color Dots CSS -->
+    <style>
+        .color-dots-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .color-dots-list li {
+            margin: 0;
+        }
+        
+        .color-dot {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            text-decoration: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .color-dot:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-color: #3182ce;
+        }
+        
+        .color-dot.active {
+            border-color: #3182ce;
+            border-width: 3px;
+            transform: scale(1.15);
+            box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.3);
+        }
+        
+        .color-dot:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.5);
+        }
+        
+        .color-dot[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a202c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+        }
+        
+        .color-dot[title]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-bottom-color: #1a202c;
+            z-index: 1000;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .color-dot {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .color-dots-list {
+                gap: 10px;
+            }
+        }
+        
+        /* Stock status indicators */
+        .color-dot.out-of-stock {
+            opacity: 0.5;
+            cursor: not-allowed;
+            position: relative;
+        }
+        
+        .color-dot.out-of-stock::after {
+            content: '✕';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #e53e3e;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .color-dot.low-stock {
+            border-color: #f6ad55;
+        }
+        
+        .color-dot.in-stock {
+            border-color: #48bb78;
+        }
+    </style>
 
     <!-- YOUR CUSTOM CSS -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
@@ -328,11 +439,67 @@
 	                        <div class="row">
 	                            <label class="col-xl-5 col-lg-5  col-md-6 col-6 pt-0"><strong>Color</strong></label>
 	                            <div class="col-xl-4 col-lg-5 col-md-6 col-6 colors">
-	                                <ul>
-	                                    <li><a href="#0" class="color color_1 active"></a></li>
-	                                    <li><a href="#0" class="color color_2"></a></li>
-	                                    <li><a href="#0" class="color color_3"></a></li>
-	                                    <li><a href="#0" class="color color_4"></a></li>
+	                                <ul class="color-dots-list">
+	                                    @php
+	                                        $colorAttribute = \App\Models\Attribute::where('slug', 'color')->first();
+	                                        $productColors = $product->productAttributes()
+	                                            ->whereHas('attributeValue.attribute', function($q) {
+	                                                $q->where('slug', 'color');
+	                                            })
+	                                            ->with('attributeValue')
+	                                            ->get();
+	                                    @endphp
+	                                    
+	                                    @if($productColors->count() > 0)
+	                                        @foreach($productColors as $index => $productColor)
+	                                            @php
+	                                                $colorValue = $productColor->attributeValue->value;
+
+													
+	                                                // Color mapping
+	                                                $colorMap = [
+	                                                    'black' => '#000000',
+	                                                    'white' => '#ffffff',
+	                                                    'red' => '#ff0000',
+	                                                    'blue' => '#0000ff',
+	                                                    'green' => '#00ff00',
+	                                                    'yellow' => '#ffff00',
+	                                                    'pink' => '#ffc0cb',
+	                                                    'gray' => '#808080',
+	                                                    'brown' => '#a52a2a',
+	                                                    'navy' => '#000080',
+	                                                    'purple' => '#800080',
+	                                                    'orange' => '#ffa500',
+	                                                    'beige' => '#f5f5dc',
+	                                                    'maroon' => '#800000',
+	                                                    'teal' => '#008080',
+	                                                    'lime' => '#00ff00',
+	                                                    'cyan' => '#00ffff',
+	                                                    'magenta' => '#ff00ff',
+	                                                    'silver' => '#c0c0c0',
+	                                                    'gold' => '#ffd700'
+	                                                ];
+	                                                $colorHex = $colorMap[strtolower($colorValue)] ?? '#cccccc';
+	                                                $isFirst = $index === 0;
+	                                            @endphp
+	                                            <li>
+	                                                <a href="#0" 
+	                                                   class="color-dot {{ $isFirst ? 'active' : '' }}" 
+	                                                   data-color="{{ $colorValue }}"
+	                                                   data-hex="{{ $colorHex }}"
+	                                                   data-product-id="{{ $product->id }}"
+	                                                   style="background-color: {{ $colorHex }};"
+	                                                   title="{{ ucfirst($colorValue) }}">
+	                                                </a>
+	                                            </li>
+	                                        @endforeach
+	                                    @else
+	                                        <!-- Fallback colors if no database colors -->
+	                                        <li><a href="#0" class="color color_1 active"></a></li>
+	                                        <li><a href="#0" class="color color_2"></a></li>
+	                                        <li><a href="#0" class="color color_3"></a></li>
+	                                        <li><a href="#0" class="color color_4"></a></li>
+	                                    @endif
 	                                </ul>
 	                            </div>
 	                        </div>
@@ -902,6 +1069,155 @@
   
     <!-- SPECIFIC SCRIPTS -->
     <script src="{{ asset('js/carousel_with_thumbs.js') }}"></script>
+    
+    <!-- Color Dots JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Color dots functionality
+            const colorDots = document.querySelectorAll('.color-dot');
+            const selectedColorInput = document.getElementById('selected_color');
+            const selectedColorDisplay = document.getElementById('selected_color_display');
+            
+            // Initialize color selection
+            function initColorDots() {
+                colorDots.forEach(function(dot) {
+                    dot.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Remove active class from all dots
+                        colorDots.forEach(function(d) {
+                            d.classList.remove('active');
+                        });
+                        
+                        // Add active class to clicked dot
+                        this.classList.add('active');
+                        
+                        // Get color data
+                        const colorName = this.getAttribute('data-color');
+                        const colorHex = this.getAttribute('data-hex');
+                        const productId = this.getAttribute('data-product-id');
+                        
+                        // Update hidden input if exists
+                        if (selectedColorInput) {
+                            selectedColorInput.value = colorName;
+                        }
+                        
+                        // Update display if exists
+                        if (selectedColorDisplay) {
+                            selectedColorDisplay.textContent = colorName;
+                            selectedColorDisplay.style.color = colorHex;
+                        }
+                        
+                        // Trigger custom event for other components
+                        const colorChangeEvent = new CustomEvent('colorChanged', {
+                            detail: {
+                                colorName: colorName,
+                                colorHex: colorHex,
+                                productId: productId
+                            }
+                        });
+                        document.dispatchEvent(colorChangeEvent);
+                        
+                        // Update product image if color variant images exist
+                        updateProductImage(colorName, productId);
+                        
+                        // Update price if color affects pricing
+                        updatePriceForColor(colorName, productId);
+                        
+                        // Update stock status
+                        updateStockForColor(colorName, productId);
+                    });
+                    
+                    // Add keyboard support
+                    dot.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                    
+                    // Add focus support
+                    dot.setAttribute('tabindex', '0');
+                });
+            }
+            
+            // Update product image based on selected color
+            function updateProductImage(colorName, productId) {
+                const productImage = document.querySelector('.prod_info figure img');
+                if (productImage) {
+                    // Check if color variant image exists
+                    const colorImagePath = `/storage/products/${productId}/color_${colorName.toLowerCase().replace(/\s+/g, '_')}.jpg`;
+                    
+                    // Try to load color variant image
+                    const testImage = new Image();
+                    testImage.onload = function() {
+                        productImage.src = colorImagePath;
+                    };
+                    testImage.onerror = function() {
+                        // Keep original image if color variant doesn't exist
+                        console.log('Color variant image not found, keeping original');
+                    };
+                    testImage.src = colorImagePath;
+                }
+            }
+            
+            // Update price based on selected color
+            function updatePriceForColor(colorName, productId) {
+                // This would typically make an AJAX call to get color-specific pricing
+                // For now, we'll just log the color change
+                console.log(`Price update for color: ${colorName}`);
+            }
+            
+            // Update stock status based on selected color
+            function updateStockForColor(colorName, productId) {
+                // This would typically make an AJAX call to get color-specific stock
+                // For now, we'll just log the color change
+                console.log(`Stock update for color: ${colorName}`);
+            }
+            
+            // Initialize color dots
+            initColorDots();
+            
+            // Add size selection integration
+            const sizeSelect = document.querySelector('select.wide');
+            if (sizeSelect) {
+                sizeSelect.addEventListener('change', function() {
+                    const selectedColor = document.querySelector('.color-dot.active');
+                    if (selectedColor) {
+                        const colorName = selectedColor.getAttribute('data-color');
+                        const sizeValue = this.value;
+                        
+                        // Check stock for color-size combination
+                        checkStockForCombination(colorName, sizeValue);
+                    }
+                });
+            }
+            
+            // Check stock for color-size combination
+            function checkStockForCombination(colorName, sizeValue) {
+                // This would typically make an AJAX call to check stock
+                console.log(`Checking stock for ${colorName} - ${sizeValue}`);
+            }
+            
+            // Add to cart with color selection
+            const addToCartForm = document.querySelector('form[action*="cart"]');
+            if (addToCartForm) {
+                addToCartForm.addEventListener('submit', function(e) {
+                    const selectedColor = document.querySelector('.color-dot.active');
+                    if (selectedColor) {
+                        const colorName = selectedColor.getAttribute('data-color');
+                        
+                        // Add color to form data
+                        const colorInput = document.createElement('input');
+                        colorInput.type = 'hidden';
+                        colorInput.name = 'selected_color';
+                        colorInput.value = colorName;
+                        this.appendChild(colorInput);
+                    }
+                });
+            }
+        });
+    </script>
 
 </body>
 

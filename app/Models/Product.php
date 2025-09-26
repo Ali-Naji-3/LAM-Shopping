@@ -15,7 +15,7 @@ class Product extends Model
         'name', 'slug', 'sku', 'short_description', 'description', 
         'regular_price', 'sale_price', 'featured', 'status', 'quantity', 
         'image', 'gallery_images', 'category_id', 'brand_id', 'weight', 'dimensions',
-        'meta_title', 'meta_description'
+        'meta_title', 'meta_description', 'enable_countdown', 'countdown_date'
     ];
 
     protected $casts = [
@@ -23,6 +23,8 @@ class Product extends Model
         'sale_price' => 'decimal:2',
         'weight' => 'decimal:2',
         'featured' => 'boolean',
+        'enable_countdown' => 'boolean',
+        'countdown_date' => 'datetime',
         'gallery_images' => 'array',
         'dimensions' => 'array',
         'created_at' => 'datetime',

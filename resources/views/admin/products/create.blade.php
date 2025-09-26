@@ -88,6 +88,8 @@
                                     @error('sale_price')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                    <div class="mt-2">
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -125,6 +127,66 @@
                             <h6>Gallery Preview (<span id="gallery-count">0</span> images)</h6>
                             <div id="gallery-grid" class="row g-2"></div>
                         </div>
+                        
+                        <!-- Color Management Section -->
+                        <div class="mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">🎨 Color Management</h5>
+                                    <small class="text-muted">Add colors for this product. These will appear as color dots on the frontend.</small>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Color Input Section -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="color_name" class="form-label">Color Name</label>
+                                            <input type="text" class="form-control" id="color_name" placeholder="e.g., Navy Blue, Forest Green">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="color_hex" class="form-label">Color Code</label>
+                                            <input type="color" class="form-control" id="color_hex" value="#000000">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="color_stock" class="form-label">Stock</label>
+                                            <input type="number" class="form-control" id="color_stock" placeholder="Quantity" min="0">
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-end">
+                                            <button type="button" class="btn btn-primary w-100" onclick="addColor()">
+                                                <i class="fas fa-plus"></i> Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Color Preview Section -->
+                                    <div id="colors-preview" class="mb-3">
+                                        <h6>Selected Colors:</h6>
+                                        <div id="colors-list" class="d-flex flex-wrap gap-2">
+                                            <span class="text-muted">No colors added yet</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Hidden inputs for form submission -->
+                                    <div id="color-inputs"></div>
+                                    
+                                    <!-- Quick Color Presets -->
+                                    <div class="mt-3">
+                                        <h6>Quick Color Presets:</h6>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Black', '#000000')">Black</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('White', '#ffffff')">White</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Red', '#ff0000')">Red</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Blue', '#0000ff')">Blue</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Green', '#00ff00')">Green</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Yellow', '#ffff00')">Yellow</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Pink', '#ffc0cb')">Pink</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Gray', '#808080')">Gray</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Brown', '#a52a2a')">Brown</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Navy', '#000080')">Navy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Description -->
                         <div class="mb-4">
@@ -142,6 +204,35 @@
                                 <label class="form-check-label" for="status">
                                     Active
                                 </label>
+                            </div>
+                        </div>
+
+                        <!-- Countdown Timer Settings -->
+                        <div class="mb-4">
+                            <label class="form-label">Countdown Timer Settings</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="enable_countdown" name="enable_countdown" value="1" {{ old('enable_countdown') ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="enable_countdown">
+                                            Enable Countdown Timer
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="countdown_date" class="form-label">Countdown End Date</label>
+                                    <input type="datetime-local" class="form-control @error('countdown_date') is-invalid @enderror" id="countdown_date" name="countdown_date" value="{{ old('countdown_date') }}">
+                                    @error('countdown_date')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <small class="form-text text-muted">Set when the countdown timer should expire. Multiple products can share the same countdown date.</small>
+                            <div class="mt-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setCommonCountdown()">
+                                    <i class="ti-calendar"></i> Set Common Sale End Date
+                                </button>
+                                <small class="text-muted ms-2">Quick set for seasonal sales</small>
                             </div>
                         </div>
 
@@ -226,6 +317,203 @@ function updateGalleryPreview() {
         }
     }
 }
+
+// Function to set common countdown dates
+function setCommonCountdown() {
+    const enableCheckbox = document.getElementById('enable_countdown');
+    const dateInput = document.getElementById('countdown_date');
+    
+    // Enable countdown
+    enableCheckbox.checked = true;
+    
+    // Set common sale end dates (30 days from now, 60 days, 90 days)
+    const now = new Date();
+    const options = [
+        { days: 30, label: '30 days (1 month)' },
+        { days: 60, label: '60 days (2 months)' },
+        { days: 90, label: '90 days (3 months)' }
+    ];
+    
+    const choice = prompt(`Choose a common sale end date:\n1. ${options[0].label}\n2. ${options[1].label}\n3. ${options[2].label}\n\nEnter 1, 2, or 3:`);
+    
+    if (choice && ['1', '2', '3'].includes(choice)) {
+        const selectedOption = options[parseInt(choice) - 1];
+        const endDate = new Date(now.getTime() + (selectedOption.days * 24 * 60 * 60 * 1000));
+        
+        // Format for datetime-local input
+        const year = endDate.getFullYear();
+        const month = String(endDate.getMonth() + 1).padStart(2, '0');
+        const day = String(endDate.getDate()).padStart(2, '0');
+        const hours = String(endDate.getHours()).padStart(2, '0');
+        const minutes = String(endDate.getMinutes()).padStart(2, '0');
+        
+        dateInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+        
+        alert(`Countdown set to ${selectedOption.label} from now (${endDate.toLocaleDateString()})`);
+    }
+}
+
+// Function to set common sale prices
+function setCommonSalePrice() {
+    console.log('Set Common Sale Price button clicked!'); // Debug log
+    
+    const salePriceInput = document.getElementById('sale_price');
+    const regularPriceInput = document.getElementById('price');
+    
+    // Check if elements exist
+    if (!salePriceInput || !regularPriceInput) {
+        alert('Error: Form elements not found. Please refresh the page.');
+        return;
+    }
+    
+    // Get current regular price
+    const regularPrice = parseFloat(regularPriceInput.value) || 0;
+    
+    if (regularPrice <= 0) {
+        alert('Please set a regular price first before setting sale price.');
+        return;
+    }
+    
+    // Common sale price options (percentage off)
+    const options = [
+        { percent: 10, label: '10% off' },
+        { percent: 20, label: '20% off' },
+        { percent: 30, label: '30% off' },
+        { percent: 50, label: '50% off' }
+    ];
+    
+    // Create a custom popup with better visibility
+    const popupMessage = `Choose a common sale price:\n\n1. ${options[0].label} → $${(regularPrice * 0.9).toFixed(2)}\n2. ${options[1].label} → $${(regularPrice * 0.8).toFixed(2)}\n3. ${options[2].label} → $${(regularPrice * 0.7).toFixed(2)}\n4. ${options[3].label} → $${(regularPrice * 0.5).toFixed(2)}\n\nEnter 1, 2, 3, or 4:`;
+    
+    console.log('Showing popup with options:', popupMessage); // Debug log
+    
+    const choice = prompt(popupMessage);
+    
+    console.log('User choice:', choice); // Debug log
+    
+    if (choice && ['1', '2', '3', '4'].includes(choice)) {
+        const selectedOption = options[parseInt(choice) - 1];
+        const salePrice = regularPrice * (1 - selectedOption.percent / 100);
+        
+        salePriceInput.value = salePrice.toFixed(2);
+        
+        alert(`✅ Sale price set to ${selectedOption.label} ($${salePrice.toFixed(2)})`);
+        console.log('Sale price set successfully!', { selectedOption, salePrice }); // Debug log
+    } else if (choice !== null) {
+        alert('❌ Invalid choice. Please enter 1, 2, 3, or 4.');
+        console.log('Invalid choice entered:', choice); // Debug log
+    }
+}
+
+// Color Management Functions
+let selectedColors = [];
+
+function addColor() {
+    const colorName = document.getElementById('color_name').value.trim();
+    const colorHex = document.getElementById('color_hex').value;
+    const colorStock = document.getElementById('color_stock').value || 0;
+    
+    if (!colorName) {
+        alert('Please enter a color name');
+        return;
+    }
+    
+    // Check if color already exists
+    if (selectedColors.some(color => color.name.toLowerCase() === colorName.toLowerCase())) {
+        alert('This color has already been added');
+        return;
+    }
+    
+    // Add color to array
+    const newColor = {
+        name: colorName,
+        hex: colorHex,
+        stock: parseInt(colorStock)
+    };
+    
+    selectedColors.push(newColor);
+    
+    // Clear inputs
+    document.getElementById('color_name').value = '';
+    document.getElementById('color_hex').value = '#000000';
+    document.getElementById('color_stock').value = '';
+    
+    // Update preview
+    updateColorsPreview();
+    
+    console.log('Color added:', newColor);
+}
+
+function addPresetColor(name, hex) {
+    document.getElementById('color_name').value = name;
+    document.getElementById('color_hex').value = hex;
+    document.getElementById('color_stock').value = 10; // Default stock
+    addColor();
+}
+
+function removeColor(index) {
+    selectedColors.splice(index, 1);
+    updateColorsPreview();
+    console.log('Color removed at index:', index);
+}
+
+function updateColorsPreview() {
+    const colorsList = document.getElementById('colors-list');
+    const colorInputs = document.getElementById('color-inputs');
+    
+    if (selectedColors.length === 0) {
+        colorsList.innerHTML = '<span class="text-muted">No colors added yet</span>';
+        colorInputs.innerHTML = '';
+        return;
+    }
+    
+    // Update colors list display
+    colorsList.innerHTML = '';
+    selectedColors.forEach((color, index) => {
+        const colorElement = document.createElement('div');
+        colorElement.className = 'd-flex align-items-center gap-2 p-2 border rounded';
+        colorElement.style.backgroundColor = '#f8f9fa';
+        colorElement.innerHTML = `
+            <div class="color-dot-preview" style="width: 20px; height: 20px; border-radius: 50%; background-color: ${color.hex}; border: 2px solid #e2e8f0;"></div>
+            <span class="fw-bold">${color.name}</span>
+            <small class="text-muted">(${color.hex})</small>
+            <small class="text-muted">Stock: ${color.stock}</small>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeColor(${index})">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        colorsList.appendChild(colorElement);
+    });
+    
+    // Update hidden inputs for form submission
+    colorInputs.innerHTML = '';
+    selectedColors.forEach((color, index) => {
+        // Create hidden inputs for each color
+        const nameInput = document.createElement('input');
+        nameInput.type = 'hidden';
+        nameInput.name = `colors[${index}][name]`;
+        nameInput.value = color.name;
+        
+        const hexInput = document.createElement('input');
+        hexInput.type = 'hidden';
+        hexInput.name = `colors[${index}][hex]`;
+        hexInput.value = color.hex;
+        
+        const stockInput = document.createElement('input');
+        stockInput.type = 'hidden';
+        stockInput.name = `colors[${index}][stock]`;
+        stockInput.value = color.stock;
+        
+        colorInputs.appendChild(nameInput);
+        colorInputs.appendChild(hexInput);
+        colorInputs.appendChild(stockInput);
+    });
+}
+
+// Initialize color management
+document.addEventListener('DOMContentLoaded', function() {
+    updateColorsPreview();
+});
 </script>
 @endsection
         

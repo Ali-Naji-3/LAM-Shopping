@@ -177,8 +177,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Professional Accessibility Enhancement
-    const gridItems = document.querySelectorAll('.grid_item');
-    gridItems.forEach(function(item) {
+    const gridItemsAccessibility = document.querySelectorAll('.grid_item');
+    gridItemsAccessibility.forEach(function(item) {
         item.setAttribute('role', 'article');
         item.setAttribute('tabindex', '0');
         
