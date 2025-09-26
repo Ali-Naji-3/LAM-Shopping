@@ -7,12 +7,12 @@
 window.handleReviewSearchKeyup = function(input) {
     const searchTerm = input.value.trim();
     const minSearchLength = 2;
-    
+
     // Force clean professional styling
     input.style.background = '#ffffff';
     input.style.color = '#1a202c';
     input.style.border = '2px solid #e2e8f0';
-    
+
     if (searchTerm.length >= minSearchLength) {
         input.style.borderColor = '#3182ce';
         input.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.15)';
@@ -22,7 +22,7 @@ window.handleReviewSearchKeyup = function(input) {
         input.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
         input.style.transform = 'translateY(0)';
     }
-    
+
     clearTimeout(window.reviewSearchTimeout);
     if (searchTerm.length >= minSearchLength || searchTerm.length === 0) {
         window.reviewSearchTimeout = setTimeout(function() {
@@ -79,7 +79,7 @@ window.handleReviewSearchBlur = function(input) {
                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                 <i class="bi bi-plus-circle me-2"></i>Add Review
             </a>
-            <a href="{{ route('admin.reviews.analytics') }}" class="btn btn-outline-info" 
+            <a href="{{ route('admin.reviews.analytics') }}" class="btn btn-outline-info"
                style="color: #0891b2 !important; border-color: #0891b2 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                onmouseover="this.style.backgroundColor='#0891b2 !important'; this.style.color='#ffffff !important';"
                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
@@ -152,11 +152,11 @@ window.handleReviewSearchBlur = function(input) {
                     <div class="col-md-3">
                         <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Search Reviews</label>
                         <div class="search-input-container" style="position: relative;">
-                            <input type="text" 
-                                   name="search" 
+                            <input type="text"
+                                   name="search"
                                    id="search-reviews"
-                                   class="form-control" 
-                                   placeholder="🔍 Search reviews, products, users..." 
+                                   class="form-control"
+                                   placeholder="🔍 Search reviews, products, users..."
                                    value="{{ request('search') }}"
                                    style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px 14px 45px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                    onkeyup="handleReviewSearchKeyup(this)"
@@ -164,7 +164,7 @@ window.handleReviewSearchBlur = function(input) {
                                    onfocus="handleReviewSearchFocus(this)"
                                    onblur="handleReviewSearchBlur(this)"
                                    autocomplete="off">
-                            <i class="bi bi-search search-icon" 
+                            <i class="bi bi-search search-icon"
                                style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #718096 !important; opacity: 0.8; pointer-events: none; z-index: 10; font-size: 16px;"></i>
                         </div>
                     </div>
@@ -200,7 +200,7 @@ window.handleReviewSearchBlur = function(input) {
                     </div>
                     <div class="col-md-2">
                         <div class="d-flex align-items-center gap-2">
-                            <button type="submit" class="btn btn-outline-primary flex-fill" 
+                            <button type="submit" class="btn btn-outline-primary flex-fill"
                                     style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                     onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important';"
                                     onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important';">
@@ -245,7 +245,7 @@ window.handleReviewSearchBlur = function(input) {
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-outline-warning" 
+                            <button type="submit" class="btn btn-outline-warning"
                                     style="color: #d69e2e !important; border-color: #d69e2e !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 8px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                     onclick="return confirm('Are you sure you want to perform this bulk action?')">
                                 <i class="bi bi-lightning me-1"></i> Apply Action
@@ -260,11 +260,11 @@ window.handleReviewSearchBlur = function(input) {
         <div class="row">
             @foreach($reviews as $review)
                 <div class="col-lg-6 col-md-12 mb-4">
-                    <div class="review-card" 
+                    <div class="review-card"
                          style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; padding: 1.5rem !important; transition: all 0.2s ease !important; height: 100% !important;"
                          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#3182ce !important';"
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#e2e8f0 !important';">
-                        
+
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <!-- Rating and Status -->
                             <div class="d-flex align-items-center gap-2">
@@ -280,21 +280,21 @@ window.handleReviewSearchBlur = function(input) {
                                 <input class="form-check-input review-checkbox" type="checkbox" value="{{ $review->id }}" name="selected_reviews[]">
                             </div>
                         </div>
-                        
+
                         <!-- Review Title -->
                         @if($review->title)
                             <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 16px !important; margin-bottom: 8px !important;">
                                 "{{ $review->title }}"
                             </h6>
                         @endif
-                        
+
                         <!-- Review Comment -->
                         @if($review->comment)
                             <p style="color: #4a5568 !important; font-size: 14px !important; line-height: 1.6 !important; margin-bottom: 12px !important;">
                                 {{ Str::limit($review->comment, 150) }}
                             </p>
                         @endif
-                        
+
                         <!-- Product and User Info -->
                         <div class="mb-3" style="padding: 12px !important; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important; border-radius: 8px !important;">
                             <div class="row">
@@ -308,7 +308,7 @@ window.handleReviewSearchBlur = function(input) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Review Meta -->
                         <div class="mb-3" style="padding: 8px 12px !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 6px !important;">
                             <div class="d-flex justify-content-between align-items-center">
@@ -320,7 +320,7 @@ window.handleReviewSearchBlur = function(input) {
                                 </small>
                             </div>
                         </div>
-                        
+
                         <!-- Actions -->
                         <div class="d-flex gap-1">
                             @if(!$review->is_approved)
@@ -358,7 +358,7 @@ window.handleReviewSearchBlur = function(input) {
                                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" class="d-inline flex-fill" 
+                            <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" class="d-inline flex-fill"
                                   onsubmit="return confirm('Are you sure you want to delete this review?')">
                                 @csrf
                                 @method('DELETE')
@@ -381,7 +381,7 @@ window.handleReviewSearchBlur = function(input) {
                 Showing {{ $reviews->firstItem() ?? 0 }} to {{ $reviews->lastItem() ?? 0 }} of {{ $reviews->total() }} entries
             </div>
             <div class="pagination-links">
-                {{ $reviews->appends(request()->query())->links('vendor.pagination.custom') }}
+                {{ $reviews->appends(request()->query())->links('pagination.custom') }}
             </div>
         </div>
 
@@ -425,7 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Bulk selection functionality
     const selectAllCheckbox = document.getElementById('select-all');
     const reviewCheckboxes = document.querySelectorAll('.review-checkbox');
-    
+
     if (selectAllCheckbox) {
         selectAllCheckbox.addEventListener('change', function() {
             reviewCheckboxes.forEach(checkbox => {
@@ -434,14 +434,14 @@ document.addEventListener('DOMContentLoaded', function() {
             updateBulkActionsState();
         });
     }
-    
+
     reviewCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             updateSelectAllState();
             updateBulkActionsState();
         });
     });
-    
+
     function updateSelectAllState() {
         if (selectAllCheckbox) {
             const checkedCount = document.querySelectorAll('.review-checkbox:checked').length;
@@ -449,14 +449,14 @@ document.addEventListener('DOMContentLoaded', function() {
             selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < reviewCheckboxes.length;
         }
     }
-    
+
     function updateBulkActionsState() {
         const selectedCount = document.querySelectorAll('.review-checkbox:checked').length;
         const bulkForm = document.getElementById('bulk-actions-form');
-        
+
         if (bulkForm) {
             const actionSelect = bulkForm.querySelector('select[name="action"]');
-            
+
             if (selectedCount > 0) {
                 actionSelect.style.borderColor = '#3182ce';
                 actionSelect.style.background = '#f0f9ff';
@@ -476,28 +476,28 @@ document.addEventListener('DOMContentLoaded', function() {
     .review-card {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     .rating-stars {
         transition: all 0.2s ease !important;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .review-card:hover .rating-stars {
         transform: scale(1.05) !important;
     }
-    
+
     /* Clean Search Input Styling */
     #search-reviews::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     .form-control:hover {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -506,24 +506,24 @@ document.addEventListener('DOMContentLoaded', function() {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .form-check-input:checked {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
-    
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .review-card {
             margin-bottom: 1rem !important;
         }
-        
+
         .d-flex.gap-1 {
             flex-direction: column !important;
             gap: 0.5rem !important;
         }
-        
+
         .d-flex.gap-1 .btn {
             width: 100% !important;
         }

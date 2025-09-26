@@ -7,12 +7,12 @@
 window.handleSliderSearchKeyup = function(input) {
     const searchTerm = input.value.trim();
     const minSearchLength = 2;
-    
+
     // Force clean professional styling
     input.style.background = '#ffffff';
     input.style.color = '#1a202c';
     input.style.border = '2px solid #e2e8f0';
-    
+
     if (searchTerm.length >= minSearchLength) {
         input.style.borderColor = '#3182ce';
         input.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.15)';
@@ -22,7 +22,7 @@ window.handleSliderSearchKeyup = function(input) {
         input.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
         input.style.transform = 'translateY(0)';
     }
-    
+
     clearTimeout(window.sliderSearchTimeout);
     if (searchTerm.length >= minSearchLength || searchTerm.length === 0) {
         window.sliderSearchTimeout = setTimeout(function() {
@@ -79,7 +79,7 @@ window.handleSliderSearchBlur = function(input) {
                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                 <i class="bi bi-plus-circle me-2"></i>Add Slider
             </a>
-            <a href="{{ route('admin.sliders.analytics') }}" class="btn btn-outline-info" 
+            <a href="{{ route('admin.sliders.analytics') }}" class="btn btn-outline-info"
                style="color: #0891b2 !important; border-color: #0891b2 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                onmouseover="this.style.backgroundColor='#0891b2 !important'; this.style.color='#ffffff !important';"
                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
@@ -145,11 +145,11 @@ window.handleSliderSearchBlur = function(input) {
                     <div class="col-md-6">
                         <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Search Sliders</label>
                         <div class="search-input-container" style="position: relative;">
-                            <input type="text" 
-                                   name="search" 
+                            <input type="text"
+                                   name="search"
                                    id="search-sliders"
-                                   class="form-control" 
-                                   placeholder="🔍 Search by title, subtitle, button text..." 
+                                   class="form-control"
+                                   placeholder="🔍 Search by title, subtitle, button text..."
                                    value="{{ request('search') }}"
                                    style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px 14px 45px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                    onkeyup="handleSliderSearchKeyup(this)"
@@ -157,7 +157,7 @@ window.handleSliderSearchBlur = function(input) {
                                    onfocus="handleSliderSearchFocus(this)"
                                    onblur="handleSliderSearchBlur(this)"
                                    autocomplete="off">
-                            <i class="bi bi-search search-icon" 
+                            <i class="bi bi-search search-icon"
                                style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #718096 !important; opacity: 0.8; pointer-events: none; z-index: 10; font-size: 16px;"></i>
                         </div>
                     </div>
@@ -173,7 +173,7 @@ window.handleSliderSearchBlur = function(input) {
                     </div>
                     <div class="col-md-3">
                         <div class="d-flex align-items-center gap-2">
-                            <button type="submit" class="btn btn-outline-primary flex-fill" 
+                            <button type="submit" class="btn btn-outline-primary flex-fill"
                                     style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                     onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important';"
                                     onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important';">
@@ -218,7 +218,7 @@ window.handleSliderSearchBlur = function(input) {
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <button type="submit" class="btn btn-outline-warning" 
+                            <button type="submit" class="btn btn-outline-warning"
                                     style="color: #d69e2e !important; border-color: #d69e2e !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 8px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                     onclick="return confirm('Are you sure you want to perform this bulk action?')">
                                 <i class="bi bi-lightning me-1"></i> Apply Action
@@ -233,15 +233,15 @@ window.handleSliderSearchBlur = function(input) {
         <div class="row">
             @foreach($sliders as $slider)
                 <div class="col-lg-6 col-md-12 mb-4">
-                    <div class="slider-card" 
+                    <div class="slider-card"
                          style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; overflow: hidden !important; transition: all 0.2s ease !important; height: 100% !important;"
                          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#3182ce !important';"
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#e2e8f0 !important';">
-                        
+
                         <!-- Slider Image -->
                         <div class="slider-image-container" style="position: relative; height: 200px; overflow: hidden; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
                             @if($slider->image)
-                                <img src="{{ $slider->image_url }}" alt="{{ $slider->title }}" 
+                                <img src="{{ $slider->image_url }}" alt="{{ $slider->title }}"
                                      style="width: 100%; height: 100%; object-fit: cover; transition: all 0.3s ease;"
                                      onmouseover="this.style.transform='scale(1.05)';"
                                      onmouseout="this.style.transform='scale(1)';">
@@ -250,21 +250,21 @@ window.handleSliderSearchBlur = function(input) {
                                     <i class="bi bi-image" style="font-size: 3rem; color: #718096;"></i>
                                 </div>
                             @endif
-                            
+
                             <!-- Status Badge -->
                             <div class="position-absolute top-0 end-0 m-2">
                                 <span class="badge" style="background: {{ $slider->status_color }} !important; color: #ffffff !important; font-size: 11px !important; padding: 6px 12px !important; border-radius: 20px !important; text-transform: uppercase !important;">
                                     {{ $slider->status }}
                                 </span>
                             </div>
-                            
+
                             <!-- Order Badge -->
                             <div class="position-absolute top-0 start-0 m-2">
                                 <span class="badge" style="background: #1a202c !important; color: #ffffff !important; font-size: 10px !important; padding: 4px 8px !important; border-radius: 12px !important;">
                                     Order: {{ $slider->order }}
                                 </span>
                             </div>
-                            
+
                             <!-- Checkbox for bulk actions -->
                             <div class="position-absolute bottom-0 end-0 m-2">
                                 <div class="form-check">
@@ -272,7 +272,7 @@ window.handleSliderSearchBlur = function(input) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Slider Content -->
                         <div style="padding: 1.5rem !important;">
                             <!-- Title and Subtitle -->
@@ -281,13 +281,13 @@ window.handleSliderSearchBlur = function(input) {
                                     {{ $slider->title }}
                                 </h5>
                             @endif
-                            
+
                             @if($slider->subtitle)
                                 <p style="color: #4a5568 !important; font-size: 14px !important; line-height: 1.5 !important; margin-bottom: 12px !important;">
                                     {{ $slider->subtitle }}
                                 </p>
                             @endif
-                            
+
                             <!-- Slider Details -->
                             <div class="mb-3" style="padding: 12px !important; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important; border-radius: 8px !important;">
                                 <div class="row">
@@ -304,7 +304,7 @@ window.handleSliderSearchBlur = function(input) {
                                         </div>
                                     @endif
                                 </div>
-                                
+
                                 @if($slider->start_date || $slider->end_date)
                                     <div class="row mt-2">
                                         @if($slider->start_date)
@@ -322,7 +322,7 @@ window.handleSliderSearchBlur = function(input) {
                                     </div>
                                 @endif
                             </div>
-                            
+
                             <!-- Slider Meta -->
                             <div class="mb-3" style="padding: 8px 12px !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 6px !important;">
                                 <div class="d-flex justify-content-between align-items-center">
@@ -334,7 +334,7 @@ window.handleSliderSearchBlur = function(input) {
                                     </small>
                                 </div>
                             </div>
-                            
+
                             <!-- Actions -->
                             <div class="d-flex gap-1">
                                 <form method="POST" action="{{ route('admin.sliders.toggleStatus', $slider) }}" class="d-inline flex-fill">
@@ -359,7 +359,7 @@ window.handleSliderSearchBlur = function(input) {
                                    onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <form method="POST" action="{{ route('admin.sliders.destroy', $slider) }}" class="d-inline flex-fill" 
+                                <form method="POST" action="{{ route('admin.sliders.destroy', $slider) }}" class="d-inline flex-fill"
                                       onsubmit="return confirm('Are you sure you want to delete this slider?')">
                                     @csrf
                                     @method('DELETE')
@@ -383,7 +383,7 @@ window.handleSliderSearchBlur = function(input) {
                 Showing {{ $sliders->firstItem() ?? 0 }} to {{ $sliders->lastItem() ?? 0 }} of {{ $sliders->total() }} entries
             </div>
             <div class="pagination-links">
-                {{ $sliders->appends(request()->query())->links('vendor.pagination.custom') }}
+                {{ $sliders->appends(request()->query())->links('pagination.custom') }}
             </div>
         </div>
 
@@ -427,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Bulk selection functionality
     const selectAllCheckbox = document.getElementById('select-all');
     const sliderCheckboxes = document.querySelectorAll('.slider-checkbox');
-    
+
     if (selectAllCheckbox) {
         selectAllCheckbox.addEventListener('change', function() {
             sliderCheckboxes.forEach(checkbox => {
@@ -436,14 +436,14 @@ document.addEventListener('DOMContentLoaded', function() {
             updateBulkActionsState();
         });
     }
-    
+
     sliderCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             updateSelectAllState();
             updateBulkActionsState();
         });
     });
-    
+
     function updateSelectAllState() {
         if (selectAllCheckbox) {
             const checkedCount = document.querySelectorAll('.slider-checkbox:checked').length;
@@ -451,14 +451,14 @@ document.addEventListener('DOMContentLoaded', function() {
             selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < sliderCheckboxes.length;
         }
     }
-    
+
     function updateBulkActionsState() {
         const selectedCount = document.querySelectorAll('.slider-checkbox:checked').length;
         const bulkForm = document.getElementById('bulk-actions-form');
-        
+
         if (bulkForm) {
             const actionSelect = bulkForm.querySelector('select[name="action"]');
-            
+
             if (selectedCount > 0) {
                 actionSelect.style.borderColor = '#3182ce';
                 actionSelect.style.background = '#f0f9ff';
@@ -478,23 +478,23 @@ document.addEventListener('DOMContentLoaded', function() {
     .slider-card {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     .slider-image-container img {
         transition: all 0.3s ease !important;
     }
-    
+
     /* Clean Search Input Styling */
     #search-sliders::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     .form-control:hover {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -503,28 +503,28 @@ document.addEventListener('DOMContentLoaded', function() {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .form-check-input:checked {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
-    
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .slider-card {
             margin-bottom: 1rem !important;
         }
-        
+
         .d-flex.gap-1 {
             flex-direction: column !important;
             gap: 0.5rem !important;
         }
-        
+
         .d-flex.gap-1 .btn {
             width: 100% !important;
         }
-        
+
         .slider-image-container {
             height: 150px !important;
         }

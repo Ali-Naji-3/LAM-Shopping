@@ -7,14 +7,14 @@
 window.handleBrandSearchKeyup = function(input) {
     const searchTerm = input.value.trim();
     const minSearchLength = 2;
-    
+
     console.log('Enhanced Brand Search - onkeyup triggered:', searchTerm);
-    
+
     // Force clean professional styling
     input.style.background = '#ffffff';
     input.style.color = '#1a202c';
     input.style.border = '2px solid #e2e8f0';
-    
+
     // Advanced visual feedback
     if (searchTerm.length >= minSearchLength) {
         input.style.borderColor = '#3182ce';
@@ -32,7 +32,7 @@ window.handleBrandSearchKeyup = function(input) {
         input.style.background = '#ffffff';
         input.style.transform = 'translateY(0)';
     }
-    
+
     // Smart auto-submit
     clearTimeout(window.brandSearchTimeout);
     if (searchTerm.length >= minSearchLength || searchTerm.length === 0) {
@@ -97,11 +97,11 @@ window.handleBrandSearchBlur = function(input) {
                 <div class="col-md-4">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Search Brands</label>
                     <div class="search-input-container" style="position: relative;">
-                        <input type="text" 
-                               name="search" 
+                        <input type="text"
+                               name="search"
                                id="search-brands"
-                               class="form-control" 
-                               placeholder="🔍 Search by name, description, or slug..." 
+                               class="form-control"
+                               placeholder="🔍 Search by name, description, or slug..."
                                value="{{ request('search') }}"
                                style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px 14px 45px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                onkeyup="handleBrandSearchKeyup(this)"
@@ -109,13 +109,13 @@ window.handleBrandSearchBlur = function(input) {
                                onfocus="handleBrandSearchFocus(this)"
                                onblur="handleBrandSearchBlur(this)"
                                autocomplete="off">
-                        <i class="bi bi-search search-icon" 
+                        <i class="bi bi-search search-icon"
                            style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #718096 !important; opacity: 0.8; pointer-events: none; z-index: 10; font-size: 16px;"></i>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Status</label>
-                    <select name="status" class="form-control" 
+                    <select name="status" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                         <option value="">All Status</option>
                         <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
@@ -124,7 +124,7 @@ window.handleBrandSearchBlur = function(input) {
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Category</label>
-                    <select name="category_id" class="form-control" 
+                    <select name="category_id" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                         <option value="">All Categories</option>
                         @foreach($categories as $category)
@@ -135,13 +135,13 @@ window.handleBrandSearchBlur = function(input) {
                     </select>
                 </div>
                 <div class="col-md-2 d-flex align-items-end gap-2">
-                    <button type="submit" class="btn btn-outline-primary" 
+                    <button type="submit" class="btn btn-outline-primary"
                             style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;"
                             onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(49, 130, 206, 0.25) !important';"
                             onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important';">
                         <i class="bi bi-search me-1"></i> Search
                     </button>
-                    <a href="{{ route('admin.brands.index') }}" class="btn btn-outline-secondary" 
+                    <a href="{{ route('admin.brands.index') }}" class="btn btn-outline-secondary"
                        style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; text-decoration: none !important;"
                        onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(74, 85, 104, 0.25) !important';"
                        onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important';">
@@ -159,38 +159,38 @@ window.handleBrandSearchBlur = function(input) {
                 <div class="row">
                     @foreach($brands as $brand)
                         <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="brand-card h-100" 
+                            <div class="brand-card h-100"
                                  style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; overflow: hidden !important;"
                                  onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#3182ce !important';"
                                  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#e2e8f0 !important';">
-                                
+
                                 <!-- Brand Image -->
                                 <div class="brand-image text-center p-4" style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;">
                                     @if($brand->image)
-                                        <img src="{{ asset('storage/' . $brand->image) }}" 
-                                             alt="{{ $brand->name }}" 
+                                        <img src="{{ asset('storage/' . $brand->image) }}"
+                                             alt="{{ $brand->name }}"
                                              class="img-fluid"
                                              style="max-height: 80px; max-width: 120px; object-fit: contain; border-radius: 8px;">
                                     @else
-                                        <div class="d-flex align-items-center justify-content-center" 
+                                        <div class="d-flex align-items-center justify-content-center"
                                              style="height: 80px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px;">
                                             <i class="bi bi-award" style="color: #718096 !important; font-size: 2rem;"></i>
                                         </div>
                                     @endif
                                 </div>
-                                
+
                                 <!-- Brand Info -->
                                 <div class="card-body" style="padding: 1.5rem !important;">
                                     <h5 class="brand-name mb-1" style="color: #1a202c !important; font-weight: 600 !important; font-size: 16px !important;">
                                         {{ $brand->name }}
                                     </h5>
-                                    
+
                                     @if($brand->description)
                                         <p class="brand-description small mb-3" style="color: #4a5568 !important; line-height: 1.5;">
                                             {{ Str::limit($brand->description, 80) }}
                                         </p>
                                     @endif
-                                    
+
                                     <!-- Brand Stats -->
                                     <div class="row text-center mb-3">
                                         <div class="col-4">
@@ -211,7 +211,7 @@ window.handleBrandSearchBlur = function(input) {
                                             </span>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Action Buttons -->
                                     <div class="d-flex gap-1">
                                         <a href="{{ route('admin.brands.show', $brand) }}" class="btn btn-sm btn-outline-primary flex-fill"
@@ -239,7 +239,7 @@ window.handleBrandSearchBlur = function(input) {
                         Showing {{ $brands->firstItem() ?? 0 }} to {{ $brands->lastItem() ?? 0 }} of {{ $brands->total() }} entries
                     </div>
                     <div class="pagination-links">
-                        {{ $brands->appends(request()->query())->links('vendor.pagination.custom') }}
+                        {{ $brands->appends(request()->query())->links('pagination.custom') }}
                     </div>
                 </div>
             @else
@@ -263,23 +263,23 @@ window.handleBrandSearchBlur = function(input) {
     .brand-card {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     .brand-card:hover .brand-name {
         color: #3182ce !important;
     }
-    
+
     /* Clean Search Input Styling */
     #search-brands::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     .form-control:hover {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;

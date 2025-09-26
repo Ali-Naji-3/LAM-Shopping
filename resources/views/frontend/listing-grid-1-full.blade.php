@@ -411,73 +411,50 @@
 			<div class="container margin_30">
 			<div class="row small-gutters">
 				@forelse($products as $product)
-				<div class="col-6 col-md-4 col-xl-3">
-					<div class="grid_item">
-						<figure>
-							@if($product->sale_price && $product->sale_price < $product->regular_price)
-								@php
-									$discount = round((($product->regular_price - $product->sale_price) / $product->regular_price) * 100);
-								@endphp
-								<span class="ribbon off">-{{ $discount }}%</span>
-							@elseif($product->featured)
-								<span class="ribbon hot">Hot</span>
-							@elseif($product->created_at->diffInDays() < 7)
-								<span class="ribbon new">New</span>
-							@endif
-							<a href="{{ route('product.detail', $product->slug) }}">
-								@if($product->image)
-									<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-								@else
-									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
-								@endif
-							</a>
-							<div data-countdown="{{ $product->created_at->addDays(30)->format('Y/m/d') }}" class="countdown"></div>
-						</figure>
-						<a href="{{ route('product.detail', $product->slug) }}">
-							<h3>{{ $product->name }}</h3>
-						</a>
-						<div class="price_box">
-							@if($product->sale_price && $product->sale_price < $product->regular_price)
-								<span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
-								<span class="old_price">${{ number_format($product->regular_price, 2) }}</span>
-							@else
-								<span class="new_price">${{ number_format($product->regular_price, 2) }}</span>
-							@endif
-						</div>
-						<ul>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-						</ul>
-					</div>
-					<!-- /grid_item -->
-				</div>
-				<!-- /col -->
+    <div class="col-6 col-md-4 col-xl-3">
+        <div class="grid_item">
+            <figure>
+                @if($product->sale_price && $product->sale_price < $product->regular_price)
+                    @php
+                        $discount = round((($product->regular_price - $product->sale_price) / $product->regular_price) * 100);
+                    @endphp
+                    <span class="ribbon off">-{{ $discount }}%</span>
+                @elseif($product->featured)
+                    <span class="ribbon hot">Hot</span>
+                @elseif($product->created_at->diffInDays() < 7)
+                    <span class="ribbon new">New</span>
+                @endif
+                <a href="{{ route('product.detail', $product->slug) }}">
+                    @if($product->image)
+                        <img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                    @else
+                        <img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
+                    @endif
+                </a>
+                <div data-countdown="{{ $product->created_at->addDays(30)->format('Y/m/d') }}" class="countdown"></div>
+            </figure>
+            <a href="{{ route('product.detail', $product->slug) }}">
+                <h3>{{ $product->name }}</h3>
+            </a>
+            <div class="price_box">
+                @if($product->sale_price && $product->sale_price < $product->regular_price)
+                    <span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
+                    <span class="old_price">${{ number_format($product->regular_price, 2) }}</span>
+                @else
+                    <span class="new_price">${{ number_format($product->regular_price, 2) }}</span>
+                @endif
+            </div>
+            <ul>
+                <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
+                <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
+                <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+            </ul>
+        </div>
+    </div>
+@empty
+    <p>No products found.</p>
+@endforelse
 
-				<div class="col-6 col-md-4 col-xl-3">
-					<div class="grid_item">
-						<span class="ribbon off">-30%</span>
-						<figure>
-							<a href="{{ url('product-detail-2') }}">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/2.jpg') }}" alt="">
-							</a>
-							<div data-countdown="2019/05/10" class="countdown"></div>
-						</figure>
-						<a href="{{ url('product-detail-2') }}">
-							<h3>Armor Okwahn II</h3>
-						</a>
-						<div class="price_box">
-							<span class="new_price">$90.00</span>
-							<span class="old_price">$170.00</span>
-						</div>
-						<ul>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-						</ul>
-					</div>
-				</div>
-				@endforelse
 			</div>
 			<!-- /row -->
 

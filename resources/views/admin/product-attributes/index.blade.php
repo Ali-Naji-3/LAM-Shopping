@@ -7,12 +7,12 @@
 window.handleAttributeSearchKeyup = function(input) {
     const searchTerm = input.value.trim();
     const minSearchLength = 2;
-    
+
     // Force clean professional styling
     input.style.background = '#ffffff';
     input.style.color = '#1a202c';
     input.style.border = '2px solid #e2e8f0';
-    
+
     if (searchTerm.length >= minSearchLength) {
         input.style.borderColor = '#3182ce';
         input.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.15)';
@@ -22,7 +22,7 @@ window.handleAttributeSearchKeyup = function(input) {
         input.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
         input.style.transform = 'translateY(0)';
     }
-    
+
     clearTimeout(window.attributeSearchTimeout);
     if (searchTerm.length >= minSearchLength || searchTerm.length === 0) {
         window.attributeSearchTimeout = setTimeout(function() {
@@ -79,7 +79,7 @@ window.handleAttributeSearchBlur = function(input) {
                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                 <i class="bi bi-plus-circle me-2"></i>Assign Attribute
             </a>
-            <a href="{{ route('admin.productAttributes.analytics') }}" class="btn btn-outline-info" 
+            <a href="{{ route('admin.productAttributes.analytics') }}" class="btn btn-outline-info"
                style="color: #0891b2 !important; border-color: #0891b2 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                onmouseover="this.style.backgroundColor='#0891b2 !important'; this.style.color='#ffffff !important';"
                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
@@ -152,11 +152,11 @@ window.handleAttributeSearchBlur = function(input) {
                     <div class="col-md-3">
                         <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Search</label>
                         <div class="search-input-container" style="position: relative;">
-                            <input type="text" 
-                                   name="search" 
+                            <input type="text"
+                                   name="search"
                                    id="search-attributes"
-                                   class="form-control" 
-                                   placeholder="🔍 Search products, attributes, values..." 
+                                   class="form-control"
+                                   placeholder="🔍 Search products, attributes, values..."
                                    value="{{ request('search') }}"
                                    style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px 14px 45px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                    onkeyup="handleAttributeSearchKeyup(this)"
@@ -164,7 +164,7 @@ window.handleAttributeSearchBlur = function(input) {
                                    onfocus="handleAttributeSearchFocus(this)"
                                    onblur="handleAttributeSearchBlur(this)"
                                    autocomplete="off">
-                            <i class="bi bi-search search-icon" 
+                            <i class="bi bi-search search-icon"
                                style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #718096 !important; opacity: 0.8; pointer-events: none; z-index: 10; font-size: 16px;"></i>
                         </div>
                     </div>
@@ -201,7 +201,7 @@ window.handleAttributeSearchBlur = function(input) {
                     </div>
                     <div class="col-md-2">
                         <div class="d-flex align-items-center gap-2">
-                            <button type="submit" class="btn btn-outline-primary flex-fill" 
+                            <button type="submit" class="btn btn-outline-primary flex-fill"
                                     style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                     onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important';"
                                     onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important';">
@@ -248,7 +248,7 @@ window.handleAttributeSearchBlur = function(input) {
                             <input type="number" name="bulk_additional_price" class="form-control" placeholder="Additional Price ($)" step="0.01" min="0" max="9999.99" style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 12px 16px !important; border-radius: 8px !important; font-size: 14px !important; font-weight: 500 !important;">
                         </div>
                         <div class="col-md-4">
-                            <button type="submit" class="btn btn-outline-warning" 
+                            <button type="submit" class="btn btn-outline-warning"
                                     style="color: #d69e2e !important; border-color: #d69e2e !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 8px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                     onclick="return confirm('Are you sure you want to perform this bulk action?')">
                                 <i class="bi bi-lightning me-1"></i> Apply Action
@@ -263,11 +263,11 @@ window.handleAttributeSearchBlur = function(input) {
         <div class="row">
             @foreach($productAttributes as $assignment)
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="assignment-card" 
+                    <div class="assignment-card"
                          style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; padding: 1.5rem !important; transition: all 0.2s ease !important; height: 100% !important;"
                          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#3182ce !important';"
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#e2e8f0 !important';">
-                        
+
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <!-- Product Info -->
                             <div class="flex-grow-1">
@@ -275,7 +275,7 @@ window.handleAttributeSearchBlur = function(input) {
                                     {{ $assignment->product->name }}
                                 </h6>
                                 <small style="color: #4a5568 !important; font-size: 12px !important;">
-                                    SKU: {{ $assignment->product->sku }} • 
+                                    SKU: {{ $assignment->product->sku }} •
                                     @if($assignment->product->category)
                                         {{ $assignment->product->category->name }}
                                     @endif
@@ -286,7 +286,7 @@ window.handleAttributeSearchBlur = function(input) {
                                 <input class="form-check-input assignment-checkbox" type="checkbox" value="{{ $assignment->id }}" name="selected_assignments[]">
                             </div>
                         </div>
-                        
+
                         <!-- Attribute Info -->
                         <div class="mb-3" style="padding: 12px !important; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important; border-radius: 8px !important;">
                             <div class="d-flex align-items-center gap-2 mb-2">
@@ -295,7 +295,7 @@ window.handleAttributeSearchBlur = function(input) {
                                 </div>
                                 <span style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important;">{{ $assignment->attributeValue->attribute->name }}</span>
                             </div>
-                            
+
                             <!-- Value Display -->
                             <div class="d-flex align-items-center justify-content-between">
                                 @if($assignment->attributeValue->attribute->name === 'Color' && in_array(strtolower($assignment->attributeValue->value), ['red', 'blue', 'green', 'black', 'white', 'yellow', 'pink', 'purple', 'orange', 'brown', 'gray']))
@@ -308,7 +308,7 @@ window.handleAttributeSearchBlur = function(input) {
                                     <!-- Regular Value -->
                                     <span style="color: #1a202c !important; font-weight: 500 !important; font-size: 14px !important;">{{ $assignment->attributeValue->value }}</span>
                                 @endif
-                                
+
                                 <!-- Additional Price -->
                                 @if($assignment->additional_price > 0)
                                     <span class="badge" style="background: #10b981 !important; color: #ffffff !important; font-size: 11px !important; padding: 4px 8px !important; border-radius: 12px !important;">
@@ -321,7 +321,7 @@ window.handleAttributeSearchBlur = function(input) {
                                 @endif
                             </div>
                         </div>
-                        
+
                         <!-- Assignment Details -->
                         <div class="mb-3" style="padding: 8px 12px !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 6px !important;">
                             <div class="row text-center">
@@ -333,7 +333,7 @@ window.handleAttributeSearchBlur = function(input) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Actions -->
                         <div class="d-flex gap-1">
                             <a href="{{ route('admin.productAttributes.edit', $assignment) }}" class="btn btn-sm btn-outline-primary flex-fill"
@@ -348,7 +348,7 @@ window.handleAttributeSearchBlur = function(input) {
                                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <form method="POST" action="{{ route('admin.productAttributes.destroy', $assignment) }}" class="d-inline flex-fill" 
+                            <form method="POST" action="{{ route('admin.productAttributes.destroy', $assignment) }}" class="d-inline flex-fill"
                                   onsubmit="return confirm('Are you sure you want to delete this assignment?')">
                                 @csrf
                                 @method('DELETE')
@@ -371,7 +371,7 @@ window.handleAttributeSearchBlur = function(input) {
                 Showing {{ $productAttributes->firstItem() ?? 0 }} to {{ $productAttributes->lastItem() ?? 0 }} of {{ $productAttributes->total() }} entries
             </div>
             <div class="pagination-links">
-                {{ $productAttributes->appends(request()->query())->links('vendor.pagination.custom') }}
+                {{ $productAttributes->appends(request()->query())->links('pagination.custom') }}
             </div>
         </div>
 
@@ -415,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Bulk selection functionality
     const selectAllCheckbox = document.getElementById('select-all');
     const assignmentCheckboxes = document.querySelectorAll('.assignment-checkbox');
-    
+
     if (selectAllCheckbox) {
         selectAllCheckbox.addEventListener('change', function() {
             assignmentCheckboxes.forEach(checkbox => {
@@ -424,14 +424,14 @@ document.addEventListener('DOMContentLoaded', function() {
             updateBulkActionsState();
         });
     }
-    
+
     assignmentCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             updateSelectAllState();
             updateBulkActionsState();
         });
     });
-    
+
     function updateSelectAllState() {
         if (selectAllCheckbox) {
             const checkedCount = document.querySelectorAll('.assignment-checkbox:checked').length;
@@ -439,15 +439,15 @@ document.addEventListener('DOMContentLoaded', function() {
             selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < assignmentCheckboxes.length;
         }
     }
-    
+
     function updateBulkActionsState() {
         const selectedCount = document.querySelectorAll('.assignment-checkbox:checked').length;
         const bulkForm = document.getElementById('bulk-actions-form');
-        
+
         if (bulkForm) {
             const actionSelect = bulkForm.querySelector('select[name="action"]');
             const priceInput = bulkForm.querySelector('input[name="bulk_additional_price"]');
-            
+
             if (selectedCount > 0) {
                 actionSelect.style.borderColor = '#3182ce';
                 actionSelect.style.background = '#f0f9ff';
@@ -475,28 +475,28 @@ document.addEventListener('DOMContentLoaded', function() {
     .assignment-card {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     .color-swatch {
         transition: all 0.2s ease !important;
     }
-    
+
     .assignment-card:hover .color-swatch {
         transform: scale(1.2) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
     }
-    
+
     /* Clean Search Input Styling */
     #search-attributes::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     .form-control:hover {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -505,32 +505,32 @@ document.addEventListener('DOMContentLoaded', function() {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .form-check-input:checked {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
-    
+
     .type-icon {
         transition: all 0.2s ease !important;
     }
-    
+
     .assignment-card:hover .type-icon {
         transform: scale(1.1) !important;
     }
-    
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .assignment-card {
             margin-bottom: 1rem !important;
         }
-        
+
         .d-flex.gap-1 {
             flex-direction: column !important;
             gap: 0.5rem !important;
         }
-        
+
         .d-flex.gap-1 .btn {
             width: 100% !important;
         }

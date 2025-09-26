@@ -103,3 +103,4 @@ class RealDataSeeder extends Seeder
             ]);
         }
     }
+}

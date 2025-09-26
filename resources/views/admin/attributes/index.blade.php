@@ -7,14 +7,14 @@
 window.handleAttributeSearchKeyup = function(input) {
     const searchTerm = input.value.trim();
     const minSearchLength = 2;
-    
+
     console.log('Enhanced Attribute Search - onkeyup triggered:', searchTerm);
-    
+
     // Force clean professional styling
     input.style.background = '#ffffff';
     input.style.color = '#1a202c';
     input.style.border = '2px solid #e2e8f0';
-    
+
     // Advanced visual feedback
     if (searchTerm.length >= minSearchLength) {
         // Active search state - Clean Professional
@@ -22,14 +22,14 @@ window.handleAttributeSearchKeyup = function(input) {
         input.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.15)';
         input.style.background = '#ffffff';
         input.style.transform = 'translateY(-1px)';
-        
+
     } else if (searchTerm.length > 0 && searchTerm.length < minSearchLength) {
         // Typing but not enough characters - Clean Warning
         input.style.borderColor = '#d69e2e';
         input.style.boxShadow = '0 0 0 3px rgba(214, 158, 46, 0.15)';
         input.style.background = '#fffbeb';
         input.style.transform = 'translateY(0)';
-        
+
     } else {
         // Empty or cleared - Clean Default
         input.style.borderColor = '#e2e8f0';
@@ -37,7 +37,7 @@ window.handleAttributeSearchKeyup = function(input) {
         input.style.background = '#ffffff';
         input.style.transform = 'translateY(0)';
     }
-    
+
     // Smart auto-submit with minimum length requirement
     clearTimeout(window.attributeSearchTimeout);
     if (searchTerm.length >= minSearchLength || searchTerm.length === 0) {
@@ -56,7 +56,7 @@ window.handleAttributeSearchKeydown = function(event, input) {
         console.log('Enter pressed - immediate attribute search');
         input.closest('form').submit();
     }
-    
+
     if (event.key === 'Escape') {
         input.value = '';
         input.style.borderColor = '#e2e8f0';
@@ -108,11 +108,11 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                 <div class="col-md-4">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Search Attributes</label>
                     <div class="search-input-container" style="position: relative;">
-                        <input type="text" 
-                               name="search" 
+                        <input type="text"
+                               name="search"
                                id="search-attributes"
-                               class="form-control" 
-                               placeholder="🔍 Search by name or slug..." 
+                               class="form-control"
+                               placeholder="🔍 Search by name or slug..."
                                value="{{ request('search') }}"
                                style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px 14px 45px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                onkeyup="handleAttributeSearchKeyup(this)"
@@ -120,13 +120,13 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                                onfocus="handleAttributeSearchFocus(this)"
                                onblur="handleAttributeSearchBlur(this)"
                                autocomplete="off">
-                        <i class="bi bi-search search-icon" 
+                        <i class="bi bi-search search-icon"
                            style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #718096 !important; opacity: 0.8; pointer-events: none; z-index: 10; font-size: 16px;"></i>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Type</label>
-                    <select name="type" class="form-control" 
+                    <select name="type" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                         <option value="">All Types</option>
                         <option value="text" {{ request('type') === 'text' ? 'selected' : '' }}>Text</option>
@@ -137,7 +137,7 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Required</label>
-                    <select name="required" class="form-control" 
+                    <select name="required" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                         <option value="">All Attributes</option>
                         <option value="yes" {{ request('required') === 'yes' ? 'selected' : '' }}>Required Only</option>
@@ -145,13 +145,13 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                     </select>
                 </div>
                 <div class="col-md-2 d-flex align-items-end gap-2">
-                    <button type="submit" class="btn btn-outline-primary" 
+                    <button type="submit" class="btn btn-outline-primary"
                             style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;"
                             onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(49, 130, 206, 0.25) !important';"
                             onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important';">
                         <i class="bi bi-search me-1"></i> Search
                     </button>
-                    <a href="{{ route('admin.attributes.index') }}" class="btn btn-outline-secondary" 
+                    <a href="{{ route('admin.attributes.index') }}" class="btn btn-outline-secondary"
                        style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; text-decoration: none !important;"
                        onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(74, 85, 104, 0.25) !important';"
                        onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important';">
@@ -169,7 +169,7 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                 @csrf
                 <div class="d-flex align-items-center gap-3">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="select-all-attributes" 
+                        <input class="form-check-input" type="checkbox" id="select-all-attributes"
                                style="width: 18px !important; height: 18px !important; border: 2px solid #e2e8f0 !important; border-radius: 4px !important; background-color: #ffffff !important; transition: all 0.2s ease !important;">
                         <label class="form-check-label" for="select-all-attributes" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-left: 8px !important;">
                             Select All
@@ -181,7 +181,7 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                         <option value="unrequire">Mark as Optional</option>
                         <option value="delete">Delete Selected</option>
                     </select>
-                    <button type="submit" class="btn btn-outline-warning" 
+                    <button type="submit" class="btn btn-outline-warning"
                             style="color: #d69e2e !important; border-color: #d69e2e !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;"
                             onmouseover="this.style.backgroundColor='#d69e2e !important'; this.style.color='#ffffff !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(214, 158, 46, 0.25) !important';"
                             onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#d69e2e !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important';"
@@ -200,11 +200,11 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                 <div class="row">
                     @foreach($attributes as $attribute)
                         <div class="col-lg-4 col-md-6 mb-4">
-                            <div class="attribute-card h-100" 
+                            <div class="attribute-card h-100"
                                  style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; overflow: hidden !important;"
                                  onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#3182ce !important';"
                                  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#e2e8f0 !important';">
-                                
+
                                 <!-- Attribute Type Header -->
                                 <div class="attribute-type-header text-center py-3" style="background: linear-gradient(135deg, {{ $attribute->type === 'text' ? '#f0f9ff, #e0f2fe' : ($attribute->type === 'select' ? '#ecfdf5, #d1fae5' : ($attribute->type === 'checkbox' ? '#fef3c7, #fed7aa' : '#f3e8ff, #e9d5ff')) }}) !important;">
                                     <div class="type-icon" style="background: {{ $attribute->type === 'text' ? '#3182ce' : ($attribute->type === 'select' ? '#10b981' : ($attribute->type === 'checkbox' ? '#f59e0b' : '#8b5cf6')) }} !important; width: 50px !important; height: 50px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin: 0 auto 10px auto !important;">
@@ -214,7 +214,7 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                                         {{ $attribute->type }}
                                     </span>
                                 </div>
-                                
+
                                 <!-- Attribute Info -->
                                 <div class="card-body" style="padding: 1.5rem !important;">
                                     <div class="d-flex justify-content-between align-items-start mb-2">
@@ -225,13 +225,13 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                                             <input class="form-check-input attribute-checkbox" type="checkbox" value="{{ $attribute->id }}" name="selected_attributes[]">
                                         </div>
                                     </div>
-                                    
+
                                     <div class="attribute-meta mb-3">
                                         <small style="color: #4a5568 !important; font-size: 12px !important;">
                                             <strong>Slug:</strong> <code style="background: #f7fafc !important; color: #3182ce !important; padding: 2px 6px !important; border-radius: 4px !important; font-size: 11px !important;">{{ $attribute->slug }}</code>
                                         </small>
                                     </div>
-                                    
+
                                     <!-- Attribute Stats -->
                                     <div class="row text-center mb-3">
                                         <div class="col-6">
@@ -250,7 +250,7 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Action Buttons -->
                                     <div class="d-flex gap-1">
                                         <a href="{{ route('admin.attributes.show', $attribute) }}" class="btn btn-sm btn-outline-primary flex-fill"
@@ -271,7 +271,7 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                                            onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#10b981 !important';">
                                             <i class="bi bi-list"></i>
                                         </a>
-                                        <form method="POST" action="{{ route('admin.attributes.destroy', $attribute) }}" class="d-inline flex-fill" 
+                                        <form method="POST" action="{{ route('admin.attributes.destroy', $attribute) }}" class="d-inline flex-fill"
                                               onsubmit="return confirm('Are you sure you want to delete this attribute?')">
                                             @csrf
                                             @method('DELETE')
@@ -295,7 +295,7 @@ console.log('CRITICAL FIX: Global attribute search functions defined at top of c
                         Showing {{ $attributes->firstItem() ?? 0 }} to {{ $attributes->lastItem() ?? 0 }} of {{ $attributes->total() }} entries
                     </div>
                     <div class="pagination-links">
-                        {{ $attributes->appends(request()->query())->links('vendor.pagination.custom') }}
+                        {{ $attributes->appends(request()->query())->links('pagination.custom') }}
                     </div>
                 </div>
             @else
@@ -319,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Select All functionality for attributes
     const selectAllCheckbox = document.getElementById('select-all-attributes');
     const attributeCheckboxes = document.querySelectorAll('.attribute-checkbox');
-    
+
     if (selectAllCheckbox) {
         selectAllCheckbox.addEventListener('change', function() {
             attributeCheckboxes.forEach(cb => {
@@ -327,13 +327,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-    
+
     // Individual checkbox change
     attributeCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             const allChecked = Array.from(attributeCheckboxes).every(cb => cb.checked);
             const noneChecked = Array.from(attributeCheckboxes).every(cb => !cb.checked);
-            
+
             if (selectAllCheckbox) {
                 selectAllCheckbox.checked = allChecked;
                 selectAllCheckbox.indeterminate = !allChecked && !noneChecked;
@@ -350,56 +350,56 @@ document.addEventListener('DOMContentLoaded', function() {
     .attribute-card {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     .attribute-card:hover .attribute-name {
         color: #3182ce !important;
     }
-    
+
     .type-icon {
         transition: all 0.2s ease !important;
     }
-    
+
     .attribute-card:hover .type-icon {
         transform: scale(1.1) !important;
     }
-    
+
     /* Clean Search Input Styling */
     #search-attributes::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     #search-attributes::-webkit-input-placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     #search-attributes::-moz-placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     #search-attributes:-ms-input-placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     #search-attributes:-moz-placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     /* Professional Form Controls */
     .form-control:hover {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -408,30 +408,30 @@ document.addEventListener('DOMContentLoaded', function() {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     /* Professional Checkbox */
     .form-check-input:checked {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
-    
+
     .form-check-input:focus {
         box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15) !important;
         border-color: #3182ce !important;
     }
-    
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .attribute-card {
             margin-bottom: 1.5rem !important;
         }
-        
+
         .d-flex.gap-1 {
             flex-direction: column !important;
             gap: 0.5rem !important;
         }
-        
+
         .d-flex.gap-1 .btn {
             width: 100% !important;
         }

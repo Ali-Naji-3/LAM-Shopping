@@ -8,17 +8,17 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class PermissionController extends Controller implements HasMiddleware
+class PermissionController extends Controller //implements HasMiddleware
 {
-      public static function middleware()
-    {
-        return [
-            new Middleware('permission:view permissions' ,only: ['index']),
-            new Middleware('permission:view permissions' ,only: ['edit']),
-            new Middleware('permission:view permissions' ,only: ['create']),
-            new Middleware('permission:view permissions' ,only: ['destroy']),
-        ];
-    }
+    //   public static function middleware()
+    // {
+    //     return [
+    //         new Middleware('permission:view permissions' ,only: ['index']),
+    //         new Middleware('permission:view permissions' ,only: ['edit']),
+    //         new Middleware('permission:view permissions' ,only: ['create']),
+    //         new Middleware('permission:view permissions' ,only: ['destroy']),
+    //     ];
+    // }
     public function index()
     {
 

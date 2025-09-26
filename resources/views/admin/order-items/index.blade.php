@@ -75,7 +75,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important;">Search Order Items</label>
-                        <input type="text" name="search" class="form-control" placeholder="🔍 Search orders, products, SKU..." 
+                        <input type="text" name="search" class="form-control" placeholder="🔍 Search orders, products, SKU..."
                                value="{{ request('search') }}"
                                style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important;">
                     </div>
@@ -168,8 +168,8 @@
                         </thead>
                         <tbody>
                             @foreach($orderItems as $item)
-                                <tr style="transition: all 0.2s ease !important;" 
-                                    onmouseover="this.style.backgroundColor='#f8fafc !important';" 
+                                <tr style="transition: all 0.2s ease !important;"
+                                    onmouseover="this.style.backgroundColor='#f8fafc !important';"
                                     onmouseout="this.style.backgroundColor='transparent';">
                                     <td style="padding: 1rem !important; border-bottom: 1px solid #f1f5f9 !important;">
                                         <input type="checkbox" name="selected_items[]" value="{{ $item->id }}" class="form-check-input item-checkbox">
@@ -178,7 +178,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="order-info">
                                                 <div style="color: #1a202c !important; font-weight: 600 !important; font-size: 14px !important;">
-                                                    <a href="{{ route('admin.orders.show', $item->order) }}" 
+                                                    <a href="{{ route('admin.orders.show', $item->order) }}"
                                                        style="color: #3182ce !important; text-decoration: none !important;"
                                                        onmouseover="this.style.textDecoration='underline !important';"
                                                        onmouseout="this.style.textDecoration='none !important';">
@@ -243,7 +243,7 @@
                                                style="color: #f59e0b !important; border-color: #f59e0b !important; padding: 6px 8px !important; border-radius: 6px !important; font-size: 12px !important; text-decoration: none !important;">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form method="POST" action="{{ route('admin.orderItems.destroy', $item) }}" class="d-inline" 
+                                            <form method="POST" action="{{ route('admin.orderItems.destroy', $item) }}" class="d-inline"
                                                   onsubmit="return confirm('Are you sure you want to delete this order item?')">
                                                 @csrf
                                                 @method('DELETE')
@@ -266,7 +266,7 @@
                         Showing {{ $orderItems->firstItem() }}-{{ $orderItems->lastItem() }} of {{ $orderItems->total() }}
                     </div>
                     <div>
-                        {{ $orderItems->appends(request()->query())->links('vendor.pagination.custom') }}
+                        {{ $orderItems->appends(request()->query())->links('pagination.custom') }}
                     </div>
                 </div>
             @else

@@ -7,12 +7,12 @@
 window.handleOrderSearchKeyup = function(input) {
     const searchTerm = input.value.trim();
     const minSearchLength = 2;
-    
+
     // Force clean professional styling
     input.style.background = '#ffffff';
     input.style.color = '#1a202c';
     input.style.border = '2px solid #e2e8f0';
-    
+
     if (searchTerm.length >= minSearchLength) {
         input.style.borderColor = '#3182ce';
         input.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.15)';
@@ -22,7 +22,7 @@ window.handleOrderSearchKeyup = function(input) {
         input.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
         input.style.transform = 'translateY(0)';
     }
-    
+
     clearTimeout(window.orderSearchTimeout);
     if (searchTerm.length >= minSearchLength || searchTerm.length === 0) {
         window.orderSearchTimeout = setTimeout(function() {
@@ -79,7 +79,7 @@ window.handleOrderSearchBlur = function(input) {
                onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                 <i class="bi bi-plus-circle me-2"></i>Create Order
             </a>
-            <a href="{{ route('admin.orders.analytics') }}" class="btn btn-outline-info" 
+            <a href="{{ route('admin.orders.analytics') }}" class="btn btn-outline-info"
                style="color: #0891b2 !important; border-color: #0891b2 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                onmouseover="this.style.backgroundColor='#0891b2 !important'; this.style.color='#ffffff !important';"
                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
@@ -154,11 +154,11 @@ window.handleOrderSearchBlur = function(input) {
                     <div class="col-md-3">
                         <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Search Orders</label>
                         <div class="search-input-container" style="position: relative;">
-                            <input type="text" 
-                                   name="search" 
+                            <input type="text"
+                                   name="search"
                                    id="search-orders"
-                                   class="form-control" 
-                                   placeholder="🔍 Search orders, customers..." 
+                                   class="form-control"
+                                   placeholder="🔍 Search orders, customers..."
                                    value="{{ request('search') }}"
                                    style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px 14px 45px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                    onkeyup="handleOrderSearchKeyup(this)"
@@ -166,7 +166,7 @@ window.handleOrderSearchBlur = function(input) {
                                    onfocus="handleOrderSearchFocus(this)"
                                    onblur="handleOrderSearchBlur(this)"
                                    autocomplete="off">
-                            <i class="bi bi-search search-icon" 
+                            <i class="bi bi-search search-icon"
                                style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #718096 !important; opacity: 0.8; pointer-events: none; z-index: 10; font-size: 16px;"></i>
                         </div>
                     </div>
@@ -202,7 +202,7 @@ window.handleOrderSearchBlur = function(input) {
                         <input type="date" name="date_to" class="form-control" value="{{ request('date_to') }}" style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important;">
                     </div>
                     <div class="col-md-1">
-                        <button type="submit" class="btn btn-outline-primary w-100" 
+                        <button type="submit" class="btn btn-outline-primary w-100"
                                 style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 14px 8px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                 onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important';"
                                 onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important';">
@@ -258,7 +258,7 @@ window.handleOrderSearchBlur = function(input) {
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <button type="submit" class="btn btn-outline-warning w-100" 
+                            <button type="submit" class="btn btn-outline-warning w-100"
                                     style="color: #d69e2e !important; border-color: #d69e2e !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 8px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                     onclick="return confirm('Are you sure you want to perform this bulk action?')">
                                 <i class="bi bi-lightning me-1"></i> Apply Action
@@ -273,11 +273,11 @@ window.handleOrderSearchBlur = function(input) {
         <div class="row">
             @foreach($orders as $order)
                 <div class="col-lg-6 col-md-12 mb-4">
-                    <div class="order-card" 
+                    <div class="order-card"
                          style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; padding: 1.5rem !important; transition: all 0.2s ease !important; height: 100% !important;"
                          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#3182ce !important';"
                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'; this.style.borderColor='#e2e8f0 !important';">
-                        
+
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <!-- Order Number and Total -->
                             <div class="flex-grow-1">
@@ -296,7 +296,7 @@ window.handleOrderSearchBlur = function(input) {
                                 <input class="form-check-input order-checkbox" type="checkbox" value="{{ $order->id }}" name="selected_orders[]">
                             </div>
                         </div>
-                        
+
                         <!-- Status Badges -->
                         <div class="mb-3 d-flex gap-2">
                             <span class="badge" style="background: {{ $order->status_color }} !important; color: #ffffff !important; font-size: 11px !important; padding: 6px 12px !important; border-radius: 20px !important; text-transform: uppercase !important;">
@@ -306,7 +306,7 @@ window.handleOrderSearchBlur = function(input) {
                                 {{ $order->payment_status }}
                             </span>
                         </div>
-                        
+
                         <!-- Customer Info -->
                         <div class="mb-3" style="padding: 12px !important; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important; border-radius: 8px !important;">
                             <div class="row">
@@ -328,7 +328,7 @@ window.handleOrderSearchBlur = function(input) {
                                 </div>
                             @endif
                         </div>
-                        
+
                         <!-- Order Meta -->
                         <div class="mb-3" style="padding: 8px 12px !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 6px !important;">
                             <div class="d-flex justify-content-between align-items-center">
@@ -340,7 +340,7 @@ window.handleOrderSearchBlur = function(input) {
                                 </small>
                             </div>
                         </div>
-                        
+
                         <!-- Actions -->
                         <div class="d-flex gap-1">
                             <a href="{{ route('admin.orders.show', $order) }}" class="btn btn-sm btn-outline-info flex-fill"
@@ -368,7 +368,7 @@ window.handleOrderSearchBlur = function(input) {
                                     </button>
                                 </form>
                             @endif
-                            <form method="POST" action="{{ route('admin.orders.destroy', $order) }}" class="d-inline flex-fill" 
+                            <form method="POST" action="{{ route('admin.orders.destroy', $order) }}" class="d-inline flex-fill"
                                   onsubmit="return confirm('Are you sure you want to delete this order?')">
                                 @csrf
                                 @method('DELETE')
@@ -391,7 +391,7 @@ window.handleOrderSearchBlur = function(input) {
                 Showing {{ $orders->firstItem() ?? 0 }} to {{ $orders->lastItem() ?? 0 }} of {{ $orders->total() }} entries
             </div>
             <div class="pagination-links">
-                {{ $orders->appends(request()->query())->links('vendor.pagination.custom') }}
+                {{ $orders->appends(request()->query())->links('pagination.custom') }}
             </div>
         </div>
 
@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Bulk selection functionality
     const selectAllCheckbox = document.getElementById('select-all');
     const orderCheckboxes = document.querySelectorAll('.order-checkbox');
-    
+
     if (selectAllCheckbox) {
         selectAllCheckbox.addEventListener('change', function() {
             orderCheckboxes.forEach(checkbox => {
@@ -444,14 +444,14 @@ document.addEventListener('DOMContentLoaded', function() {
             updateBulkActionsState();
         });
     }
-    
+
     orderCheckboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
             updateSelectAllState();
             updateBulkActionsState();
         });
     });
-    
+
     function updateSelectAllState() {
         if (selectAllCheckbox) {
             const checkedCount = document.querySelectorAll('.order-checkbox:checked').length;
@@ -459,16 +459,16 @@ document.addEventListener('DOMContentLoaded', function() {
             selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < orderCheckboxes.length;
         }
     }
-    
+
     function updateBulkActionsState() {
         const selectedCount = document.querySelectorAll('.order-checkbox:checked').length;
         const bulkForm = document.getElementById('bulk-actions-form');
-        
+
         if (bulkForm) {
             const actionSelect = bulkForm.querySelector('select[name="action"]');
             const statusSelect = bulkForm.querySelector('select[name="bulk_status"]');
             const paymentSelect = bulkForm.querySelector('select[name="bulk_payment_status"]');
-            
+
             if (selectedCount > 0) {
                 actionSelect.style.borderColor = '#3182ce';
                 actionSelect.style.background = '#f0f9ff';
@@ -504,19 +504,19 @@ document.addEventListener('DOMContentLoaded', function() {
     .order-card {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     /* Clean Search Input Styling */
     #search-orders::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     .form-control:hover {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -525,24 +525,24 @@ document.addEventListener('DOMContentLoaded', function() {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .form-check-input:checked {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
-    
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .order-card {
             margin-bottom: 1rem !important;
         }
-        
+
         .d-flex.gap-1 {
             flex-direction: column !important;
             gap: 0.5rem !important;
         }
-        
+
         .d-flex.gap-1 .btn {
             width: 100% !important;
         }

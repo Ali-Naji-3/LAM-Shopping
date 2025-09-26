@@ -69,7 +69,7 @@
                 <div class="row">
                     <div class="col-md-4">
                         <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important;">Search Warehouses</label>
-                        <input type="text" name="search" class="form-control" placeholder="🔍 Search name, code, location, manager..." 
+                        <input type="text" name="search" class="form-control" placeholder="🔍 Search name, code, location, manager..."
                                value="{{ request('search') }}"
                                style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important;">
                     </div>
@@ -162,8 +162,8 @@
                         </thead>
                         <tbody>
                             @foreach($warehouses as $warehouse)
-                                <tr style="transition: all 0.2s ease !important;" 
-                                    onmouseover="this.style.backgroundColor='#f8fafc !important';" 
+                                <tr style="transition: all 0.2s ease !important;"
+                                    onmouseover="this.style.backgroundColor='#f8fafc !important';"
                                     onmouseout="this.style.backgroundColor='transparent';">
                                     <td style="padding: 1rem !important; border-bottom: 1px solid #f1f5f9 !important;">
                                         <input type="checkbox" name="selected_warehouses[]" value="{{ $warehouse->id }}" class="form-check-input warehouse-checkbox">
@@ -172,7 +172,7 @@
                                         <div class="d-flex align-items-center">
                                             <div class="warehouse-info">
                                                 <div style="color: #1a202c !important; font-weight: 600 !important; font-size: 14px !important;">
-                                                    <a href="{{ route('admin.warehouses.show', $warehouse) }}" 
+                                                    <a href="{{ route('admin.warehouses.show', $warehouse) }}"
                                                        style="color: #3182ce !important; text-decoration: none !important;"
                                                        onmouseover="this.style.textDecoration='underline !important';"
                                                        onmouseout="this.style.textDecoration='none !important';">
@@ -236,7 +236,7 @@
                                                     <i class="bi bi-{{ $warehouse->is_active ? 'pause' : 'play' }}"></i>
                                                 </button>
                                             </form>
-                                            <form method="POST" action="{{ route('admin.warehouses.destroy', $warehouse) }}" class="d-inline" 
+                                            <form method="POST" action="{{ route('admin.warehouses.destroy', $warehouse) }}" class="d-inline"
                                                   onsubmit="return confirm('Are you sure you want to delete this warehouse?')">
                                                 @csrf
                                                 @method('DELETE')
@@ -259,7 +259,7 @@
                         Showing {{ $warehouses->firstItem() }}-{{ $warehouses->lastItem() }} of {{ $warehouses->total() }}
                     </div>
                     <div>
-                        {{ $warehouses->appends(request()->query())->links('vendor.pagination.custom') }}
+                        {{ $warehouses->appends(request()->query())->links('pagination.custom') }}
                     </div>
                 </div>
             @else

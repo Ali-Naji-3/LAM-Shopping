@@ -3,55 +3,23 @@
       @extends('admin.dashboard')
 
 @section('content')
-       <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight ">
-                {{ __('Roles') }}
-            </h2>
-            <a href="{{ route('roles.create') }}"
-              class="btn btn-success btn-sm rounded">
-                Create
-            </a>
-        </div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-semibold fs-4 text-dark mb-0">
+        {{ __('Roles') }}
+    </h2>
+
+    <a href="{{ route('roles.create') }}" class="btn btn-success btn-sm rounded mt-2 m-4 mb-0">
+        Create
+    </a>
+</div>
+
+
 
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-           {{-- <table class="w-full">
-            <thead class="bg-gray-200 text-gray-600  text-sm leading-normal">
-                <tr class="border-b border-gray-200">
-                    <th class="px-6 py-3 text-left">#</th>
-                    <th class="px-6 py-3 text-left">Name</th>
-                    <th class="px-6 py-3 text-left">Permissions</th>
-                    <th class="px-6 py-3 text-left">Created</th>
-                    <th class="px-6 py-3 text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white">
-                @if ($roles->isNotEmpty())
-                    @foreach ($roles as $role)
-                        <tr>
-                            <td class="px-6 py-3 text-left">{{$role->id}}</td>
-                            <td class="px-6 py-3 text-left">{{$role->name}}</td>
-                            <td class="px-6 py-3 text-left">{{$role->permissions->pluck('name')->implode(',')}}</td>
-                            <td class="px-6 py-3 text-left">{{ $role->created_at->format('d M, Y') }}</td>
-                            <td class="px-6 py-3 text-center">
-                                @can('edit roles')
-                                <a href="{{ route('roles.edit',$role->id) }}"
-                                   class="bg-slate-600 px-4 py-2 text-sm text-white rounded-md hover:bg-slate-500">
-                                    Edit
-                                </a>
-                                @endcan
-                                <a href="javascript:void(0);" onclick="deleteItemRole({{ $role->id }})"
-                                   class="bg-red-600 px-4 py-2 text-sm text-white rounded-md hover:bg-slate-500">
-                                    Delete
-                                </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                @endif
-            </tbody>
-           </table> --}}
+
                       <div class="table-responsive">
     <table class="table table-striped table-hover align-middle mb-0" role="table" aria-label="Product Table">
         <thead class="table-dark">
@@ -105,7 +73,10 @@
     </table>
 </div>
            <div class="my-3">
-               {{$roles->links()}}
+
+    {{ $roles->links('pagination::bootstrap-5') }}
+
+
            </div>
         </div>
     </div>

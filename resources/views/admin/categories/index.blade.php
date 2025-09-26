@@ -7,14 +7,14 @@
 window.handleSearchKeyup = function(input) {
     const searchTerm = input.value.trim();
     const minSearchLength = 2;
-    
+
     console.log('Enhanced Search - onkeyup triggered:', searchTerm);
-    
+
     // Force clean professional styling (CLEAN COLORS)
     input.style.background = '#ffffff';
     input.style.color = '#1a202c';
-    input.style.border = '2px solid #e2e8f0';   
-    
+    input.style.border = '2px solid #e2e8f0';
+
     // Force white placeholder through JavaScript
     if (input.placeholder) {
         input.setAttribute('data-placeholder', input.placeholder);
@@ -25,7 +25,7 @@ window.handleSearchKeyup = function(input) {
             input.placeholder = placeholder;
         }, 1);
     }
-    
+
     // Advanced visual feedback
     if (searchTerm.length >= minSearchLength) {
         // Active search state - Clean Professional
@@ -33,32 +33,32 @@ window.handleSearchKeyup = function(input) {
         input.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.15)';
         input.style.background = '#ffffff';
         input.style.transform = 'translateY(-1px)';
-        
+
         // Show search count preview
         if (typeof showSearchPreview === 'function') showSearchPreview(searchTerm);
-        
+
     } else if (searchTerm.length > 0 && searchTerm.length < minSearchLength) {
         // Typing but not enough characters - Clean Warning
         input.style.borderColor = '#d69e2e'; // Professional orange
         input.style.boxShadow = '0 0 0 3px rgba(214, 158, 46, 0.15)';
         input.style.background = '#fffbeb';
         input.style.transform = 'translateY(0)';
-        
+
         if (typeof hideSearchPreview === 'function') hideSearchPreview();
-        
+
     } else {
         // Empty or cleared - Clean Default
         input.style.borderColor = '#e2e8f0';
         input.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
         input.style.background = '#ffffff';
         input.style.transform = 'translateY(0)';
-        
+
         if (typeof hideSearchPreview === 'function') hideSearchPreview();
     }
-    
+
     // Enhanced loading indicator
     if (typeof showSearchLoading === 'function') showSearchLoading(searchTerm.length >= minSearchLength);
-    
+
     // Smart auto-submit with minimum length requirement
     clearTimeout(window.searchTimeout);
     if (searchTerm.length >= minSearchLength || searchTerm.length === 0) {
@@ -82,7 +82,7 @@ window.handleSearchKeydown = function(event, input) {
         if (typeof showSearchLoading === 'function') showSearchLoading(false);
         input.closest('form').submit();
     }
-    
+
     // Handle Escape key
     if (event.key === 'Escape') {
         input.value = '';
@@ -98,7 +98,7 @@ window.handleSearchFocus = function(input) {
     console.log('Search input focused');
     input.style.borderColor = '#3b82f6';
     input.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.2)';
-    
+
     // Show search tips if empty
     if (input.value.trim().length === 0) {
         if (typeof showSearchTips === 'function') showSearchTips();
@@ -141,11 +141,11 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                 <div class="col-md-4">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Search Categories</label>
                     <div class="search-input-container" style="position: relative;">
-                        <input type="text" 
-                               name="search" 
+                        <input type="text"
+                               name="search"
                                id="search-categories"
-                               class="form-control" 
-                               placeholder="🔍 Search by name, description, or slug..." 
+                               class="form-control"
+                               placeholder="🔍 Search by name, description, or slug..."
                                value="{{ request('search') }}"
                                style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px 14px 45px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                onkeyup="handleSearchKeyup(this)"
@@ -153,13 +153,13 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                                onfocus="handleSearchFocus(this)"
                                onblur="handleSearchBlur(this)"
                                autocomplete="off">
-                        <i class="bi bi-search search-icon" 
+                        <i class="bi bi-search search-icon"
                            style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #718096 !important; opacity: 0.8; pointer-events: none; z-index: 10; font-size: 16px;"></i>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Status</label>
-                    <select name="status" class="form-control" 
+                    <select name="status" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                         <option value="">All Status</option>
                         <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
@@ -168,7 +168,7 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                 </div>
                 <div class="col-md-3">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">Parent Category</label>
-                    <select name="parent_id" class="form-control" 
+                    <select name="parent_id" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                         <option value="">All Categories</option>
                         <option value="root" {{ request('parent_id') === 'root' ? 'selected' : '' }}>Root Categories</option>
@@ -180,13 +180,13 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                     </select>
                 </div>
                 <div class="col-md-2 d-flex align-items-end">
-                    <button type="submit" class="btn btn-outline-primary me-2" 
+                    <button type="submit" class="btn btn-outline-primary me-2"
                             style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;"
                             onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(49, 130, 206, 0.25) !important';"
                             onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important';">
                         <i class="bi bi-search me-1"></i> Search
                     </button>
-                    <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary" 
+                    <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary"
                        style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 14px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; text-decoration: none !important;"
                        onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(74, 85, 104, 0.25) !important';"
                        onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 1px 3px rgba(0, 0, 0, 0.1) !important';">
@@ -251,12 +251,12 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                                     </td>
                                     <td>
                                         @if($category->image)
-                                            <img src="{{ asset('storage/' . $category->image) }}" 
-                                                 alt="{{ $category->name }}" 
-                                                 class="img-thumbnail" 
+                                            <img src="{{ asset('storage/' . $category->image) }}"
+                                                 alt="{{ $category->name }}"
+                                                 class="img-thumbnail"
                                                  style="width: 50px; height: 50px; object-fit: cover;">
                                         @else
-                                            <div class="bg-secondary d-flex align-items-center justify-content-center" 
+                                            <div class="bg-secondary d-flex align-items-center justify-content-center"
                                                  style="width: 50px; height: 50px; border-radius: 4px;">
                                                 <i class="bi bi-image" style="color: var(--text-muted);"></i>
                                             </div>
@@ -285,7 +285,7 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                                         @php
                                             $contactCount = $category->contacts_count ?? $category->contacts()->count();
                                         @endphp
-                                        <a href="{{ route('admin.categories.contacts', $category) }}" 
+                                        <a href="{{ route('admin.categories.contacts', $category) }}"
                                            class="btn btn-sm btn-outline-info d-flex align-items-center gap-1"
                                            title="Manage contact messages for this category"
                                            style="min-width: 100px; justify-content: center;">
@@ -298,8 +298,8 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                                     </td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input status-toggle" 
-                                                   type="checkbox" 
+                                            <input class="form-check-input status-toggle"
+                                                   type="checkbox"
                                                    data-id="{{ $category->id }}"
                                                    {{ $category->is_active ? 'checked' : '' }}>
                                             <label class="form-check-label" style="color: var(--text-secondary);">
@@ -309,16 +309,16 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a href="{{ route('admin.categories.show', $category) }}" 
+                                            <a href="{{ route('admin.categories.show', $category) }}"
                                                class="btn btn-sm btn-outline-info" title="View Details">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.categories.edit', $category) }}" 
+                                            <a href="{{ route('admin.categories.edit', $category) }}"
                                                class="btn btn-sm btn-outline-primary" title="Edit">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form method="POST" action="{{ route('admin.categories.destroy', $category) }}" 
-                                                  class="d-inline" 
+                                            <form method="POST" action="{{ route('admin.categories.destroy', $category) }}"
+                                                  class="d-inline"
                                                   onsubmit="return confirm('Are you sure you want to delete this category?')">
                                                 @csrf
                                                 @method('DELETE')
@@ -340,7 +340,7 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                         Showing {{ $categories->firstItem() ?? 0 }} to {{ $categories->lastItem() ?? 0 }} of {{ $categories->total() }} entries
                     </div>
                     <div class="pagination-links">
-                        {{ $categories->appends(request()->query())->links('vendor.pagination.custom') }}
+                        {{ $categories->appends(request()->query())->links('pagination.custom') }}
                     </div>
                 </div>
             @else
@@ -366,12 +366,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-categories');
     if (searchInput) {
         console.log('Forcing white placeholder on page load');
-        
+
         // Apply comprehensive styling
         searchInput.style.background = 'linear-gradient(135deg, #334155 0%, #475569 100%)';
         searchInput.style.color = '#ffffff';
         searchInput.style.border = '1px solid #64748b';
-        
+
         // Force placeholder refresh
         const originalPlaceholder = searchInput.placeholder;
         searchInput.placeholder = '';
@@ -407,7 +407,7 @@ function showSearchPreview(searchTerm) {
         document.getElementById('search-categories').parentElement.style.position = 'relative';
         document.getElementById('search-categories').parentElement.appendChild(preview);
     }
-    
+
     preview.innerHTML = `
         <div class="d-flex align-items-center gap-2">
             <i class="bi bi-search text-info"></i>
@@ -453,7 +453,7 @@ function showSearchTips() {
         `;
         document.getElementById('search-categories').parentElement.appendChild(tips);
     }
-    
+
     tips.innerHTML = `
         <div class="search-tips-content">
             <div class="mb-2"><strong style="color: #ffffff;">💡 Search Tips:</strong></div>
@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const selectAllCheckbox = document.getElementById('select-all');
     const selectAllTableCheckbox = document.getElementById('select-all-table');
     const categoryCheckboxes = document.querySelectorAll('.category-checkbox');
-    
+
     [selectAllCheckbox, selectAllTableCheckbox].forEach(checkbox => {
         if (checkbox) {
             checkbox.addEventListener('change', function() {
@@ -518,13 +518,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-    
+
     // Status toggle functionality
     document.querySelectorAll('.status-toggle').forEach(toggle => {
         toggle.addEventListener('change', function() {
             const categoryId = this.dataset.id;
             const isActive = this.checked;
-            
+
             fetch(`/admin/categories/${categoryId}/toggle-status`, {
                 method: 'POST',
                 headers: {
@@ -538,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Update the label
                     const label = this.nextElementSibling;
                     label.textContent = data.is_active ? 'Active' : 'Inactive';
-                    
+
                     // Show success message
                     showToast(data.message, 'success');
                 } else {
@@ -554,24 +554,24 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-    
+
     // Bulk actions form submission
     document.getElementById('bulk-actions-form').addEventListener('submit', function(e) {
         const selectedCategories = document.querySelectorAll('.category-checkbox:checked');
         const action = this.querySelector('select[name="action"]').value;
-        
+
         if (selectedCategories.length === 0) {
             e.preventDefault();
             showToast('Please select at least one category', 'warning');
             return;
         }
-        
+
         if (!action) {
             e.preventDefault();
             showToast('Please select an action', 'warning');
             return;
         }
-        
+
         // Add selected category IDs to form
         selectedCategories.forEach(checkbox => {
             const input = document.createElement('input');
@@ -592,9 +592,9 @@ function showToast(message, type = 'info') {
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
-    
+
     document.body.appendChild(toast);
-    
+
     // Auto remove after 5 seconds
     setTimeout(() => {
         if (toast.parentNode) {
@@ -700,7 +700,7 @@ function showToast(message, type = 'info') {
         font-size: 15px !important;
         margin-bottom: 4px !important;
     }
-    
+
     /* Force override any inline styles */
     .card:has(.table) * .mb-1 {
         color: #000000 !important;
@@ -873,35 +873,35 @@ function showToast(message, type = 'info') {
     .table-hover tbody tr:hover {
         background-color: var(--bg-card-hover) !important;
     }
-    
+
     .btn-group .btn {
         border-color: var(--border-color);
     }
-    
+
     .btn-outline-info:hover {
         background-color: var(--info-color);
         border-color: var(--info-color);
     }
-    
+
     .btn-outline-primary:hover {
         background-color: var(--primary-color);
         border-color: var(--primary-color);
     }
-    
+
     .btn-outline-danger:hover {
         background-color: var(--danger-color);
         border-color: var(--danger-color);
     }
-    
+
     .form-check-input:checked {
         background-color: var(--primary-color);
         border-color: var(--primary-color);
     }
-    
+
     .badge {
         font-size: 0.75em;
     }
-    
+
     /* Enhanced contact badge styling */
     .badge.bg-info {
         background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
@@ -912,18 +912,18 @@ function showToast(message, type = 'info') {
         transition: all 0.2s ease !important;
         box-shadow: 0 2px 4px rgba(23, 162, 184, 0.2) !important;
     }
-    
+
     .badge.bg-info:hover {
         background: linear-gradient(135deg, #138496 0%, #117a8b 100%) !important;
         transform: translateY(-1px) !important;
         box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3) !important;
         text-decoration: none !important;
     }
-    
+
     .badge.bg-info i {
         font-size: 0.8em;
     }
-    
+
     /* Enhanced contact action button */
     .btn-outline-info {
         border-color: #17a2b8 !important;
@@ -931,7 +931,7 @@ function showToast(message, type = 'info') {
         background: rgba(23, 162, 184, 0.1) !important;
         transition: all 0.2s ease !important;
     }
-    
+
     .btn-outline-info:hover {
         background: #17a2b8 !important;
         border-color: #17a2b8 !important;
@@ -939,17 +939,17 @@ function showToast(message, type = 'info') {
         transform: translateY(-1px) !important;
         box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3) !important;
     }
-    
+
     .btn-outline-info .badge {
         font-size: 0.7em !important;
         padding: 2px 6px !important;
     }
-    
+
     .btn-outline-info:hover .badge {
         background: rgba(255, 255, 255, 0.9) !important;
         color: #17a2b8 !important;
     }
-    
+
     /* White placeholder text for search and filter inputs with onkeyup support */
     .form-control {
         background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
@@ -958,14 +958,14 @@ function showToast(message, type = 'info') {
         border-radius: 8px !important;
         transition: all 0.2s ease !important;
     }
-    
+
     .form-control:focus {
         background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
         border: 2px solid #3b82f6 !important;
         color: #ffffff !important;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
     }
-    
+
     /* CLEAN SEARCH CATEGORIES - Professional Placeholder Style */
     #search-categories::placeholder {
         color: #718096 !important;
@@ -997,7 +997,7 @@ function showToast(message, type = 'info') {
         font-weight: 400 !important;
         font-style: normal !important;
     }
-    
+
     /* Additional fallback for search input container */
     .search-input-container input::placeholder {
         color: rgba(255, 255, 255, 0.75) !important;
@@ -1014,33 +1014,33 @@ function showToast(message, type = 'info') {
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     /* Your Requested Style - Applied to All Form Controls */
     .form-control::placeholder {
         color: rgba(255, 255, 255, 0.75) !important;
         opacity: 1 !important;
     }
-    
+
     .form-control::-webkit-input-placeholder {
         color: rgba(255, 255, 255, 0.75) !important;
         opacity: 1 !important;
     }
-    
+
     .form-control::-moz-placeholder {
         color: rgba(255, 255, 255, 0.75) !important;
         opacity: 1 !important;
     }
-    
+
     .form-control:-ms-input-placeholder {
         color: rgba(255, 255, 255, 0.75) !important;
         opacity: 1 !important;
     }
-    
+
     .form-control:-moz-placeholder {
         color: rgba(255, 255, 255, 0.75) !important;
         opacity: 1 !important;
     }
-    
+
     /* CLEAN SEARCH INPUT - Professional Styling */
     #search-categories {
         background: #ffffff !important;
@@ -1048,12 +1048,12 @@ function showToast(message, type = 'info') {
         color: #1a202c !important;
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     #search-categories:hover {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     #search-categories:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -1062,25 +1062,25 @@ function showToast(message, type = 'info') {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     /* Form labels to white */
     .form-label {
         color: #ffffff !important;
         font-weight: 600 !important;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
-    
+
     /* Select dropdown styling */
     select.form-control {
         background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
         color: #ffffff !important;
     }
-    
+
     select.form-control option {
         background: #334155 !important;
         color: #ffffff !important;
     }
-    
+
     /* Pagination styling for white background */
     .pagination .page-link {
         background: white !important;
@@ -1089,25 +1089,25 @@ function showToast(message, type = 'info') {
         margin: 0 2px;
         border-radius: 6px !important;
     }
-    
+
     .pagination .page-link:hover {
         background: #f8f9fa !important;
         border-color: #007bff !important;
         color: #007bff !important;
     }
-    
+
     .pagination .page-item.active .page-link {
         background: #007bff !important;
         border-color: #007bff !important;
         color: white !important;
     }
-    
+
     .pagination .page-item.disabled .page-link {
         background: #f8f9fa !important;
         border-color: #ddd !important;
         color: #666 !important;
     }
-    
+
     /* Professional pagination matching your image */
     .pagination-container {
         background: white !important;
@@ -1122,7 +1122,7 @@ function showToast(message, type = 'info') {
         min-height: 50px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
-    
+
     .pagination-info {
         flex-shrink: 0;
         white-space: nowrap;
@@ -1131,12 +1131,12 @@ function showToast(message, type = 'info') {
         color: #6c757d !important;
         font-weight: 400 !important;
     }
-    
+
     .pagination-links {
         flex-shrink: 0;
         margin-left: auto;
     }
-    
+
     .pagination {
         margin: 0 !important;
         padding: 0 !important;
@@ -1146,11 +1146,11 @@ function showToast(message, type = 'info') {
         list-style: none !important;
         gap: 2px;
     }
-    
+
     .pagination .page-item {
         margin: 0 !important;
     }
-    
+
     .pagination .page-link {
         background: white !important;
         border: 1px solid #dee2e6 !important;
@@ -1164,33 +1164,33 @@ function showToast(message, type = 'info') {
         text-align: center;
         line-height: 1.2;
     }
-    
+
     .pagination .page-item.active .page-link {
         background: #007bff !important;
         border-color: #007bff !important;
         color: white !important;
         font-weight: 500;
     }
-    
+
     .pagination .page-item.disabled .page-link {
         background: #f8f9fa !important;
         border-color: #dee2e6 !important;
         color: #6c757d !important;
         cursor: not-allowed;
     }
-    
+
     .pagination .page-link:hover:not(.disabled) {
         background: #e9ecef !important;
         border-color: #007bff !important;
         color: #0056b3 !important;
     }
-    
+
     @media (max-width: 768px) {
         .pagination-container {
             flex-direction: column;
             gap: 10px;
         }
-        
+
         .pagination-links {
             margin-left: 0;
         }

@@ -100,7 +100,7 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="search">Search</label>
-                            <input type="text" class="form-control" id="search" name="search" 
+                            <input type="text" class="form-control" id="search" name="search"
                                    value="{{ request('search') }}" placeholder="Product name, SKU, or warehouse...">
                         </div>
                     </div>
@@ -253,7 +253,7 @@
                 <div class="text-muted">
                     Showing {{ $inventories->firstItem() }}-{{ $inventories->lastItem() }} of {{ $inventories->total() }} records
                 </div>
-                {{ $inventories->links('vendor.pagination.custom') }}
+                {{ $inventories->links('pagination.custom') }}
             </div>
             @endif
         </div>
@@ -305,7 +305,7 @@ function toggleBulkButtons() {
     const checkedBoxes = document.querySelectorAll('.item-checkbox:checked');
     const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
     const bulkAdjustBtn = document.getElementById('bulkAdjustBtn');
-    
+
     if (checkedBoxes.length > 0) {
         bulkDeleteBtn.style.display = 'inline-block';
         bulkAdjustBtn.style.display = 'inline-block';
@@ -318,24 +318,24 @@ function toggleBulkButtons() {
 function bulkDelete() {
     const checkedBoxes = document.querySelectorAll('.item-checkbox:checked');
     if (checkedBoxes.length === 0) return;
-    
+
     if (confirm(`Are you sure you want to delete ${checkedBoxes.length} inventory records?`)) {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '{{ route("admin.inventory.bulk") }}';
-        
+
         const csrfToken = document.createElement('input');
         csrfToken.type = 'hidden';
         csrfToken.name = '_token';
         csrfToken.value = '{{ csrf_token() }}';
         form.appendChild(csrfToken);
-        
+
         const actionInput = document.createElement('input');
         actionInput.type = 'hidden';
         actionInput.name = 'action';
         actionInput.value = 'delete';
         form.appendChild(actionInput);
-        
+
         checkedBoxes.forEach(checkbox => {
             const input = document.createElement('input');
             input.type = 'hidden';
@@ -343,7 +343,7 @@ function bulkDelete() {
             input.value = checkbox.value;
             form.appendChild(input);
         });
-        
+
         document.body.appendChild(form);
         form.submit();
     }
@@ -352,7 +352,7 @@ function bulkDelete() {
 function bulkAdjustQuantity() {
     const checkedBoxes = document.querySelectorAll('.item-checkbox:checked');
     if (checkedBoxes.length === 0) return;
-    
+
     const selectedIds = Array.from(checkedBoxes).map(cb => cb.value);
     document.getElementById('selectedItemsAdjust').value = JSON.stringify(selectedIds);
     $('#bulkAdjustModal').modal('show');

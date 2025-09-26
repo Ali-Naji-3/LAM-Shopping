@@ -11,9 +11,9 @@
             <p class="mb-0" style="color: #4a5568 !important; font-size: 14px !important;">Manage customer inquiries and support requests for this category</p>
         </div>
         <div class="btn-group">
-            <button type="button" 
-                    class="btn btn-primary" 
-                    data-bs-toggle="modal" 
+            <button type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="modal"
                     data-bs-target="#newContactModal"
                     style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border: none; box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); transition: all 0.2s ease; padding: 10px 20px;"
                     onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0, 123, 255, 0.4)';"
@@ -35,12 +35,12 @@
             <div class="row align-items-center">
                 <div class="col-md-2 text-center">
                     @if($category->image)
-                        <img src="{{ asset('storage/' . $category->image) }}" 
-                             alt="{{ $category->name }}" 
+                        <img src="{{ asset('storage/' . $category->image) }}"
+                             alt="{{ $category->name }}"
                              class="img-thumbnail"
                              style="width: 80px; height: 80px; object-fit: cover;">
                     @else
-                        <div class="bg-secondary d-flex align-items-center justify-content-center rounded" 
+                        <div class="bg-secondary d-flex align-items-center justify-content-center rounded"
                              style="width: 80px; height: 80px; margin: 0 auto;">
                             <i class="bi bi-folder" style="color: var(--text-muted); font-size: 1.5rem;"></i>
                         </div>
@@ -98,14 +98,14 @@
             <form method="GET" class="row g-3">
                 <div class="col-md-3">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important;">Search</label>
-                    <input type="text" name="search" class="form-control" 
+                    <input type="text" name="search" class="form-control"
                            placeholder="Search by subject or message..."
                            value="{{ request('search') }}"
                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important;">
                 </div>
                 <div class="col-md-2">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important;">Status</label>
-                    <select name="status" class="form-control" 
+                    <select name="status" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important;">
                         <option value="">All Status</option>
                         <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="col-md-2">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important;">Type</label>
-                    <select name="type" class="form-control" 
+                    <select name="type" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important;">
                         <option value="">All Types</option>
                         <option value="inquiry" {{ request('type') === 'inquiry' ? 'selected' : '' }}>Inquiry</option>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="col-md-2">
                     <label class="form-label" style="color: #2d3748 !important; font-weight: 600 !important;">Priority</label>
-                    <select name="priority" class="form-control" 
+                    <select name="priority" class="form-control"
                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important;">
                         <option value="">All Priorities</option>
                         <option value="urgent" {{ request('priority') === 'urgent' ? 'selected' : '' }}>Urgent</option>
@@ -152,7 +152,7 @@
             @if($contacts->count() > 0)
                 <div class="contacts-list">
                     @foreach($contacts as $contact)
-                        <div class="contact-item p-4 mb-3 rounded" 
+                        <div class="contact-item p-4 mb-3 rounded"
                              style="background: #ffffff; border: 1px solid #e2e8f0;">
                             <div class="row">
                                 <div class="col-md-8">
@@ -173,18 +173,18 @@
                                         </div>
                                         <small class="text-muted">{{ $contact->created_at->diffForHumans() }}</small>
                                     </div>
-                                    
+
                                     <div class="message-content mb-3">
                                         <p class="mb-0" style="color: #2d3748;">{{ $contact->message }}</p>
                                     </div>
-                                    
+
                                     @if($contact->responses->count() > 0)
                                         <div class="responses-section">
                                             <h6 class="mb-2" style="color: #1a202c;">
                                                 <i class="bi bi-reply me-1"></i>Responses ({{ $contact->responses->count() }})
                                             </h6>
                                             @foreach($contact->responses->take(2) as $response)
-                                                <div class="response-item p-3 mb-2 rounded" 
+                                                <div class="response-item p-3 mb-2 rounded"
                                                      style="background: #ffffff; border-left: 3px solid var(--primary-color);">
                                                     <div class="d-flex justify-content-between align-items-start mb-2">
                                                         <small class="fw-semibold" style="color: #1a202c;">
@@ -205,23 +205,23 @@
                                         </div>
                                     @endif
                                 </div>
-                                
+
                                 <div class="col-md-4">
                                     <div class="contact-meta p-3 rounded" style="background: #ffffff;">
                                         <h6 class="mb-3" style="color: #1a202c;">Contact Details</h6>
-                                        
+
                                         <div class="mb-2">
                                             <small class="text-muted">Contact ID:</small>
                                             <div class="fw-semibold" style="color: #1a202c;">#{{ $contact->id }}</div>
                                         </div>
-                                        
+
                                         <div class="mb-2">
                                             <small class="text-muted">Created:</small>
                                             <div class="small" style="color: #1a202c;">
                                                 {{ $contact->created_at->format('M d, Y \a\t h:i A') }}
                                             </div>
                                         </div>
-                                        
+
                                         @if($contact->updated_at != $contact->created_at)
                                             <div class="mb-3">
                                                 <small class="text-muted">Last Updated:</small>
@@ -230,14 +230,14 @@
                                                 </div>
                                             </div>
                                         @endif
-                                        
+
                                         <div class="d-grid gap-2">
-                                            <button type="button" class="btn btn-sm btn-outline-primary" 
-                                                    data-bs-toggle="modal" 
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#responseModal{{ $contact->id }}">
                                                 <i class="bi bi-reply me-1"></i>Add Response
                                             </button>
-                                            
+
                                             @if($contact->status === 'pending')
                                                 <form method="POST" action="#" class="d-inline">
                                                     @csrf
@@ -255,9 +255,9 @@
                                                     </button>
                                                 </form>
                                             @endif
-                                            
-                                            <button type="button" class="btn btn-sm btn-outline-danger" 
-                                                    data-bs-toggle="modal" 
+
+                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    data-bs-toggle="modal"
                                                     data-bs-target="#deleteContactModal{{ $contact->id }}">
                                                 <i class="bi bi-trash me-1"></i>Delete
                                             </button>
@@ -286,14 +286,14 @@
                                                     <small class="text-muted">{{ $contact->message }}</small>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="mb-3">
                                                 <label for="response_message{{ $contact->id }}" class="form-label" style="color: #2d3748;">Your Response *</label>
                                                 <textarea class="form-control" id="response_message{{ $contact->id }}" name="message" rows="4" required
                                                           style="background: #ffffff; border: 1px solid #e2e8f0; color: #1a202c;"
                                                           placeholder="Enter your response..."></textarea>
                                             </div>
-                                            
+
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="mark_resolved{{ $contact->id }}" name="mark_resolved" value="1">
                                                 <label class="form-check-label" for="mark_resolved{{ $contact->id }}" style="color: #2d3748;">
@@ -352,7 +352,7 @@
                         Showing {{ $contacts->firstItem() ?? 0 }}-{{ $contacts->lastItem() ?? 0 }} of {{ $contacts->total() }}
                     </div>
                     <div class="pagination-links" style="color: #333;">
-                        {{ $contacts->appends(request()->query())->links('vendor.pagination.custom') }}
+                        {{ $contacts->appends(request()->query())->links('pagination.custom') }}
                     </div>
                 </div>
             @else
@@ -360,9 +360,9 @@
                     <i class="bi bi-envelope display-1" style="color: var(--text-muted);"></i>
                     <h4 class="mt-3" style="color: #2d3748;">No Contact Messages</h4>
                     <p class="text-muted">No contact messages have been received for this category yet.</p>
-                    <button type="button" 
-                            class="btn btn-primary" 
-                            data-bs-toggle="modal" 
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
                             data-bs-target="#newContactModal"
                             style="background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); border: none; box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3); transition: all 0.2s ease; padding: 12px 24px;"
                             onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(0, 123, 255, 0.4)';"
@@ -394,7 +394,7 @@
                                style="background: #ffffff; border: 1px solid #e2e8f0; color: #1a202c;"
                                placeholder="Enter contact subject">
                     </div>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="contact_type" class="form-label" style="color: #2d3748;">Type *</label>
@@ -417,7 +417,7 @@
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="contact_message" class="form-label" style="color: #2d3748;">Message *</label>
                         <textarea class="form-control" id="contact_message" name="message" rows="4" required
@@ -450,28 +450,28 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.style.overflow = '';
         document.body.style.paddingRight = '';
     }
-    
+
     // Clear any existing backdrops on page load
     clearModalBackdrops();
-    
+
     // Handle New Contact Modal
     const newContactButtons = document.querySelectorAll('[data-bs-target="#newContactModal"]');
     const newContactModal = document.getElementById('newContactModal');
-    
+
     if (newContactModal) {
         // Remove any existing modal instance
         const existingModal = bootstrap.Modal.getInstance(newContactModal);
         if (existingModal) {
             existingModal.dispose();
         }
-        
+
         // Initialize fresh modal
         const modal = new bootstrap.Modal(newContactModal, {
             backdrop: true,
             keyboard: true,
             focus: true
         });
-        
+
         // Add click event listeners
         newContactButtons.forEach(button => {
             button.addEventListener('click', function(e) {
@@ -482,12 +482,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 modal.show();
             });
         });
-        
+
         // Handle modal close events
         newContactModal.addEventListener('hidden.bs.modal', function() {
             clearModalBackdrops();
         });
-        
+
         // Handle escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -496,14 +496,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
+
     // Fix all response modals
     document.querySelectorAll('[data-bs-target^="#responseModal"]').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             clearModalBackdrops();
-            
+
             const targetModalId = this.getAttribute('data-bs-target');
             const targetModal = document.querySelector(targetModalId);
             if (targetModal) {
@@ -516,14 +516,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Fix delete modals
     document.querySelectorAll('[data-bs-target^="#deleteContactModal"]').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
             clearModalBackdrops();
-            
+
             const targetModalId = this.getAttribute('data-bs-target');
             const targetModal = document.querySelector(targetModalId);
             if (targetModal) {
@@ -536,7 +536,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Global click handler to clear stuck backdrops
     document.addEventListener('click', function(e) {
         // If clicking outside modal and no modal is actually open
@@ -561,13 +561,13 @@ document.addEventListener('DOMContentLoaded', function() {
         color: #333 !important;
         border: 1px solid #e0e0e0 !important;
     }
-    
+
     .contact-item:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
         background: #f8f9fa !important;
     }
-    
+
     .contact-item h5,
     .contact-item h6,
     .contact-item p,
@@ -575,59 +575,59 @@ document.addEventListener('DOMContentLoaded', function() {
     .contact-item small {
         color: #333 !important;
     }
-    
+
     .contact-item .text-muted {
         color: #666 !important;
     }
-    
+
     .response-item {
         transition: all 0.3s ease;
         background: #f8f9fa !important;
         color: #333 !important;
         border-left: 3px solid var(--primary-color) !important;
     }
-    
+
     .response-item:hover {
         background: #e9ecef !important;
     }
-    
+
     .response-item p,
     .response-item small,
     .response-item div {
         color: #333 !important;
     }
-    
+
     .response-item .text-muted {
         color: #666 !important;
     }
-    
+
     .contact-meta {
         height: fit-content;
         background: white !important;
         color: #333 !important;
         border: 1px solid #e0e0e0 !important;
     }
-    
+
     .contact-meta h6,
     .contact-meta div,
     .contact-meta small {
         color: #333 !important;
     }
-    
+
     .contact-meta .text-muted {
         color: #666 !important;
     }
-    
+
     .stat-item {
         padding: 8px;
     }
-    
+
     /* Modal content styling */
     .modal-content {
         background: white !important;
         color: #333 !important;
     }
-    
+
     .modal-header,
     .modal-body,
     .modal-footer {
@@ -635,22 +635,22 @@ document.addEventListener('DOMContentLoaded', function() {
         color: #333 !important;
         border-color: #e0e0e0 !important;
     }
-    
+
     .modal-title {
         color: #333 !important;
     }
-    
+
     .modal-body p,
     .modal-body div,
     .modal-body label,
     .modal-body small {
         color: #333 !important;
     }
-    
+
     .modal-body .text-muted {
         color: #666 !important;
     }
-    
+
     /* Form controls in modals with white placeholders */
     .modal .form-control {
         background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
@@ -659,39 +659,39 @@ document.addEventListener('DOMContentLoaded', function() {
         border-radius: 8px;
         transition: all 0.2s ease;
     }
-    
+
     .modal .form-control:focus {
         background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
         border: 2px solid #3b82f6 !important;
         color: #ffffff !important;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
     }
-    
+
     .modal .form-control::placeholder {
         color: #ffffff !important;
         opacity: 0.8 !important;
     }
-    
+
     .modal .form-control::-webkit-input-placeholder {
         color: #ffffff !important;
         opacity: 0.8 !important;
     }
-    
+
     .modal .form-control::-moz-placeholder {
         color: #ffffff !important;
         opacity: 0.8 !important;
     }
-    
+
     .modal .form-control:-ms-input-placeholder {
         color: #ffffff !important;
         opacity: 0.8 !important;
     }
-    
+
     .modal .form-control:-moz-placeholder {
         color: #ffffff !important;
         opacity: 0.8 !important;
     }
-    
+
     /* Classic Theme Card Styling - Enhanced Spacing */
     .contacts-page .card {
         background: #ffffff !important;
@@ -701,18 +701,18 @@ document.addEventListener('DOMContentLoaded', function() {
         transition: all 0.2s ease !important;
         margin-bottom: 2rem !important;
     }
-    
+
     .contacts-page .card:hover {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06) !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .contacts-page .card-body {
         background: #ffffff !important;
         color: #2d3748 !important;
         padding: 2rem !important;
     }
-    
+
     /* Section spacing improvements */
     .contacts-page .message-content {
         margin: 1.5rem 0 !important;
@@ -721,18 +721,18 @@ document.addEventListener('DOMContentLoaded', function() {
         border-radius: 8px !important;
         border-left: 3px solid #e2e8f0 !important;
     }
-    
+
     .contacts-page .responses-section {
         margin-top: 2rem !important;
         padding-top: 1.5rem !important;
         border-top: 1px solid #e2e8f0 !important;
     }
-    
+
     /* Contact header spacing */
     .contacts-page .d-flex.justify-content-between {
         margin-bottom: 1.5rem !important;
     }
-    
+
     /* SPECIALIZED TIMESTAMP STYLING - Professional Time Display */
     .contacts-page .text-muted.small,
     .contacts-page .contact-item small.text-muted {
@@ -747,18 +747,18 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-top: 0.25rem !important;
         font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace !important;
     }
-    
+
     /* Specialized Contact Type Indicators */
     .contacts-page .contact-item .bi-tag {
         color: #3182ce !important;
         margin-right: 4px !important;
     }
-    
+
     .contacts-page .contact-item .bi-reply {
         color: #059669 !important;
         margin-right: 4px !important;
     }
-    
+
     /* Response Count Styling */
     .contacts-page .contact-item small:has(.bi-reply) {
         background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
@@ -768,7 +768,7 @@ document.addEventListener('DOMContentLoaded', function() {
         border: 1px solid #a7f3d0 !important;
         font-weight: 600 !important;
     }
-    
+
     .contacts-page .card-header {
         background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important;
         border-bottom: 1px solid #e2e8f0 !important;
@@ -778,7 +778,7 @@ document.addEventListener('DOMContentLoaded', function() {
         border-radius: 12px 12px 0 0 !important;
         font-size: 16px !important;
     }
-    
+
     /* CLEAN TEXT COLORS - Enhanced for Easy Scanning */
     .contacts-page h2 {
         color: #1a202c !important;  /* Darker for better contrast */
@@ -789,7 +789,7 @@ document.addEventListener('DOMContentLoaded', function() {
         line-height: 1.3 !important;
         letter-spacing: -0.025em !important;
     }
-    
+
     .contacts-page h5 {
         color: #2d3748 !important;  /* Strong dark for readability */
         font-weight: 600 !important;
@@ -798,7 +798,7 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-top: 1.5rem !important;
         line-height: 1.4 !important;
     }
-    
+
     .contacts-page h6 {
         color: #4a5568 !important;  /* Medium contrast for hierarchy */
         font-weight: 500 !important;
@@ -807,7 +807,7 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-top: 1.25rem !important;
         line-height: 1.4 !important;
     }
-    
+
     .contacts-page p {
         color: #2d3748 !important;  /* Clean dark for body text */
         line-height: 1.7 !important;
@@ -815,11 +815,11 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-bottom: 1.25rem !important;
         font-size: 15px !important;  /* Slightly larger for readability */
     }
-    
+
     .contacts-page div {
         color: #2d3748 !important;
     }
-    
+
     .contacts-page .text-muted {
         color: #718096 !important;  /* Darker muted for better readability */
         opacity: 1 !important;
@@ -827,7 +827,7 @@ document.addEventListener('DOMContentLoaded', function() {
         line-height: 1.5 !important;
         font-size: 14px !important;
     }
-    
+
     .contacts-page small {
         color: #4a5568 !important;  /* Darker small text for clarity */
         font-weight: 400 !important;
@@ -836,25 +836,25 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-bottom: 0.25rem !important;
         font-size: 13px !important;
     }
-    
+
     .contacts-page .fw-semibold,
     .contacts-page .fw-bold {
         color: #1a202c !important;  /* Darkest for emphasis */
         font-weight: 600 !important;
     }
-    
+
         /* SPECIALIZED CONTENT STYLING - ALL CONTENT TRANSFORMATION */
     .contacts-page * {
         box-sizing: border-box !important;
     }
-    
+
     /* GLOBAL PAGE ENHANCEMENT */
     .contacts-page {
         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
         min-height: 100vh !important;
         padding: 2rem 0 !important;
     }
-    
+
     /* ALL HEADINGS - Premium Gradient Styling */
     .contacts-page h1,
     .contacts-page h2,
@@ -871,7 +871,7 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-bottom: 1rem !important;
         letter-spacing: -0.025em !important;
     }
-    
+
     /* ALL PARAGRAPHS - Enhanced Typography */
     .contacts-page p {
         color: #1f2937 !important;
@@ -881,7 +881,7 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-bottom: 1.25rem !important;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
     }
-    
+
     /* ALL CARDS - Premium Professional Design */
     .contacts-page .card {
         background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
@@ -892,7 +892,7 @@ document.addEventListener('DOMContentLoaded', function() {
         position: relative !important;
         overflow: hidden !important;
     }
-    
+
     .contacts-page .card::before {
         content: '';
         position: absolute;
@@ -907,12 +907,12 @@ document.addEventListener('DOMContentLoaded', function() {
         mask-composite: exclude;
         z-index: -1;
     }
-    
+
     .contacts-page .card:hover {
         transform: translateY(-8px) !important;
         box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04) !important;
     }
-    
+
     /* ALL CONTACT ITEMS - Spectacular Enhancement */
     .contacts-page .contact-item {
         background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%) !important;
@@ -925,7 +925,7 @@ document.addEventListener('DOMContentLoaded', function() {
         overflow: hidden !important;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     .contacts-page .contact-item::before {
         content: '';
         position: absolute;
@@ -940,12 +940,12 @@ document.addEventListener('DOMContentLoaded', function() {
         mask-composite: exclude;
         z-index: -1;
     }
-    
+
     .contacts-page .contact-item:hover {
         transform: translateY(-10px) scale(1.02) !important;
         box-shadow: 0 25px 50px rgba(59, 130, 246, 0.25) !important;
     }
-    
+
     /* Contact Subject Titles - Spectacular Prominence */
     .contacts-page .contact-item h5,
     .contacts-page .contact-item h6 {
@@ -961,7 +961,7 @@ document.addEventListener('DOMContentLoaded', function() {
         font-family: 'Inter', 'Segoe UI', system-ui, sans-serif !important;
         animation: titleShimmer 4s ease-in-out infinite alternate !important;
     }
-    
+
     /* ALL MESSAGE CONTENT - Spectacular Design */
     .contacts-page .message-content {
         background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #93c5fd 100%) !important;
@@ -973,7 +973,7 @@ document.addEventListener('DOMContentLoaded', function() {
         box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15) !important;
         transition: all 0.3s ease !important;
     }
-    
+
     .contacts-page .message-content::before {
         content: '💬';
         position: absolute;
@@ -987,12 +987,12 @@ document.addEventListener('DOMContentLoaded', function() {
         font-weight: 600;
         box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
     }
-    
+
     .contacts-page .message-content:hover {
         transform: scale(1.02) !important;
         box-shadow: 0 12px 35px rgba(59, 130, 246, 0.25) !important;
     }
-    
+
     .contacts-page .message-content p {
         background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%) !important;
         -webkit-background-clip: text !important;
@@ -1004,7 +1004,7 @@ document.addEventListener('DOMContentLoaded', function() {
         font-weight: 600 !important;
         letter-spacing: 0.025em !important;
     }
-    
+
     /* ALL RESPONSE ITEMS - Spectacular Enhancement */
     .contacts-page .response-item {
         background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%) !important;
@@ -1016,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', function() {
         box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15) !important;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
-    
+
     .contacts-page .response-item::before {
         content: '👨‍💼 ADMIN RESPONSE';
         position: absolute;
@@ -1032,12 +1032,12 @@ document.addEventListener('DOMContentLoaded', function() {
         letter-spacing: 0.1em;
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
-    
+
     .contacts-page .response-item:hover {
         transform: translateY(-8px) scale(1.02) !important;
         box-shadow: 0 20px 40px rgba(16, 185, 129, 0.25) !important;
     }
-    
+
     .contacts-page .response-item p {
         background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
         -webkit-background-clip: text !important;
@@ -1049,7 +1049,7 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-bottom: 0 !important;
         letter-spacing: 0.025em !important;
     }
-    
+
     /* Contact Meta Information - Professional Cards */
     .contacts-page .contact-meta {
         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
@@ -1059,13 +1059,13 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-top: 1rem !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .contact-meta div {
         color: #1a202c !important;
         font-weight: 500 !important;
         margin-bottom: 0.5rem !important;
     }
-    
+
     .contacts-page .contact-meta small {
         color: #4a5568 !important;
         font-weight: 500 !important;
@@ -1073,7 +1073,7 @@ document.addEventListener('DOMContentLoaded', function() {
         letter-spacing: 0.05em !important;
         font-size: 11px !important;
     }
-    
+
     /* PROFESSIONAL FORM CONTROLS - Enhanced Design */
     .contacts-page .form-control {
         background: #ffffff !important;
@@ -1087,12 +1087,12 @@ document.addEventListener('DOMContentLoaded', function() {
         line-height: 1.5 !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .form-control:hover {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -1101,7 +1101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     /* PROFESSIONAL PLACEHOLDERS - Enhanced Readability */
     .contacts-page .form-control::placeholder {
         color: #718096 !important;
@@ -1109,35 +1109,35 @@ document.addEventListener('DOMContentLoaded', function() {
         font-style: normal !important;
         font-weight: 400 !important;
     }
-    
+
     .contacts-page .form-control::-webkit-input-placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-style: normal !important;
         font-weight: 400 !important;
     }
-    
+
     .contacts-page .form-control::-moz-placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-style: normal !important;
         font-weight: 400 !important;
     }
-    
+
     .contacts-page .form-control:-ms-input-placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-style: normal !important;
         font-weight: 400 !important;
     }
-    
+
     .contacts-page .form-control:-moz-placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-style: normal !important;
         font-weight: 400 !important;
     }
-    
+
     .contacts-page .form-label {
         color: #2d3748 !important;
         font-weight: 600 !important;
@@ -1147,7 +1147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         letter-spacing: 0.025em !important;
         display: block !important;
     }
-    
+
     /* Professional Select Controls */
     .contacts-page select.form-control {
         background: #ffffff !important;
@@ -1158,13 +1158,13 @@ document.addEventListener('DOMContentLoaded', function() {
         padding-right: 40px !important;
         cursor: pointer !important;
     }
-    
+
     .contacts-page select.form-control option {
         background: #ffffff !important;
         color: #1a202c !important;
         padding: 8px 12px !important;
     }
-    
+
     /* Professional Textarea Controls */
     .contacts-page textarea.form-control {
         min-height: 120px !important;
@@ -1172,11 +1172,11 @@ document.addEventListener('DOMContentLoaded', function() {
         line-height: 1.6 !important;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     }
-    
+
     .contacts-page textarea.form-control:focus {
         min-height: 140px !important;
     }
-    
+
     /* Professional Checkbox Controls */
     .contacts-page .form-check-input {
         width: 18px !important;
@@ -1186,18 +1186,18 @@ document.addEventListener('DOMContentLoaded', function() {
         background-color: #ffffff !important;
         transition: all 0.2s ease !important;
     }
-    
+
     .contacts-page .form-check-input:checked {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
-    
+
     .contacts-page .form-check-input:focus {
         box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15) !important;
         border-color: #3182ce !important;
     }
-    
+
     .contacts-page .form-check-label {
         color: #2d3748 !important;
         font-weight: 500 !important;
@@ -1205,27 +1205,27 @@ document.addEventListener('DOMContentLoaded', function() {
         line-height: 1.5 !important;
         margin-left: 8px !important;
     }
-    
+
     /* Professional Form Validation */
     .contacts-page .form-control.is-invalid {
         border-color: #e53e3e !important;
         box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.15) !important;
     }
-    
+
     .contacts-page .invalid-feedback {
         color: #e53e3e !important;
         font-size: 13px !important;
         font-weight: 500 !important;
         margin-top: 6px !important;
     }
-    
+
     .contacts-page .form-text {
         color: #718096 !important;
         font-size: 12px !important;
         margin-top: 6px !important;
         line-height: 1.4 !important;
     }
-    
+
     /* IMPROVED SPACING - Classic Theme Contact Items */
     .contacts-page .contact-item {
         background: #ffffff !important;
@@ -1236,23 +1236,23 @@ document.addEventListener('DOMContentLoaded', function() {
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
         transition: all 0.2s ease !important;
     }
-    
+
     /* Enhanced spacing for contact content */
     .contacts-page .contact-item .row {
         margin: 0 !important;
     }
-    
+
     .contacts-page .contact-item .col-md-8,
     .contacts-page .contact-item .col-md-4 {
         padding: 0 1rem !important;
     }
-    
+
     .contacts-page .contact-item:hover {
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
         transform: translateY(-2px) !important;
         border-color: #3182ce !important;
     }
-    
+
     .contacts-page .response-item {
         background: #f7fafc !important;
         border-left: 4px solid #3182ce !important;
@@ -1261,14 +1261,14 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-bottom: 1rem !important;
         margin-top: 0.75rem !important;
     }
-    
+
     .contacts-page .contact-meta {
         background: #f7fafc !important;
         border-radius: 8px !important;
         padding: 1.5rem !important;
         margin-top: 1rem !important;
     }
-    
+
     /* SPECIALIZED STATISTICS - Professional Data Display */
     .contacts-page .stat-item {
         background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
@@ -1281,7 +1281,7 @@ document.addEventListener('DOMContentLoaded', function() {
         position: relative !important;
         overflow: hidden !important;
     }
-    
+
     .contacts-page .stat-item::before {
         content: '';
         position: absolute;
@@ -1291,13 +1291,13 @@ document.addEventListener('DOMContentLoaded', function() {
         height: 4px;
         background: linear-gradient(135deg, #3182ce 0%, #1d4ed8 100%);
     }
-    
+
     .contacts-page .stat-item:hover {
         transform: translateY(-4px) !important;
         box-shadow: 0 8px 25px rgba(49, 130, 206, 0.15) !important;
         border-color: #3182ce !important;
     }
-    
+
     .contacts-page .stat-item .h5 {
         color: #1a202c !important;
         font-weight: 800 !important;
@@ -1305,7 +1305,7 @@ document.addEventListener('DOMContentLoaded', function() {
         margin-bottom: 0.5rem !important;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     /* Specialized Stat Labels */
     .contacts-page .stat-item small {
         color: #374151 !important;
@@ -1319,19 +1319,19 @@ document.addEventListener('DOMContentLoaded', function() {
         display: inline-block !important;
         margin-top: 0.5rem !important;
     }
-    
+
     .contacts-page .stat-item:hover {
         border-color: #3182ce !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .stat-item .h5 {
         color: #1a202c !important;  /* Clean dark for numbers */
         font-weight: 700 !important;
         font-size: 1.5rem !important;
         margin-bottom: 0.25rem !important;
     }
-    
+
     /* Clean colors for stat labels */
     .contacts-page .stat-item small {
         color: #4a5568 !important;  /* Medium contrast for labels */
@@ -1340,7 +1340,7 @@ document.addEventListener('DOMContentLoaded', function() {
         text-transform: uppercase !important;
         letter-spacing: 0.05em !important;
     }
-    
+
     /* SPECIALIZED BADGES - Professional Priority & Status Indicators */
     .contacts-page .badge {
         font-weight: 600 !important;
@@ -1356,38 +1356,38 @@ document.addEventListener('DOMContentLoaded', function() {
         border: 1px solid transparent !important;
         transition: all 0.2s ease !important;
     }
-    
+
     /* Priority Badge Styling */
     .contacts-page .badge.bg-danger {
         background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important;
         color: #dc2626 !important;
         border-color: #fca5a5 !important;
     }
-    
+
     .contacts-page .badge.bg-warning {
         background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important;
         color: #d97706 !important;
         border-color: #fcd34d !important;
     }
-    
+
     .contacts-page .badge.bg-info {
         background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%) !important;
         color: #2563eb !important;
         border-color: #93c5fd !important;
     }
-    
+
     .contacts-page .badge.bg-success {
         background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important;
         color: #059669 !important;
         border-color: #6ee7b7 !important;
     }
-    
+
     .contacts-page .badge.bg-secondary {
         background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%) !important;
         color: #475569 !important;
         border-color: #cbd5e1 !important;
     }
-    
+
     /* Badge container spacing */
     .contacts-page .d-flex.gap-2 {
         gap: 0.5rem !important;
@@ -1395,37 +1395,37 @@ document.addEventListener('DOMContentLoaded', function() {
         flex-wrap: wrap !important;
         align-items: center !important;
     }
-    
+
     .contacts-page .badge.bg-primary {
         background-color: #3182ce !important;
         color: #ffffff !important;
     }
-    
+
     .contacts-page .badge.bg-success {
         background-color: #38a169 !important;
         color: #ffffff !important;
     }
-    
+
     .contacts-page .badge.bg-warning {
         background-color: #d69e2e !important;
         color: #ffffff !important;
     }
-    
+
     .contacts-page .badge.bg-danger {
         background-color: #e53e3e !important;
         color: #ffffff !important;
     }
-    
+
     .contacts-page .badge.bg-info {
         background-color: #3182ce !important;
         color: #ffffff !important;
     }
-    
+
     .contacts-page .badge.bg-secondary {
         background-color: #718096 !important;
         color: #ffffff !important;
     }
-    
+
     /* PROFESSIONAL BUTTON CONTROLS - Enhanced Design */
     .contacts-page .btn {
         border-radius: 8px !important;
@@ -1436,19 +1436,19 @@ document.addEventListener('DOMContentLoaded', function() {
         border-width: 2px !important;
         letter-spacing: 0.025em !important;
     }
-    
+
     .contacts-page .btn-sm {
         padding: 6px 12px !important;
         font-size: 12px !important;
     }
-    
+
     .contacts-page .btn-outline-primary {
         color: #3182ce !important;
         border-color: #3182ce !important;
         background: #ffffff !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .btn-outline-primary:hover {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
@@ -1456,14 +1456,14 @@ document.addEventListener('DOMContentLoaded', function() {
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 8px rgba(49, 130, 206, 0.25) !important;
     }
-    
+
     .contacts-page .btn-outline-secondary {
         color: #4a5568 !important;
         border-color: #4a5568 !important;
         background: #ffffff !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .btn-outline-secondary:hover {
         background-color: #4a5568 !important;
         border-color: #4a5568 !important;
@@ -1471,14 +1471,14 @@ document.addEventListener('DOMContentLoaded', function() {
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 8px rgba(74, 85, 104, 0.25) !important;
     }
-    
+
     .contacts-page .btn-outline-success {
         color: #38a169 !important;
         border-color: #38a169 !important;
         background: #ffffff !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .btn-outline-success:hover {
         background-color: #38a169 !important;
         border-color: #38a169 !important;
@@ -1486,14 +1486,14 @@ document.addEventListener('DOMContentLoaded', function() {
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 8px rgba(56, 161, 105, 0.25) !important;
     }
-    
+
     .contacts-page .btn-outline-warning {
         color: #d69e2e !important;
         border-color: #d69e2e !important;
         background: #ffffff !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .btn-outline-warning:hover {
         background-color: #d69e2e !important;
         border-color: #d69e2e !important;
@@ -1501,14 +1501,14 @@ document.addEventListener('DOMContentLoaded', function() {
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 8px rgba(214, 158, 46, 0.25) !important;
     }
-    
+
     .contacts-page .btn-outline-danger {
         color: #e53e3e !important;
         border-color: #e53e3e !important;
         background: #ffffff !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .contacts-page .btn-outline-danger:hover {
         background-color: #e53e3e !important;
         border-color: #e53e3e !important;
@@ -1516,7 +1516,7 @@ document.addEventListener('DOMContentLoaded', function() {
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 8px rgba(229, 62, 62, 0.25) !important;
     }
-    
+
     /* Professional Primary Buttons */
     .contacts-page .btn-primary {
         background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important;
@@ -1524,45 +1524,45 @@ document.addEventListener('DOMContentLoaded', function() {
         color: #ffffff !important;
         box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2) !important;
     }
-    
+
     .contacts-page .btn-primary:hover {
         background: linear-gradient(135deg, #2c5aa0 0%, #2a4a8a 100%) !important;
         border-color: #2c5aa0 !important;
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 8px rgba(49, 130, 206, 0.3) !important;
     }
-    
+
     /* Responsive styling for mobile devices */
     @media (max-width: 768px) {
         .contacts-page .form-control {
             font-size: 16px !important;
             padding: 14px 16px !important;
         }
-        
+
         .contacts-page .form-control::placeholder {
             font-size: 14px !important;
         }
-        
+
         .contacts-page .form-label {
             font-size: 14px !important;
             margin-bottom: 6px !important;
         }
-        
+
         .modal .form-control {
             font-size: 16px !important;
             padding: 14px 16px !important;
         }
-        
+
         .modal .form-control::placeholder {
             font-size: 14px !important;
         }
     }
-    
+
     @media (max-width: 576px) {
         .contacts-page .form-control {
             padding: 16px !important;
         }
-        
+
         .modal .form-control {
             padding: 16px !important;
         }
@@ -1588,7 +1588,7 @@ document.addEventListener('DOMContentLoaded', function() {
             background-clip: text;
         }
     }
-    
+
     @keyframes badgePulse {
         0% {
             transform: scale(1);
@@ -1599,7 +1599,7 @@ document.addEventListener('DOMContentLoaded', function() {
             filter: brightness(1.1);
         }
     }
-    
+
     @keyframes cardFloat {
         0%, 100% {
             transform: translateY(0);
@@ -1608,12 +1608,12 @@ document.addEventListener('DOMContentLoaded', function() {
             transform: translateY(-5px);
         }
     }
-    
+
     /* ALL CONTENT GLOBAL ENHANCEMENT */
     .contacts-page .container-fluid {
         animation: cardFloat 6s ease-in-out infinite !important;
     }
-    
+
     .contacts-page .card-header {
         background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%) !important;
         border-bottom: 2px solid #3b82f6 !important;
@@ -1623,12 +1623,12 @@ document.addEventListener('DOMContentLoaded', function() {
         border-radius: 16px 16px 0 0 !important;
         box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15) !important;
     }
-    
+
     .contacts-page .card-body {
         padding: 2.5rem !important;
         background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
     }
-    
+
     /* ALL LINKS - Enhanced Professional Styling */
     .contacts-page a {
         color: #3b82f6 !important;
@@ -1637,13 +1637,13 @@ document.addEventListener('DOMContentLoaded', function() {
         transition: all 0.2s ease !important;
         position: relative !important;
     }
-    
+
     .contacts-page a:hover {
         color: #1d4ed8 !important;
         transform: translateY(-1px) !important;
         text-shadow: 0 2px 4px rgba(59, 130, 246, 0.3) !important;
     }
-    
+
     /* ALL SMALL TEXT - Professional Enhancement */
     .contacts-page small {
         background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%) !important;

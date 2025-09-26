@@ -56,6 +56,15 @@ class CategorySeeder extends Seeder
             'order' => 5,
         ]);
 
+        // Men Root Category
+        $men = Category::create([
+            'name' => 'Men',
+            'slug' => 'men',
+            'description' => 'All products related to men’s fashion and accessories.',
+            'is_active' => true,
+            'order' => 6,
+        ]);
+
         // Electronics Sub-categories
         $smartphones = Category::create([
             'name' => 'Smartphones',
@@ -223,13 +232,92 @@ class CategorySeeder extends Seeder
             'order' => 3,
         ]);
 
-        // Create some sample contacts for categories with contact integration
+        // Men Sub-categories
+        $menShirts = Category::create([
+            'name' => 'Men Shirts',
+            'slug' => 'men-shirts',
+            'description' => 'Casual and formal shirts for men.',
+            'parent_id' => $men->id,
+            'is_active' => true,
+            'order' => 1,
+        ]);
+
+        $menPants = Category::create([
+            'name' => 'Men Pants',
+            'slug' => 'men-pants',
+            'description' => 'Comfortable pants and trousers for men.',
+            'parent_id' => $men->id,
+            'is_active' => true,
+            'order' => 2,
+        ]);
+
+        $menShoes = Category::create([
+            'name' => 'Men Shoes',
+            'slug' => 'men-shoes',
+            'description' => 'Stylish shoes and sneakers for men.',
+            'parent_id' => $men->id,
+            'is_active' => true,
+            'order' => 3,
+        ]);
+
+        $menAccessories = Category::create([
+            'name' => 'Men Accessories',
+            'slug' => 'men-accessories',
+            'description' => 'Belts, wallets, watches, and other accessories for men.',
+            'parent_id' => $men->id,
+            'is_active' => true,
+            'order' => 4,
+        ]);
+        // Women Root Category
+$women = Category::create([
+    'name' => 'Women',
+    'slug' => 'women',
+    'description' => 'All products related to women’s fashion and accessories.',
+    'is_active' => true,
+    'order' => 7, // ترتيب جديد بعد Men
+]);
+
+// Women Sub-categories
+$womenDresses = Category::create([
+    'name' => 'Women Dresses',
+    'slug' => 'women-dresses',
+    'description' => 'Elegant and casual dresses for women.',
+    'parent_id' => $women->id,
+    'is_active' => true,
+    'order' => 1,
+]);
+
+$womenShoes = Category::create([
+    'name' => 'Women Shoes',
+    'slug' => 'women-shoes',
+    'description' => 'Stylish shoes and sneakers for women.',
+    'parent_id' => $women->id,
+    'is_active' => true,
+    'order' => 2,
+]);
+
+$womenAccessories = Category::create([
+    'name' => 'Women Accessories',
+    'slug' => 'women-accessories',
+    'description' => 'Bags, jewelry, belts, and other accessories for women.',
+    'parent_id' => $women->id,
+    'is_active' => true,
+    'order' => 3,
+]);
+
+        // Create sample contacts
         $this->createSampleContacts($electronics);
         $this->createSampleContacts($clothing);
         $this->createSampleContacts($smartphones);
         $this->createSampleContacts($laptops);
         $this->createSampleContacts($menClothing);
         $this->createSampleContacts($furniture);
+        $this->createSampleContacts($men);
+        $this->createSampleContacts($menShirts);
+        $this->createSampleContacts($women);
+$this->createSampleContacts($womenDresses);
+$this->createSampleContacts($womenShoes);
+$this->createSampleContacts($womenAccessories);
     }
 
     /**
@@ -268,7 +356,7 @@ class CategorySeeder extends Seeder
         foreach ($sampleContacts as $contactData) {
             $contact = Contact::create([
                 'category_id' => $category->id,
-                'user_id' => 1, // Assuming admin user ID is 1
+                'user_id' => 1,
                 'subject' => $contactData['subject'],
                 'message' => $contactData['message'],
                 'contact_type' => $contactData['contact_type'],
@@ -276,7 +364,6 @@ class CategorySeeder extends Seeder
                 'status' => $contactData['status'],
             ]);
 
-            // Add a sample response for resolved contacts
             if ($contact->status === 'resolved') {
                 $contact->responses()->create([
                     'user_id' => 1,

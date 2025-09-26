@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Brand;
+use App\Models\Review;
 use App\Models\Contact;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -71,7 +73,7 @@ class CategoryController extends Controller
         // Generate slug if not provided
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
-            
+
             // Ensure slug uniqueness
             $originalSlug = $validated['slug'];
             $counter = 1;
@@ -107,7 +109,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $category->load(['parent', 'children.children', 'products', 'contacts.responses']);
-        
+
         // Calculate connection counts for dashboard
         $connectionCounts = [
             'products_count' => $category->products()->count(),
@@ -120,7 +122,7 @@ class CategoryController extends Controller
             })->count(),
             'children_count' => $category->children()->count(),
         ];
-        
+
         return view('admin.categories.show', compact('category', 'connectionCounts'));
     }
 
@@ -148,7 +150,7 @@ class CategoryController extends Controller
         // Generate slug if not provided
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
-            
+
             // Ensure slug uniqueness
             $originalSlug = $validated['slug'];
             $counter = 1;
@@ -171,7 +173,7 @@ class CategoryController extends Controller
             if ($category->image) {
                 Storage::disk('public')->delete($category->image);
             }
-            
+
             $image = $request->file('image');
             $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('categories', $filename, 'public');
@@ -217,9 +219,9 @@ class CategoryController extends Controller
     public function toggleStatus(Category $category)
     {
         $category->update(['is_active' => !$category->is_active]);
-        
+
         $status = $category->is_active ? 'activated' : 'deactivated';
-        
+
         return response()->json([
             'success' => true,
             'message' => "Category {$status} successfully!",
@@ -245,12 +247,12 @@ class CategoryController extends Controller
                 $categories->update(['is_active' => true]);
                 $message = 'Categories activated successfully!';
                 break;
-                
+
             case 'deactivate':
                 $categories->update(['is_active' => false]);
                 $message = 'Categories deactivated successfully!';
                 break;
-                
+
             case 'delete':
                 // Check for products
                 $categoriesWithProducts = $categories->withCount('products')
@@ -273,7 +275,7 @@ class CategoryController extends Controller
                         Storage::disk('public')->delete($category->image);
                     }
                 }
-                
+
                 $categories->delete();
                 $message = 'Categories deleted successfully!';
                 break;
@@ -310,7 +312,7 @@ class CategoryController extends Controller
     public function contacts(Category $category)
     {
         $contacts = $category->contacts()->with('responses')->latest()->paginate(10);
-        
+
         return view('admin.categories.contacts', compact('category', 'contacts'));
     }
 
@@ -351,12 +353,12 @@ class CategoryController extends Controller
     private function getAllDescendants(Category $category)
     {
         $descendants = collect();
-        
+
         foreach ($category->children as $child) {
             $descendants->push($child);
             $descendants = $descendants->merge($this->getAllDescendants($child));
         }
-        
+
         return $descendants;
     }
 

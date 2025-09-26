@@ -45,7 +45,7 @@ class UserController extends Controller implements HasMiddleware
          $validator = Validator::make($request->all(), [
         'name' => 'required|min:3',
         'email' => 'required|email|unique:users,email',
-        'mobile' => 'nullable|digits:10',
+        'mobile' => 'nullable|digits:8',
          'password' => 'required|min:5|same:confirm_password',
          'confirm_password' => 'required',
 
@@ -92,7 +92,7 @@ class UserController extends Controller implements HasMiddleware
         $user = User::findOrFail($id);
          $validator = Validator::make($request->all(), [
         'name' => 'required|min:3',
-         'mobile' => 'nullable|digits:10',
+         'mobile' => 'nullable|digits:8',
         'email' => 'required|email|unique:users,email,'.$id.',id'
     ]);
       if ($validator->fails()) {

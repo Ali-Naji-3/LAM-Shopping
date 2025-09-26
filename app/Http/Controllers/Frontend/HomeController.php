@@ -50,9 +50,9 @@ class HomeController extends Controller
             ->ordered()
             ->get();
 
-        return view('index-2', compact(
+        return view('frontend.index-2', compact(
             'featuredProducts',
-            'latestProducts', 
+            'latestProducts',
             'categories',
             'brands',
             'sliders'
@@ -107,7 +107,7 @@ class HomeController extends Controller
         $categories = Category::active()->rootCategories()->ordered()->get();
         $brands = Brand::active()->get();
 
-        return view('listing-grid-2-full', compact('products', 'categories', 'brands'));
+        return view('frontend.listing-grid-2-full', compact('products', 'categories', 'brands'));
     }
 
     public function productDetail($slug)
@@ -125,24 +125,24 @@ class HomeController extends Controller
             ->limit(4)
             ->get();
 
-        return view('product-detail-2', compact('product', 'relatedProducts'));
+        return view('frontend.product-detail-2', compact('product', 'relatedProducts'));
     }
 
     public function categoryPage(Request $request, $slug = null)
     {
         // Determine category based on route
         $categorySlug = $slug ?? $request->route()->getName();
-        
+
         // Map route names to category slugs
         $routeToSlug = [
             'category.men' => 'men',
-            'category.women' => 'women', 
+            'category.women' => 'women',
             'category.body' => 'body',
             'category.girl' => 'girl'
         ];
-        
+
         $categorySlug = $routeToSlug[$categorySlug] ?? $categorySlug;
-        
+
         // Find the category
         $category = Category::active()
             ->where('slug', $categorySlug)
@@ -192,19 +192,19 @@ class HomeController extends Controller
         }
 
         $products = $query->paginate(12);
-        
+
         // Get related data
         $categories = Category::active()->rootCategories()->ordered()->get();
         $brands = Brand::active()->get();
-        
+
         // Get subcategories for this category
         $subcategories = $category->children()->active()->ordered()->get();
 
         return view('category-page', compact(
-            'category', 
-            'products', 
-            'categories', 
-            'brands', 
+            'category',
+            'products',
+            'categories',
+            'brands',
             'subcategories'
         ));
     }

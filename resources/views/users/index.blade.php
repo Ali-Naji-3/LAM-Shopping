@@ -4,12 +4,12 @@
 @section('content')
 
 
-     <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-white leading-tight ">
+     <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="font-semibold text-xl text-dark leading-tight ">
                 {{ __('Users') }}
             </h2>
             <a href="{{ route('users.create') }}"
-              class="btn btn-success btn-sm rounded">
+              class="btn btn-success btn-sm rounded btn btn-success btn-sm rounded mt-2 m-4 mb-0">
                 Create
             </a>
         </div>
@@ -77,7 +77,10 @@
 </div>
 
            <div class="my-3">
-               {{$users->links()}}
+            <div class="mt-3">
+    {{ $users->links('pagination::bootstrap-5') }}
+</div>
+
            </div>
         </div>
     </div>

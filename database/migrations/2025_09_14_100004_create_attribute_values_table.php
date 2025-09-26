@@ -17,12 +17,15 @@ return new class extends Migration
             $table->string('value', 255); // VARCHAR(255), not null
             $table->timestamps(); // created_at, updated_at TIMESTAMP, nullable
 
-            // Foreign key constraint
-            $table->foreign('attribute_id')->references('id')->on('attributes')->onDelete('cascade');
-
-            // Indexes for performance
+            // Indexes
             $table->index('attribute_id');
             $table->index(['attribute_id', 'value']);
+
+            // Foreign key constraint
+            $table->foreign('attribute_id')
+                  ->references('id')
+                  ->on('attributes')
+                  ->onDelete('cascade');
         });
     }
 
@@ -31,6 +34,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Drop foreign key first to avoid errors
+        Schema::table('attribute_values', function (Blueprint $table) {
+            $table->dropForeign(['attribute_id']);
+        });
+
         Schema::dropIfExists('attribute_values');
     }
 };

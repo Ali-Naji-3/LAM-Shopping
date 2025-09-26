@@ -91,7 +91,7 @@
             <form method="GET" action="{{ route('admin.transactions.index') }}">
                 <div class="row">
                     <div class="col-md-2">
-                        <input type="text" class="form-control form-control-sm" name="search" 
+                        <input type="text" class="form-control form-control-sm" name="search"
                                value="{{ request('search') }}" placeholder="Search transactions...">
                     </div>
                     <div class="col-md-2">
@@ -114,11 +114,11 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <input type="date" class="form-control form-control-sm" name="date_from" 
+                        <input type="date" class="form-control form-control-sm" name="date_from"
                                value="{{ request('date_from') }}" placeholder="From Date">
                     </div>
                     <div class="col-md-2">
-                        <input type="date" class="form-control form-control-sm" name="date_to" 
+                        <input type="date" class="form-control form-control-sm" name="date_to"
                                value="{{ request('date_to') }}" placeholder="To Date">
                     </div>
                     <div class="col-md-2">
@@ -239,7 +239,7 @@
                 <div style="color: #718096; font-size: 12px;">
                     Showing {{ $transactions->firstItem() }}-{{ $transactions->lastItem() }} of {{ $transactions->total() }}
                 </div>
-                {{ $transactions->links('vendor.pagination.custom') }}
+                {{ $transactions->links('pagination.custom') }}
             </div>
             @endif
         </div>
@@ -309,7 +309,7 @@ function toggleBulkButtons() {
     const checkedBoxes = document.querySelectorAll('.item-checkbox:checked');
     const bulkDeleteBtn = document.getElementById('bulkDeleteBtn');
     const bulkExportBtn = document.getElementById('bulkExportBtn');
-    
+
     if (checkedBoxes.length > 0) {
         bulkDeleteBtn.style.display = 'inline-block';
         bulkExportBtn.style.display = 'inline-block';
@@ -322,24 +322,24 @@ function toggleBulkButtons() {
 function bulkDelete() {
     const checkedBoxes = document.querySelectorAll('.item-checkbox:checked');
     if (checkedBoxes.length === 0) return;
-    
+
     if (confirm(`Are you sure you want to delete ${checkedBoxes.length} transactions?`)) {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '{{ route("admin.transactions.bulk") }}';
-        
+
         const csrfToken = document.createElement('input');
         csrfToken.type = 'hidden';
         csrfToken.name = '_token';
         csrfToken.value = '{{ csrf_token() }}';
         form.appendChild(csrfToken);
-        
+
         const actionInput = document.createElement('input');
         actionInput.type = 'hidden';
         actionInput.name = 'action';
         actionInput.value = 'delete';
         form.appendChild(actionInput);
-        
+
         checkedBoxes.forEach(checkbox => {
             const input = document.createElement('input');
             input.type = 'hidden';
@@ -347,7 +347,7 @@ function bulkDelete() {
             input.value = checkbox.value;
             form.appendChild(input);
         });
-        
+
         document.body.appendChild(form);
         form.submit();
     }
@@ -356,9 +356,9 @@ function bulkDelete() {
 function bulkExport() {
     const checkedBoxes = document.querySelectorAll('.item-checkbox:checked');
     if (checkedBoxes.length === 0) return;
-    
+
     showNotification(`Exporting ${checkedBoxes.length} transactions...`, 'info');
-    
+
     setTimeout(() => {
         showNotification('Transactions exported successfully!', 'success');
     }, 2000);
@@ -369,16 +369,16 @@ function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
     notification.style.cssText = `
-        top: 20px; 
-        right: 20px; 
-        z-index: 9999; 
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
         min-width: 300px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         border-radius: 8px;
         border: none;
         font-size: 13px;
     `;
-    
+
     notification.innerHTML = `
         <div class="d-flex align-items-center">
             <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} mr-2"></i>
@@ -388,9 +388,9 @@ function showNotification(message, type = 'info') {
             </button>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         if (notification.parentNode) {
             notification.remove();

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Database\Seeders\RealDataSeeder;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -15,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // Create admin user first
         $this->command->info('👑 Creating admin user...');
-        
+
         User::updateOrCreate(
             ['email' => 'admin@collection.com'],
             [
@@ -27,24 +28,48 @@ class DatabaseSeeder extends Seeder
                 'u_type' => 'ADM',
             ]
         );
-        
+
         User::updateOrCreate(
             ['email' => 'manager@collection.com'],
             [
                 'name' => 'Collection Manager',
-                'email' => 'manager@collection.com', 
+                'email' => 'manager@collection.com',
                 'mobile' => '+201234567891',
                 'email_verified_at' => now(),
                 'password' => Hash::make('manager123'),
                 'u_type' => 'MGR',
             ]
         );
-        
+
         // Run the real data seeder
         $this->call([
-            RealDataSeeder::class,
+
+            PermissionSeeder::class,
+            AdminSeeder::class,
+            ProductAttributeSeeder::class,
+            // ProductSeeder::class,
+            BrandSeeder::class,
+            // CategorySeeder::class,
+            AttributeSeeder::class,
+            AttributeValueSeeder::class,
+            WarehouseSeeder::class,
+            // InventorySeeder::class,
+            ReviewSeeder::class,
+            OrderSeeder::class,
+            OrderItemSeeder::class,
+            TransactionSeeder::class,
+            SliderSeeder::class,
+            ContactSeeder::class,
+            UpdateCategoryFrontendUrlsSeeder::class,
+            // CoreDataSeeder::class,
+            AdminUserSeeder::class,
+            // EcommerceSeeder::class,
+
+
+
+
         ]);
-        
+
         $this->command->info('🎉 Database seeded with REAL data successfully!');
         $this->command->info('🔑 Admin Login: admin@collection.com / admin123');
         $this->command->info('🔑 Manager Login: manager@collection.com / manager123');
