@@ -2,134 +2,47 @@
 
 @section('content')
 <div class="container-fluid">
-    <!-- Compact Header -->
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-0" style="color: #1a202c; font-weight: 700;">🛍️ Edit Product</h1>
-                    <p style="color: #4a5568; font-size: 14px; margin-bottom: 0;">{{ $product->name }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('admin.products.show', $product) }}" class="btn btn-info" style="font-weight: 600;">
-                        <i class="fas fa-eye me-1"></i> View Details
-                    </a>
-                    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary" style="font-weight: 600;">
-                        <i class="fas fa-arrow-left me-1"></i> Back to Products
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="row">
-        <div class="col-lg-8">
-            <!-- Main Form -->
-            <div class="card shadow border-0" style="border-radius: 12px;">
-                <div class="card-header" style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: 15px;">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="m-0" style="color: #2d3748; font-weight: 700; font-size: 15px;">Edit Product Information</h6>
-                        <!-- Eye-catching Product Statistics -->
-                        <div class="product-stats" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 12px; border-radius: 8px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
-                            <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
-                                ✨ Product Statistics
-                            </div>
-                            <div class="d-flex gap-3" style="font-size: 10px;">
-                                <span style="color: #ffffff; font-weight: 700;">{{ $connectionCounts['reviews_count'] ?? 0 }} Reviews</span>
-                                <span style="color: #ffffff; font-weight: 700;">{{ $connectionCounts['orders_count'] ?? 0 }} Orders</span>
-                                <span style="color: #ffffff; font-weight: 700;">{{ $connectionCounts['inventory_count'] ?? 0 }} Inventory</span>
-                            </div>
-                        </div>
-                    </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Edit Product</h4>
                 </div>
-                <div class="card-body p-3">
+                <div class="card-body">
                     <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-
+                        
+                        <!-- Basic Information -->
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
-                                        <i class="fas fa-box text-primary me-1"></i> Product Name *
-                                    </label>
-                                    <input type="text"
-                                           class="form-control @error('name') is-invalid @enderror"
-                                           name="name" value="{{ old('name', $product->name) }}" required>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Product Name *</label>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $product->name) }}" required>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
-                                        <i class="fas fa-barcode text-info me-1"></i> SKU *
-                                    </label>
-                                    <input type="text"
-                                           class="form-control @error('sku') is-invalid @enderror"
-                                           name="sku" value="{{ old('sku', $product->sku) }}" required>
-                                    @error('sku')
+                                <div class="mb-3">
+                                    <label for="slug" class="form-label">Slug</label>
+                                    <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" value="{{ old('slug', $product->slug) }}">
+                                    @error('slug')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
-                                        <i class="fas fa-dollar-sign text-success me-1"></i> Regular Price *
-                                    </label>
-                                    <input type="number" step="0.01"
-                                           class="form-control @error('regular_price') is-invalid @enderror"
-                                           name="regular_price" value="{{ old('regular_price', $product->regular_price) }}" required>
-                                    @error('regular_price')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
-                                        <i class="fas fa-tag text-warning me-1"></i> Sale Price
-                                    </label>
-                                    <input type="number" step="0.01"
-                                           class="form-control @error('sale_price') is-invalid @enderror"
-                                           name="sale_price" value="{{ old('sale_price', $product->sale_price) }}">
-                                    @error('sale_price')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
-                                        <i class="fas fa-cubes text-info me-1"></i> Quantity
-                                    </label>
-                                    <input type="number"
-                                           class="form-control @error('quantity') is-invalid @enderror"
-                                           name="quantity" value="{{ old('quantity', $product->quantity) }}">
-                                    @error('quantity')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
+                        <!-- Category and Brand -->
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
-                                        <i class="fas fa-folder text-primary me-1"></i> Category
-                                    </label>
-                                    <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
+                                <div class="mb-3">
+                                    <label for="category_id" class="form-label">Category *</label>
+                                    <select class="form-control @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
                                         <option value="">Select Category</option>
-                                        @foreach(\App\Models\Category::where('is_active', true)->get() as $category)
+                                        @foreach($categories as $category)
                                             <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
                                                 {{ $category->name }}
                                             </option>
@@ -140,15 +53,12 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label class="form-label" style="color: #2d3748; font-weight: 600; font-size: 13px;">
-                                        <i class="fas fa-tag text-secondary me-1"></i> Brand
-                                    </label>
-                                    <select class="form-control @error('brand_id') is-invalid @enderror" name="brand_id">
+                                <div class="mb-3">
+                                    <label for="brand_id" class="form-label">Brand</label>
+                                    <select class="form-control @error('brand_id') is-invalid @enderror" id="brand_id" name="brand_id">
                                         <option value="">Select Brand</option>
-                                        @foreach(\App\Models\Brand::where('is_active', true)->get() as $brand)
+                                        @foreach($brands as $brand)
                                             <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>
                                                 {{ $brand->name }}
                                             </option>
@@ -161,13 +71,103 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary" style="font-weight: 600; border-radius: 8px; padding: 10px 20px;">
-                                <i class="fas fa-save me-1"></i> Update Product
-                            </button>
-                            <a href="{{ route('admin.products.show', $product) }}" class="btn btn-secondary" style="font-weight: 600; border-radius: 8px; padding: 10px 20px;">
-                                <i class="fas fa-times me-1"></i> Cancel
-                            </a>
+                        <!-- Price and Stock -->
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Price *</label>
+                                    <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price', $product->price) }}" required>
+                                    @error('price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="sale_price" class="form-label">Sale Price</label>
+                                    <input type="number" step="0.01" class="form-control @error('sale_price') is-invalid @enderror" id="sale_price" name="sale_price" value="{{ old('sale_price', $product->sale_price) }}">
+                                    @error('sale_price')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="stock" class="form-label">Stock</label>
+                                    <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock" name="stock" value="{{ old('stock', $product->stock) }}">
+                                    @error('stock')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Primary Image -->
+                        <div class="mb-4">
+                            <label for="image" class="form-label">Primary Image</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
+                            @if($product->image)
+                                <div class="mt-2">
+                                    <small class="text-muted">Current image:</small>
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Current image" style="max-width: 100px; max-height: 100px; object-fit: cover;" class="img-thumbnail">
+                                </div>
+                            @endif
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Gallery Images -->
+                        <div class="mb-4">
+                            <label class="form-label">Gallery Images</label>
+                            <input type="file" id="gallery-images" name="gallery_images[]" accept="image/*" multiple class="form-control @error('gallery_images') is-invalid @enderror">
+                            <small class="form-text text-muted">Select multiple images for the gallery (JPG, PNG, WebP - max 5MB each)</small>
+                            @if($product->gallery_images)
+                                <div class="mt-2">
+                                    <small class="text-muted">Current gallery images:</small>
+                                    <div class="row g-2 mt-1">
+                                        @foreach($product->gallery_images as $galleryImage)
+                                            <div class="col-md-3 col-sm-4 col-6">
+                                                <img src="{{ asset('storage/' . $galleryImage) }}" alt="Gallery image" style="width: 100%; height: 100px; object-fit: cover;" class="img-thumbnail">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+                            @error('gallery_images')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        
+                        <!-- Gallery Preview -->
+                        <div id="gallery-preview" style="display: none; border: 1px solid #ddd; padding: 1rem; border-radius: 8px; background: #f8f9fa; margin-top: 1rem;">
+                            <h6>Gallery Preview (<span id="gallery-count">0</span> images)</h6>
+                            <div id="gallery-grid" class="row g-2"></div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-4">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="4">{{ old('description', $product->description) }}</textarea>
+                            @error('description')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Status -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ old('status', $product->status) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="status">
+                                    Active
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary me-2">Cancel</a>
+                            <button type="submit" class="btn btn-primary" id="update-product-btn">Update Product</button>
                         </div>
                     </form>
                 </div>
@@ -211,11 +211,74 @@
 </style>
 @endpush
 
-@push('scripts')
 <script>
-function viewProductAnalytics() {
-    showNotification('Product analytics feature coming soon!', 'info');
+// Simple Gallery System
+let galleryImages = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🖼️ Simple gallery system loaded');
+    
+    const galleryInput = document.getElementById('gallery-images');
+    if (galleryInput) {
+        galleryInput.addEventListener('change', function(event) {
+            console.log('📸 Files selected:', event.target.files.length);
+            const files = Array.from(event.target.files);
+            galleryImages = [...galleryImages, ...files];
+            updateGalleryPreview();
+        });
+    }
+});
+
+function updateGalleryPreview() {
+    console.log('🖼️ Updating gallery preview with', galleryImages.length, 'images');
+    
+    const galleryPreview = document.getElementById('gallery-preview');
+    const galleryGrid = document.getElementById('gallery-grid');
+    const galleryCount = document.getElementById('gallery-count');
+    
+    if (galleryImages.length > 0) {
+        console.log('✅ Showing gallery preview');
+        
+        if (galleryPreview) {
+            galleryPreview.style.display = 'block';
+        }
+        if (galleryCount) {
+            galleryCount.textContent = galleryImages.length;
+        }
+        if (galleryGrid) {
+            galleryGrid.innerHTML = '';
+        }
+        
+        galleryImages.forEach((file, index) => {
+            console.log('📸 Processing image', index + 1, ':', file.name);
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                console.log('✅ Image loaded:', file.name);
+                
+                if (galleryGrid) {
+                    const col = document.createElement('div');
+                    col.className = 'col-md-3 col-sm-4 col-6';
+                    col.innerHTML = `
+                        <div style="border: 1px solid #ddd; border-radius: 8px; padding: 8px; background: white;">
+                            <img src="${e.target.result}" alt="${file.name}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 4px;">
+                            <div style="margin-top: 8px; font-size: 12px; color: #666;">
+                                ${file.name}
+                            </div>
+                        </div>
+                    `;
+                    galleryGrid.appendChild(col);
+                    console.log('✅ Image added to grid:', file.name);
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    } else {
+        console.log('❌ Hiding gallery preview - no images');
+        if (galleryPreview) {
+            galleryPreview.style.display = 'none';
+        }
+    }
 }
 </script>
-@endpush
 @endsection

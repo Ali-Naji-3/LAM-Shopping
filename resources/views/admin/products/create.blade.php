@@ -228,3 +228,4 @@ function updateGalleryPreview() {
 }
 </script>
 @endsection
+        

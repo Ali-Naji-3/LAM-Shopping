@@ -691,6 +691,25 @@
                 <span class="icon">🛍️</span>
                 <span>Products</span>
             </a></li>
+
+            <!-- GENDER CATEGORIES -->
+            <li class="nav-section-title">GENDER CATEGORIES</li>
+            <li><a href="{{ route('admin.categories.men') }}">
+                <span class="icon">👨</span>
+                <span>Men</span>
+            </a></li>
+            <li><a href="{{ route('admin.categories.women') }}">
+                <span class="icon">👩</span>
+                <span>Women</span>
+            </a></li>
+            <li><a href="{{ route('admin.categories.boys') }}">
+                <span class="icon">👦</span>
+                <span>Boys</span>
+            </a></li>
+            <li><a href="{{ route('admin.categories.girls') }}">
+                <span class="icon">👧</span>
+                <span>Girls</span>
+            </a></li>
                     <li><a href="{{ route('admin.attributes.index') }}">
                         <span class="icon">🔧</span>
                         <span>Attributes</span>

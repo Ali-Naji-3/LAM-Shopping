@@ -425,4 +425,154 @@ class CategoryController extends Controller
 
         return view('admin.categories.analytics', compact('category', 'analytics'));
     }
+
+    // GENDER-SPECIFIC CATEGORY METHODS
+
+    /**
+     * Display Men's categories
+     */
+    public function men()
+    {
+        return $this->displayGenderCategories('Men', 'men-theme');
+    }
+
+    /**
+     * Display Women's categories
+     */
+    public function women()
+    {
+        return $this->displayGenderCategories('Women', 'women-theme');
+    }
+
+    /**
+     * Display Boys' categories
+     */
+    public function boys()
+    {
+        return $this->displayGenderCategories('Boys', 'boys-theme');
+    }
+
+    /**
+     * Display Girls' categories
+     */
+    public function girls()
+    {
+        return $this->displayGenderCategories('Girls', 'girls-theme');
+    }
+
+    /**
+     * Generic method to display gender-specific categories
+     */
+    private function displayGenderCategories($gender, $themeClass)
+    {
+        // Get the parent gender category
+        $parentCategory = Category::where('name', $gender)->first();
+        
+        if (!$parentCategory) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', "{$gender} category not found. Please create it first.");
+        }
+
+        // Get all subcategories under this gender
+        $categories = Category::where('parent_id', $parentCategory->id)
+            ->with(['parent', 'children'])
+            ->withCount(['products', 'contacts'])
+            ->ordered()
+            ->get();
+
+        // Get cross-gender statistics
+        $crossGenderStats = $this->getCrossGenderStats();
+
+        // Calculate statistics for this gender
+        $statistics = [
+            'total_categories' => $categories->count(),
+            'total_products' => $categories->sum('products_count'),
+            'total_brands' => Brand::whereHas('products', function($query) use ($parentCategory) {
+                $query->where('category_id', $parentCategory->id)
+                      ->orWhereHas('category', function($subQuery) use ($parentCategory) {
+                          $subQuery->where('parent_id', $parentCategory->id);
+                      });
+            })->count(),
+        ];
+
+        // Theme configuration
+        $theme = $this->getGenderTheme($gender);
+
+        return view('admin.categories.gender', compact(
+            'categories', 
+            'parentCategory', 
+            'gender', 
+            'theme', 
+            'statistics', 
+            'crossGenderStats'
+        ));
+    }
+
+    /**
+     * Get cross-gender statistics
+     */
+    private function getCrossGenderStats()
+    {
+        $genders = ['Men', 'Women', 'Boys', 'Girls'];
+        $stats = [];
+
+        foreach ($genders as $gender) {
+            $parentCategory = Category::where('name', $gender)->first();
+            if ($parentCategory) {
+                $stats[$gender] = [
+                    'categories_count' => Category::where('parent_id', $parentCategory->id)->count(),
+                    'products_count' => Category::where('parent_id', $parentCategory->id)
+                        ->withCount('products')
+                        ->get()
+                        ->sum('products_count'),
+                ];
+            } else {
+                $stats[$gender] = [
+                    'categories_count' => 0,
+                    'products_count' => 0,
+                ];
+            }
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Get gender-specific theme configuration
+     */
+    private function getGenderTheme($gender)
+    {
+        $themes = [
+            'Men' => [
+                'theme_name' => 'men-theme',
+                'icon' => '👨',
+                'title' => 'Men\'s Categories',
+                'description' => 'Manage men\'s sportswear and athletic gear categories',
+                'color' => '#3182ce',
+            ],
+            'Women' => [
+                'theme_name' => 'women-theme',
+                'icon' => '👩',
+                'title' => 'Women\'s Categories',
+                'description' => 'Manage women\'s sportswear and athletic gear categories',
+                'color' => '#ec4899',
+            ],
+            'Boys' => [
+                'theme_name' => 'boys-theme',
+                'icon' => '👦',
+                'title' => 'Boys\' Categories',
+                'description' => 'Manage boys\' sportswear and athletic gear categories',
+                'color' => '#10b981',
+            ],
+            'Girls' => [
+                'theme_name' => 'girls-theme',
+                'icon' => '👧',
+                'title' => 'Girls\' Categories',
+                'description' => 'Manage girls\' sportswear and athletic gear categories',
+                'color' => '#8b5cf6',
+            ],
+        ];
+
+        return $themes[$gender] ?? $themes['Men'];
+    }
 }
