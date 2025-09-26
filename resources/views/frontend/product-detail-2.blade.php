@@ -223,11 +223,11 @@
 	                            @else
 	                                <div style="background-image: url(img/products/product_placeholder_square_medium.jpg);" class="item-box"></div>
 	                            @endif
-	                            @if($product->images && is_array($product->images))
-	                                @foreach($product->images as $image)
-	                                    <div style="background-image: url({{ asset('storage/' . $image) }});" class="item-box"></div>
-	                                @endforeach
-	                            @endif
+                            @if($product->gallery_images && is_array($product->gallery_images))
+                                @foreach($product->gallery_images as $image)
+                                    <div style="background-image: url({{ asset('storage/' . $image) }});" class="item-box"></div>
+                                @endforeach
+                            @endif
 	                        </div>
 	                        <div class="left nonl"><i class="ti-angle-left"></i></div>
 	                        <div class="right"><i class="ti-angle-right"></i></div>
@@ -239,11 +239,11 @@
 	                            @else
 	                                <div style="background-image: url(img/products/product_placeholder_square_medium.jpg);" class="item active"></div>
 	                            @endif
-	                            @if($product->images && is_array($product->images))
-	                                @foreach($product->images as $image)
-	                                    <div style="background-image: url({{ asset('storage/' . $image) }});" class="item"></div>
-	                                @endforeach
-	                            @endif
+                            @if($product->gallery_images && is_array($product->gallery_images))
+                                @foreach($product->gallery_images as $image)
+                                    <div style="background-image: url({{ asset('storage/' . $image) }});" class="item"></div>
+                                @endforeach
+                            @endif
 	                        </div>
 	                        <div class="left-t nonl-t"></div>
 	                        <div class="right-t"></div>

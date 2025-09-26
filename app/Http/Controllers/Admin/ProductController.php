@@ -123,26 +123,16 @@ class ProductController extends Controller
             $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255',
-            'sku' => 'required|string|max:255|unique:products,sku',
-            'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string',
-            'regular_price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
-            'quantity' => 'required|integer|min:0',
+            'stock' => 'nullable|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'status' => 'required|in:active,inactive,draft',
-            'featured' => 'boolean',
-            'weight' => 'nullable|numeric|min:0',
-            'dimensions' => 'nullable|array',
-            'dimensions.length' => 'nullable|numeric|min:0',
-            'dimensions.width' => 'nullable|numeric|min:0',
-            'dimensions.height' => 'nullable|numeric|min:0',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'brand_id' => 'nullable|exists:brands,id',
+            'status' => 'nullable|boolean',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'gallery_images' => 'nullable|array',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120'
         ]);
 
         // Generate slug if not provided
@@ -163,31 +153,41 @@ class ProductController extends Controller
             ]);
         }
 
-        // Handle dimensions
-        if (isset($validated['dimensions'])) {
-            $validated['dimensions'] = array_filter($validated['dimensions']);
-        }
+        // Map form fields to database fields
+        $productData = [
+            'name' => $validated['name'],
+            'slug' => $validated['slug'],
+            'description' => $validated['description'],
+            'regular_price' => $validated['price'], // Map price to regular_price
+            'sale_price' => $validated['sale_price'],
+            'quantity' => $validated['stock'] ?? 0, // Map stock to quantity
+            'category_id' => $validated['category_id'],
+            'brand_id' => $validated['brand_id'],
+            'status' => $validated['status'] ? 'active' : 'inactive',
+            'featured' => false,
+            'sku' => 'SKU-' . time() . '-' . Str::random(6), // Generate SKU
+        ];
 
         // Handle main image upload
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('products', $filename, 'public');
-            $validated['image'] = $path;
+            $productData['image'] = $path;
         }
 
-        // Handle multiple images upload
-        $imagesPaths = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+        // Handle gallery images upload
+        $galleryImagesPaths = [];
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $index => $image) {
+                $filename = time() . '_' . Str::random(10) . '_' . ($index + 1) . '.' . $image->getClientOriginalExtension();
                 $path = $image->storeAs('products/gallery', $filename, 'public');
-                $imagesPaths[] = $path;
+                $galleryImagesPaths[] = $path;
             }
-            $validated['images'] = $imagesPaths;
+            $productData['gallery_images'] = $galleryImagesPaths;
         }
 
-            $product = Product::create($validated);
+        $product = Product::create($productData);
 
             return redirect()->route('admin.products.index')
                 ->with('success', "Product '{$product->name}' created successfully!");

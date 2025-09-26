@@ -457,6 +457,8 @@ Route::get('/my-wishlist', function () {
     return view('frontend.my-wishlist');
 });
 
+
+
 Route::get('/{page}', function ($page) {
     // Construct the view name from the page parameter
     $viewName = str_replace('.html', '', $page);

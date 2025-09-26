@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Admin Dashboard - Collection Store</title>
+    
+    <!-- Disable source map warnings in development -->
+    <meta name="source-map" content="false">
 
     <!-- Favicons-->
     <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
@@ -806,13 +809,21 @@
     </div>
 
     <!-- Bootstrap JS -->
-      <script src="{{ asset('jsd/jquery.min.js') }}"></script>
-    <script src="{{ asset('jsd/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('jsd/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('jsd/sweetalert.min.js') }}"></script>
-    <script src="{{ asset('jsd/apexcharts/apexcharts.js') }}"></script>
-    <script src="{{ asset('jsd/main.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/jquery.mmenu.all.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/owl.carousel.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/jquery.magnific-popup.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/jquery.nice-select.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/lazyload.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/footer-reveal.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/wow.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/isotope.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/theia-sticky-sidebar.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/bootstrap-select.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/apexcharts/apexcharts.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/main.js') }}?v={{ time() }}"></script>
 
        @extends('components.script')
 </body>

@@ -14,7 +14,7 @@ class Product extends Model
     protected $fillable = [
         'name', 'slug', 'sku', 'short_description', 'description', 
         'regular_price', 'sale_price', 'featured', 'status', 'quantity', 
-        'image', 'images', 'category_id', 'brand_id', 'weight', 'dimensions',
+        'image', 'gallery_images', 'category_id', 'brand_id', 'weight', 'dimensions',
         'meta_title', 'meta_description'
     ];
 
@@ -23,7 +23,7 @@ class Product extends Model
         'sale_price' => 'decimal:2',
         'weight' => 'decimal:2',
         'featured' => 'boolean',
-        'images' => 'array',
+        'gallery_images' => 'array',
         'dimensions' => 'array',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
