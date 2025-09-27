@@ -21,10 +21,13 @@ class HomeController extends Controller
             ->limit(8)
             ->get();
 
-        $latestProducts = Product::active()
+        $newArrivalProducts = Product::active()
             ->inStock()
+            ->newArrival()
             ->with(['category', 'brand', 'reviews'])
-            ->latest()
+            ->orderBy('new_arrival_priority', 'desc')
+            ->orderBy('featured_new_arrival', 'desc')
+            ->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
 
@@ -52,7 +55,7 @@ class HomeController extends Controller
 
         return view('frontend.index-2', compact(
             'featuredProducts',
-            'latestProducts',
+            'newArrivalProducts',
             'categories',
             'brands',
             'sliders'

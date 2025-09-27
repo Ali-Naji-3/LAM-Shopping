@@ -260,10 +260,70 @@
                         <!-- Status -->
                         <div class="mb-4">
                             <div class="form-check">
+                                <input type="hidden" name="status" value="0">
                                 <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ old('status') ? 'checked' : '' }}>
                                 <label class="form-check-label" for="status">
                                     Active
                                 </label>
+                            </div>
+                        </div>
+
+                        <!-- New Arrival Controls -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">New Arrival Settings</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check mb-3">
+                                        <input type="hidden" name="is_new_arrival" value="0">
+                                        <input class="form-check-input" type="checkbox" id="is_new_arrival" name="is_new_arrival" value="1" {{ old('is_new_arrival') ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="is_new_arrival">
+                                            <strong>Mark as New Arrival</strong>
+                                        </label>
+                                        <small class="form-text text-muted d-block">Manually mark this product as a new arrival</small>
+                                        <div id="new-arrival-info" class="alert alert-warning mt-2" style="display:none;">
+                                            <i class="ti-info-circle"></i>
+                                            <strong>Note:</strong> This will automatically remove the oldest new arrival product to make room for this one (max 8 products).
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-3">
+                                        <input type="hidden" name="featured_new_arrival" value="0">
+                                        <input class="form-check-input" type="checkbox" id="featured_new_arrival" name="featured_new_arrival" value="1" {{ old('featured_new_arrival') ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="featured_new_arrival">
+                                            <strong>Featured New Arrival</strong>
+                                        </label>
+                                        <small class="form-text text-muted d-block">Give this product special highlighting</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="new_arrival_until" class="form-label">New Arrival Until (Optional)</label>
+                                    <input type="datetime-local" class="form-control @error('new_arrival_until') is-invalid @enderror" id="new_arrival_until" name="new_arrival_until" value="{{ old('new_arrival_until') }}">
+                                    @error('new_arrival_until')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="form-text text-muted">Leave empty for permanent new arrival status</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="new_arrival_priority" class="form-label">Priority Order</label>
+                                    <select class="form-control @error('new_arrival_priority') is-invalid @enderror" id="new_arrival_priority" name="new_arrival_priority">
+                                        <option value="0" {{ old('new_arrival_priority', 0) == 0 ? 'selected' : '' }}>Normal (0)</option>
+                                        <option value="1" {{ old('new_arrival_priority') == 1 ? 'selected' : '' }}>Low (1)</option>
+                                        <option value="3" {{ old('new_arrival_priority') == 3 ? 'selected' : '' }}>Medium (3)</option>
+                                        <option value="5" {{ old('new_arrival_priority') == 5 ? 'selected' : '' }}>High (5)</option>
+                                        <option value="10" {{ old('new_arrival_priority') == 10 ? 'selected' : '' }}>Highest (10)</option>
+                                    </select>
+                                    @error('new_arrival_priority')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <small class="form-text text-muted">Higher priority products appear first</small>
+                                </div>
+                            </div>
+                            <div class="alert alert-info mt-3">
+                                <i class="ti-info-circle"></i>
+                                <strong>Tip:</strong> Products created within the last 30 days automatically qualify as new arrivals unless manually disabled.
                             </div>
                         </div>
 
@@ -675,10 +735,29 @@ function updateSizesPreview() {
     });
 }
 
-// Initialize color and size management
+// New Arrival Auto-Remove Functionality
 document.addEventListener('DOMContentLoaded', function() {
     updateColorsPreview();
     updateSizesPreview();
+    
+    // Handle new arrival checkbox
+    const newArrivalCheckbox = document.getElementById('is_new_arrival');
+    const newArrivalInfo = document.getElementById('new-arrival-info');
+    
+    if (newArrivalCheckbox && newArrivalInfo) {
+        newArrivalCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                newArrivalInfo.style.display = 'block';
+            } else {
+                newArrivalInfo.style.display = 'none';
+            }
+        });
+        
+        // Show info if checkbox is already checked (from old values)
+        if (newArrivalCheckbox.checked) {
+            newArrivalInfo.style.display = 'block';
+        }
+    }
 });
 </script>
 @endsection

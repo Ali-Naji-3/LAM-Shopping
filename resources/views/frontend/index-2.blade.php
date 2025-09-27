@@ -33,6 +33,49 @@
 
     <!-- YOUR CUSTOM CSS -->
     <link href="css/custom.css" rel="stylesheet">
+    
+    <!-- Enhanced Video Header CSS -->
+    <style>
+        .header-video {
+            position: relative;
+            min-height: 500px;
+            overflow: hidden;
+        }
+        
+        .header-video--media {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        
+        .header-video--fallback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1;
+        }
+        
+        .opacity-mask {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Ensure video works on mobile */
+        @media (max-width: 767px) {
+            .header-video {
+                min-height: 420px;
+            }
+        }
+    </style>
 
 </head>
 
@@ -229,10 +272,12 @@
 					</div>
 				</div>
 			</div>
-			<video autoplay muted loop playsinline class="header-video--media">
+			<video autoplay muted loop playsinline class="header-video--media" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
     <source src="{{ asset('video/hero.mp4') }}" type="video/mp4">
     Your browser does not support the video tag.
 </video>
+<!-- Fallback background image if video fails to load -->
+<div class="header-video--fallback" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background-image:url('{{ asset('img/hero/main.png') }}'); background-size:cover; background-position:center;"></div>
 
 		</div>
 		<!-- /header-video -->
@@ -329,30 +374,55 @@
 			</div>
 			<div class="isotope_filter">
 				<ul>
-					<li><a href="#0" id="all" data-filter="*">All</a></li>
+					<li><a href="#0" id="all" data-filter="*" class="active">All</a></li>
 					<li><a href="#0" id="popular" data-filter=".popular">Popular</a></li>
 					<li><a href="#0" id="sale" data-filter=".sale">Sale</a></li>
 				</ul>
 			</div>
 			<div class="isotope-wrapper">
 				<div class="row small-gutters">
-					<div class="col-6 col-md-4 col-xl-3 isotope-item sale">
+					@forelse($newArrivalProducts as $product)
+					<div class="col-6 col-md-4 col-xl-3 isotope-item {{ $product->sale_price ? 'sale' : ($product->featured ? 'popular' : '') }}">
 						<div class="grid_item">
 							<figure>
-								<span class="ribbon off">-30%</span>
-								<a href="product-detail-1.html">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/1.jpg" alt="">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/1_b.jpg" alt="">
+								@if($product->new_arrival_badge == 'featured-new')
+									<span class="ribbon hot">Featured New</span>
+								@elseif($product->new_arrival_badge == 'new')
+									<span class="ribbon new">New</span>
+								@elseif($product->sale_price && $product->sale_price < $product->regular_price)
+									@php
+										$discount = round((($product->regular_price - $product->sale_price) / $product->regular_price) * 100);
+									@endphp
+									<span class="ribbon off">-{{ $discount }}%</span>
+								@elseif($product->featured)
+									<span class="ribbon hot">Hot</span>
+								@endif
+								<a href="{{ route('product.detail', $product->slug) }}">
+									@if($product->image)
+										<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+									@else
+										<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
+									@endif
 								</a>
-								<div data-countdown="2019/05/15" class="countdown"></div>
+								@if($product->enable_countdown && $product->countdown_date)
+									<div data-countdown="{{ $product->countdown_date->format('Y/m/d') }}" class="countdown"></div>
+								@endif
 							</figure>
-							<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-							<a href="product-detail-1.html">
-								<h3>Armor Air x Fear</h3>
+							<div class="rating">
+								@for($i = 1; $i <= 5; $i++)
+									<i class="icon-star {{ $i <= $product->average_rating ? 'voted' : '' }}"></i>
+								@endfor
+							</div>
+							<a href="{{ route('product.detail', $product->slug) }}">
+								<h3>{{ $product->name }}</h3>
 							</a>
 							<div class="price_box">
-								<span class="new_price">$48.00</span>
-								<span class="old_price">$60.00</span>
+								@if($product->sale_price && $product->sale_price < $product->regular_price)
+									<span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
+									<span class="old_price">${{ number_format($product->regular_price, 2) }}</span>
+								@else
+									<span class="new_price">${{ number_format($product->regular_price, 2) }}</span>
+								@endif
 							</div>
 							<ul>
 								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
@@ -363,185 +433,14 @@
 						<!-- /grid_item -->
 					</div>
 					<!-- /col -->
-					<div class="col-6 col-md-4 col-xl-3 isotope-item sale">
-						<div class="grid_item">
-							<span class="ribbon off">-30%</span>
-							<figure>
-								<a href="product-detail-1.html">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/2.jpg" alt="">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/2_b.jpg" alt="">
-								</a>
-								<div data-countdown="2019/05/10" class="countdown"></div>
-							</figure>
-							<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-							<a href="product-detail-1.html">
-								<h3>Armor Okwahn II</h3>
-							</a>
-							<div class="price_box">
-								<span class="new_price">$90.00</span>
-								<span class="old_price">$170.00</span>
-							</div>
-							<ul>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-							</ul>
+					@empty
+					<div class="col-12">
+						<div class="text-center py-5">
+							<h4>No new arrival products available</h4>
+							<p>Check back soon for new products!</p>
 						</div>
-						<!-- /grid_item -->
 					</div>
-					<!-- /col -->
-					<div class="col-6 col-md-4 col-xl-3 isotope-item sale">
-						<div class="grid_item">
-							<span class="ribbon off">-50%</span>
-							<figure>
-								<a href="product-detail-1.html">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/3.jpg" alt="">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/3_b.jpg" alt="">
-								</a>
-								<div data-countdown="2019/05/21" class="countdown"></div>
-							</figure>
-							<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-							<a href="product-detail-1.html">
-								<h3>Armor Air Wildwood ACG</h3>
-							</a>
-							<div class="price_box">
-								<span class="new_price">$75.00</span>
-								<span class="old_price">$155.00</span>
-							</div>
-							<ul>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-							</ul>
-						</div>
-						<!-- /grid_item -->
-					</div>
-					<!-- /col -->
-					<div class="col-6 col-md-4 col-xl-3 isotope-item popular">
-						<div class="grid_item">
-							<span class="ribbon new">New</span>
-							<figure>
-								<a href="product-detail-1.html">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/4.jpg" alt="">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/4_b.jpg" alt="">
-								</a>
-							</figure>
-							<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-							<a href="product-detail-1.html">
-								<h3>Armor ACG React Terra</h3>
-							</a>
-							<div class="price_box">
-								<span class="new_price">$110.00</span>
-							</div>
-							<ul>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-							</ul>
-						</div>
-						<!-- /grid_item -->
-					</div>
-					<!-- /col -->
-					<div class="col-6 col-md-4 col-xl-3 isotope-item popular">
-						<div class="grid_item">
-							<span class="ribbon new">New</span>
-							<figure>
-								<a href="product-detail-1.html">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/5.jpg" alt="">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/5_b.jpg" alt="">
-								</a>
-							</figure>
-							<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-							<a href="product-detail-1.html">
-								<h3>Armor Air Zoom Alpha</h3>
-							</a>
-							<div class="price_box">
-								<span class="new_price">$140.00</span>
-							</div>
-							<ul>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-							</ul>
-						</div>
-						<!-- /grid_item -->
-					</div>
-					<!-- /col -->
-					<div class="col-6 col-md-4 col-xl-3 isotope-item popular">
-						<div class="grid_item">
-							<span class="ribbon new">New</span>
-							<figure>
-								<a href="product-detail-1.html">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/6.jpg" alt="">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/6_b.jpg" alt="">
-								</a>
-							</figure>
-							<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-							<a href="product-detail-1.html">
-								<h3>Armor Air Alpha</h3>
-							</a>
-							<div class="price_box">
-								<span class="new_price">$130.00</span>
-							</div>
-							<ul>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-							</ul>
-						</div>
-						<!-- /grid_item -->
-					</div>
-					<!-- /col -->
-					<div class="col-6 col-md-4 col-xl-3 isotope-item popular">
-						<div class="grid_item">
-							<span class="ribbon hot">Hot</span>
-							<figure>
-								<a href="product-detail-1.html">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/7.jpg" alt="">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/7_b.jpg" alt="">
-								</a>
-							</figure>
-							<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-							<a href="product-detail-1.html">
-								<h3>Armor Air Max 98</h3>
-							</a>
-							<div class="price_box">
-								<span class="new_price">$115.00</span>
-							</div>
-							<ul>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-							</ul>
-						</div>
-						<!-- /grid_item -->
-					</div>
-					<!-- /col -->
-					<div class="col-6 col-md-4 col-xl-3 isotope-item popular">
-						<div class="grid_item">
-							<span class="ribbon hot">Hot</span>
-							<figure>
-								<a href="product-detail-1.html">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/8.jpg" alt="">
-									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" data-src="img/products/shoes/8_b.jpg" alt="">
-								</a>
-							</figure>
-							<div class="rating"><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star voted"></i><i class="icon-star"></i></div>
-							<a href="product-detail-1.html">
-								<h3>Armor Air Max 720</h3>
-							</a>
-							<div class="price_box">
-								<span class="new_price">$120.00</span>
-							</div>
-							<ul>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-								<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-							</ul>
-						</div>
-						<!-- /grid_item -->
-					</div>
-					<!-- /col -->
+					@endforelse
 				</div>
 				<!-- /row -->
 			</div>
@@ -709,25 +608,118 @@
 	<!-- SPECIFIC SCRIPTS -->
 	<script src="js/modernizr.js"></script>
 	<script src="js/video_header.min.js"></script>
+	<!-- Fallback video script in case video_header.min.js fails -->
 	<script>
-		// Video Header
-		HeaderVideo.init({
-			container: $('.header-video'),
-			header: $('.header-video--media'),
-			videoTrigger: $("#video-trigger"),
-			autoPlayVideo: true
+		// Simple video fallback
+		$(document).ready(function() {
+			var $video = $('.header-video--media');
+			if ($video.length > 0) {
+				// Ensure video plays
+				$video[0].play().catch(function(error) {
+					console.log('Video autoplay failed:', error);
+					// Show fallback background
+					$('.header-video--fallback').show();
+					$video.hide();
+				});
+			}
+		});
+	</script>
+	<script>
+		// Video Header - Enhanced with error handling
+		$(document).ready(function() {
+			try {
+				// Check if HeaderVideo is available and elements exist
+				if (typeof HeaderVideo !== 'undefined') {
+					var $container = $('.header-video');
+					var $header = $('.header-video--media');
+					var $videoTrigger = $("#video-trigger");
+					
+					// Only initialize if elements exist
+					if ($container.length > 0 && $header.length > 0) {
+						HeaderVideo.init({
+							container: $container,
+							header: $header,
+							videoTrigger: $videoTrigger.length > 0 ? $videoTrigger : null,
+							autoPlayVideo: true
+						});
+					} else {
+						console.log('Video header elements not found, skipping initialization');
+					}
+				} else {
+					console.log('HeaderVideo library not loaded');
+				}
+			} catch (error) {
+				console.log('Video header initialization error:', error);
+			}
 		});
 	</script>
 	<script src="js/isotope.min.js"></script>
 	<script>
-		// Isotope filter
+		// Enhanced Isotope filter for New Arrival Products
 		$(window).on('load',function(){
-		  var $container = $('.isotope-wrapper');
-		  $container.isotope({ itemSelector: '.isotope-item', layoutMode: 'masonry' });
+			try {
+				var $container = $('.isotope-wrapper');
+				if ($container.length > 0 && typeof $.fn.isotope !== 'undefined') {
+					$container.isotope({ 
+						itemSelector: '.isotope-item', 
+						layoutMode: 'masonry',
+						transitionDuration: '0.3s'
+					});
+				} else {
+					console.log('Isotope container not found or library not loaded');
+				}
+			} catch (error) {
+				console.log('Isotope initialization error:', error);
+			}
 		});
-		$('.isotope_filter').on( 'click', 'a', 'change', function(){
-		  var selector = $(this).attr('data-filter');
-		  $('.isotope-wrapper').isotope({ filter: selector });
+		
+		$('.isotope_filter').on( 'click', 'a', function(e){
+			e.preventDefault();
+			
+			try {
+				// Remove active class from all filter buttons
+				$('.isotope_filter a').removeClass('active');
+				
+				// Add active class to clicked button
+				$(this).addClass('active');
+				
+				// Get filter selector
+				var selector = $(this).attr('data-filter');
+				
+				// Apply filter with animation if isotope is available
+				var $container = $('.isotope-wrapper');
+				if ($container.length > 0 && typeof $.fn.isotope !== 'undefined') {
+					$container.isotope({ 
+						filter: selector,
+						transitionDuration: '0.3s'
+					});
+				}
+				
+				// Update URL hash for better UX
+				if (selector === '*') {
+					history.replaceState(null, null, window.location.pathname);
+				} else {
+					history.replaceState(null, null, window.location.pathname + '#' + selector.replace('.', ''));
+				}
+			} catch (error) {
+				console.log('Filter click error:', error);
+			}
+		});
+		
+		// Handle initial filter from URL hash
+		$(document).ready(function() {
+			try {
+				var hash = window.location.hash;
+				if (hash) {
+					var filterClass = '.' + hash.replace('#', '');
+					var $filterButton = $('.isotope_filter a[data-filter="' + filterClass + '"]');
+					if ($filterButton.length > 0) {
+						$filterButton.click();
+					}
+				}
+			} catch (error) {
+				console.log('URL hash handling error:', error);
+			}
 		});
 	</script>
 

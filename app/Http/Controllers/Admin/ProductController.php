@@ -145,7 +145,11 @@ class ProductController extends Controller
             'sizes' => 'nullable|array',
             'sizes.*.name' => 'required_with:sizes|string|max:255',
             'sizes.*.stock' => 'nullable|integer|min:0',
-            'sizes.*.guide' => 'nullable|string|max:500'
+            'sizes.*.guide' => 'nullable|string|max:500',
+            'is_new_arrival' => 'nullable|boolean',
+            'new_arrival_until' => 'nullable|date',
+            'featured_new_arrival' => 'nullable|boolean',
+            'new_arrival_priority' => 'nullable|integer|min:0|max:10'
         ]);
 
         // Generate slug if not provided
@@ -176,11 +180,15 @@ class ProductController extends Controller
             'quantity' => $validated['stock'] ?? 0, // Map stock to quantity
             'category_id' => $validated['category_id'],
             'brand_id' => $validated['brand_id'],
-            'status' => $validated['status'] ? 'active' : 'inactive',
+            'status' => ($validated['status'] ?? false) ? 'active' : 'inactive',
             'featured' => false,
             'sku' => 'SKU-' . time() . '-' . Str::random(6), // Generate SKU
-            'enable_countdown' => $validated['enable_countdown'] ?? false,
+            'enable_countdown' => ($validated['enable_countdown'] ?? false) ? true : false,
             'countdown_date' => $validated['countdown_date'] ?? null,
+            'is_new_arrival' => ($validated['is_new_arrival'] ?? false) ? true : false,
+            'new_arrival_until' => $validated['new_arrival_until'] ?? null,
+            'featured_new_arrival' => ($validated['featured_new_arrival'] ?? false) ? true : false,
+            'new_arrival_priority' => $validated['new_arrival_priority'] ?? 0,
         ];
 
         // Handle main image upload
@@ -203,6 +211,11 @@ class ProductController extends Controller
         }
 
         $product = Product::create($productData);
+
+        // Auto-remove last new arrival if this product is marked as new arrival
+        if ($validated['is_new_arrival'] ?? false) {
+            $this->manageNewArrivalLimit($product);
+        }
 
         // Handle color attributes
         if ($request->has('colors') && is_array($request->colors)) {
@@ -309,7 +322,11 @@ class ProductController extends Controller
             'sizes.*.stock' => 'nullable|integer|min:0',
             'sizes.*.guide' => 'nullable|string|max:500',
             'delete_sizes' => 'nullable|array',
-            'delete_sizes.*' => 'integer|exists:product_attributes,id'
+            'delete_sizes.*' => 'integer|exists:product_attributes,id',
+            'is_new_arrival' => 'nullable|boolean',
+            'new_arrival_until' => 'nullable|date',
+            'featured_new_arrival' => 'nullable|boolean',
+            'new_arrival_priority' => 'nullable|integer|min:0|max:10'
         ]);
 
         // Generate slug if not provided
@@ -341,9 +358,13 @@ class ProductController extends Controller
             'quantity' => $validated['stock'] ?? $product->quantity, // Map stock to quantity
             'category_id' => $validated['category_id'],
             'brand_id' => $validated['brand_id'],
-            'status' => $validated['status'] ? 'active' : 'inactive',
-            'enable_countdown' => $validated['enable_countdown'] ?? false,
+            'status' => ($validated['status'] ?? false) ? 'active' : 'inactive',
+            'enable_countdown' => ($validated['enable_countdown'] ?? false) ? true : false,
             'countdown_date' => $validated['countdown_date'] ?? null,
+            'is_new_arrival' => ($validated['is_new_arrival'] ?? false) ? true : false,
+            'new_arrival_until' => $validated['new_arrival_until'] ?? null,
+            'featured_new_arrival' => ($validated['featured_new_arrival'] ?? false) ? true : false,
+            'new_arrival_priority' => $validated['new_arrival_priority'] ?? 0,
         ];
 
         // Handle main image upload
@@ -381,6 +402,11 @@ class ProductController extends Controller
         }
 
         $product->update($productData);
+
+        // Auto-remove last new arrival if this product is marked as new arrival
+        if (($validated['is_new_arrival'] ?? false) && !$product->wasRecentlyCreated) {
+            $this->manageNewArrivalLimit($product);
+        }
 
         // Handle color attributes
         $this->handleColorAttributesUpdate($product, $request);
@@ -887,5 +913,51 @@ class ProductController extends Controller
                 }
             }
         }
+    }
+
+    /**
+     * Manage new arrival limit by removing the oldest new arrival if limit is exceeded
+     */
+    private function manageNewArrivalLimit($currentProduct)
+    {
+        $maxNewArrivals = 8; // Maximum number of new arrivals to show
+        
+        // Get all current new arrivals (excluding the current product)
+        $currentNewArrivals = Product::active()
+            ->inStock()
+            ->newArrival()
+            ->where('id', '!=', $currentProduct->id)
+            ->orderBy('new_arrival_priority', 'desc')
+            ->orderBy('featured_new_arrival', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // If we're at or over the limit, remove the oldest one
+        if ($currentNewArrivals->count() >= $maxNewArrivals) {
+            $oldestNewArrival = $currentNewArrivals->last();
+            
+            if ($oldestNewArrival) {
+                // Remove the oldest new arrival
+                $oldestNewArrival->update([
+                    'is_new_arrival' => false,
+                    'featured_new_arrival' => false,
+                    'new_arrival_until' => null
+                ]);
+                
+                \Log::info("Auto-removed oldest new arrival to make room for new one", [
+                    'removed_product_id' => $oldestNewArrival->id,
+                    'removed_product_name' => $oldestNewArrival->name,
+                    'new_product_id' => $currentProduct->id,
+                    'new_product_name' => $currentProduct->name
+                ]);
+            }
+        }
+        
+        \Log::info("New arrival limit managed", [
+            'current_count' => $currentNewArrivals->count(),
+            'max_limit' => $maxNewArrivals,
+            'new_product_id' => $currentProduct->id,
+            'new_product_name' => $currentProduct->name
+        ]);
     }
 }

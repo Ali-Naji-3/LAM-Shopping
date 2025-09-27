@@ -13,7 +13,8 @@ class Product extends Model
     
     protected $fillable = [
         'name', 'slug', 'sku', 'short_description', 'description', 
-        'regular_price', 'sale_price', 'featured', 'status', 'quantity', 
+        'regular_price', 'sale_price', 'featured', 'is_new_arrival', 'new_arrival_until', 
+        'featured_new_arrival', 'new_arrival_priority', 'status', 'quantity', 
         'image', 'gallery_images', 'category_id', 'brand_id', 'weight', 'dimensions',
         'meta_title', 'meta_description', 'enable_countdown', 'countdown_date'
     ];
@@ -23,8 +24,11 @@ class Product extends Model
         'sale_price' => 'decimal:2',
         'weight' => 'decimal:2',
         'featured' => 'boolean',
+        'is_new_arrival' => 'boolean',
+        'featured_new_arrival' => 'boolean',
         'enable_countdown' => 'boolean',
         'countdown_date' => 'datetime',
+        'new_arrival_until' => 'datetime',
         'gallery_images' => 'array',
         'dimensions' => 'array',
         'created_at' => 'datetime',
@@ -249,5 +253,53 @@ class Product extends Model
     public function scopeOnSale($query)
     {
         return $query->whereNotNull('sale_price');
+    }
+
+    public function scopeNewArrival($query)
+    {
+        return $query->where(function($q) {
+            $q->where('is_new_arrival', true)
+              ->orWhere(function($subQ) {
+                  $subQ->whereNull('is_new_arrival')
+                       ->orWhere('is_new_arrival', false)
+                       ->where('created_at', '>=', now()->subDays(30));
+              });
+        })->where(function($q) {
+            $q->whereNull('new_arrival_until')
+              ->orWhere('new_arrival_until', '>=', now());
+        });
+    }
+
+    public function scopeFeaturedNewArrival($query)
+    {
+        return $query->where('featured_new_arrival', true)
+                     ->where('is_new_arrival', true)
+                     ->where(function($q) {
+                         $q->whereNull('new_arrival_until')
+                           ->orWhere('new_arrival_until', '>=', now());
+                     });
+    }
+
+    // Helper methods for new arrival
+    public function getIsCurrentlyNewArrivalAttribute()
+    {
+        if ($this->is_new_arrival) {
+            return is_null($this->new_arrival_until) || $this->new_arrival_until >= now();
+        }
+        
+        return $this->created_at >= now()->subDays(30);
+    }
+
+    public function getNewArrivalBadgeAttribute()
+    {
+        if ($this->featured_new_arrival && $this->is_currently_new_arrival) {
+            return 'featured-new';
+        }
+        
+        if ($this->is_currently_new_arrival) {
+            return 'new';
+        }
+        
+        return null;
     }
 }
