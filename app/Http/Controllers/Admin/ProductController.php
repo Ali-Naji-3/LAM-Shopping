@@ -79,7 +79,7 @@ class ProductController extends Controller
 
         // Use safe counting for relationships that might not exist yet
         $products = $query->orderBy('created_at', 'desc')->paginate(12);
-        
+
         // Add counts safely
         $products->getCollection()->transform(function ($product) {
             $product->reviews_count = $this->safeCount(function() use ($product) {
@@ -104,7 +104,7 @@ class ProductController extends Controller
     {
         $categories = Category::active()->orderBy('name')->get();
         $brands = Brand::active()->orderBy('name')->get();
-        
+
         return view('admin.products.create', compact('categories', 'brands'));
     }
 
@@ -118,7 +118,7 @@ class ProductController extends Controller
             'method' => $request->method(),
             'data' => $request->all()
         ]);
-        
+
         try {
             $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -139,13 +139,13 @@ class ProductController extends Controller
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
         }
-        
+
         // Check for similar slugs and warn user (but allow creation)
         $similarSlugs = Product::where('slug', 'like', '%' . $validated['slug'] . '%')
             ->orWhere('slug', 'like', '%' . Str::slug($validated['name']) . '%')
             ->pluck('slug')
             ->toArray();
-        
+
         if (!empty($similarSlugs)) {
             \Log::info('Similar slugs found', [
                 'new_slug' => $validated['slug'],
@@ -191,13 +191,13 @@ class ProductController extends Controller
 
             return redirect()->route('admin.products.index')
                 ->with('success', "Product '{$product->name}' created successfully!");
-                
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('Validation failed', [
                 'errors' => $e->errors(),
                 'request_data' => $request->all()
             ]);
-            
+
             return redirect()->back()
                 ->withErrors($e->errors())
                 ->withInput();
@@ -206,7 +206,7 @@ class ProductController extends Controller
                 'error' => $e->getMessage(),
                 'request_data' => $request->all()
             ]);
-            
+
             return redirect()->back()
                 ->withErrors(['error' => 'Failed to create product: ' . $e->getMessage()])
                 ->withInput();
@@ -219,7 +219,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->load(['category', 'brand', 'reviews.user', 'orderItems.order']);
-        
+
         // Calculate connection counts for dashboard (with safety checks)
         $connectionCounts = [
             'reviews_count' => $this->safeCount(function() use ($product) {
@@ -238,7 +238,7 @@ class ProductController extends Controller
                 return $product->reviews()->where('is_approved', false)->count();
             }),
         ];
-        
+
         return view('admin.products.show', compact('product', 'connectionCounts'));
     }
 
@@ -249,7 +249,7 @@ class ProductController extends Controller
     {
         $categories = Category::active()->orderBy('name')->get();
         $brands = Brand::active()->orderBy('name')->get();
-        
+
         return view('admin.products.edit', compact('product', 'categories', 'brands'));
     }
 
@@ -289,13 +289,13 @@ class ProductController extends Controller
         if (empty($validated['slug'])) {
             $validated['slug'] = Str::slug($validated['name']);
         }
-        
+
         // Check for similar slugs and warn user (but allow creation)
         $similarSlugs = Product::where('slug', 'like', '%' . $validated['slug'] . '%')
             ->where('id', '!=', $product->id)
             ->pluck('slug')
             ->toArray();
-        
+
         if (!empty($similarSlugs)) {
             \Log::info('Similar slugs found during update', [
                 'new_slug' => $validated['slug'],
@@ -321,7 +321,7 @@ class ProductController extends Controller
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
-            
+
             $image = $request->file('image');
             $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('products', $filename, 'public');
@@ -391,7 +391,7 @@ class ProductController extends Controller
     {
         $newStatus = $product->status === 'active' ? 'inactive' : 'active';
         $product->update(['status' => $newStatus]);
-        
+
         return redirect()->back()->with('success', "Product {$newStatus} successfully!");
     }
 
@@ -401,7 +401,7 @@ class ProductController extends Controller
     public function toggleFeatured(Product $product)
     {
         $product->update(['featured' => !$product->featured]);
-        
+
         $status = $product->featured ? 'featured' : 'unfeatured';
         return redirect()->back()->with('success', "Product {$status} successfully!");
     }
@@ -423,31 +423,31 @@ class ProductController extends Controller
             case 'activate':
                 $products->update(['status' => 'active']);
                 return redirect()->back()->with('success', 'Selected products activated successfully!');
-                
+
             case 'deactivate':
                 $products->update(['status' => 'inactive']);
                 return redirect()->back()->with('success', 'Selected products deactivated successfully!');
-                
+
             case 'draft':
                 $products->update(['status' => 'draft']);
                 return redirect()->back()->with('success', 'Selected products moved to draft successfully!');
-                
+
             case 'feature':
                 $products->update(['featured' => true]);
                 return redirect()->back()->with('success', 'Selected products featured successfully!');
-                
+
             case 'unfeature':
                 $products->update(['featured' => false]);
                 return redirect()->back()->with('success', 'Selected products unfeatured successfully!');
-                
+
             case 'delete':
                 // Check for orders before deletion
                 $productsWithOrders = $products->has('orderItems')->count();
                 if ($productsWithOrders > 0) {
-                    return redirect()->back()->with('error', 
+                    return redirect()->back()->with('error',
                         "Cannot delete {$productsWithOrders} products that have existing orders.");
                 }
-                
+
                 $products->get()->each(function($product) {
                     if ($product->image) {
                         Storage::disk('public')->delete($product->image);
@@ -458,7 +458,7 @@ class ProductController extends Controller
                         }
                     }
                 });
-                
+
                 $products->delete();
                 return redirect()->back()->with('success', 'Selected products deleted successfully!');
         }
@@ -520,7 +520,7 @@ class ProductController extends Controller
         $inventory = $this->safeCount(function() use ($product) {
             return $product->inventory()->with(['warehouse'])->get();
         });
-        
+
         // If inventory returns 0 (table doesn't exist), create empty collection
         if ($inventory === 0) {
             $inventory = collect([]);

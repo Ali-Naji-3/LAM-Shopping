@@ -1,5 +1,8 @@
+
+{{-- Problem 238 if  --}}
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <meta charset="utf-8">
@@ -15,7 +18,7 @@
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('img/apple-touch-icon-72x72-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('img/apple-touch-icon-114x114-precomposed.png') }}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('img/apple-touch-icon-144x144-precomposed.png') }}">
-	
+
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,9 +37,9 @@
 </head>
 
 <body>
-	
+
 	<div id="page">
-		
+
 	<header class="version_1">
 		<div class="layer"></div><!-- Mobile menu overlay mask -->
 		<div class="main_header">
@@ -258,7 +261,7 @@
                             @php
                                 $categoryName = $product->category->name;
                                 $categoryUrl = '#';
-                                
+
                                 // Map category names to their respective listing pages
                                 switch(strtolower($categoryName)) {
                                     case 'men':
@@ -395,7 +398,7 @@
 	        <!-- /row -->
 	    </div>
 	    <!-- /container -->
-	    
+
 	    <div class="tabs_product">
 	        <div class="container">
 	            <ul class="nav nav-tabs" role="tablist">
@@ -633,7 +636,7 @@
 
 	</main>
 	<!-- /main -->
-	
+
 	<footer class="revealed">
 		<div class="container">
 			<div class="row">
@@ -734,7 +737,7 @@
 	<!--/footer-->
 	</div>
 	<!-- page -->
-	
+
 	<div id="toTop"></div><!-- Back to top button -->
 
 	<div class="top_panel">
@@ -894,12 +897,12 @@
 			</div>
 		</div>
 	</div>
-	
-	
+
+
  	<!-- COMMON SCRIPTS -->
     <script src="{{ asset('js/common_scripts.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
-  
+
     <!-- SPECIFIC SCRIPTS -->
     <script src="{{ asset('js/carousel_with_thumbs.js') }}"></script>
 

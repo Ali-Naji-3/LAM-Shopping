@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
-            
+
             // Redirect based on user type
             if ($user->isAdmin() || $user->isManager()) {
                 return redirect()->intended('/admin/dashboard')->with('success', 'Welcome to Admin Dashboard!');

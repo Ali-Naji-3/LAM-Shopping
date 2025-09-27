@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
-	
+
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,9 +34,9 @@
 </head>
 
 <body>
-	
+
 	<div id="page">
-		
+
 	<header class="version_1">
 		<div class="layer"></div><!-- Mobile menu overlay mask -->
 		<div class="main_header">
@@ -207,8 +207,10 @@
 		</div>
 		<!-- /main_nav -->
 	</header>
-	<!-- /header -->
-	
+	<!-- /header --> --}}
+@extends('frontend.layouts.layout')
+
+@section('content')
 	<main class="bg_gray">
 		<div class="container">
             <div class="row justify-content-center">
@@ -230,11 +232,12 @@
 			<!-- /row -->
 		</div>
 		<!-- /container -->
-		
+
 	</main>
+    @endsection
 	<!--/main-->
-	
-	<footer>
+
+	{{-- <footer>
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 col-md-6">
@@ -334,13 +337,13 @@
 	<!--/footer-->
 	</div>
 	<!-- page -->
-	
+
 	<div id="toTop"></div><!-- Back to top button -->
-	
+
 	<!-- COMMON SCRIPTS -->
     <script src="js/common_scripts.min.js"></script>
     <script src="js/main.js"></script>
 
-		
+
 </body>
-</html>
+</html> --}}
