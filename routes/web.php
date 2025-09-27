@@ -218,6 +218,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('reviews/product/{product}', [App\Http\Controllers\Admin\ReviewsController::class, 'productReviews'])->name('admin.reviews.product');
     Route::get('reviews/user/{user}', [App\Http\Controllers\Admin\ReviewsController::class, 'userReviews'])->name('admin.reviews.user');
     Route::get('reviews/analytics/dashboard', [App\Http\Controllers\Admin\ReviewsController::class, 'analytics'])->name('admin.reviews.analytics');
+    Route::get('reviews/{review}/contacts', [App\Http\Controllers\Admin\ReviewsController::class, 'contacts'])->name('admin.reviews.contacts');
+    Route::post('reviews/{review}/contacts', [App\Http\Controllers\Admin\ReviewsController::class, 'storeContact'])->name('admin.reviews.contacts.store');
 
     // Sliders Management - Complete CRUD System
     Route::resource('sliders', App\Http\Controllers\Admin\SlidersController::class)->names([
@@ -460,9 +462,20 @@ Route::get('/help', function () {
     return view('frontend.help');
 });
 
-Route::get('/leave-review', function () {
-    return view('frontend.leave-review');
-});
+Route::get('/leave-review/{product?}', [App\Http\Controllers\Frontend\ReviewController::class, 'show'])->name('frontend.leave-review');
+Route::post('/leave-review', [App\Http\Controllers\Frontend\ReviewController::class, 'store'])->name('frontend.review.store');
+
+Route::get('/star-rating-demo', function () {
+    return view('frontend.star-rating-demo');
+})->name('star-rating-demo');
+
+Route::get('/star-rating-test', function () {
+    return view('frontend.star-rating-test');
+})->name('star-rating-test');
+
+Route::get('/storage-test', function () {
+    return view('frontend.storage-test');
+})->name('storage-test');
 
 Route::get('/my-orders', function () {
     return view('frontend.my-orders');

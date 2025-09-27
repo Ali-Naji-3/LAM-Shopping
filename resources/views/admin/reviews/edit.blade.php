@@ -140,6 +140,65 @@
                             <small class="form-text" style="color: #718096 !important; font-size: 12px !important; margin-top: 6px !important;">Share your experience with the product. Be specific and helpful to other customers.</small>
                         </div>
 
+                        <!-- Pros and Cons -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="pros" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
+                                    Pros <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
+                                </label>
+                                <textarea class="form-control @error('pros') is-invalid @enderror" 
+                                          id="pros" 
+                                          name="pros" 
+                                          rows="3"
+                                          style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; resize: vertical !important;"
+                                          placeholder="What did you like about this product?">{{ old('pros', $review->pros) }}</textarea>
+                                @error('pros')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cons" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
+                                    Cons <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
+                                </label>
+                                <textarea class="form-control @error('cons') is-invalid @enderror" 
+                                          id="cons" 
+                                          name="cons" 
+                                          rows="3"
+                                          style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; resize: vertical !important;"
+                                          placeholder="What could be improved?">{{ old('cons', $review->cons) }}</textarea>
+                                @error('cons')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Recommendation and Purchase Verification -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-check" style="padding: 1rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 10px; border: 1px solid #e0f2fe;">
+                                    <input class="form-check-input" type="checkbox" name="would_recommend" id="would_recommend" value="1" {{ old('would_recommend', $review->would_recommend) ? 'checked' : '' }} style="margin-top: 4px;">
+                                    <label class="form-check-label" for="would_recommend" style="color: #1a202c !important; font-weight: 600 !important; font-size: 14px !important; margin-left: 8px;">
+                                        <i class="bi bi-thumbs-up me-2" style="color: #10b981;"></i>I would recommend this product
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="purchase_verified" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
+                                    Purchase Verification <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
+                                </label>
+                                <input type="text" 
+                                       class="form-control @error('purchase_verified') is-invalid @enderror" 
+                                       id="purchase_verified" 
+                                       name="purchase_verified" 
+                                       value="{{ old('purchase_verified', $review->purchase_verified) }}"
+                                       style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
+                                       placeholder="e.g., Order #12345, Verified Purchase">
+                                @error('purchase_verified')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
                         <!-- Approval Status -->
                         <div class="mb-4">
                             <div class="form-check" style="padding: 1rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 10px; border: 1px solid #e0f2fe;">

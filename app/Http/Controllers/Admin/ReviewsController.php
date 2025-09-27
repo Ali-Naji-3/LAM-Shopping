@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Review;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
 class ReviewsController extends Controller
@@ -109,10 +110,16 @@ class ReviewsController extends Controller
             'title' => 'nullable|string|max:255',
             'comment' => 'nullable|string|max:2000',
             'is_approved' => 'boolean',
+            'pros' => 'nullable|string|max:500',
+            'cons' => 'nullable|string|max:500',
+            'would_recommend' => 'boolean',
+            'purchase_verified' => 'nullable|string|max:100',
+            'attributes' => 'nullable|array',
         ]);
 
         // Set default approval status
         $validated['is_approved'] = $validated['is_approved'] ?? false;
+        $validated['would_recommend'] = $validated['would_recommend'] ?? true;
 
         Review::create($validated);
 
@@ -171,6 +178,11 @@ class ReviewsController extends Controller
             'title' => 'nullable|string|max:255',
             'comment' => 'nullable|string|max:2000',
             'is_approved' => 'boolean',
+            'pros' => 'nullable|string|max:500',
+            'cons' => 'nullable|string|max:500',
+            'would_recommend' => 'boolean',
+            'purchase_verified' => 'nullable|string|max:100',
+            'attributes' => 'nullable|array',
         ]);
 
         $review->update($validated);
@@ -317,5 +329,46 @@ class ReviewsController extends Controller
         }
 
         return view('admin.reviews.analytics', compact('analytics'));
+    }
+
+    /**
+     * Show contacts related to a specific review.
+     */
+    public function contacts(Review $review)
+    {
+        $contacts = Contact::where('review_id', $review->id)
+            ->with(['user', 'responses'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        $contactStats = [
+            'total_contacts' => $contacts->total(),
+            'pending_contacts' => Contact::where('review_id', $review->id)->where('status', 'pending')->count(),
+            'resolved_contacts' => Contact::where('review_id', $review->id)->where('status', 'resolved')->count(),
+            'high_priority_contacts' => Contact::where('review_id', $review->id)->where('priority', 'high')->count(),
+        ];
+
+        return view('admin.reviews.contacts', compact('review', 'contacts', 'contactStats'));
+    }
+
+    /**
+     * Store a new contact for a review.
+     */
+    public function storeContact(Request $request, Review $review)
+    {
+        $validated = $request->validate([
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|max:2000',
+            'contact_type' => 'required|in:inquiry,complaint,suggestion,other',
+            'priority' => 'required|in:low,medium,high,urgent',
+        ]);
+
+        $validated['review_id'] = $review->id;
+        $validated['user_id'] = auth()->id();
+
+        Contact::create($validated);
+
+        return redirect()->route('admin.reviews.contacts', $review)
+            ->with('success', 'Contact message sent successfully!');
     }
 }

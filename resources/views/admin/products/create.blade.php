@@ -187,6 +187,66 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Size Management Section -->
+                        <div class="mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">📏 Size Management</h5>
+                                    <small class="text-muted">Add sizes for this product. These will appear as size buttons on the frontend.</small>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Size Input Section -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="size_name" class="form-label">Size Name</label>
+                                            <input type="text" class="form-control" id="size_name" placeholder="e.g., Small, Medium, Large, XL">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="size_stock" class="form-label">Stock</label>
+                                            <input type="number" class="form-control" id="size_stock" placeholder="Quantity" min="0">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="size_guide" class="form-label">Size Guide</label>
+                                            <input type="text" class="form-control" id="size_guide" placeholder="e.g., Chest: 36-38 inches">
+                                        </div>
+                                        <div class="col-md-2 d-flex align-items-end">
+                                            <button type="button" class="btn btn-primary w-100" onclick="addSize()">
+                                                <i class="fas fa-plus"></i> Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Size Preview Section -->
+                                    <div id="sizes-preview" class="mb-3">
+                                        <h6>Selected Sizes:</h6>
+                                        <div id="sizes-list" class="d-flex flex-wrap gap-2">
+                                            <span class="text-muted">No sizes added yet</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Hidden inputs for form submission -->
+                                    <div id="size-inputs"></div>
+                                    
+                                    <!-- Quick Size Presets -->
+                                    <div class="mt-3">
+                                        <h6>Quick Size Presets:</h6>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XS', 'Chest: 32-34 inches')">XS</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('S', 'Chest: 34-36 inches')">S</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('M', 'Chest: 36-38 inches')">M</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('L', 'Chest: 38-40 inches')">L</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XL', 'Chest: 40-42 inches')">XL</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XXL', 'Chest: 42-44 inches')">XXL</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('28', 'Waist: 28 inches')">28</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('30', 'Waist: 30 inches')">30</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('32', 'Waist: 32 inches')">32</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('34', 'Waist: 34 inches')">34</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Description -->
                         <div class="mb-4">
@@ -408,6 +468,9 @@ function setCommonSalePrice() {
 // Color Management Functions
 let selectedColors = [];
 
+// Size Management Functions
+let selectedSizes = [];
+
 function addColor() {
     const colorName = document.getElementById('color_name').value.trim();
     const colorHex = document.getElementById('color_hex').value;
@@ -510,9 +573,112 @@ function updateColorsPreview() {
     });
 }
 
-// Initialize color management
+// Size Management Functions
+function addSize() {
+    const sizeName = document.getElementById('size_name').value.trim();
+    const sizeStock = document.getElementById('size_stock').value || 0;
+    const sizeGuide = document.getElementById('size_guide').value.trim();
+    
+    if (!sizeName) {
+        alert('Please enter a size name');
+        return;
+    }
+    
+    // Check if size already exists
+    if (selectedSizes.some(size => size.name.toLowerCase() === sizeName.toLowerCase())) {
+        alert('This size has already been added');
+        return;
+    }
+    
+    // Add size to array
+    const newSize = {
+        name: sizeName,
+        stock: parseInt(sizeStock),
+        guide: sizeGuide
+    };
+    
+    selectedSizes.push(newSize);
+    
+    // Clear inputs
+    document.getElementById('size_name').value = '';
+    document.getElementById('size_stock').value = '';
+    document.getElementById('size_guide').value = '';
+    
+    // Update preview
+    updateSizesPreview();
+    
+    console.log('Size added:', newSize);
+}
+
+function addPresetSize(name, guide) {
+    document.getElementById('size_name').value = name;
+    document.getElementById('size_guide').value = guide;
+    document.getElementById('size_stock').value = 10; // Default stock
+    addSize();
+}
+
+function removeSize(index) {
+    selectedSizes.splice(index, 1);
+    updateSizesPreview();
+    console.log('Size removed at index:', index);
+}
+
+function updateSizesPreview() {
+    const sizesList = document.getElementById('sizes-list');
+    const sizeInputs = document.getElementById('size-inputs');
+    
+    if (selectedSizes.length === 0) {
+        sizesList.innerHTML = '<span class="text-muted">No sizes added yet</span>';
+        sizeInputs.innerHTML = '';
+        return;
+    }
+    
+    // Update sizes list display
+    sizesList.innerHTML = '';
+    selectedSizes.forEach((size, index) => {
+        const sizeElement = document.createElement('div');
+        sizeElement.className = 'd-flex align-items-center gap-2 p-2 border rounded';
+        sizeElement.style.backgroundColor = '#f8f9fa';
+        sizeElement.innerHTML = `
+            <span class="fw-bold">${size.name}</span>
+            <small class="text-muted">Stock: ${size.stock}</small>
+            ${size.guide ? `<small class="text-muted">Guide: ${size.guide}</small>` : ''}
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSize(${index})">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        sizesList.appendChild(sizeElement);
+    });
+    
+    // Update hidden inputs for form submission
+    sizeInputs.innerHTML = '';
+    selectedSizes.forEach((size, index) => {
+        // Create hidden inputs for each size
+        const nameInput = document.createElement('input');
+        nameInput.type = 'hidden';
+        nameInput.name = `sizes[${index}][name]`;
+        nameInput.value = size.name;
+        
+        const stockInput = document.createElement('input');
+        stockInput.type = 'hidden';
+        stockInput.name = `sizes[${index}][stock]`;
+        stockInput.value = size.stock;
+        
+        const guideInput = document.createElement('input');
+        guideInput.type = 'hidden';
+        guideInput.name = `sizes[${index}][guide]`;
+        guideInput.value = size.guide;
+        
+        sizeInputs.appendChild(nameInput);
+        sizeInputs.appendChild(stockInput);
+        sizeInputs.appendChild(guideInput);
+    });
+}
+
+// Initialize color and size management
 document.addEventListener('DOMContentLoaded', function() {
     updateColorsPreview();
+    updateSizesPreview();
 });
 </script>
 @endsection

@@ -10,11 +10,11 @@
     <title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
 
     <!-- Favicons-->
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="{{ asset('img/apple-touch-icon-57x57-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('img/apple-touch-icon-72x72-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('img/apple-touch-icon-114x114-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('img/apple-touch-icon-144x144-precomposed.png') }}">
 	
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +22,14 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- BASE CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
 	<!-- SPECIFIC CSS -->
-    <link href="css/leave_review.css" rel="stylesheet">
+    <link href="{{ asset('css/leave_review.css') }}" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
-    <link href="css/custom.css" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
 </head>
 
@@ -44,7 +44,7 @@
 				<div class="row small-gutters">
 					<div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
 						<div id="logo">
-							<a href="{{ url('/') }}"><img src="img/logo.svg" alt="" width="100" height="35"></a>
+							<a href="{{ url('/') }}"><img src="{{ asset('img/logo.svg') }}" alt="" width="100" height="35"></a>
 						</div>
 					</div>
 					<nav class="col-xl-6 col-lg-7">
@@ -58,7 +58,7 @@
 						<!-- Mobile menu button -->
 						<div class="main-menu">
 							<div id="header_menu">
-								<a href="{{ url('/') }}"><img src="img/logo_black.svg" alt="" width="100" height="35"></a>
+								<a href="{{ url('/') }}"><img src="{{ asset('img/logo_black.svg') }}" alt="" width="100" height="35"></a>
 								<a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
 							</div>
 							<ul>
@@ -76,6 +76,9 @@
 								</li>
 								<li>
 									<a href="{{ url('girls') }}">Girls</a>
+								</li>
+								<li>
+									<a href="{{ url('leave-review') }}">Leave Review</a>
 								</li>
 							</ul>
 						</div>
@@ -134,14 +137,14 @@
 										<ul>
 											<li>
 												<a href="{{ url('product-detail-2') }}">
-													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/1.jpg" alt="" width="50" height="50" class="lazy"></figure>
+													<figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/thumb/1.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Air x Fear</span>$90.00</strong>
 												</a>
 												<a href="#0" class="action"><i class="ti-trash"></i></a>
 											</li>
 											<li>
 												<a href="{{ url('product-detail-2') }}">
-													<figure><img src="img/products/product_placeholder_square_small.jpg" data-src="img/products/shoes/thumb/2.jpg" alt="" width="50" height="50" class="lazy"></figure>
+													<figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}" data-src="{{ asset('img/products/shoes/thumb/2.jpg') }}" alt="" width="50" height="50" class="lazy"></figure>
 													<strong><span>1x Armor Okwahn II</span>$110.00</strong>
 												</a>
 												<a href="0" class="action"><i class="ti-trash"></i></a>
@@ -175,6 +178,9 @@
 											</li>
 											<li>
 												<a href="{{ url('help') }}"><i class="ti-help-alt"></i>Help and Faq</a>
+											</li>
+											<li>
+												<a href="{{ url('leave-review') }}"><i class="ti-star"></i>Leave a Review</a>
 											</li>
 										</ul>
 									</div>
@@ -217,41 +223,113 @@
 			<div class="row justify-content-center">
 				<div class="col-lg-8">
 					<div class="write_review">
-						<h1>Write a review for Armor Air X Fear</h1>
-						<div class="rating_submit">
+						@if($product)
+							<h1>Write a review for {{ $product->name }}</h1>
+						@else
+							<h1>Write a review</h1>
+						@endif
+
+						@if(session('success'))
+							<div class="alert alert-success alert-dismissible fade show" role="alert">
+								{{ session('success') }}
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
+
+						@if(session('error'))
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								{{ session('error') }}
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							</div>
+						@endif
+
+						<form action="{{ route('frontend.review.store') }}" method="POST" id="reviewForm">
+							@csrf
+							
+							@if($product)
+								<input type="hidden" name="product_id" value="{{ $product->id }}">
+							@else
+								<div class="form-group">
+									<label for="product_id">Select Product <span class="text-danger">*</span></label>
+									<select name="product_id" id="product_id" class="form-control" required>
+										<option value="">Choose a product...</option>
+										@foreach($products as $prod)
+											<option value="{{ $prod->id }}">{{ $prod->name }} - {{ $prod->brand->name ?? 'No Brand' }}</option>
+										@endforeach
+									</select>
+									@error('product_id')
+										<div class="text-danger small">{{ $message }}</div>
+									@enderror
+								</div>
+							@endif
+
+							<div class="rating_submit">
+								<div class="form-group">
+									<label class="d-block">Overall rating <span class="text-danger">*</span></label>
+									<span class="rating mb-0">
+										<input type="radio" class="rating-input" id="5_star" name="rating" value="5" required>
+										<label for="5_star" class="rating-star"></label>
+										<input type="radio" class="rating-input" id="4_star" name="rating" value="4" required>
+										<label for="4_star" class="rating-star"></label>
+										<input type="radio" class="rating-input" id="3_star" name="rating" value="3" required>
+										<label for="3_star" class="rating-star"></label>
+										<input type="radio" class="rating-input" id="2_star" name="rating" value="2" required>
+										<label for="2_star" class="rating-star"></label>
+										<input type="radio" class="rating-input" id="1_star" name="rating" value="1" required>
+										<label for="1_star" class="rating-star"></label>
+									</span>
+									@error('rating')
+										<div class="text-danger small">{{ $message }}</div>
+									@enderror
+								</div>
+							</div>
+							<!-- /rating_submit -->
+
+							@guest
+								<div class="form-group">
+									<label for="name">Your Name <span class="text-danger">*</span></label>
+									<input class="form-control" type="text" name="name" id="name" placeholder="Enter your full name" value="{{ old('name') }}" required>
+									@error('name')
+										<div class="text-danger small">{{ $message }}</div>
+									@enderror
+								</div>
+
+								<div class="form-group">
+									<label for="email">Your Email <span class="text-danger">*</span></label>
+									<input class="form-control" type="email" name="email" id="email" placeholder="Enter your email address" value="{{ old('email') }}" required>
+									@error('email')
+										<div class="text-danger small">{{ $message }}</div>
+									@enderror
+								</div>
+							@endguest
+
 							<div class="form-group">
-							<label class="d-block">Overall rating</label>
-							<span class="rating mb-0">
-								<input type="radio" class="rating-input" id="5_star" name="rating-input" value="5 Stars"><label for="5_star" class="rating-star"></label>
-								<input type="radio" class="rating-input" id="4_star" name="rating-input" value="4 Stars"><label for="4_star" class="rating-star"></label>
-								<input type="radio" class="rating-input" id="3_star" name="rating-input" value="3 Stars"><label for="3_star" class="rating-star"></label>
-								<input type="radio" class="rating-input" id="2_star" name="rating-input" value="2 Stars"><label for="2_star" class="rating-star"></label>
-								<input type="radio" class="rating-input" id="1_star" name="rating-input" value="1 Star"><label for="1_star" class="rating-star"></label>
-							</span>
+								<label for="title">Title of your review</label>
+								<input class="form-control" type="text" name="title" id="title" placeholder="If you could say it in one sentence, what would you say?" value="{{ old('title') }}">
+								@error('title')
+									<div class="text-danger small">{{ $message }}</div>
+								@enderror
 							</div>
-						</div>
-						<!-- /rating_submit -->
-						<div class="form-group">
-							<label>Title of your review</label>
-							<input class="form-control" type="text" placeholder="If you could say it in one sentence, what would you say?">
-						</div>
-						<div class="form-group">
-							<label>Your review</label>
-							<textarea class="form-control" style="height: 180px;" placeholder="Write your review to help others learn about this online business"></textarea>
-						</div>
-						<div class="form-group">
-							<label>Add your photo (optional)</label>
-							<div class="fileupload"><input type="file" name="fileupload" accept="image/*"></div>
-						</div>
-						<div class="form-group">
-							<div class="checkboxes float-left add_bottom_15 add_top_15">
-								<label class="container_check">Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea. Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his.
-									<input type="checkbox">
-									<span class="checkmark"></span>
-								</label>
+
+							<div class="form-group">
+								<label for="comment">Your review <span class="text-danger">*</span></label>
+								<textarea class="form-control" name="comment" id="comment" style="height: 180px;" placeholder="Write your review to help others learn about this product" required>{{ old('comment') }}</textarea>
+								@error('comment')
+									<div class="text-danger small">{{ $message }}</div>
+								@enderror
 							</div>
-						</div>
-						<a href="confirm.html" class="btn_1">Submit review</a>
+
+							<div class="form-group">
+								<div class="checkboxes float-left add_bottom_15 add_top_15">
+									<label class="container_check">I agree to the <a href="#" target="_blank">Terms and Conditions</a> and <a href="#" target="_blank">Privacy Policy</a>
+										<input type="checkbox" required>
+										<span class="checkmark"></span>
+									</label>
+								</div>
+							</div>
+
+							<button type="submit" class="btn_1">Submit review</button>
+						</form>
 					</div>
 				</div>
 		</div>
@@ -345,7 +423,7 @@
 								</select>
 							</div>
 						</li>
-						<li><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="img/cards_all.svg" alt="" width="198" height="30" class="lazy"></li>
+						<li><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" data-src="{{ asset('img/cards_all.svg') }}" alt="" width="198" height="30" class="lazy"></li>
 					</ul>
 				</div>
 				<div class="col-lg-6">
@@ -365,8 +443,8 @@
 	<div id="toTop"></div><!-- Back to top button -->
 	
 	<!-- COMMON SCRIPTS -->
-    <script src="js/common_scripts.min.js"></script>
-    <script src="js/main.js"></script>
+    <script src="{{ asset('js/common_scripts.min.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
 
 		
 </body>

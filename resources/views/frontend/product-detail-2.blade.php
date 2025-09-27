@@ -137,6 +137,91 @@
         .color-dot.in-stock {
             border-color: #48bb78;
         }
+        
+        /* Size Buttons Styles */
+        .size-selection-container {
+            width: 100%;
+        }
+        
+        .size-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .size-button {
+            display: inline-block;
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            background: #ffffff;
+            color: #2d3748;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 14px;
+            min-width: 40px;
+            text-align: center;
+            text-decoration: none;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .size-button:hover {
+            border-color: #3182ce;
+            background: #f7fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .size-button.active {
+            border-color: #3182ce;
+            background: #3182ce;
+            color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.3);
+        }
+        
+        .size-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.5);
+        }
+        
+        .size-button.out-of-stock {
+            opacity: 0.5;
+            cursor: not-allowed;
+            position: relative;
+        }
+        
+        .size-button.out-of-stock::after {
+            content: '✕';
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            color: #e53e3e;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        
+        .size-button.low-stock {
+            border-color: #f6ad55;
+        }
+        
+        .size-button.in-stock {
+            border-color: #48bb78;
+        }
+        
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .size-button {
+                padding: 10px 14px;
+                font-size: 16px;
+                min-width: 44px;
+            }
+            
+            .size-buttons-container {
+                gap: 10px;
+            }
+        }
     </style>
 
     <!-- YOUR CUSTOM CSS -->
@@ -424,17 +509,20 @@
 	                <!-- /page_header -->
 	                <div class="prod_info">
 	                    <h1>{{ $product->name }}</h1>
-	                    <span class="rating">
-	                        @for($i = 1; $i <= 5; $i++)
-	                            @if($i <= floor($product->average_rating))
-	                                <i class="icon-star voted"></i>
-	                            @else
-	                                <i class="icon-star"></i>
-	                            @endif
-	                        @endfor
-	                        <em>{{ $product->total_reviews }} reviews</em>
-	                    </span>
+                    <x-dynamic-star-rating 
+                        :product="$product" 
+                        size="normal" 
+                        :show-count="true" 
+                        :show-average="true"
+                        class="product-rating" />
 	                    <p><small>SKU: {{ $product->sku }}</small><br>{{ $product->short_description ?: $product->description }}</p>
+	                    
+	                    <!-- Quick Review Button -->
+	                    <div class="mt-3 mb-3">
+	                        <a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}" class="btn_1 outline">
+	                            <i class="ti-star"></i> Write a Review for {{ $product->name }}
+	                        </a>
+	                    </div>
 	                    <div class="prod_options">
 	                        <div class="row">
 	                            <label class="col-xl-5 col-lg-5  col-md-6 col-6 pt-0"><strong>Color</strong></label>
@@ -503,19 +591,48 @@
 	                                </ul>
 	                            </div>
 	                        </div>
-	                        <div class="row">
-	                            <label class="col-xl-5 col-lg-5 col-md-6 col-6"><strong>Size</strong> - Size Guide <a href="#0" data-bs-toggle="modal" data-bs-target="#size-modal"><i class="ti-help-alt"></i></a></label>
-	                            <div class="col-xl-4 col-lg-5 col-md-6 col-6">
-	                                <div class="custom-select-form">
-	                                    <select class="wide">
-	                                        <option value="" selected>Small (S)</option>
-	                                        <option value="">M</option>
-	                                        <option value=" ">L</option>
-	                                        <option value=" ">XL</option>
-	                                    </select>
-	                                </div>
-	                            </div>
-	                        </div>
+                        <div class="row">
+                            <label class="col-xl-5 col-lg-5 col-md-6 col-6"><strong>Size</strong> - Size Guide <a href="#0" data-bs-toggle="modal" data-bs-target="#size-modal"><i class="ti-help-alt"></i></a></label>
+                            <div class="col-xl-4 col-lg-5 col-md-6 col-6">
+                                <div class="size-selection-container">
+                                    @php
+                                        $sizeAttribute = \App\Models\Attribute::where('slug', 'size')->first();
+                                        $productSizes = $product->productAttributes()
+                                            ->whereHas('attributeValue.attribute', function($q) {
+                                                $q->where('slug', 'size');
+                                            })
+                                            ->with('attributeValue')
+                                            ->get();
+                                    @endphp
+                                    
+                                    @if($productSizes->count() > 0)
+                                        <div class="size-buttons-container">
+                                            @foreach($productSizes as $index => $productSize)
+                                                @php
+                                                    $sizeValue = $productSize->attributeValue->value;
+                                                    $isFirst = $index === 0;
+                                                @endphp
+                                                <button type="button" 
+                                                        class="size-button {{ $isFirst ? 'active' : '' }}" 
+                                                        data-size="{{ $sizeValue }}"
+                                                        data-product-id="{{ $product->id }}"
+                                                        title="{{ $sizeValue }}">
+                                                    {{ $sizeValue }}
+                                                </button>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <!-- Fallback sizes if no database sizes -->
+                                        <div class="size-buttons-container">
+                                            <button type="button" class="size-button active" data-size="S">S</button>
+                                            <button type="button" class="size-button" data-size="M">M</button>
+                                            <button type="button" class="size-button" data-size="L">L</button>
+                                            <button type="button" class="size-button" data-size="XL">XL</button>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
 	                        <div class="row">
 	                            <label class="col-xl-5 col-lg-5  col-md-6 col-6"><strong>Quantity</strong></label>
 	                            <div class="col-xl-4 col-lg-5 col-md-6 col-6">
@@ -546,16 +663,19 @@
 	                    </div>
 	                </div>
 	                <!-- /prod_info -->
-	                <div class="product_actions">
-	                    <ul>
-	                        <li>
-	                            <a href="#"><i class="ti-heart"></i><span>Add to Wishlist</span></a>
-	                        </li>
-	                        <li>
-	                            <a href="#"><i class="ti-control-shuffle"></i><span>Add to Compare</span></a>
-	                        </li>
-	                    </ul>
-	                </div>
+                <div class="product_actions">
+                    <ul>
+                        <li>
+                            <a href="#"><i class="ti-heart"></i><span>Add to Wishlist</span></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="ti-control-shuffle"></i><span>Add to Compare</span></a>
+                        </li>
+                        <li>
+                            <a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}"><i class="ti-star"></i><span>Write Review</span></a>
+                        </li>
+                    </ul>
+                </div>
 	                <!-- /product_actions -->
 	            </div>
 	        </div>
@@ -679,7 +799,7 @@
 	                                </div>
 	                            </div>
 	                            <!-- /row -->
-	                            <p class="text-end"><a href="{{ url('leave-review') }}" class="btn_1">Leave a review</a></p>
+	                            <p class="text-end"><a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}" class="btn_1">Leave a review</a></p>
 	                        </div>
 	                        <!-- /card-body -->
 	                    </div>
@@ -1178,6 +1298,80 @@
             // Initialize color dots
             initColorDots();
             
+            // Initialize size buttons
+            initSizeButtons();
+            
+            // Size buttons functionality
+            function initSizeButtons() {
+                const sizeButtons = document.querySelectorAll('.size-button');
+                const selectedSizeInput = document.getElementById('selected_size');
+                const selectedSizeDisplay = document.getElementById('selected_size_display');
+                
+                sizeButtons.forEach(function(button) {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Remove active class from all size buttons
+                        sizeButtons.forEach(function(b) {
+                            b.classList.remove('active');
+                        });
+                        
+                        // Add active class to clicked button
+                        this.classList.add('active');
+                        
+                        // Get size data
+                        const sizeValue = this.getAttribute('data-size');
+                        const productId = this.getAttribute('data-product-id');
+                        
+                        // Update hidden input if exists
+                        if (selectedSizeInput) {
+                            selectedSizeInput.value = sizeValue;
+                        }
+                        
+                        // Update display if exists
+                        if (selectedSizeDisplay) {
+                            selectedSizeDisplay.textContent = sizeValue;
+                        }
+                        
+                        // Trigger custom event for other components
+                        const sizeChangeEvent = new CustomEvent('sizeChanged', {
+                            detail: {
+                                sizeValue: sizeValue,
+                                productId: productId
+                            }
+                        });
+                        document.dispatchEvent(sizeChangeEvent);
+                        
+                        // Update stock status
+                        updateStockForSize(sizeValue, productId);
+                        
+                        // Check color-size combination
+                        const selectedColor = document.querySelector('.color-dot.active');
+                        if (selectedColor) {
+                            const colorName = selectedColor.getAttribute('data-color');
+                            checkStockForCombination(colorName, sizeValue);
+                        }
+                    });
+                    
+                    // Add keyboard support
+                    button.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.click();
+                        }
+                    });
+                    
+                    // Add focus support
+                    button.setAttribute('tabindex', '0');
+                });
+            }
+            
+            // Update stock status based on selected size
+            function updateStockForSize(sizeValue, productId) {
+                // This would typically make an AJAX call to get size-specific stock
+                console.log(`Stock update for size: ${sizeValue}`);
+            }
+            
             // Add size selection integration
             const sizeSelect = document.querySelector('select.wide');
             if (sizeSelect) {
@@ -1199,11 +1393,13 @@
                 console.log(`Checking stock for ${colorName} - ${sizeValue}`);
             }
             
-            // Add to cart with color selection
+            // Add to cart with color and size selection
             const addToCartForm = document.querySelector('form[action*="cart"]');
             if (addToCartForm) {
                 addToCartForm.addEventListener('submit', function(e) {
                     const selectedColor = document.querySelector('.color-dot.active');
+                    const selectedSize = document.querySelector('.size-button.active');
+                    
                     if (selectedColor) {
                         const colorName = selectedColor.getAttribute('data-color');
                         
@@ -1213,6 +1409,17 @@
                         colorInput.name = 'selected_color';
                         colorInput.value = colorName;
                         this.appendChild(colorInput);
+                    }
+                    
+                    if (selectedSize) {
+                        const sizeValue = selectedSize.getAttribute('data-size');
+                        
+                        // Add size to form data
+                        const sizeInput = document.createElement('input');
+                        sizeInput.type = 'hidden';
+                        sizeInput.name = 'selected_size';
+                        sizeInput.value = sizeValue;
+                        this.appendChild(sizeInput);
                     }
                 });
             }

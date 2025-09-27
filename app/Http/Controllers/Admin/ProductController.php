@@ -10,7 +10,7 @@ use App\Models\Contact;
 use App\Models\Review;
 use App\Models\OrderItem;
 use App\Models\Inventory;
-use App\Models\Attribute;
+    use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\ProductAttribute;
 use Illuminate\Http\Request;
@@ -141,7 +141,11 @@ class ProductController extends Controller
             'colors' => 'nullable|array',
             'colors.*.name' => 'required_with:colors|string|max:255',
             'colors.*.hex' => 'required_with:colors|string|max:7',
-            'colors.*.stock' => 'nullable|integer|min:0'
+            'colors.*.stock' => 'nullable|integer|min:0',
+            'sizes' => 'nullable|array',
+            'sizes.*.name' => 'required_with:sizes|string|max:255',
+            'sizes.*.stock' => 'nullable|integer|min:0',
+            'sizes.*.guide' => 'nullable|string|max:500'
         ]);
 
         // Generate slug if not provided
@@ -203,6 +207,11 @@ class ProductController extends Controller
         // Handle color attributes
         if ($request->has('colors') && is_array($request->colors)) {
             $this->handleColorAttributes($product, $request->colors);
+        }
+
+        // Handle size attributes
+        if ($request->has('sizes') && is_array($request->sizes)) {
+            $this->handleSizeAttributes($product, $request->sizes);
         }
 
         return redirect()->route('admin.products.index')
@@ -294,7 +303,13 @@ class ProductController extends Controller
             'colors.*.hex' => 'required_with:colors|string|max:7',
             'colors.*.stock' => 'nullable|integer|min:0',
             'delete_colors' => 'nullable|array',
-            'delete_colors.*' => 'integer|exists:product_attributes,id'
+            'delete_colors.*' => 'integer|exists:product_attributes,id',
+            'sizes' => 'nullable|array',
+            'sizes.*.name' => 'required_with:sizes|string|max:255',
+            'sizes.*.stock' => 'nullable|integer|min:0',
+            'sizes.*.guide' => 'nullable|string|max:500',
+            'delete_sizes' => 'nullable|array',
+            'delete_sizes.*' => 'integer|exists:product_attributes,id'
         ]);
 
         // Generate slug if not provided
@@ -369,6 +384,9 @@ class ProductController extends Controller
 
         // Handle color attributes
         $this->handleColorAttributesUpdate($product, $request);
+
+        // Handle size attributes update
+        $this->handleSizeAttributesUpdate($product, $request);
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product updated successfully!');
@@ -763,18 +781,26 @@ class ProductController extends Controller
                     ]
                 );
 
-                // Create the product attribute relationship
-                ProductAttribute::create([
+                // Create or get the product attribute relationship (prevents duplicates)
+                $productAttribute = ProductAttribute::firstOrCreate([
                     'product_id' => $product->id,
-                    'attribute_value_id' => $attributeValue->id,
+                    'attribute_value_id' => $attributeValue->id
+                ], [
                     'additional_price' => 0.00
                 ]);
 
-                \Log::info("Color attribute added to product", [
-                    'product_id' => $product->id,
-                    'color_name' => $colorData['name'],
-                    'color_hex' => $colorData['hex']
-                ]);
+                if ($productAttribute->wasRecentlyCreated) {
+                    \Log::info("Color attribute added to product", [
+                        'product_id' => $product->id,
+                        'color_name' => $colorData['name'],
+                        'color_hex' => $colorData['hex']
+                    ]);
+                } else {
+                    \Log::info("Color attribute already exists, skipping", [
+                        'product_id' => $product->id,
+                        'color_name' => $colorData['name']
+                    ]);
+                }
             }
         }
     }
@@ -793,6 +819,73 @@ class ProductController extends Controller
         // Handle new color additions
         if ($request->has('colors') && is_array($request->colors)) {
             $this->handleColorAttributes($product, $request->colors);
+        }
+    }
+
+    /**
+     * Handle size attributes update for a product
+     */
+    private function handleSizeAttributesUpdate(Product $product, Request $request)
+    {
+        // Handle size deletions
+        if ($request->has('delete_sizes') && is_array($request->delete_sizes)) {
+            ProductAttribute::whereIn('id', $request->delete_sizes)->delete();
+            \Log::info("Deleted size attributes", ['deleted_ids' => $request->delete_sizes]);
+        }
+
+        // Handle new size additions
+        if ($request->has('sizes') && is_array($request->sizes)) {
+            $this->handleSizeAttributes($product, $request->sizes);
+        }
+    }
+
+    /**
+     * Handle size attributes for a product
+     */
+    private function handleSizeAttributes(Product $product, array $sizes)
+    {
+        // Get or create the Size attribute
+        $sizeAttribute = Attribute::firstOrCreate(
+            ['slug' => 'size'],
+            [
+                'name' => 'Size',
+                'slug' => 'size',
+                'type' => 'select',
+                'is_required' => false
+            ]
+        );
+
+        foreach ($sizes as $sizeData) {
+            if (isset($sizeData['name'])) {
+                // Create or get the attribute value
+                $attributeValue = AttributeValue::firstOrCreate(
+                    [
+                        'attribute_id' => $sizeAttribute->id,
+                        'value' => $sizeData['name']
+                    ]
+                );
+
+                // Create or get the product attribute relationship (prevents duplicates)
+                $productAttribute = ProductAttribute::firstOrCreate([
+                    'product_id' => $product->id,
+                    'attribute_value_id' => $attributeValue->id
+                ], [
+                    'additional_price' => 0.00
+                ]);
+
+                if ($productAttribute->wasRecentlyCreated) {
+                    \Log::info("Size attribute added to product", [
+                        'product_id' => $product->id,
+                        'size_name' => $sizeData['name'],
+                        'size_guide' => $sizeData['guide'] ?? null
+                    ]);
+                } else {
+                    \Log::info("Size attribute already exists, skipping", [
+                        'product_id' => $product->id,
+                        'size_name' => $sizeData['name']
+                    ]);
+                }
+            }
         }
     }
 }
