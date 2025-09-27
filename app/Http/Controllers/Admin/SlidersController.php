@@ -80,6 +80,7 @@ class SlidersController extends Controller
             'button_text' => 'nullable|string|max:50',
             'is_active' => 'boolean',
             'order' => 'nullable|integer|min:0',
+            'priority' => 'nullable|integer|min:0|max:10',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
         ]);
@@ -95,6 +96,7 @@ class SlidersController extends Controller
         // Set defaults
         $validated['is_active'] = $validated['is_active'] ?? true;
         $validated['order'] = $validated['order'] ?? 0;
+        $validated['priority'] = $validated['priority'] ?? 0;
 
         Slider::create($validated);
 
@@ -131,6 +133,7 @@ class SlidersController extends Controller
             'button_text' => 'nullable|string|max:50',
             'is_active' => 'boolean',
             'order' => 'nullable|integer|min:0',
+            'priority' => 'nullable|integer|min:0|max:10',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
         ]);
@@ -151,6 +154,7 @@ class SlidersController extends Controller
         // Set defaults
         $validated['is_active'] = $validated['is_active'] ?? false;
         $validated['order'] = $validated['order'] ?? 0;
+        $validated['priority'] = $validated['priority'] ?? 0;
 
         $slider->update($validated);
 
