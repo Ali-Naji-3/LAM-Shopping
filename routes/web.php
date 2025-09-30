@@ -69,6 +69,18 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
+    // GENDER-SPECIFIC CATEGORY ROUTES (MUST BE BEFORE RESOURCE ROUTES)
+    Route::get('categories/men', [App\Http\Controllers\Admin\CategoryController::class, 'men'])->name('admin.categories.men');
+    Route::get('categories/women', [App\Http\Controllers\Admin\CategoryController::class, 'women'])->name('admin.categories.women');
+    Route::get('categories/boys', [App\Http\Controllers\Admin\CategoryController::class, 'boys'])->name('admin.categories.boys');
+    Route::get('categories/girls', [App\Http\Controllers\Admin\CategoryController::class, 'girls'])->name('admin.categories.girls');
+
+    // GENDER-SPECIFIC PRODUCT ROUTES (MUST BE BEFORE RESOURCE ROUTES)
+    Route::get('products/men', [App\Http\Controllers\Admin\ProductController::class, 'men'])->name('admin.products.men');
+    Route::get('products/women', [App\Http\Controllers\Admin\ProductController::class, 'women'])->name('admin.products.women');
+    Route::get('products/boys', [App\Http\Controllers\Admin\ProductController::class, 'boys'])->name('admin.products.boys');
+    Route::get('products/girls', [App\Http\Controllers\Admin\ProductController::class, 'girls'])->name('admin.products.girls');
+
     // Categories Management
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class)->names([
         'index' => 'admin.categories.index',
@@ -94,6 +106,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('categories/{category}/brands', [App\Http\Controllers\Admin\CategoryController::class, 'brands'])->name('admin.categories.brands');
     Route::get('categories/{category}/reviews', [App\Http\Controllers\Admin\CategoryController::class, 'reviews'])->name('admin.categories.reviews');
     Route::get('categories/{category}/analytics', [App\Http\Controllers\Admin\CategoryController::class, 'analytics'])->name('admin.categories.analytics');
+
 
     // Brands Management - Complete CRUD with Connections
     Route::resource('brands', App\Http\Controllers\Admin\BrandController::class)->names([
@@ -138,6 +151,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('products/{product}/orders', [App\Http\Controllers\Admin\ProductController::class, 'orders'])->name('admin.products.orders');
     Route::get('products/{product}/inventory', [App\Http\Controllers\Admin\ProductController::class, 'inventory'])->name('admin.products.inventory');
     Route::get('products/{product}/analytics', [App\Http\Controllers\Admin\ProductController::class, 'analytics'])->name('admin.products.analytics');
+
 
     // Attributes Management - Complete CRUD with Connections
     Route::resource('attributes', App\Http\Controllers\Admin\AttributeController::class)->names([
@@ -320,7 +334,12 @@ Route::get('/listing-grid-2-full', function () {
     // Boys Collection - Dynamic
     $products = \App\Models\Product::active()
         ->whereHas('category', function ($q) {
-            $q->where('name', 'boy');
+            $q->where('name', 'Boys')
+              ->orWhere('parent_id', function($subQuery) {
+                  $subQuery->select('id')
+                           ->from('categories')
+                           ->where('name', 'Boys');
+              });
         })
         ->with(['category', 'brand'])
         ->orderBy('featured', 'desc')
@@ -397,10 +416,15 @@ Route::get('/listing-grid-3', function () {
 
 
 Route::get('/girls', function () {
-    // Girl's Collection - Dynamic
+    // Girls Collection - Dynamic
     $products = \App\Models\Product::active()
         ->whereHas('category', function ($q) {
-            $q->where('name', 'Girl');
+            $q->where('name', 'Girls')
+              ->orWhere('parent_id', function($subQuery) {
+                  $subQuery->select('id')
+                           ->from('categories')
+                           ->where('name', 'Girls');
+              });
         })
         ->with(['category', 'brand'])
         ->orderBy('featured', 'desc')

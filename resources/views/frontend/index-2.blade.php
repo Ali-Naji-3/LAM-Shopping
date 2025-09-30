@@ -27,6 +27,9 @@
 
 	<!-- SPECIFIC CSS -->
     <link href="css/home_1.css" rel="stylesheet">
+    
+    <!-- PROFESSIONAL PRODUCT IMAGES CSS -->
+    <link href="css/product-images.css" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
     <link href="css/custom.css" rel="stylesheet">

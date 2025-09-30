@@ -27,9 +27,15 @@
 
 	<!-- SPECIFIC CSS -->
     <link href="{{ asset('css/listing.css') }}" rel="stylesheet">
+    
+    <!-- PROFESSIONAL PRODUCT IMAGES CSS -->
+    <link href="{{ asset('css/product-images.css') }}" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+    
+    <!-- PROFESSIONAL PRODUCT IMAGES JAVASCRIPT -->
+    <script src="{{ asset('js/product-images.js') }}" defer></script>
 
 </head>
 

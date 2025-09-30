@@ -261,28 +261,16 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255',
-            'sku' => 'required|string|max:255|unique:products,sku,' . $product->id,
-            'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string',
-            'regular_price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
-            'quantity' => 'required|integer|min:0',
+            'stock' => 'nullable|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'status' => 'required|in:active,inactive,draft',
-            'featured' => 'boolean',
-            'weight' => 'nullable|numeric|min:0',
-            'dimensions' => 'nullable|array',
-            'dimensions.length' => 'nullable|numeric|min:0',
-            'dimensions.width' => 'nullable|numeric|min:0',
-            'dimensions.height' => 'nullable|numeric|min:0',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'remove_image' => 'boolean',
-            'remove_images' => 'nullable|array'
+            'brand_id' => 'nullable|exists:brands,id',
+            'status' => 'nullable|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'gallery_images' => 'nullable|array',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120'
         ]);
 
         // Generate slug if not provided
@@ -304,18 +292,20 @@ class ProductController extends Controller
             ]);
         }
 
-        // Handle dimensions
-        if (isset($validated['dimensions'])) {
-            $validated['dimensions'] = array_filter($validated['dimensions']);
-        }
+        // Map form fields to database fields
+        $productData = [
+            'name' => $validated['name'],
+            'slug' => $validated['slug'],
+            'description' => $validated['description'],
+            'regular_price' => $validated['price'], // Map price to regular_price
+            'sale_price' => $validated['sale_price'],
+            'quantity' => $validated['stock'] ?? $product->quantity, // Map stock to quantity
+            'category_id' => $validated['category_id'],
+            'brand_id' => $validated['brand_id'],
+            'status' => $validated['status'] ? 'active' : 'inactive',
+        ];
 
-        // Handle main image removal
-        if ($request->boolean('remove_image') && $product->image) {
-            Storage::disk('public')->delete($product->image);
-            $validated['image'] = null;
-        }
-
-        // Handle new main image upload
+        // Handle main image upload
         if ($request->hasFile('image')) {
             // Delete old image if exists
             if ($product->image) {
@@ -325,33 +315,31 @@ class ProductController extends Controller
             $image = $request->file('image');
             $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('products', $filename, 'public');
-            $validated['image'] = $path;
+            $productData['image'] = $path;
         }
 
-        // Handle gallery images removal
-        if ($request->filled('remove_images') && $product->images) {
-            $currentImages = $product->images;
-            foreach ($request->remove_images as $removeIndex) {
-                if (isset($currentImages[$removeIndex])) {
-                    Storage::disk('public')->delete($currentImages[$removeIndex]);
-                    unset($currentImages[$removeIndex]);
+        // Handle gallery images upload
+        if ($request->hasFile('gallery_images')) {
+            // Delete old gallery images if they exist
+            if ($product->gallery_images) {
+                $oldGalleryImages = is_array($product->gallery_images) ? $product->gallery_images : json_decode($product->gallery_images, true);
+                if (is_array($oldGalleryImages)) {
+                    foreach ($oldGalleryImages as $oldImage) {
+                        Storage::disk('public')->delete($oldImage);
+                    }
                 }
             }
-            $validated['images'] = array_values($currentImages);
-        }
-
-        // Handle new gallery images upload
-        if ($request->hasFile('images')) {
-            $currentImages = $product->images ?? [];
-            foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            
+            $galleryImagesPaths = [];
+            foreach ($request->file('gallery_images') as $index => $image) {
+                $filename = time() . '_' . Str::random(10) . '_' . ($index + 1) . '.' . $image->getClientOriginalExtension();
                 $path = $image->storeAs('products/gallery', $filename, 'public');
-                $currentImages[] = $path;
+                $galleryImagesPaths[] = $path;
             }
-            $validated['images'] = $currentImages;
+            $productData['gallery_images'] = $galleryImagesPaths;
         }
 
-        $product->update($validated);
+        $product->update($productData);
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product updated successfully!');
@@ -564,5 +552,159 @@ class ProductController extends Controller
         ];
 
         return view('admin.products.analytics', compact('product', 'analytics'));
+    }
+
+    // GENDER-SPECIFIC PRODUCT METHODS
+
+    /**
+     * Display Men's products
+     */
+    public function men(Request $request)
+    {
+        return $this->displayGenderProducts('Men', 'men-theme', $request);
+    }
+
+    /**
+     * Display Women's products
+     */
+    public function women(Request $request)
+    {
+        return $this->displayGenderProducts('Women', 'women-theme', $request);
+    }
+
+    /**
+     * Display Boys' products
+     */
+    public function boys(Request $request)
+    {
+        return $this->displayGenderProducts('Boys', 'boys-theme', $request);
+    }
+
+    /**
+     * Display Girls' products
+     */
+    public function girls(Request $request)
+    {
+        return $this->displayGenderProducts('Girls', 'girls-theme', $request);
+    }
+
+    /**
+     * Generic method to display gender-specific products
+     */
+    private function displayGenderProducts($gender, $themeClass, Request $request)
+    {
+        // Get the parent gender category
+        $parentCategory = Category::where('name', $gender)->first();
+        
+        if (!$parentCategory) {
+            return redirect()->route('admin.products.index')
+                ->with('error', "{$gender} category not found. Please create it first.");
+        }
+
+        // Build query for products in this gender category
+        $query = Product::with(['category', 'brand'])
+            ->whereHas('category', function($q) use ($parentCategory) {
+                $q->where('id', $parentCategory->id)
+                  ->orWhere('parent_id', $parentCategory->id);
+            });
+
+        // Apply filters
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('brand_id')) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->filled('featured')) {
+            $query->where('featured', $request->featured === 'yes');
+        }
+
+        $products = $query->orderBy('featured', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        // Add counts safely
+        $products->getCollection()->transform(function ($product) {
+            $product->reviews_count = $this->safeCount(function() use ($product) {
+                return $product->reviews()->count();
+            });
+            $product->order_items_count = $this->safeCount(function() use ($product) {
+                return $product->orderItems()->count();
+            });
+            return $product;
+        });
+
+        // Get categories and brands for filters
+        $categories = Category::where('parent_id', $parentCategory->id)->active()->orderBy('name')->get();
+        $brands = Brand::active()->orderBy('name')->get();
+
+        // Calculate statistics for this gender
+        $statistics = [
+            'active_products' => $query->where('status', 'active')->count(),
+            'featured_products' => $query->where('featured', true)->count(),
+            'average_rating' => $query->withAvg('reviews', 'rating')->get()->avg('reviews_avg_rating') ?? 0,
+        ];
+
+        // Theme configuration
+        $theme = $this->getGenderTheme($gender);
+
+        return view('admin.products.gender', compact(
+            'products', 
+            'categories', 
+            'brands', 
+            'gender', 
+            'theme', 
+            'statistics'
+        ));
+    }
+
+    /**
+     * Get gender-specific theme configuration for products
+     */
+    private function getGenderTheme($gender)
+    {
+        $themes = [
+            'Men' => [
+                'theme_name' => 'men-theme',
+                'icon' => '👨',
+                'title' => 'Men\'s Products',
+                'description' => 'Manage men\'s sportswear and athletic gear products',
+                'color' => '#3182ce',
+            ],
+            'Women' => [
+                'theme_name' => 'women-theme',
+                'icon' => '👩',
+                'title' => 'Women\'s Products',
+                'description' => 'Manage women\'s sportswear and athletic gear products',
+                'color' => '#ec4899',
+            ],
+            'Boys' => [
+                'theme_name' => 'boys-theme',
+                'icon' => '👦',
+                'title' => 'Boys\' Products',
+                'description' => 'Manage boys\' sportswear and athletic gear products',
+                'color' => '#10b981',
+            ],
+            'Girls' => [
+                'theme_name' => 'girls-theme',
+                'icon' => '👧',
+                'title' => 'Girls\' Products',
+                'description' => 'Manage girls\' sportswear and athletic gear products',
+                'color' => '#8b5cf6',
+            ],
+        ];
+
+        return $themes[$gender] ?? $themes['Men'];
     }
 }
