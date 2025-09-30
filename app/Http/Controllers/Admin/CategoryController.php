@@ -425,4 +425,7 @@ class CategoryController extends Controller
 
         return view('admin.categories.analytics', compact('category', 'analytics'));
     }
+
+    // GENDER-SPECIFIC CATEGORY METHODS
+
 }

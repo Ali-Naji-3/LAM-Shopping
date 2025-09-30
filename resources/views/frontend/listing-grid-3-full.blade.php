@@ -27,9 +27,15 @@
 
 	<!-- SPECIFIC CSS -->
     <link href="css/listing.css" rel="stylesheet">
+    
+    <!-- PROFESSIONAL PRODUCT IMAGES CSS -->
+    <link href="css/product-images.css" rel="stylesheet">
 
     <!-- YOUR CUSTOM CSS -->
     <link href="css/custom.css" rel="stylesheet">
+    
+    <!-- PROFESSIONAL PRODUCT IMAGES JAVASCRIPT -->
+    <script src="js/product-images.js" defer></script>
 
 </head>
 
@@ -434,6 +440,7 @@
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+							<li><a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Leave a review"><i class="ti-star"></i><span>Leave a review</span></a></li>
 						</ul>
 					</div>
 					<!-- /grid_item -->

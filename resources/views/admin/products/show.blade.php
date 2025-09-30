@@ -36,7 +36,7 @@
                                 <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Product Name</label>
                                 <div style="color: #1a202c; font-weight: 700; font-size: 20px;">{{ $product->name }}</div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -51,14 +51,14 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             @if($product->short_description)
                             <div class="mb-3">
                                 <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Short Description</label>
                                 <div style="color: #2d3748; font-size: 14px;">{{ $product->short_description }}</div>
                             </div>
                             @endif
-                            
+
                             @if($product->description)
                             <div class="mb-3">
                                 <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Description</label>
@@ -66,13 +66,13 @@
                             </div>
                             @endif
                         </div>
-                        
+
                         <div class="col-md-4">
                             @if($product->image)
                             <div class="text-center">
                                 <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Product Image</label>
                                 <div class="mt-2">
-                                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" 
+                                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
                                          class="img-fluid rounded" style="max-width: 150px; border: 2px solid #e2e8f0;">
                                 </div>
                             </div>
@@ -141,21 +141,21 @@
                             <i class="fas fa-folder me-1"></i> View Category
                         </a>
                         @endif
-                        
+
                         @if($product->brand)
                         <a href="{{ route('admin.brands.show', $product->brand) }}" class="btn btn-outline-secondary" style="font-weight: 600;">
                             <i class="fas fa-tag me-1"></i> View Brand
                         </a>
                         @endif
-                        
+
                         <a href="{{ route('admin.inventory.index') }}?search={{ $product->sku }}" class="btn btn-outline-success" style="font-weight: 600;">
                             <i class="fas fa-warehouse me-1"></i> View Inventory
                         </a>
-                        
+
                         <a href="{{ route('admin.reviews.index') }}?product_id={{ $product->id }}" class="btn btn-outline-warning" style="font-weight: 600;">
                             <i class="fas fa-star me-1"></i> View Reviews
                         </a>
-                        
+
                         <button class="btn btn-outline-info" onclick="viewProductAnalytics()" style="font-weight: 600;">
                             <i class="fas fa-chart-bar me-1"></i> Product Analytics
                         </button>
@@ -175,14 +175,14 @@
                             <span style="color: #2d3748; font-weight: 600; font-size: 12px;">{{ $product->category->name ?? 'N/A' }}</span>
                         </div>
                     </div>
-                    
+
                     <div class="mb-2">
                         <div class="d-flex justify-content-between">
                             <span style="color: #718096; font-size: 12px;">Brand:</span>
                             <span style="color: #2d3748; font-weight: 600; font-size: 12px;">{{ $product->brand->name ?? 'N/A' }}</span>
                         </div>
                     </div>
-                    
+
                     <div class="mb-2">
                         <div class="d-flex justify-content-between">
                             <span style="color: #718096; font-size: 12px;">Featured:</span>
@@ -191,7 +191,7 @@
                             </span>
                         </div>
                     </div>
-                    
+
                     @if($product->weight)
                     <div class="mb-2">
                         <div class="d-flex justify-content-between">
@@ -200,7 +200,7 @@
                         </div>
                     </div>
                     @endif
-                    
+
                     <div class="mb-2">
                         <div class="d-flex justify-content-between">
                             <span style="color: #718096; font-size: 12px;">Created:</span>
@@ -212,45 +212,4 @@
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-function viewProductAnalytics() {
-    showNotification('Product analytics feature coming soon!', 'info');
-}
-
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-    notification.style.cssText = `
-        top: 20px; 
-        right: 20px; 
-        z-index: 9999; 
-        min-width: 300px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        border-radius: 8px;
-        border: none;
-        font-size: 13px;
-    `;
-    
-    notification.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} mr-2"></i>
-            <span>${message}</span>
-            <button type="button" class="close ml-auto" data-dismiss="alert">
-                <span>&times;</span>
-            </button>
-        </div>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.remove();
-        }
-    }, 4000);
-}
-</script>
-@endpush
 @endsection

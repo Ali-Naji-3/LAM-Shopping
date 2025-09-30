@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Review extends Model
 {
@@ -14,11 +15,18 @@ class Review extends Model
         'title',
         'comment',
         'is_approved',
+        'attributes',
+        'pros',
+        'cons',
+        'would_recommend',
+        'purchase_verified',
     ];
 
     protected $casts = [
         'is_approved' => 'boolean',
         'rating' => 'integer',
+        'attributes' => 'array',
+        'would_recommend' => 'boolean',
     ];
 
     // Relationships
@@ -30,6 +38,11 @@ class Review extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
     }
 
     // Scopes
@@ -74,5 +87,43 @@ class Review extends Model
     public function getStatusColorAttribute()
     {
         return $this->is_approved ? '#10b981' : '#f59e0b';
+    }
+
+    // New attribute helper methods
+    public function getRecommendationTextAttribute()
+    {
+        return $this->would_recommend ? 'Yes, I recommend this product' : 'No, I do not recommend this product';
+    }
+
+    public function getRecommendationColorAttribute()
+    {
+        return $this->would_recommend ? '#10b981' : '#ef4444';
+    }
+
+    public function getPurchaseVerificationTextAttribute()
+    {
+        return $this->purchase_verified ? 'Verified Purchase' : 'Unverified Purchase';
+    }
+
+    public function getPurchaseVerificationColorAttribute()
+    {
+        return $this->purchase_verified ? '#10b981' : '#f59e0b';
+    }
+
+    public function getAttributesFormattedAttribute()
+    {
+        if (!$this->attributes) {
+            return [];
+        }
+        
+        $formatted = [];
+        foreach ($this->attributes as $key => $value) {
+            $formatted[] = [
+                'name' => ucwords(str_replace('_', ' ', $key)),
+                'value' => $value
+            ];
+        }
+        
+        return $formatted;
     }
 }

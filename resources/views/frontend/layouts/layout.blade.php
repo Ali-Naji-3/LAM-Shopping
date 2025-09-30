@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     @include('frontend.layouts.head')
 
-    <!-- مكان لإضافة CSS من أي صفحة -->
+
     @stack('styles')
 </head>
+
 <body>
+    <div id="page">
+        @include('frontend.layouts.header')
+        <!-- /header -->
 
-<div id="page">
+        @yield('content')
+        <!-- /main -->
 
-    @include('frontend.layouts.header')
-    <!-- /header -->
+        @include('frontend.layouts.footer')
+        <!-- /footer -->
 
-    @yield('content')
-    <!-- /main -->
+    </div>
+    <!-- /page -->
 
-    @include('frontend.layouts.footer')
-    <!-- /footer -->
+    <div id="toTop"></div><!-- Back to top button -->
 
-</div>
-<!-- /page -->
+    <!-- COMMON SCRIPTS -->
+    @include('frontend.layouts.script')
 
-<div id="toTop"></div><!-- Back to top button -->
 
-<!-- COMMON SCRIPTS -->
-@include('frontend.layouts.script')
-
-<!-- مكان لإضافة JS من أي صفحة -->
-@stack('scripts')
+    @stack('scripts')
 
 </body>
+
 </html>

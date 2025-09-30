@@ -19,7 +19,7 @@
                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#06b6d4 !important';">
                 <i class="bi bi-eye me-2"></i>View Order
             </a>
-            <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary" 
+            <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary"
                style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
@@ -58,7 +58,7 @@
                                     <label for="customer_name" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Customer Name <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="text" name="customer_name" id="customer_name" class="form-control @error('customer_name') is-invalid @enderror" 
+                                    <input type="text" name="customer_name" id="customer_name" class="form-control @error('customer_name') is-invalid @enderror"
                                            value="{{ old('customer_name', $order->customer_name) }}" required
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#3182ce !important'; this.style.boxShadow='0 0 0 3px rgba(49, 130, 206, 0.1) !important';"
@@ -74,7 +74,7 @@
                                     <label for="customer_phone" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Customer Phone <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="text" name="customer_phone" id="customer_phone" class="form-control @error('customer_phone') is-invalid @enderror" 
+                                    <input type="text" name="customer_phone" id="customer_phone" class="form-control @error('customer_phone') is-invalid @enderror"
                                            value="{{ old('customer_phone', $order->customer_phone) }}" required
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#3182ce !important'; this.style.boxShadow='0 0 0 3px rgba(49, 130, 206, 0.1) !important';"
@@ -90,7 +90,7 @@
                                     <label for="customer_email" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Customer Email <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="email" name="customer_email" id="customer_email" class="form-control @error('customer_email') is-invalid @enderror" 
+                                    <input type="email" name="customer_email" id="customer_email" class="form-control @error('customer_email') is-invalid @enderror"
                                            value="{{ old('customer_email', $order->customer_email) }}" required
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#3182ce !important'; this.style.boxShadow='0 0 0 3px rgba(49, 130, 206, 0.1) !important';"
@@ -106,7 +106,7 @@
                                     <label for="locality" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Locality
                                     </label>
-                                    <input type="text" name="locality" id="locality" class="form-control @error('locality') is-invalid @enderror" 
+                                    <input type="text" name="locality" id="locality" class="form-control @error('locality') is-invalid @enderror"
                                            value="{{ old('locality', $order->locality) }}"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#3182ce !important'; this.style.boxShadow='0 0 0 3px rgba(49, 130, 206, 0.1) !important';"
@@ -165,7 +165,7 @@
                                     <label for="payment_method" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Payment Method
                                     </label>
-                                    <input type="text" name="payment_method" id="payment_method" class="form-control @error('payment_method') is-invalid @enderror" 
+                                    <input type="text" name="payment_method" id="payment_method" class="form-control @error('payment_method') is-invalid @enderror"
                                            value="{{ old('payment_method', $order->payment_method) }}"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#3182ce !important'; this.style.boxShadow='0 0 0 3px rgba(49, 130, 206, 0.1) !important';"
@@ -216,7 +216,7 @@
                                     <label for="subtotal" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Subtotal <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="number" name="subtotal" id="subtotal" class="form-control @error('subtotal') is-invalid @enderror" 
+                                    <input type="number" name="subtotal" id="subtotal" class="form-control @error('subtotal') is-invalid @enderror"
                                            value="{{ old('subtotal', $order->subtotal) }}" step="0.01" min="0" required
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#10b981 !important'; this.style.boxShadow='0 0 0 3px rgba(16, 185, 129, 0.1) !important';"
@@ -233,7 +233,7 @@
                                     <label for="tax_amount" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Tax Amount
                                     </label>
-                                    <input type="number" name="tax_amount" id="tax_amount" class="form-control @error('tax_amount') is-invalid @enderror" 
+                                    <input type="number" name="tax_amount" id="tax_amount" class="form-control @error('tax_amount') is-invalid @enderror"
                                            value="{{ old('tax_amount', $order->tax_amount) }}" step="0.01" min="0"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#10b981 !important'; this.style.boxShadow='0 0 0 3px rgba(16, 185, 129, 0.1) !important';"
@@ -250,7 +250,7 @@
                                     <label for="shipping_amount" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Shipping Amount
                                     </label>
-                                    <input type="number" name="shipping_amount" id="shipping_amount" class="form-control @error('shipping_amount') is-invalid @enderror" 
+                                    <input type="number" name="shipping_amount" id="shipping_amount" class="form-control @error('shipping_amount') is-invalid @enderror"
                                            value="{{ old('shipping_amount', $order->shipping_amount) }}" step="0.01" min="0"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#10b981 !important'; this.style.boxShadow='0 0 0 3px rgba(16, 185, 129, 0.1) !important';"
@@ -269,7 +269,7 @@
                                     <label for="discount_amount" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Discount Amount
                                     </label>
-                                    <input type="number" name="discount_amount" id="discount_amount" class="form-control @error('discount_amount') is-invalid @enderror" 
+                                    <input type="number" name="discount_amount" id="discount_amount" class="form-control @error('discount_amount') is-invalid @enderror"
                                            value="{{ old('discount_amount', $order->discount_amount) }}" step="0.01" min="0"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; transition: all 0.2s ease !important;"
                                            onfocus="this.style.borderColor='#ef4444 !important'; this.style.boxShadow='0 0 0 3px rgba(239, 68, 68, 0.1) !important';"
@@ -286,7 +286,7 @@
                                     <label for="total_amount" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Total Amount <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="number" name="total_amount" id="total_amount" class="form-control @error('total_amount') is-invalid @enderror" 
+                                    <input type="number" name="total_amount" id="total_amount" class="form-control @error('total_amount') is-invalid @enderror"
                                            value="{{ old('total_amount', $order->total_amount) }}" step="0.01" min="0" required readonly
                                            style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%) !important; border: 2px solid #10b981 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 16px !important; font-weight: 700 !important;">
                                     @error('total_amount')
@@ -321,7 +321,7 @@
                                     <label for="shipping_address" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                         Shipping Address <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <textarea name="shipping_address" id="shipping_address" class="form-control @error('shipping_address') is-invalid @enderror" 
+                                    <textarea name="shipping_address" id="shipping_address" class="form-control @error('shipping_address') is-invalid @enderror"
                                               rows="4" required
                                               style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.5 !important; transition: all 0.2s ease !important; resize: vertical !important;"
                                               onfocus="this.style.borderColor='#3182ce !important'; this.style.boxShadow='0 0 0 3px rgba(49, 130, 206, 0.1) !important';"
@@ -339,7 +339,7 @@
                                         Billing Address
                                         <small style="color: #4a5568 !important; font-weight: 400 !important;">(Leave empty if same as shipping)</small>
                                     </label>
-                                    <textarea name="billing_address" id="billing_address" class="form-control @error('billing_address') is-invalid @enderror" 
+                                    <textarea name="billing_address" id="billing_address" class="form-control @error('billing_address') is-invalid @enderror"
                                               rows="4"
                                               style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.5 !important; transition: all 0.2s ease !important; resize: vertical !important;"
                                               onfocus="this.style.borderColor='#3182ce !important'; this.style.boxShadow='0 0 0 3px rgba(49, 130, 206, 0.1) !important';"
@@ -366,7 +366,7 @@
                             <label for="notes" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 8px !important;">
                                 Special Instructions or Notes
                             </label>
-                            <textarea name="notes" id="notes" class="form-control @error('notes') is-invalid @enderror" 
+                            <textarea name="notes" id="notes" class="form-control @error('notes') is-invalid @enderror"
                                       rows="3"
                                       style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; border-radius: 10px !important; padding: 14px 18px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.5 !important; transition: all 0.2s ease !important; resize: vertical !important;"
                                       onfocus="this.style.borderColor='#f59e0b !important'; this.style.boxShadow='0 0 0 3px rgba(245, 158, 11, 0.1) !important';"
@@ -478,32 +478,32 @@
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     .form-control::-webkit-input-placeholder { color: #9ca3af !important; opacity: 1 !important; }
     .form-control::-moz-placeholder { color: #9ca3af !important; opacity: 1 !important; }
     .form-control:-ms-input-placeholder { color: #9ca3af !important; opacity: 1 !important; }
     .form-control:-moz-placeholder { color: #9ca3af !important; opacity: 1 !important; }
-    
+
     /* Eye-catching animations */
     @keyframes shimmer {
         0% { background-position: -200% 0; }
         100% { background-position: 200% 0; }
     }
-    
+
     @keyframes iconGlow {
         0%, 100% { filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.6)); }
         50% { filter: drop-shadow(0 0 15px rgba(96, 165, 250, 0.9)) drop-shadow(0 0 25px rgba(96, 165, 250, 0.6)); }
     }
-    
+
     .eye-catching-title {
         animation: shimmer 4s ease-in-out infinite alternate;
     }
-    
+
     .card-header:has(.eye-catching-title) {
         position: relative;
         overflow: hidden;
     }
-    
+
     .card-header:has(.eye-catching-title):hover {
         box-shadow: 0 0 25px rgba(96, 165, 250, 0.3) !important;
     }
@@ -518,13 +518,13 @@
         const taxAmount = parseFloat(document.getElementById('tax_amount').value) || 0;
         const shippingAmount = parseFloat(document.getElementById('shipping_amount').value) || 0;
         const discountAmount = parseFloat(document.getElementById('discount_amount').value) || 0;
-        
+
         const total = subtotal + taxAmount + shippingAmount - discountAmount;
-        
+
         document.getElementById('total_amount').value = total.toFixed(2);
         document.getElementById('display_total').textContent = '$' + total.toFixed(2);
     }
-    
+
     // Initialize calculation on page load
     document.addEventListener('DOMContentLoaded', function() {
         calculateTotal();

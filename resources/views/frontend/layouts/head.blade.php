@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Ansonika">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Allaia | Bootstrap eCommerce Template - ThemeForest</title>
 
@@ -26,10 +27,12 @@
 	<!-- Specific CSS -->
     <link href="{{ asset('css/home_1.css') }}" rel="stylesheet">
     <link href="{{ asset('css/listing.css') }}" rel="stylesheet">
-    <link href="css/error_track.css" rel="stylesheet">
-     <link href="css/checkout.css" rel="stylesheet">
+    <link href="{{asset('css/error_track.css')}}" rel="stylesheet">
+     <link href="{{asset ('css/checkout.css')}}" rel="stylesheet">
+      <link href="{{ asset('css/leave_review.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+      <link href="{{ asset('css/product_page.css') }}" rel="stylesheet">
 
     <!-- Professional Product Images CSS -->
     {{-- <link href="{{ asset('css/product-images.css') }}" rel="stylesheet">

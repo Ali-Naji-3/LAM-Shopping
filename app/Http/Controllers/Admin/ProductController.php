@@ -10,6 +10,9 @@ use App\Models\Contact;
 use App\Models\Review;
 use App\Models\OrderItem;
 use App\Models\Inventory;
+    use App\Models\Attribute;
+use App\Models\AttributeValue;
+use App\Models\ProductAttribute;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -107,7 +110,120 @@ class ProductController extends Controller
 
         return view('admin.products.create', compact('categories', 'brands'));
     }
+//  public function store(Request $request)
+//     {
+//         // Debug: تسجيل كل بيانات الطلب
+//         \Log::info('Product creation request received', [
+//             'method' => $request->method(),
+//             'data' => $request->all()
+//         ]);
 
+//         try {
+//             // Validate incoming request
+//             $validated = $request->validate([
+//                 'name' => 'required|string|max:255',
+//                 'slug' => 'nullable|string|max:255',
+//                 'description' => 'nullable|string',
+//                 'price' => 'required|numeric|min:0',
+//                 'sale_price' => 'nullable|numeric|min:0',
+//                 'stock' => 'nullable|integer|min:0',
+//                 'category_id' => 'required|exists:categories,id',
+//                 'brand_id' => 'nullable|exists:brands,id',
+//                 'status' => 'nullable|boolean',
+//                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+//                 'gallery_images' => 'nullable|array',
+//                 'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+//                 'enable_countdown' => 'nullable|boolean',
+//                 'countdown_date' => 'nullable|date',
+//                 'colors' => 'nullable|array',
+//                 'colors.*.name' => 'required_with:colors|string|max:255',
+//                 'colors.*.hex' => 'required_with:colors|string|max:7',
+//                 'colors.*.stock' => 'nullable|integer|min:0',
+//                 'sizes' => 'nullable|array',
+//                 'sizes.*.name' => 'required_with:sizes|string|max:255',
+//                 'sizes.*.stock' => 'nullable|integer|min:0',
+//                 'sizes.*.guide' => 'nullable|string|max:500',
+//                 'is_new_arrival' => 'nullable|boolean',
+//                 'new_arrival_until' => 'nullable|date',
+//                 'featured_new_arrival' => 'nullable|boolean',
+//                 'new_arrival_priority' => 'nullable|integer|min:0|max:10'
+//             ]);
+
+//             // Generate slug if not provided
+//             if (empty($validated['slug'])) {
+//                 $validated['slug'] = Str::slug($validated['name']);
+//             }
+
+//             // Prepare product data
+//             $productData = [
+//                 'name' => $validated['name'],
+//                 'slug' => $validated['slug'],
+//                 'description' => $validated['description'],
+//                 'regular_price' => $validated['price'],
+//                 'sale_price' => $validated['sale_price'] ?? null,
+//                 'quantity' => $validated['stock'] ?? 0,
+//                 'category_id' => $validated['category_id'],
+//                 'brand_id' => $validated['brand_id'] ?? null,
+//                 'status' => ($validated['status'] ?? false) ? 'active' : 'inactive',
+//                 'featured' => false,
+//                 'sku' => 'SKU-' . time() . '-' . Str::random(6),
+//                 'enable_countdown' => ($validated['enable_countdown'] ?? false),
+//                 'countdown_date' => $validated['countdown_date'] ?? null,
+//                 'is_new_arrival' => ($validated['is_new_arrival'] ?? false),
+//                 'new_arrival_until' => $validated['new_arrival_until'] ?? null,
+//                 'featured_new_arrival' => ($validated['featured_new_arrival'] ?? false),
+//                 'new_arrival_priority' => $validated['new_arrival_priority'] ?? 0,
+//             ];
+
+//             // Handle main image
+//             if ($request->hasFile('image')) {
+//                 $image = $request->file('image');
+//                 $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+//                 $path = $image->storeAs('products', $filename, 'public');
+
+//                 // Debug: تحقق من المسار
+//                 // dd($path);
+
+//                 $productData['image'] = $path;
+//             }
+
+//             // Handle gallery images
+//             $galleryImagesPaths = [];
+//             if ($request->hasFile('gallery_images')) {
+//                 foreach ($request->file('gallery_images') as $index => $image) {
+//                     $filename = time() . '_' . Str::random(10) . '_' . ($index + 1) . '.' . $image->getClientOriginalExtension();
+//                     $path = $image->storeAs('products/gallery', $filename, 'public');
+//                     $galleryImagesPaths[] = $path;
+//                 }
+//                 $productData['gallery_images'] = $galleryImagesPaths;
+//             }
+
+//             // Create product
+//             $product = Product::create($productData);
+
+//             return redirect()->route('admin.products.index')
+//                 ->with('success', "Product '{$product->name}' created successfully!");
+
+//         } catch (\Illuminate\Validation\ValidationException $e) {
+//             \Log::error('Validation failed', [
+//                 'errors' => $e->errors(),
+//                 'request_data' => $request->all()
+//             ]);
+
+//             return redirect()->back()
+//                 ->withErrors($e->errors())
+//                 ->withInput();
+//         } catch (\Exception $e) {
+//             \Log::error('Product creation failed', [
+//                 'error' => $e->getMessage(),
+//                 'request_data' => $request->all()
+//             ]);
+
+//             return redirect()->back()
+//                 ->withErrors(['error' => 'Failed to create product: ' . $e->getMessage()])
+//                 ->withInput();
+//         }
+//     }
     /**
      * Store a newly created product.
      */
@@ -132,7 +248,21 @@ class ProductController extends Controller
             'status' => 'nullable|boolean',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'gallery_images' => 'nullable|array',
-            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120'
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'enable_countdown' => 'nullable|boolean',
+            'countdown_date' => 'nullable|date',
+            'colors' => 'nullable|array',
+            'colors.*.name' => 'required_with:colors|string|max:255',
+            'colors.*.hex' => 'required_with:colors|string|max:7',
+            'colors.*.stock' => 'nullable|integer|min:0',
+            'sizes' => 'nullable|array',
+            'sizes.*.name' => 'required_with:sizes|string|max:255',
+            'sizes.*.stock' => 'nullable|integer|min:0',
+            'sizes.*.guide' => 'nullable|string|max:500',
+            'is_new_arrival' => 'nullable|boolean',
+            'new_arrival_until' => 'nullable|date',
+            'featured_new_arrival' => 'nullable|boolean',
+            'new_arrival_priority' => 'nullable|integer|min:0|max:10'
         ]);
 
         // Generate slug if not provided
@@ -163,9 +293,15 @@ class ProductController extends Controller
             'quantity' => $validated['stock'] ?? 0, // Map stock to quantity
             'category_id' => $validated['category_id'],
             'brand_id' => $validated['brand_id'],
-            'status' => $validated['status'] ? 'active' : 'inactive',
+            'status' => ($validated['status'] ?? false) ? 'active' : 'inactive',
             'featured' => false,
             'sku' => 'SKU-' . time() . '-' . Str::random(6), // Generate SKU
+            'enable_countdown' => ($validated['enable_countdown'] ?? false) ? true : false,
+            'countdown_date' => $validated['countdown_date'] ?? null,
+            'is_new_arrival' => ($validated['is_new_arrival'] ?? false) ? true : false,
+            'new_arrival_until' => $validated['new_arrival_until'] ?? null,
+            'featured_new_arrival' => ($validated['featured_new_arrival'] ?? false) ? true : false,
+            'new_arrival_priority' => $validated['new_arrival_priority'] ?? 0,
         ];
 
         // Handle main image upload
@@ -261,28 +397,34 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255',
-            'sku' => 'required|string|max:255|unique:products,sku,' . $product->id,
-            'short_description' => 'nullable|string|max:500',
             'description' => 'nullable|string',
-            'regular_price' => 'required|numeric|min:0',
+            'price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
-            'quantity' => 'required|integer|min:0',
+            'stock' => 'nullable|integer|min:0',
             'category_id' => 'required|exists:categories,id',
-            'brand_id' => 'required|exists:brands,id',
-            'status' => 'required|in:active,inactive,draft',
-            'featured' => 'boolean',
-            'weight' => 'nullable|numeric|min:0',
-            'dimensions' => 'nullable|array',
-            'dimensions.length' => 'nullable|numeric|min:0',
-            'dimensions.width' => 'nullable|numeric|min:0',
-            'dimensions.height' => 'nullable|numeric|min:0',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:500',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'remove_image' => 'boolean',
-            'remove_images' => 'nullable|array'
+            'brand_id' => 'nullable|exists:brands,id',
+            'status' => 'nullable|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'gallery_images' => 'nullable|array',
+            'gallery_images.*' => 'image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'enable_countdown' => 'nullable|boolean',
+            'countdown_date' => 'nullable|date',
+            'colors' => 'nullable|array',
+            'colors.*.name' => 'required_with:colors|string|max:255',
+            'colors.*.hex' => 'required_with:colors|string|max:7',
+            'colors.*.stock' => 'nullable|integer|min:0',
+            'delete_colors' => 'nullable|array',
+            'delete_colors.*' => 'integer|exists:product_attributes,id',
+            'sizes' => 'nullable|array',
+            'sizes.*.name' => 'required_with:sizes|string|max:255',
+            'sizes.*.stock' => 'nullable|integer|min:0',
+            'sizes.*.guide' => 'nullable|string|max:500',
+            'delete_sizes' => 'nullable|array',
+            'delete_sizes.*' => 'integer|exists:product_attributes,id',
+            'is_new_arrival' => 'nullable|boolean',
+            'new_arrival_until' => 'nullable|date',
+            'featured_new_arrival' => 'nullable|boolean',
+            'new_arrival_priority' => 'nullable|integer|min:0|max:10'
         ]);
 
         // Generate slug if not provided
@@ -304,18 +446,26 @@ class ProductController extends Controller
             ]);
         }
 
-        // Handle dimensions
-        if (isset($validated['dimensions'])) {
-            $validated['dimensions'] = array_filter($validated['dimensions']);
-        }
+        // Map form fields to database fields
+        $productData = [
+            'name' => $validated['name'],
+            'slug' => $validated['slug'],
+            'description' => $validated['description'],
+            'regular_price' => $validated['price'], // Map price to regular_price
+            'sale_price' => $validated['sale_price'],
+            'quantity' => $validated['stock'] ?? $product->quantity, // Map stock to quantity
+            'category_id' => $validated['category_id'],
+            'brand_id' => $validated['brand_id'],
+            'status' => ($validated['status'] ?? false) ? 'active' : 'inactive',
+            'enable_countdown' => ($validated['enable_countdown'] ?? false) ? true : false,
+            'countdown_date' => $validated['countdown_date'] ?? null,
+            'is_new_arrival' => ($validated['is_new_arrival'] ?? false) ? true : false,
+            'new_arrival_until' => $validated['new_arrival_until'] ?? null,
+            'featured_new_arrival' => ($validated['featured_new_arrival'] ?? false) ? true : false,
+            'new_arrival_priority' => $validated['new_arrival_priority'] ?? 0,
+        ];
 
-        // Handle main image removal
-        if ($request->boolean('remove_image') && $product->image) {
-            Storage::disk('public')->delete($product->image);
-            $validated['image'] = null;
-        }
-
-        // Handle new main image upload
+        // Handle main image upload
         if ($request->hasFile('image')) {
             // Delete old image if exists
             if ($product->image) {
@@ -325,33 +475,42 @@ class ProductController extends Controller
             $image = $request->file('image');
             $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('products', $filename, 'public');
-            $validated['image'] = $path;
+            $productData['image'] = $path;
         }
 
-        // Handle gallery images removal
-        if ($request->filled('remove_images') && $product->images) {
-            $currentImages = $product->images;
-            foreach ($request->remove_images as $removeIndex) {
-                if (isset($currentImages[$removeIndex])) {
-                    Storage::disk('public')->delete($currentImages[$removeIndex]);
-                    unset($currentImages[$removeIndex]);
+        // Handle gallery images upload
+        if ($request->hasFile('gallery_images')) {
+            // Delete old gallery images if they exist
+            if ($product->gallery_images) {
+                $oldGalleryImages = is_array($product->gallery_images) ? $product->gallery_images : json_decode($product->gallery_images, true);
+                if (is_array($oldGalleryImages)) {
+                    foreach ($oldGalleryImages as $oldImage) {
+                        Storage::disk('public')->delete($oldImage);
+                    }
                 }
             }
-            $validated['images'] = array_values($currentImages);
-        }
 
-        // Handle new gallery images upload
-        if ($request->hasFile('images')) {
-            $currentImages = $product->images ?? [];
-            foreach ($request->file('images') as $image) {
-                $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $galleryImagesPaths = [];
+            foreach ($request->file('gallery_images') as $index => $image) {
+                $filename = time() . '_' . Str::random(10) . '_' . ($index + 1) . '.' . $image->getClientOriginalExtension();
                 $path = $image->storeAs('products/gallery', $filename, 'public');
-                $currentImages[] = $path;
+                $galleryImagesPaths[] = $path;
             }
-            $validated['images'] = $currentImages;
+            $productData['gallery_images'] = $galleryImagesPaths;
         }
 
-        $product->update($validated);
+        $product->update($productData);
+
+        // Auto-remove last new arrival if this product is marked as new arrival
+        if (($validated['is_new_arrival'] ?? false) && !$product->wasRecentlyCreated) {
+            $this->manageNewArrivalLimit($product);
+        }
+
+        // Handle color attributes
+        $this->handleColorAttributesUpdate($product, $request);
+
+        // Handle size attributes update
+        $this->handleSizeAttributesUpdate($product, $request);
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product updated successfully!');
@@ -564,5 +723,339 @@ class ProductController extends Controller
         ];
 
         return view('admin.products.analytics', compact('product', 'analytics'));
+    }
+
+    // GENDER-SPECIFIC PRODUCT METHODS
+
+    /**
+     * Display Men's products
+     */
+    public function men(Request $request)
+    {
+        return $this->displayGenderProducts('Men', 'men-theme', $request);
+    }
+
+    /**
+     * Display Women's products
+     */
+    public function women(Request $request)
+    {
+        return $this->displayGenderProducts('Women', 'women-theme', $request);
+    }
+
+    /**
+     * Display Boys' products
+     */
+    public function boys(Request $request)
+    {
+        return $this->displayGenderProducts('Boys', 'boys-theme', $request);
+    }
+
+    /**
+     * Display Girls' products
+     */
+    public function girls(Request $request)
+    {
+        return $this->displayGenderProducts('Girls', 'girls-theme', $request);
+    }
+
+    /**
+     * Generic method to display gender-specific products
+     */
+    private function displayGenderProducts($gender, $themeClass, Request $request)
+    {
+        // Get the parent gender category
+        $parentCategory = Category::where('name', $gender)->first();
+
+        if (!$parentCategory) {
+            return redirect()->route('admin.products.index')
+                ->with('error', "{$gender} category not found. Please create it first.");
+        }
+
+        // Build query for products in this gender category
+        $query = Product::with(['category', 'brand'])
+            ->whereHas('category', function($q) use ($parentCategory) {
+                $q->where('id', $parentCategory->id)
+                  ->orWhere('parent_id', $parentCategory->id);
+            });
+
+        // Apply filters
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('sku', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('brand_id')) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->filled('featured')) {
+            $query->where('featured', $request->featured === 'yes');
+        }
+
+        $products = $query->orderBy('featured', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        // Add counts safely
+        $products->getCollection()->transform(function ($product) {
+            $product->reviews_count = $this->safeCount(function() use ($product) {
+                return $product->reviews()->count();
+            });
+            $product->order_items_count = $this->safeCount(function() use ($product) {
+                return $product->orderItems()->count();
+            });
+            return $product;
+        });
+
+        // Get categories and brands for filters
+        $categories = Category::where('parent_id', $parentCategory->id)->active()->orderBy('name')->get();
+        $brands = Brand::active()->orderBy('name')->get();
+
+        // Calculate statistics for this gender
+        $statistics = [
+            'active_products' => $query->where('status', 'active')->count(),
+            'featured_products' => $query->where('featured', true)->count(),
+            'average_rating' => $query->withAvg('reviews', 'rating')->get()->avg('reviews_avg_rating') ?? 0,
+        ];
+
+        // Theme configuration
+        $theme = $this->getGenderTheme($gender);
+
+        return view('admin.products.gender', compact(
+            'products',
+            'categories',
+            'brands',
+            'gender',
+            'theme',
+            'statistics'
+        ));
+    }
+
+    /**
+     * Get gender-specific theme configuration for products
+     */
+    private function getGenderTheme($gender)
+    {
+        $themes = [
+            'Men' => [
+                'theme_name' => 'men-theme',
+                'icon' => '👨',
+                'title' => 'Men\'s Products',
+                'description' => 'Manage men\'s sportswear and athletic gear products',
+                'color' => '#3182ce',
+            ],
+            'Women' => [
+                'theme_name' => 'women-theme',
+                'icon' => '👩',
+                'title' => 'Women\'s Products',
+                'description' => 'Manage women\'s sportswear and athletic gear products',
+                'color' => '#ec4899',
+            ],
+            'Boys' => [
+                'theme_name' => 'boys-theme',
+                'icon' => '👦',
+                'title' => 'Boys\' Products',
+                'description' => 'Manage boys\' sportswear and athletic gear products',
+                'color' => '#10b981',
+            ],
+            'Girls' => [
+                'theme_name' => 'girls-theme',
+                'icon' => '👧',
+                'title' => 'Girls\' Products',
+                'description' => 'Manage girls\' sportswear and athletic gear products',
+                'color' => '#8b5cf6',
+            ],
+        ];
+
+        return $themes[$gender] ?? $themes['Men'];
+    }
+
+    /**
+     * Handle color attributes for a product
+     */
+    private function handleColorAttributes(Product $product, array $colors)
+    {
+        // Get or create the Color attribute
+        $colorAttribute = Attribute::firstOrCreate(
+            ['slug' => 'color'],
+            [
+                'name' => 'Color',
+                'slug' => 'color',
+                'type' => 'select',
+                'is_required' => false
+            ]
+        );
+
+        foreach ($colors as $colorData) {
+            if (isset($colorData['name']) && isset($colorData['hex'])) {
+                // Create or get the attribute value
+                $attributeValue = AttributeValue::firstOrCreate(
+                    [
+                        'attribute_id' => $colorAttribute->id,
+                        'value' => $colorData['name']
+                    ]
+                );
+
+                // Create or get the product attribute relationship (prevents duplicates)
+                $productAttribute = ProductAttribute::firstOrCreate([
+                    'product_id' => $product->id,
+                    'attribute_value_id' => $attributeValue->id
+                ], [
+                    'additional_price' => 0.00
+                ]);
+
+                if ($productAttribute->wasRecentlyCreated) {
+                    \Log::info("Color attribute added to product", [
+                        'product_id' => $product->id,
+                        'color_name' => $colorData['name'],
+                        'color_hex' => $colorData['hex']
+                    ]);
+                } else {
+                    \Log::info("Color attribute already exists, skipping", [
+                        'product_id' => $product->id,
+                        'color_name' => $colorData['name']
+                    ]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Handle color attributes update for a product
+     */
+    private function handleColorAttributesUpdate(Product $product, Request $request)
+    {
+        // Handle color deletions
+        if ($request->has('delete_colors') && is_array($request->delete_colors)) {
+            ProductAttribute::whereIn('id', $request->delete_colors)->delete();
+            \Log::info("Deleted color attributes", ['deleted_ids' => $request->delete_colors]);
+        }
+
+        // Handle new color additions
+        if ($request->has('colors') && is_array($request->colors)) {
+            $this->handleColorAttributes($product, $request->colors);
+        }
+    }
+
+    /**
+     * Handle size attributes update for a product
+     */
+    private function handleSizeAttributesUpdate(Product $product, Request $request)
+    {
+        // Handle size deletions
+        if ($request->has('delete_sizes') && is_array($request->delete_sizes)) {
+            ProductAttribute::whereIn('id', $request->delete_sizes)->delete();
+            \Log::info("Deleted size attributes", ['deleted_ids' => $request->delete_sizes]);
+        }
+
+        // Handle new size additions
+        if ($request->has('sizes') && is_array($request->sizes)) {
+            $this->handleSizeAttributes($product, $request->sizes);
+        }
+    }
+
+    /**
+     * Handle size attributes for a product
+     */
+    private function handleSizeAttributes(Product $product, array $sizes)
+    {
+        // Get or create the Size attribute
+        $sizeAttribute = Attribute::firstOrCreate(
+            ['slug' => 'size'],
+            [
+                'name' => 'Size',
+                'slug' => 'size',
+                'type' => 'select',
+                'is_required' => false
+            ]
+        );
+
+        foreach ($sizes as $sizeData) {
+            if (isset($sizeData['name'])) {
+                // Create or get the attribute value
+                $attributeValue = AttributeValue::firstOrCreate(
+                    [
+                        'attribute_id' => $sizeAttribute->id,
+                        'value' => $sizeData['name']
+                    ]
+                );
+
+                // Create or get the product attribute relationship (prevents duplicates)
+                $productAttribute = ProductAttribute::firstOrCreate([
+                    'product_id' => $product->id,
+                    'attribute_value_id' => $attributeValue->id
+                ], [
+                    'additional_price' => 0.00
+                ]);
+
+                if ($productAttribute->wasRecentlyCreated) {
+                    \Log::info("Size attribute added to product", [
+                        'product_id' => $product->id,
+                        'size_name' => $sizeData['name'],
+                        'size_guide' => $sizeData['guide'] ?? null
+                    ]);
+                } else {
+                    \Log::info("Size attribute already exists, skipping", [
+                        'product_id' => $product->id,
+                        'size_name' => $sizeData['name']
+                    ]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Manage new arrival limit by removing the oldest new arrival if limit is exceeded
+     */
+    private function manageNewArrivalLimit($currentProduct)
+    {
+        $maxNewArrivals = 8; // Maximum number of new arrivals to show
+
+        // Get all current new arrivals (excluding the current product)
+        $currentNewArrivals = Product::active()
+            ->inStock()
+            ->newArrival()
+            ->where('id', '!=', $currentProduct->id)
+            ->orderBy('new_arrival_priority', 'desc')
+            ->orderBy('featured_new_arrival', 'desc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // If we're at or over the limit, remove the oldest one
+        if ($currentNewArrivals->count() >= $maxNewArrivals) {
+            $oldestNewArrival = $currentNewArrivals->last();
+
+            if ($oldestNewArrival) {
+                // Remove the oldest new arrival
+                $oldestNewArrival->update([
+                    'is_new_arrival' => false,
+                    'featured_new_arrival' => false,
+                    'new_arrival_until' => null
+                ]);
+
+                \Log::info("Auto-removed oldest new arrival to make room for new one", [
+                    'removed_product_id' => $oldestNewArrival->id,
+                    'removed_product_name' => $oldestNewArrival->name,
+                    'new_product_id' => $currentProduct->id,
+                    'new_product_name' => $currentProduct->name
+                ]);
+            }
+        }
+
+        \Log::info("New arrival limit managed", [
+            'current_count' => $currentNewArrivals->count(),
+            'max_limit' => $maxNewArrivals,
+            'new_product_id' => $currentProduct->id,
+            'new_product_name' => $currentProduct->name
+        ]);
     }
 }

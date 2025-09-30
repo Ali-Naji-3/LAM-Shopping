@@ -2,7 +2,7 @@
 
 @section('content')
 
-<script>
+{{-- <script>
 // CRITICAL FIX: Define search functions immediately in global scope
 window.handleSearchKeyup = function(input) {
     const searchTerm = input.value.trim();
@@ -118,7 +118,7 @@ window.handleSearchBlur = function(input) {
 };
 
 console.log('CRITICAL FIX: Global search functions defined at top of content');
-</script>
+</script> --}}
 
 <div class="container-fluid">
     <!-- Page Header -->
@@ -357,7 +357,7 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
     </div>
 </div>
 
-@push('scripts')
+{{-- @push('scripts')
 <script>
 // Helper functions for search functionality - defined after main functions above
 
@@ -1196,5 +1196,5 @@ function showToast(message, type = 'info') {
         }
     }
 </style>
-@endpush
+@endpush --}}
 @endsection

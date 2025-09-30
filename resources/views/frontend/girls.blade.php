@@ -1,7 +1,5 @@
 @extends('frontend.layouts.layout')
-
 @section('content')
-
 	<main>
 		<div class="top_banner">
 			<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.3)">
@@ -221,7 +219,9 @@
 									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
 								@endif
 							</a>
-							<div data-countdown="{{ $product->created_at->addDays(30)->format('Y/m/d') }}" class="countdown"></div>
+							@if($product->enable_countdown && $product->countdown_date)
+								<div data-countdown="{{ $product->countdown_date->format('Y/m/d') }}" class="countdown"></div>
+							@endif
 						</figure>
 						<a href="{{ route('product.detail', $product->slug) }}">
 							<h3>{{ $product->name }}</h3>
@@ -238,6 +238,7 @@
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+							<li><a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Leave a review"><i class="ti-star"></i><span>Leave a review</span></a></li>
 						</ul>
 					</div>
 					<!-- /grid_item -->

@@ -1,6 +1,5 @@
 @extends('frontend.layouts.layout')
 @section('content')
-
 	<main class="bg_gray">
 
 
@@ -90,7 +89,7 @@
 		<!-- /bg_white -->
 	</main>
         @endsection
-	<!--/main-->
+
 
 
 

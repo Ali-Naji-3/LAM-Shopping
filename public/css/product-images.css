@@ -1,0 +1,367 @@
+/*============================================================================================*/
+/* PROFESSIONAL PRODUCT IMAGE STYLING */
+/*============================================================================================*/
+
+/* Professional Product Grid Container */
+.grid_item {
+    margin-bottom: 25px !important;
+    text-align: center !important;
+    position: relative !important;
+    cursor: pointer !important;
+    background: #fff !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important; /* Ensure full width */
+    display: block !important; /* Ensure proper display */
+}
+
+.grid_item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Professional Figure Container with Fixed Dimensions */
+.grid_item figure {
+    position: relative !important;
+    overflow: hidden !important;
+    transition: all 0.3s ease !important;
+    /* Fixed aspect ratio for consistent sizing */
+    width: 100% !important;
+    height: 280px !important; /* Professional height - Force override */
+    background: #f8f9fa !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 280px !important; /* Ensure minimum height */
+    max-height: 280px !important; /* Ensure maximum height */
+}
+
+/* Responsive height adjustments */
+@media (max-width: 1200px) {
+    .grid_item figure {
+        height: 260px !important;
+        min-height: 260px !important;
+        max-height: 260px !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .grid_item figure {
+        height: 240px !important;
+        min-height: 240px !important;
+        max-height: 240px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid_item figure {
+        height: 220px !important;
+        min-height: 220px !important;
+        max-height: 220px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .grid_item figure {
+        height: 200px !important;
+        min-height: 200px !important;
+        max-height: 200px !important;
+    }
+}
+
+/* Professional Image Styling */
+.grid_item figure img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important; /* Maintains aspect ratio while filling container */
+    object-position: center !important;
+    transition: all 0.4s ease !important;
+    border-radius: 0 !important;
+    display: block !important; /* Ensure images are displayed */
+    opacity: 1 !important; /* Make sure images are visible */
+    visibility: visible !important; /* Ensure images are not hidden */
+    position: relative !important; /* Override any absolute positioning */
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    min-height: 100% !important; /* Ensure full height */
+    max-height: 100% !important; /* Ensure full height */
+}
+
+/* Hover Effects */
+.grid_item figure:hover img {
+    transform: scale(1.05);
+}
+
+/* Professional Ribbon Styling */
+.grid_item figure .ribbon {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 10;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.grid_item figure .ribbon.off {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+    color: white;
+}
+
+.grid_item figure .ribbon.hot {
+    background: linear-gradient(135deg, #ff9f43, #ff6348);
+    color: white;
+}
+
+.grid_item figure .ribbon.new {
+    background: linear-gradient(135deg, #26de81, #20bf6b);
+    color: white;
+}
+
+/* Professional Product Title */
+.grid_item a h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 15px 0 8px 0;
+    color: #2c3e50;
+    line-height: 1.4;
+    padding: 0 15px;
+    transition: color 0.3s ease;
+}
+
+.grid_item a h3:hover {
+    color: #004dda;
+}
+
+/* Professional Price Styling */
+.grid_item .price_box {
+    margin-bottom: 15px;
+    padding: 0 15px;
+}
+
+.grid_item .price_box .new_price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-right: 8px;
+}
+
+.grid_item .price_box .old_price {
+    font-size: 14px;
+    color: #95a5a6;
+    text-decoration: line-through;
+}
+
+/* Professional Action Buttons */
+.grid_item ul {
+    margin: 0;
+    padding: 0 15px 15px 15px;
+    list-style: none;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.grid_item:hover ul {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.grid_item ul li {
+    display: inline-block;
+    margin: 0;
+}
+
+.grid_item ul li a {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    color: #6c757d;
+    text-align: center;
+    line-height: 40px;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.grid_item ul li a:hover {
+    background: #004dda;
+    border-color: #004dda;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 77, 218, 0.3);
+}
+
+.grid_item ul li a span {
+    display: none;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 991px) {
+    .grid_item ul {
+        opacity: 1;
+        transform: translateY(0);
+        position: relative;
+        left: 0;
+        right: inherit;
+        margin-bottom: 10px;
+        top: 0;
+    }
+    
+    .grid_item ul li {
+        display: inline-block;
+    }
+}
+
+/* Professional Grid Layout */
+.row.small-gutters .col-6,
+.row.small-gutters .col-md-4,
+.row.small-gutters .col-xl-3 {
+    padding: 8px;
+}
+
+/* Professional Loading State - Force Images to be Visible */
+.grid_item figure img.lazy {
+    opacity: 1 !important; /* Force images to be visible */
+    visibility: visible !important;
+    display: block !important;
+    transition: opacity 0.3s ease;
+}
+
+.grid_item figure img.lazy.loaded {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Override any lazy loading hiding and original CSS conflicts */
+.grid_item figure img {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    position: relative !important; /* Override absolute positioning */
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+}
+
+/* Override the original CSS that expects two images */
+.grid_item figure img:nth-child(1) {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+}
+
+.grid_item figure img:nth-child(2) {
+    display: none !important; /* Hide second image if it exists */
+}
+
+/* Professional Placeholder */
+.grid_item figure img[src*="product_placeholder"] {
+    object-fit: contain;
+    background: #f8f9fa;
+    padding: 20px;
+}
+
+/* Professional Countdown Styling */
+.grid_item figure .countdown {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    z-index: 10;
+}
+
+/* Professional Grid Hover Effects */
+.grid_item:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Professional Image Quality Enhancement */
+.grid_item figure img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Professional Focus States */
+.grid_item:focus-within {
+    outline: 2px solid #004dda;
+    outline-offset: 2px;
+}
+
+/* Professional Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.grid_item {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Professional Grid Spacing */
+.container.margin_30 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+/* Professional Empty State */
+.grid_item:empty {
+    display: none;
+}
+
+/* Professional Accessibility */
+.grid_item a:focus {
+    outline: 2px solid #004dda;
+    outline-offset: 2px;
+}
+
+.grid_item img {
+    alt: attr(alt);
+}
+
+/* Professional Print Styles */
+@media print {
+    .grid_item {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .grid_item figure {
+        height: auto;
+    }
+    
+    .grid_item ul {
+        display: none;
+    }
+}

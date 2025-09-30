@@ -2990,6 +2990,7 @@ header.version_2 .main_header ul.top_tools > li a.cart_bt strong {
   background-color: #083487;
   color: #fff !important;
 }
+
 @media (max-width: 767px) {
   header.version_2 .main_header ul.top_tools > li a.cart_bt strong {
     bottom: 10px;
@@ -3763,7 +3764,7 @@ header.version_2 .menu ul li ul li ul {
   top: 0;
 }
 
-/*-------- 1.5 Top banner --------*/    
+/*-------- 1.5 Top banner --------*/
 .top_banner {
   height: 45vh;
   overflow: hidden;

@@ -1,7 +1,5 @@
 @extends('frontend.layouts.layout')
-
 @section('content')
-
 	<main class="bg_gray">
 
 
@@ -245,7 +243,5 @@
 		</div>
 		<!-- /container -->
 	</main>
-
-	
     @endsection
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
-	
+
     <!-- GOOGLE WEB FONT -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,15 +28,18 @@
 	<!-- SPECIFIC CSS -->
     <link href="css/listing.css" rel="stylesheet">
 
+    <!-- PROFESSIONAL PRODUCT IMAGES CSS -->
+    <link href="css/product-images.css" rel="stylesheet">
+
     <!-- YOUR CUSTOM CSS -->
     <link href="css/custom.css" rel="stylesheet">
 
 </head>
 
 <body>
-	
+
 	<div id="page">
-		
+
 	<header class="version_1">
 		<div class="layer"></div><!-- Mobile menu overlay mask -->
 		<div class="main_header">
@@ -188,9 +191,9 @@
 		<!-- /main_nav -->
 	</header>
 	<!-- /header -->
-		
+
 	<main>
-		
+
 		<div class="container margin_30">
 		    <div class="top_banner version_2">
 		        <div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0)">
@@ -341,7 +344,9 @@
 									<img class="img-fluid lazy" src="img/products/product_placeholder_square_medium.jpg" alt="{{ $product->name }}">
 								@endif
 							</a>
-							<div data-countdown="{{ $product->created_at->addDays(30)->format('Y/m/d') }}" class="countdown"></div>
+							@if($product->enable_countdown && $product->countdown_date)
+								<div data-countdown="{{ $product->countdown_date->format('Y/m/d') }}" class="countdown"></div>
+							@endif
 						</figure>
 						<a href="{{ route('product.detail', $product->slug) }}">
 							<h3>{{ $product->name }}</h3>
@@ -358,6 +363,7 @@
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+							<li><a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Leave a review"><i class="ti-star"></i><span>Leave a review</span></a></li>
 						</ul>
 					</div>
 					<!-- /grid_item -->
@@ -374,7 +380,7 @@
 				@endforelse
 			</div>
 			<!-- /row -->
-			
+
 			<!-- Pagination -->
 			@if($products->hasPages())
 			<div class="pagination__wrapper">
@@ -384,7 +390,7 @@
 					@else
 						<li><a href="{{ $products->previousPageUrl() }}">&laquo;</a></li>
 					@endif
-					
+
 					@foreach($products->getUrlRange(1, $products->lastPage()) as $page => $url)
 						@if($page == $products->currentPage())
 							<li class="active"><span>{{ $page }}</span></li>
@@ -392,7 +398,7 @@
 							<li><a href="{{ $url }}">{{ $page }}</a></li>
 						@endif
 					@endforeach
-					
+
 					@if($products->hasMorePages())
 						<li><a href="{{ $products->nextPageUrl() }}">&raquo;</a></li>
 					@else
@@ -512,4 +518,4 @@
 	<script src="js/main.js"></script>
 
 </body>
-</html>
+</html> --}}

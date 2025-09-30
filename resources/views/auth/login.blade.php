@@ -510,9 +510,56 @@
         }
         
         footer a:hover {
-            color: #667eea !important;
-        }
-    </style>
+          color: #667eea !important;
+      }
+      
+      /* Form Container Styling */
+      .form_container {
+          background: rgba(0, 0, 0, 0.85) !important;
+          backdrop-filter: blur(10px) !important;
+          border: 1px solid rgba(212, 175, 55, 0.3) !important;
+          border-radius: 15px !important;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+          padding: 40px !important;
+      }
+      
+      /* Input field sizing for registration form */
+      #register-form .row.no-gutters {
+          margin: 0 !important;
+          display: flex !important;
+      }
+      
+      #register-form .row.no-gutters .col-lg-6 {
+          flex: 1 !important;
+          padding: 0 5px 0 0 !important;
+          max-width: 50% !important;
+      }
+      
+      #register-form .row.no-gutters .col-lg-6:last-child {
+          padding: 0 0 0 5px !important;
+      }
+      
+      #register-form .row.no-gutters .col-lg-6:first-child {
+          padding: 0 5px 0 0 !important;
+      }
+      
+      #register-form .form-group {
+          margin-bottom: 0 !important;
+      }
+      
+      #register-form .form-control {
+          width: 100% !important;
+          box-sizing: border-box !important;
+          margin-bottom: 20px !important;
+          height: 50px !important;
+          padding: 15px 20px !important;
+      }
+      
+      /* Remove bottom margin for inputs in the side-by-side row */
+      #register-form .row.no-gutters .form-control {
+          margin-bottom: 0 !important;
+      }
+     </style>
 </head>
 
 <body>
@@ -555,7 +602,7 @@
         </header>
         
         <main class="bg_gray">
-            <div class="container margin_30">
+            <div class="container margin_30" id="login-form">
                 
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
@@ -606,13 +653,75 @@
                             </form>
                             
                             <div class="text-center add_top_10">
-                                <p>Don't have an account? <a href="{{ route('register') }}">Sign Up</a></p>
+                                <p>Don't have an account? <a href="#" onclick="showRegisterForm()" style="color: #d4af37; text-decoration: none; font-weight: 500;">Sign Up</a></p>
                             </div>
                             
-                            <div class="demo-credentials text-center">
-                                <p><strong>🔑 Demo Credentials:</strong></p>
-                                <p><strong>👨‍💼 Admin:</strong> admin@collection.com / password123</p>
-                                <p><strong>👤 User:</strong> user@collection.com / password123</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Registration Form (Hidden by default) -->
+            <div class="container margin_30" id="register-form" style="display: none;">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6">
+                        <div class="box_account">
+                            <h3 class="client">Register</h3>
+                            <form method="POST" action="{{ route('register.post') }}" id="registerForm">
+                                @csrf
+                                <div class="form_container">
+                                    <div class="row no-gutters mb-3">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control @error('first_name') is-invalid @enderror" name="first_name" id="first_name" placeholder="First Name*" value="{{ old('first_name') }}" required>
+                                                @error('first_name')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control @error('last_name') is-invalid @enderror" name="last_name" id="last_name" placeholder="Last Name*" value="{{ old('last_name') }}" required>
+                                                @error('last_name')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email_register" placeholder="Email Address*" value="{{ old('email') }}" required>
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password_register" placeholder="Password*" required>
+                                        @error('password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="Confirm Password*" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" placeholder="Phone Number (Optional)" value="{{ old('phone') }}">
+                                        @error('phone')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="clearfix add_bottom_15">
+                                        <div class="float-start">
+                                            <label class="container_check">I agree to the <a href="#" style="color: #d4af37;">Terms and Conditions</a>
+                                                <input type="checkbox" name="terms" id="terms" required>
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn_1 full-width">Create Account</button>
+                                </div>
+                            </form>
+                            <div class="text-center add_top_10">
+                                <p>Already have an account? <a href="#" onclick="showLoginForm()" style="color: #d4af37; text-decoration: none; font-weight: 500;">Sign In</a></p>
                             </div>
                         </div>
                     </div>
@@ -649,6 +758,30 @@
     <!-- COMMON SCRIPTS -->
     <script src="{{ asset('js/common_scripts.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+    
+    <script>
+        // Form switching functions
+        function showRegisterForm() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+        
+        function showLoginForm() {
+            document.getElementById('register-form').style.display = 'none';
+            document.getElementById('login-form').style.display = 'block';
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+        
+        // Check if we should show register form (for validation errors)
+        document.addEventListener('DOMContentLoaded', function() {
+            @if($errors->has('first_name') || $errors->has('last_name') || $errors->has('email') || $errors->has('password') || $errors->has('phone'))
+                showRegisterForm();
+            @endif
+        });
+    </script>
 </body>
 </html>
             

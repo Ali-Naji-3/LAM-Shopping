@@ -1,7 +1,6 @@
 
 
-    @extends('frontend.layouts.layout')
-
+@extends('frontend.layouts.layout')
 @section('content')
     <main class="bg_gray">
 		<div class="container margin_30">

@@ -54,6 +54,7 @@
                 <span class="icon">🛍️</span>
                 <span>Products</span>
             </a></li>
+
                     <li><a href="{{ route('admin.attributes.index') }}">
                         <span class="icon">🔧</span>
                         <span>Attributes</span>
@@ -187,6 +188,8 @@
     <script src="{{ asset('js/sweetalert.min.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/apexcharts/apexcharts.js') }}?v={{ time() }}"></script>
     <script src="{{ asset('js/main.js') }}?v={{ time() }}"></script>
+    {{-- <script src="{{ asset('js/Admin/adminC.js') }}?v={{ time() }}"></script>
+    <script src="{{ asset('js/Admin/adminE.js') }}?v={{ time() }}"></script> --}}
 
        @extends('components.script')
 </body>

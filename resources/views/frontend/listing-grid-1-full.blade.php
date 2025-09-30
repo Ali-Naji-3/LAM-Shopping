@@ -1,7 +1,6 @@
 
 
 @extends('frontend.layouts.layout')
-
 @section('content')
 	<main>
 		<div class="top_banner">
@@ -204,235 +203,73 @@
 			<div class="container margin_30">
 			<div class="row small-gutters">
 				@forelse($products as $product)
-    <div class="col-6 col-md-4 col-xl-3">
-        <div class="grid_item">
-            <figure>
-                @if($product->sale_price && $product->sale_price < $product->regular_price)
-                    @php
-                        $discount = round((($product->regular_price - $product->sale_price) / $product->regular_price) * 100);
-                    @endphp
-                    <span class="ribbon off">-{{ $discount }}%</span>
-                @elseif($product->featured)
-                    <span class="ribbon hot">Hot</span>
-                @elseif($product->created_at->diffInDays() < 7)
-                    <span class="ribbon new">New</span>
-                @endif
-                <a href="{{ route('product.detail', $product->slug) }}">
-                    @if($product->image)
-                        <img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-                    @else
-                        <img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
-                    @endif
-                </a>
-                <div data-countdown="{{ $product->created_at->addDays(30)->format('Y/m/d') }}" class="countdown"></div>
-            </figure>
-            <a href="{{ route('product.detail', $product->slug) }}">
-                <h3>{{ $product->name }}</h3>
-            </a>
-            <div class="price_box">
-                @if($product->sale_price && $product->sale_price < $product->regular_price)
-                    <span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
-                    <span class="old_price">${{ number_format($product->regular_price, 2) }}</span>
-                @else
-                    <span class="new_price">${{ number_format($product->regular_price, 2) }}</span>
-                @endif
-            </div>
-            <ul>
-                <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-                <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-                <li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-            </ul>
-        </div>
-    </div>
-@empty
-    <p>No products found.</p>
-@endforelse
-
+				<div class="col-6 col-md-4 col-xl-3">
+					<div class="grid_item">
+						<figure>
+							@if($product->sale_price && $product->sale_price < $product->price)
+								@php
+									$discount = round((($product->price - $product->sale_price) / $product->price) * 100);
+								@endphp
+								<span class="ribbon off">-{{ $discount }}%</span>
+							@elseif($product->is_featured)
+								<span class="ribbon hot">Hot</span>
+							@elseif($product->created_at->diffInDays() < 7)
+								<span class="ribbon new">New</span>
+							@endif
+							<a href="{{ route('product.detail', $product->slug) }}">
+								@if($product->image)
+									<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+								@else
+									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
+								@endif
+							</a>
+							@if($product->enable_countdown && $product->countdown_date)
+								<div data-countdown="{{ $product->countdown_date->format('Y/m/d') }}" class="countdown"></div>
+							@endif
+						</figure>
+						<a href="{{ route('product.detail', $product->slug) }}">
+							<h3>{{ $product->name }}</h3>
+						</a>
+						<div class="price_box">
+							@if($product->sale_price && $product->sale_price < $product->price)
+								<span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
+								<span class="old_price">${{ number_format($product->price, 2) }}</span>
+							@else
+								<span class="new_price">${{ number_format($product->price, 2) }}</span>
+							@endif
+						</div>
+						<ul>
+							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
+							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
+							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
+							<li><a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Leave a review"><i class="ti-star"></i><span>Leave a review</span></a></li>
+						</ul>
+					</div>
+					<!-- /grid_item -->
+				</div>
+				<!-- /col -->
+				@empty
+				<div class="col-12">
+					<div class="text-center">
+						<h3>No products found</h3>
+						<p>Sorry, there are no products available at the moment.</p>
+					</div>
+				</div>
+				@endforelse
 			</div>
 			<!-- /row -->
 
 			<!-- Pagination -->
 			@if($products->hasPages())
-				<!-- /col -->
-
-				<div class="col-6 col-md-4 col-xl-3">
-					<div class="grid_item">
-						<span class="ribbon off">-50%</span>
-						<figure>
-							<a href="{{ url('product-detail-2') }}">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/3.jpg') }}" alt="">
-							</a>
-							<div data-countdown="2019/05/21" class="countdown"></div>
-						</figure>
-						<a href="{{ url('product-detail-2') }}">
-							<h3>Armor Air Wildwood ACG</h3>
-						</a>
-						<div class="price_box">
-							<span class="new_price">$75.00</span>
-							<span class="old_price">$155.00</span>
-						</div>
-						<ul>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-						</ul>
-					</div>
-					<!-- /grid_item -->
+				<div class="pagination-wrapper">
+					{{ $products->links() }}
 				</div>
-				<!-- /col -->
-
-				<div class="col-6 col-md-4 col-xl-3">
-					<div class="grid_item">
-						<span class="ribbon new">New</span>
-						<figure>
-							<a href="{{ url('product-detail-2') }}">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/4.jpg') }}" alt="">
-							</a>
-						</figure>
-						<a href="{{ url('product-detail-2') }}">
-							<h3>Armor ACG React Terra</h3>
-						</a>
-						<div class="price_box">
-							<span class="new_price">$110.00</span>
-						</div>
-						<ul>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-						</ul>
-					</div>
-					<!-- /grid_item -->
-				</div>
-				<!-- /col -->
-
-				<div class="col-6 col-md-4 col-xl-3">
-					<div class="grid_item">
-						<span class="ribbon new">New</span>
-						<figure>
-							<a href="{{ url('product-detail-2') }}">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/5.jpg') }}" alt="">
-							</a>
-						</figure>
-						<a href="{{ url('product-detail-2') }}">
-							<h3>Armor Air Zoom Alpha</h3>
-						</a>
-						<div class="price_box">
-							<span class="new_price">$140.00</span>
-						</div>
-						<ul>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-						</ul>
-					</div>
-					<!-- /grid_item -->
-				</div>
-				<!-- /col -->
-
-				<div class="col-6 col-md-4 col-xl-3">
-					<div class="grid_item">
-						<span class="ribbon new">New</span>
-						<figure>
-							<a href="{{ url('product-detail-2') }}">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/6.jpg') }}" alt="">
-							</a>
-						</figure>
-						<a href="{{ url('product-detail-2') }}">
-							<h3>Armor Air Alpha</h3>
-						</a>
-						<div class="price_box">
-							<span class="new_price">$130.00</span>
-						</div>
-						<ul>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-						</ul>
-					</div>
-					<!-- /grid_item -->
-				</div>
-				<!-- /col -->
-
-				<div class="col-6 col-md-4 col-xl-3">
-					<div class="grid_item">
-						<span class="ribbon hot">Hot</span>
-						<figure>
-							<a href="{{ url('product-detail-2') }}">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/7.jpg') }}" alt="">
-							</a>
-						</figure>
-						<a href="{{ url('product-detail-2') }}">
-							<h3>Armor Air 98</h3>
-						</a>
-						<div class="price_box">
-							<span class="new_price">$115.00</span>
-						</div>
-						<ul>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-						</ul>
-					</div>
-					<!-- /grid_item -->
-				</div>
-				<!-- /col -->
-
-				<div class="col-6 col-md-4 col-xl-3">
-					<div class="grid_item">
-						<span class="ribbon hot">Hot</span>
-						<figure>
-							<a href="{{ url('product-detail-2') }}">
-								<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" data-src="{{ asset('img/products/shoes/8.jpg') }}" alt="">
-							</a>
-						</figure>
-						<a href="{{ url('product-detail-2') }}">
-							<h3>Armor Air 720</h3>
-						</a>
-						<div class="price_box">
-							<span class="new_price">$120.00</span>
-						</div>
-						<ul>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>
-							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to cart"><i class="ti-shopping-cart"></i><span>Add to cart</span></a></li>
-						</ul>
-					</div>
-					<!-- /grid_item -->
-				</div>
-				<!-- /col -->
-			</div>
-			<!-- /row -->
-
-			<div class="pagination__wrapper">
-				<ul class="pagination">
-					@if($products->onFirstPage())
-						<li class="disabled"><span>&laquo;</span></li>
-					@else
-						<li><a href="{{ $products->previousPageUrl() }}">&laquo;</a></li>
-					@endif
-
-					@foreach($products->getUrlRange(1, $products->lastPage()) as $page => $url)
-						@if($page == $products->currentPage())
-							<li class="active"><span>{{ $page }}</span></li>
-						@else
-							<li><a href="{{ $url }}">{{ $page }}</a></li>
-						@endif
-					@endforeach
-
-					@if($products->hasMorePages())
-						<li><a href="{{ $products->nextPageUrl() }}">&raquo;</a></li>
-					@else
-						<li class="disabled"><span>&raquo;</span></li>
-					@endif
-				</ul>
-			</div>
 			@endif
 			<!-- /pagination -->
 
 		</div>
 		<!-- /container -->
 	</main>
-	<!-- /main -->
 @endsection
 
 

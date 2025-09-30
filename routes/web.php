@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Frontend\FunctionController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Admin\DashboardController;
 
 use App\Http\Controllers\Admin\CategoryController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\Admin\OrderItemsController;
 use App\Http\Controllers\Admin\WarehousesController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\TransactionsController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,11 @@ use App\Http\Controllers\Admin\TransactionsController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::get('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
 Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
 
 Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
@@ -67,11 +74,6 @@ Route::get('/products', [HomeController::class, 'products'])->name('products');
 Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('product.detail');
 
 // Category Frontend Routes
-Route::get('/men', [HomeController::class, 'categoryPage'])->name('category.men');
-Route::get('/women', [HomeController::class, 'categoryPage'])->name('category.women');
-Route::get('/body', [HomeController::class, 'categoryPage'])->name('category.body');
-Route::get('/girl', [HomeController::class, 'categoryPage'])->name('category.girl');
-Route::get('/category/{slug}', [HomeController::class, 'categoryPage'])->name('category.show');
 
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -83,6 +85,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Admin Routes (protected by auth and admin middleware)
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+
+    // GENDER-SPECIFIC PRODUCT ROUTES (MUST BE BEFORE RESOURCE ROUTES)
+    Route::get('products/men', [App\Http\Controllers\Admin\ProductController::class, 'men'])->name('admin.products.men');
+    Route::get('products/women', [App\Http\Controllers\Admin\ProductController::class, 'women'])->name('admin.products.women');
+    Route::get('products/boys', [App\Http\Controllers\Admin\ProductController::class, 'boys'])->name('admin.products.boys');
+    Route::get('products/girls', [App\Http\Controllers\Admin\ProductController::class, 'girls'])->name('admin.products.girls');
 
     // Categories Management
     Route::resource('categories', CategoryController::class)->names([
@@ -109,6 +118,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('categories/{category}/brands', [CategoryController::class, 'brands'])->name('admin.categories.brands');
     Route::get('categories/{category}/reviews', [CategoryController::class, 'reviews'])->name('admin.categories.reviews');
     Route::get('categories/{category}/analytics', [CategoryController::class, 'analytics'])->name('admin.categories.analytics');
+
 
     // Brands Management - Complete CRUD with Connections
     Route::resource('brands', BrandController::class)->names([
@@ -153,6 +163,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('products/{product}/orders', [ProductController::class, 'orders'])->name('admin.products.orders');
     Route::get('products/{product}/inventory', [ProductController::class, 'inventory'])->name('admin.products.inventory');
     Route::get('products/{product}/analytics', [ProductController::class, 'analytics'])->name('admin.products.analytics');
+
 
     // Attributes Management - Complete CRUD with Connections
     Route::resource('attributes', AttributeController::class)->names([
@@ -219,11 +230,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     ]);
 
     // Additional Reviews Routes
-    Route::post('reviews/bulk-action', [ReviewsController::class, 'bulkActions'])->name('admin.reviews.bulk');
-    Route::patch('reviews/{review}/toggle-approval', [ReviewsController::class, 'toggleApproval'])->name('admin.reviews.toggleApproval');
-    Route::get('reviews/product/{product}', [ReviewsController::class, 'productReviews'])->name('admin.reviews.product');
-    Route::get('reviews/user/{user}', [ReviewsController::class, 'userReviews'])->name('admin.reviews.user');
-    Route::get('reviews/analytics/dashboard', [ReviewsController::class, 'analytics'])->name('admin.reviews.analytics');
+    Route::post('reviews/bulk-action', [App\Http\Controllers\Admin\ReviewsController::class, 'bulkActions'])->name('admin.reviews.bulk');
+    Route::patch('reviews/{review}/toggle-approval', [App\Http\Controllers\Admin\ReviewsController::class, 'toggleApproval'])->name('admin.reviews.toggleApproval');
+    Route::get('reviews/product/{product}', [App\Http\Controllers\Admin\ReviewsController::class, 'productReviews'])->name('admin.reviews.product');
+    Route::get('reviews/user/{user}', [App\Http\Controllers\Admin\ReviewsController::class, 'userReviews'])->name('admin.reviews.user');
+    Route::get('reviews/analytics/dashboard', [App\Http\Controllers\Admin\ReviewsController::class, 'analytics'])->name('admin.reviews.analytics');
+    Route::get('reviews/{review}/contacts', [App\Http\Controllers\Admin\ReviewsController::class, 'contacts'])->name('admin.reviews.contacts');
+    Route::post('reviews/{review}/contacts', [App\Http\Controllers\Admin\ReviewsController::class, 'storeContact'])->name('admin.reviews.contacts.store');
 
     // Sliders Management - Complete CRUD System
     Route::resource('sliders', SlidersController::class)->names([
@@ -331,23 +344,33 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     // Add more admin routes here
 });
 
+
 // Frontend Functionality Routes
-Route::get('/listing-grid-2-full', [FunctionController::class, 'listingGrid2Full']);
-Route::get('/listing-grid-7-sidebar-right', [FunctionController::class, 'listingGrid7SidebarRight']);
-Route::get('/listing-grid-1-full', [FunctionController::class, 'listingGrid1Full']);
+Route::get('/listing-grid-2-full', [FunctionController::class, 'listingGrid2Full'])->name('listing.grid2full');
+// Route::get('/listing-grid-7-sidebar-right', [FunctionController::class, 'listingGrid7SidebarRight'])->name('listing.grid7sidebar');
+Route::get('/listing-grid-1-full', [FunctionController::class, 'listingGrid1Full'])->name('listing.grid1full');
 Route::get('/listing-grid-3', [FunctionController::class, 'listingGrid3'])->name('listing.grid3');
-Route::get('/girls', [FunctionController::class, 'girls']);
-Route::get('/product-detail-2', [FunctionController::class, 'productDetail2']);
-Route::get('/cart', [FunctionController::class, 'cart']);
-Route::get('/checkout', [FunctionController::class, 'checkout']);
-Route::get('/confirm', [FunctionController::class, 'confirm']);
-Route::get('/account', [FunctionController::class, 'account']);
-Route::get('/track-order', [FunctionController::class, 'trackOrder']);
-Route::get('/help', [FunctionController::class, 'help']);
-Route::get('/leave-review', [FunctionController::class, 'leaveReview']);
-Route::get('/my-orders', [FunctionController::class, 'myOrders']);
-Route::get('/profile-page', [FunctionController::class, 'profilePage']);
-Route::get('/my-wishlist', [FunctionController::class, 'myWishlist']);
+Route::get('/girls', [FunctionController::class, 'girls'])->name('listing.girls');
+
+// Simple pages
+Route::get('/product-detail-2', [FunctionController::class, 'productDetail2'])->name('frontend.product-detail-2');
+Route::get('/cart', [FunctionController::class, 'cart'])->name('frontend.cart');
+Route::get('/checkout', [FunctionController::class, 'checkout'])->name('frontend.checkout');
+Route::get('/confirm', [FunctionController::class, 'confirm'])->name('frontend.confirm');
+Route::get('/account', [FunctionController::class, 'account'])->name('frontend.account');
+Route::get('/track-order', [FunctionController::class, 'trackOrder'])->name('frontend.track-order');
+Route::get('/help', [FunctionController::class, 'help'])->name('frontend.help');
+Route::get('/my-orders', [FunctionController::class, 'myOrders'])->name('frontend.my-orders');
+Route::get('/profile-page', [FunctionController::class, 'profilePage'])->name('frontend.profile-page');
+Route::get('/my-wishlist', [FunctionController::class, 'myWishlist'])->name('frontend.my-wishlist');
+
+// Reviews
+Route::get('/leave-review/{product?}', [ReviewController::class, 'show'])->name('frontend.leave-review');
+Route::post('/leave-review', [ReviewController::class, 'store'])->name('frontend.review.store');
+
+
+
+
 
 Route::get('/{page}', function ($page) {
     // Construct the view name from the page parameter
@@ -363,3 +386,4 @@ Route::get('/{page}', function ($page) {
 })->where('page', '.*\.html');
 
 Route::get("/admin/dependencies/analyze", [App\Http\Controllers\Admin\DependencyController::class, "analyze"])->name("admin.dependencies.analyze");
+        

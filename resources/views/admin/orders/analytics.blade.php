@@ -12,7 +12,7 @@
                 Comprehensive analytics and insights for your order management
             </p>
         </div>
-        <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary" 
+        <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary"
            style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
            onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
            onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
@@ -322,14 +322,14 @@
                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                             <i class="bi bi-plus-circle me-2"></i>Create New Order
                         </a>
-                        
+
                         <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-info w-100"
                            style="color: #0891b2 !important; border-color: #0891b2 !important; background: #ffffff !important; padding: 12px 16px !important; border-radius: 8px !important; font-weight: 600 !important; text-decoration: none !important;"
                            onmouseover="this.style.backgroundColor='#0891b2 !important'; this.style.color='#ffffff !important';"
                            onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
                             <i class="bi bi-collection me-2"></i>Manage All Orders
                         </a>
-                        
+
                         @if($analytics['pending_orders'] > 0)
                             <div class="alert alert-warning" style="background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border: 1px solid #f59e0b !important; border-radius: 8px !important; padding: 12px !important; margin-bottom: 0 !important;">
                                 <i class="bi bi-exclamation-triangle me-2" style="color: #f59e0b !important;"></i>
@@ -386,54 +386,54 @@
     .performance-metric {
         transition: all 0.2s ease !important;
     }
-    
+
     .performance-metric:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .recent-order-item {
         transition: all 0.2s ease !important;
     }
-    
+
     .payment-item {
         transition: all 0.2s ease !important;
     }
-    
+
     .payment-item:hover {
         transform: translateY(-1px) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .customer-item {
         transition: all 0.2s ease !important;
     }
-    
+
     .month-revenue {
         transition: all 0.2s ease !important;
     }
-    
+
     .table td {
         border-bottom: 1px solid #f8fafc !important;
     }
-    
+
     .table tr:last-child td {
         border-bottom: none !important;
     }
-    
+
     .alert {
         transition: all 0.2s ease !important;
     }
-    
+
     .alert:hover {
         transform: translateY(-1px) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .customer-rank {
         transition: all 0.2s ease !important;
     }
-    
+
     .customer-item:hover .customer-rank {
         transform: scale(1.1) !important;
     }

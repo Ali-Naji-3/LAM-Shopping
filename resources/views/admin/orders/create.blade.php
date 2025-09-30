@@ -10,7 +10,7 @@
             </h2>
             <p class="mb-0" style="color: #4a5568 !important; font-size: 14px !important;">Create a new customer order manually</p>
         </div>
-        <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary" 
+        <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary"
            style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
            onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
            onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
@@ -35,14 +35,14 @@
                             <label for="user_id" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                 Registered User <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
                             </label>
-                            <select class="form-control @error('user_id') is-invalid @enderror" 
-                                    id="user_id" 
+                            <select class="form-control @error('user_id') is-invalid @enderror"
+                                    id="user_id"
                                     name="user_id"
                                     style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                     onchange="fillUserData(this)">
                                 <option value="">Select registered user or enter manually...</option>
                                 @foreach($users as $user)
-                                    <option value="{{ $user->id }}" 
+                                    <option value="{{ $user->id }}"
                                             data-name="{{ $user->name }}"
                                             data-email="{{ $user->email }}"
                                             {{ old('user_id') == $user->id ? 'selected' : '' }}>
@@ -61,11 +61,11 @@
                                     <label for="customer_name" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Customer Name <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="text" 
-                                           class="form-control @error('customer_name') is-invalid @enderror" 
-                                           id="customer_name" 
-                                           name="customer_name" 
-                                           value="{{ old('customer_name') }}" 
+                                    <input type="text"
+                                           class="form-control @error('customer_name') is-invalid @enderror"
+                                           id="customer_name"
+                                           name="customer_name"
+                                           value="{{ old('customer_name') }}"
                                            required
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                            placeholder="Enter customer full name">
@@ -79,11 +79,11 @@
                                     <label for="customer_email" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Customer Email <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="email" 
-                                           class="form-control @error('customer_email') is-invalid @enderror" 
-                                           id="customer_email" 
-                                           name="customer_email" 
-                                           value="{{ old('customer_email') }}" 
+                                    <input type="email"
+                                           class="form-control @error('customer_email') is-invalid @enderror"
+                                           id="customer_email"
+                                           name="customer_email"
+                                           value="{{ old('customer_email') }}"
                                            required
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                            placeholder="customer@example.com">
@@ -100,11 +100,11 @@
                                     <label for="customer_phone" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Customer Phone <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="tel" 
-                                           class="form-control @error('customer_phone') is-invalid @enderror" 
-                                           id="customer_phone" 
-                                           name="customer_phone" 
-                                           value="{{ old('customer_phone') }}" 
+                                    <input type="tel"
+                                           class="form-control @error('customer_phone') is-invalid @enderror"
+                                           id="customer_phone"
+                                           name="customer_phone"
+                                           value="{{ old('customer_phone') }}"
                                            required
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                            placeholder="+1-555-0123">
@@ -118,10 +118,10 @@
                                     <label for="locality" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Locality <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
                                     </label>
-                                    <input type="text" 
-                                           class="form-control @error('locality') is-invalid @enderror" 
-                                           id="locality" 
-                                           name="locality" 
+                                    <input type="text"
+                                           class="form-control @error('locality') is-invalid @enderror"
+                                           id="locality"
+                                           name="locality"
                                            value="{{ old('locality') }}"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                            placeholder="City, State">
@@ -139,9 +139,9 @@
                                     <label for="shipping_address" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Shipping Address <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <textarea class="form-control @error('shipping_address') is-invalid @enderror" 
-                                              id="shipping_address" 
-                                              name="shipping_address" 
+                                    <textarea class="form-control @error('shipping_address') is-invalid @enderror"
+                                              id="shipping_address"
+                                              name="shipping_address"
                                               rows="4"
                                               required
                                               style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; resize: vertical !important;"
@@ -156,9 +156,9 @@
                                     <label for="billing_address" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Billing Address <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
                                     </label>
-                                    <textarea class="form-control @error('billing_address') is-invalid @enderror" 
-                                              id="billing_address" 
-                                              name="billing_address" 
+                                    <textarea class="form-control @error('billing_address') is-invalid @enderror"
+                                              id="billing_address"
+                                              name="billing_address"
                                               rows="4"
                                               style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; resize: vertical !important;"
                                               placeholder="Enter billing address (leave empty if same as shipping)...">{{ old('billing_address') }}</textarea>
@@ -191,11 +191,11 @@
                                     <label for="subtotal" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Subtotal <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <input type="number" 
-                                           class="form-control @error('subtotal') is-invalid @enderror" 
-                                           id="subtotal" 
-                                           name="subtotal" 
-                                           value="{{ old('subtotal') }}" 
+                                    <input type="number"
+                                           class="form-control @error('subtotal') is-invalid @enderror"
+                                           id="subtotal"
+                                           name="subtotal"
+                                           value="{{ old('subtotal') }}"
                                            step="0.01"
                                            min="0"
                                            required
@@ -212,11 +212,11 @@
                                     <label for="tax_amount" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Tax Amount
                                     </label>
-                                    <input type="number" 
-                                           class="form-control @error('tax_amount') is-invalid @enderror" 
-                                           id="tax_amount" 
-                                           name="tax_amount" 
-                                           value="{{ old('tax_amount', '0.00') }}" 
+                                    <input type="number"
+                                           class="form-control @error('tax_amount') is-invalid @enderror"
+                                           id="tax_amount"
+                                           name="tax_amount"
+                                           value="{{ old('tax_amount', '0.00') }}"
                                            step="0.01"
                                            min="0"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
@@ -235,11 +235,11 @@
                                     <label for="shipping_amount" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Shipping Amount
                                     </label>
-                                    <input type="number" 
-                                           class="form-control @error('shipping_amount') is-invalid @enderror" 
-                                           id="shipping_amount" 
-                                           name="shipping_amount" 
-                                           value="{{ old('shipping_amount', '0.00') }}" 
+                                    <input type="number"
+                                           class="form-control @error('shipping_amount') is-invalid @enderror"
+                                           id="shipping_amount"
+                                           name="shipping_amount"
+                                           value="{{ old('shipping_amount', '0.00') }}"
                                            step="0.01"
                                            min="0"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
@@ -255,11 +255,11 @@
                                     <label for="discount_amount" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Discount Amount
                                     </label>
-                                    <input type="number" 
-                                           class="form-control @error('discount_amount') is-invalid @enderror" 
-                                           id="discount_amount" 
-                                           name="discount_amount" 
-                                           value="{{ old('discount_amount', '0.00') }}" 
+                                    <input type="number"
+                                           class="form-control @error('discount_amount') is-invalid @enderror"
+                                           id="discount_amount"
+                                           name="discount_amount"
+                                           value="{{ old('discount_amount', '0.00') }}"
                                            step="0.01"
                                            min="0"
                                            style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
@@ -277,11 +277,11 @@
                             <label for="total_amount" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                 Total Amount <span style="color: #e53e3e !important;">*</span>
                             </label>
-                            <input type="number" 
-                                   class="form-control @error('total_amount') is-invalid @enderror" 
-                                   id="total_amount" 
-                                   name="total_amount" 
-                                   value="{{ old('total_amount') }}" 
+                            <input type="number"
+                                   class="form-control @error('total_amount') is-invalid @enderror"
+                                   id="total_amount"
+                                   name="total_amount"
+                                   value="{{ old('total_amount') }}"
                                    step="0.01"
                                    min="0"
                                    required
@@ -310,9 +310,9 @@
                                     <label for="status" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Order Status <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <select class="form-control @error('status') is-invalid @enderror" 
-                                            id="status" 
-                                            name="status" 
+                                    <select class="form-control @error('status') is-invalid @enderror"
+                                            id="status"
+                                            name="status"
                                             required
                                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                                         <option value="pending" {{ old('status', 'pending') == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -333,9 +333,9 @@
                                     <label for="payment_status" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Payment Status <span style="color: #e53e3e !important;">*</span>
                                     </label>
-                                    <select class="form-control @error('payment_status') is-invalid @enderror" 
-                                            id="payment_status" 
-                                            name="payment_status" 
+                                    <select class="form-control @error('payment_status') is-invalid @enderror"
+                                            id="payment_status"
+                                            name="payment_status"
                                             required
                                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                                         <option value="pending" {{ old('payment_status', 'pending') == 'pending' ? 'selected' : '' }}>Pending</option>
@@ -353,8 +353,8 @@
                                     <label for="payment_method" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                         Payment Method <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
                                     </label>
-                                    <select class="form-control @error('payment_method') is-invalid @enderror" 
-                                            id="payment_method" 
+                                    <select class="form-control @error('payment_method') is-invalid @enderror"
+                                            id="payment_method"
                                             name="payment_method"
                                             style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                                         <option value="">Select payment method...</option>
@@ -377,9 +377,9 @@
                             <label for="notes" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                 Order Notes <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
                             </label>
-                            <textarea class="form-control @error('notes') is-invalid @enderror" 
-                                      id="notes" 
-                                      name="notes" 
+                            <textarea class="form-control @error('notes') is-invalid @enderror"
+                                      id="notes"
+                                      name="notes"
                                       rows="3"
                                       style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; resize: vertical !important;"
                                       placeholder="Add internal notes for this order...">{{ old('notes') }}</textarea>
@@ -389,13 +389,13 @@
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary" 
+                            <a href="{{ route('admin.orders.index') }}" class="btn btn-outline-secondary"
                                style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 14px 24px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                                onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
                                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
                                 <i class="bi bi-x-circle me-2"></i>Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary" 
+                            <button type="submit" class="btn btn-primary"
                                     style="background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important; border: 2px solid #3182ce !important; color: #ffffff !important; padding: 14px 24px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2) !important; transition: all 0.2s ease !important;"
                                     onmouseover="this.style.background='linear-gradient(135deg, #2c5aa0 0%, #2a4a8a 100%) !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(49, 130, 206, 0.3) !important';"
                                     onmouseout="this.style.background='linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(49, 130, 206, 0.2) !important';">
@@ -460,7 +460,7 @@
                                 <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">Double-check address details</li>
                             </ul>
                         </div>
-                        
+
                         <div style="padding: 1.25rem !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 10px !important; border-left: 4px solid #f59e0b !important;">
                             <h6 style="color: #1a202c !important; font-weight: 600 !important; margin-bottom: 1rem !important;">💰 Amount Calculation:</h6>
                             <ul style="margin-bottom: 0 !important; padding-left: 1.25rem !important;">
@@ -484,19 +484,19 @@ function calculateTotal() {
     const tax = parseFloat(document.getElementById('tax_amount').value) || 0;
     const shipping = parseFloat(document.getElementById('shipping_amount').value) || 0;
     const discount = parseFloat(document.getElementById('discount_amount').value) || 0;
-    
+
     const total = subtotal + tax + shipping - discount;
-    
+
     // Update total field
     document.getElementById('total_amount').value = total.toFixed(2);
-    
+
     // Update preview
     document.getElementById('preview-subtotal').textContent = '$' + subtotal.toFixed(2);
     document.getElementById('preview-tax').textContent = '$' + tax.toFixed(2);
     document.getElementById('preview-shipping').textContent = '$' + shipping.toFixed(2);
     document.getElementById('preview-discount').textContent = '-$' + discount.toFixed(2);
     document.getElementById('preview-total').textContent = '$' + total.toFixed(2);
-    
+
     // Color coding for total
     const totalElement = document.getElementById('total_amount');
     if (total > 0) {
@@ -511,18 +511,18 @@ function calculateTotal() {
 // Fill user data when user is selected
 function fillUserData(select) {
     const selectedOption = select.options[select.selectedIndex];
-    
+
     if (selectedOption.value) {
         const name = selectedOption.dataset.name;
         const email = selectedOption.dataset.email;
-        
+
         document.getElementById('customer_name').value = name;
         document.getElementById('customer_email').value = email;
-        
+
         // Visual feedback
         document.getElementById('customer_name').style.borderColor = '#10b981';
         document.getElementById('customer_email').style.borderColor = '#10b981';
-        
+
         setTimeout(function() {
             document.getElementById('customer_name').style.borderColor = '#e2e8f0';
             document.getElementById('customer_email').style.borderColor = '#e2e8f0';
@@ -535,7 +535,7 @@ function copyShippingToBilling() {
     const checkbox = document.getElementById('same_as_shipping');
     const shippingAddress = document.getElementById('shipping_address').value;
     const billingAddress = document.getElementById('billing_address');
-    
+
     if (checkbox.checked) {
         billingAddress.value = shippingAddress;
         billingAddress.style.borderColor = '#10b981';
@@ -552,7 +552,7 @@ function copyShippingToBilling() {
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize calculations
     calculateTotal();
-    
+
     // Auto-calculate tax (8% of subtotal)
     document.getElementById('subtotal').addEventListener('input', function() {
         const subtotal = parseFloat(this.value) || 0;
@@ -571,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function() {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -580,26 +580,26 @@ document.addEventListener('DOMContentLoaded', function() {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .form-control::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     .preview-section {
         transition: all 0.2s ease !important;
     }
-    
+
     .preview-section:hover {
         transform: translateY(-1px) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     #total_amount {
         transition: all 0.3s ease !important;
     }
-    
+
     .form-check-input:checked {
         background-color: #3182ce !important;
         border-color: #3182ce !important;
