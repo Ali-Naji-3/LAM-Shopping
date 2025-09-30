@@ -10,7 +10,7 @@
             </h2>
             <p class="mb-0" style="color: #4a5568 !important; font-size: 14px !important;">Add a new category to organize your products</p>
         </div>
-        <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary" 
+        <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary"
            style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
            onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
            onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
@@ -25,18 +25,18 @@
                 <div class="card-body" style="padding: 2rem !important;">
                     <form method="POST" action="{{ route('admin.categories.store') }}" enctype="multipart/form-data">
                         @csrf
-                        
+
                         <!-- Basic Information -->
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label for="name" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                     Category Name <span style="color: #e53e3e !important;">*</span>
                                 </label>
-                                <input type="text" 
-                                       class="form-control @error('name') is-invalid @enderror" 
-                                       id="name" 
-                                       name="name" 
-                                       value="{{ old('name') }}" 
+                                <input type="text"
+                                       class="form-control @error('name') is-invalid @enderror"
+                                       id="name"
+                                       name="name"
+                                       value="{{ old('name') }}"
                                        required
                                        style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                        placeholder="Enter category name">
@@ -44,16 +44,16 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label for="slug" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                     URL Slug
                                     <small style="color: #718096 !important; font-weight: 400 !important; font-size: 12px !important;">(auto-generated if empty)</small>
                                 </label>
-                                <input type="text" 
-                                       class="form-control @error('slug') is-invalid @enderror" 
-                                       id="slug" 
-                                       name="slug" 
+                                <input type="text"
+                                       class="form-control @error('slug') is-invalid @enderror"
+                                       id="slug"
+                                       name="slug"
                                        value="{{ old('slug') }}"
                                        style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                        placeholder="category-url-slug">
@@ -68,9 +68,9 @@
                             <label for="description" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                 Description
                             </label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" 
-                                      id="description" 
-                                      name="description" 
+                            <textarea class="form-control @error('description') is-invalid @enderror"
+                                      id="description"
+                                      name="description"
                                       rows="4"
                                       style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; min-height: 120px !important; resize: vertical !important;"
                                       placeholder="Enter category description (optional)">{{ old('description') }}</textarea>
@@ -85,8 +85,8 @@
                                 <label for="parent_id" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                     Parent Category
                                 </label>
-                                <select class="form-control @error('parent_id') is-invalid @enderror" 
-                                        id="parent_id" 
+                                <select class="form-control @error('parent_id') is-invalid @enderror"
+                                        id="parent_id"
                                         name="parent_id"
                                         style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                                     <option value="">Select Parent Category (Root Category)</option>
@@ -100,16 +100,16 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label for="order" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                     Display Order
                                 </label>
-                                <input type="number" 
-                                       class="form-control @error('order') is-invalid @enderror" 
-                                       id="order" 
-                                       name="order" 
-                                       value="{{ old('order', 0) }}" 
+                                <input type="number"
+                                       class="form-control @error('order') is-invalid @enderror"
+                                       id="order"
+                                       name="order"
+                                       value="{{ old('order', 0) }}"
                                        min="0"
                                        style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                        placeholder="0">
@@ -126,17 +126,17 @@
                                 Category Image
                             </label>
                             <div class="image-upload-container">
-                                <input type="file" 
-                                       class="form-control @error('image') is-invalid @enderror" 
-                                       id="image" 
-                                       name="image" 
+                                <input type="file"
+                                       class="form-control @error('image') is-invalid @enderror"
+                                       id="image"
+                                       name="image"
                                        accept="image/*"
                                        style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                                 @error('image')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="form-text" style="color: #718096 !important; font-size: 12px !important; margin-top: 6px !important;">Supported formats: JPEG, PNG, JPG, GIF. Max size: 2MB</small>
-                                
+
                                 <!-- Image Preview -->
                                 <div id="image-preview" class="mt-3" style="display: none;">
                                     <img id="preview-img" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
@@ -150,11 +150,11 @@
                         <!-- Status -->
                         <div class="mb-4">
                             <div class="form-check form-switch">
-                                <input class="form-check-input" 
-                                       type="checkbox" 
-                                       id="is_active" 
-                                       name="is_active" 
-                                       value="1" 
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="is_active"
+                                       name="is_active"
+                                       value="1"
                                        style="width: 20px !important; height: 20px !important; border: 2px solid #e2e8f0 !important; border-radius: 4px !important; background-color: #ffffff !important; transition: all 0.2s ease !important;"
                                        {{ old('is_active', 1) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="is_active" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-left: 10px !important;">
@@ -166,20 +166,20 @@
 
                         <!-- Submit Buttons -->
                         <div class="d-flex justify-content-between align-items-center" style="margin-top: 2rem !important; padding-top: 1.5rem !important; border-top: 1px solid #f7fafc !important;">
-                            <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary" 
+                            <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary"
                                style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 14px 24px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                                onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
                                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
                                 <i class="bi bi-x-circle me-2"></i>Cancel
                             </a>
                             <div class="d-flex gap-2">
-                                <button type="submit" name="action" value="save_and_new" class="btn btn-outline-primary" 
+                                <button type="submit" name="action" value="save_and_new" class="btn btn-outline-primary"
                                         style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 14px 24px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important;"
                                         onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(49, 130, 206, 0.25) !important';"
                                         onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                                     <i class="bi bi-plus-circle me-2"></i>Save & Create Another
                                 </button>
-                                <button type="submit" name="action" value="save" class="btn btn-primary" 
+                                <button type="submit" name="action" value="save" class="btn btn-primary"
                                         style="background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important; border: 2px solid #3182ce !important; color: #ffffff !important; padding: 14px 24px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2) !important; transition: all 0.2s ease !important;"
                                         onmouseover="this.style.background='linear-gradient(135deg, #2c5aa0 0%, #2a4a8a 100%) !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(49, 130, 206, 0.3) !important';"
                                         onmouseout="this.style.background='linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(49, 130, 206, 0.2) !important';">
@@ -209,7 +209,7 @@
                             <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">Use consistent naming conventions</li>
                         </ul>
                     </div>
-                    
+
                     <div class="mb-4" style="padding: 1.25rem !important; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important; border-radius: 10px !important; border-left: 4px solid #10b981 !important;">
                         <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 15px !important; margin-bottom: 1rem !important;">🏗️ Hierarchy Structure</h6>
                         <ul style="margin-bottom: 0 !important; padding-left: 1.25rem !important;">
@@ -218,7 +218,7 @@
                             <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">Maximum 3 levels recommended</li>
                         </ul>
                     </div>
-                    
+
                     <div class="mb-3" style="padding: 1.25rem !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 10px !important; border-left: 4px solid #f59e0b !important;">
                         <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 15px !important; margin-bottom: 1rem !important;">🖼️ Image Guidelines</h6>
                         <ul style="margin-bottom: 0 !important; padding-left: 1.25rem !important;">
@@ -254,175 +254,4 @@
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Auto-generate slug from name
-    const nameInput = document.getElementById('name');
-    const slugInput = document.getElementById('slug');
-    
-    nameInput.addEventListener('input', function() {
-        if (!slugInput.dataset.manuallyEdited) {
-            const slug = this.value
-                .toLowerCase()
-                .replace(/[^a-z0-9\s-]/g, '')
-                .replace(/\s+/g, '-')
-                .replace(/-+/g, '-')
-                .trim('-');
-            slugInput.value = slug;
-        }
-    });
-    
-    slugInput.addEventListener('input', function() {
-        this.dataset.manuallyEdited = 'true';
-    });
-    
-    // Image preview functionality
-    const imageInput = document.getElementById('image');
-    const imagePreview = document.getElementById('image-preview');
-    const previewImg = document.getElementById('preview-img');
-    const removeImageBtn = document.getElementById('remove-image');
-    
-    imageInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            // Validate file size (2MB = 2 * 1024 * 1024 bytes)
-            if (file.size > 2 * 1024 * 1024) {
-                showToast('File size must be less than 2MB', 'error');
-                this.value = '';
-                return;
-            }
-            
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                showToast('Please select a valid image file', 'error');
-                this.value = '';
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImg.src = e.target.result;
-                imagePreview.style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-    
-    removeImageBtn.addEventListener('click', function() {
-        imageInput.value = '';
-        imagePreview.style.display = 'none';
-        previewImg.src = '';
-    });
-});
-
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `alert alert-${type === 'error' ? 'danger' : type} position-fixed`;
-    toast.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
-    toast.innerHTML = `
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    `;
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        if (toast.parentNode) {
-            toast.parentNode.removeChild(toast);
-        }
-    }, 5000);
-}
-</script>
-@endpush
-
-@push('styles')
-<style>
-    /* Force white placeholder text for all form controls */
-    .form-control {
-        background: linear-gradient(135deg, #334155 0%, #475569 100%) !important;
-        border: 1px solid #64748b !important;
-        color: #ffffff !important;
-        border-radius: 8px !important;
-    }
-    
-    .form-control:focus {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
-        border: 2px solid #3b82f6 !important;
-        color: #ffffff !important;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
-    }
-    
-    .form-control::placeholder {
-        color: #ffffff !important;
-        opacity: 0.8 !important;
-    }
-    
-    .form-control::-webkit-input-placeholder {
-        color: #ffffff !important;
-        opacity: 0.8 !important;
-    }
-    
-    .form-control::-moz-placeholder {
-        color: #ffffff !important;
-        opacity: 0.8 !important;
-    }
-    
-    .form-control:-ms-input-placeholder {
-        color: #ffffff !important;
-        opacity: 0.8 !important;
-    }
-    
-    .form-control:-moz-placeholder {
-        color: #ffffff !important;
-        opacity: 0.8 !important;
-    }
-    
-    /* Form labels to white */
-    .form-label {
-        color: #ffffff !important;
-        font-weight: 600 !important;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    }
-    
-    .image-upload-container {
-        border: 2px dashed #64748b;
-        border-radius: 8px;
-        padding: 20px;
-        text-align: center;
-        transition: border-color 0.3s ease;
-        background: rgba(51, 65, 85, 0.3);
-    }
-    
-    .image-upload-container:hover {
-        border-color: #3b82f6;
-    }
-    
-    .form-check-input:checked {
-        background-color: #3b82f6;
-        border-color: #3b82f6;
-    }
-    
-    .form-check-label {
-        color: #ffffff !important;
-        font-weight: 500;
-    }
-    
-    .card-header {
-        font-weight: var(--font-semibold);
-    }
-    
-    .btn-outline-primary:hover {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-    }
-    
-    .btn-outline-secondary:hover {
-        background-color: var(--bg-tertiary);
-        border-color: var(--border-color);
-        color: var(--text-primary);
-    }
-</style>
-@endpush
 @endsection

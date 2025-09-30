@@ -229,10 +229,23 @@ window.handleSliderSearchBlur = function(input) {
             </div>
         </div>
 
+        <!-- Drag & Drop Reorder Notice -->
+        <div class="alert alert-info mb-4" style="background: linear-gradient(135deg, #e0f2fe 0%, #b3e5fc 100%) !important; border: 1px solid #81d4fa !important; border-radius: 10px !important; color: #0277bd !important;">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-info-circle me-3" style="font-size: 1.5rem !important;"></i>
+                <div>
+                    <strong>💡 Pro Tip:</strong> Drag sliders to reorder them. Higher positioned sliders appear first on your website.
+                    <button type="button" class="btn btn-sm btn-outline-primary ms-3" id="enable-reorder-btn" style="color: #0277bd !important; border-color: #0277bd !important;">
+                        <i class="bi bi-arrow-up-down me-1"></i>Enable Reordering
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Sliders Display -->
-        <div class="row">
+        <div class="row" id="sliders-container">
             @foreach($sliders as $slider)
-                <div class="col-lg-6 col-md-12 mb-4">
+                <div class="col-lg-6 col-md-12 mb-4 slider-item" data-slider-id="{{ $slider->id }}" data-order="{{ $slider->order }}">
                     <div class="slider-card"
                          style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; overflow: hidden !important; transition: all 0.2s ease !important; height: 100% !important;"
                          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.1) !important'; this.style.borderColor='#3182ce !important';"
@@ -258,10 +271,10 @@ window.handleSliderSearchBlur = function(input) {
                                 </span>
                             </div>
 
-                            <!-- Order Badge -->
+                            <!-- Priority Badge -->
                             <div class="position-absolute top-0 start-0 m-2">
-                                <span class="badge" style="background: #1a202c !important; color: #ffffff !important; font-size: 10px !important; padding: 4px 8px !important; border-radius: 12px !important;">
-                                    Order: {{ $slider->order }}
+                                <span class="badge" style="background: {{ $slider->priority_color }} !important; color: #ffffff !important; font-size: 10px !important; padding: 4px 8px !important; border-radius: 12px !important;">
+                                    {{ $slider->priority_label }}
                                 </span>
                             </div>
 
@@ -324,10 +337,10 @@ window.handleSliderSearchBlur = function(input) {
                             </div>
 
                             <!-- Slider Meta -->
-                            <div class="mb-3" style="padding: 8px 12px !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 6px !important;">
+                                <div class="mb-3" style="padding: 8px 12px !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 6px !important;">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <small style="color: #92400e !important; font-weight: 600 !important; font-size: 11px !important;">
-                                        ID: {{ $slider->id }} • Duration: {{ $slider->duration }}
+                                        ID: {{ $slider->id }} • Priority: {{ $slider->priority_label }} • Order: {{ $slider->order }}
                                     </small>
                                     <small style="color: #92400e !important; font-weight: 600 !important; font-size: 11px !important;">
                                         {{ $slider->created_at->format('M d, Y') }}
@@ -353,12 +366,12 @@ window.handleSliderSearchBlur = function(input) {
                                    onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important';">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <a href="{{ route('admin.sliders.show', $slider) }}" class="btn btn-sm btn-outline-info flex-fill"
-                                   style="color: #0891b2 !important; border-color: #0891b2 !important; background: #ffffff !important; padding: 8px 12px !important; border-radius: 6px !important; font-size: 12px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
+                                <button type="button" class="btn btn-sm btn-outline-info flex-fill" onclick="previewSlider({{ $slider->id }})"
+                                   style="color: #0891b2 !important; border-color: #0891b2 !important; background: #ffffff !important; padding: 8px 12px !important; border-radius: 6px !important; font-size: 12px !important; transition: all 0.2s ease !important;"
                                    onmouseover="this.style.backgroundColor='#0891b2 !important'; this.style.color='#ffffff !important';"
                                    onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
                                     <i class="bi bi-eye"></i>
-                                </a>
+                                </button>
                                 <form method="POST" action="{{ route('admin.sliders.destroy', $slider) }}" class="d-inline flex-fill"
                                       onsubmit="return confirm('Are you sure you want to delete this slider?')">
                                     @csrf
@@ -419,9 +432,51 @@ window.handleSliderSearchBlur = function(input) {
             </div>
         </div>
     @endif
+
+    <!-- Live Preview Modal -->
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="border-radius: 12px !important; border: none !important;">
+                <div class="modal-header" style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important; border-bottom: 1px solid #e2e8f0 !important; border-radius: 12px 12px 0 0 !important;">
+                    <h5 class="modal-title" id="previewModalLabel" style="color: #1a202c !important; font-weight: 600 !important;">
+                        <i class="bi bi-eye me-2" style="color: #3182ce !important;"></i>Live Preview
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 0 !important;">
+                    <!-- Preview Content will be loaded here -->
+                    <div id="preview-content" style="min-height: 400px; background: #f8fafc; display: flex; align-items: center; justify-content: center;">
+                        <div class="text-center">
+                            <i class="bi bi-image" style="font-size: 3rem; color: #718096; margin-bottom: 1rem;"></i>
+                            <p style="color: #4a5568;">Loading preview...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background: #f8fafc !important; border-top: 1px solid #e2e8f0 !important; border-radius: 0 0 12px 12px !important;">
+                    <div class="d-flex justify-content-between w-100">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="switchPreviewMode('desktop')" id="desktop-preview">
+                                <i class="bi bi-laptop me-1"></i>Desktop
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="switchPreviewMode('tablet')" id="tablet-preview">
+                                <i class="bi bi-tablet me-1"></i>Tablet
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="switchPreviewMode('mobile')" id="mobile-preview">
+                                <i class="bi bi-phone me-1"></i>Mobile
+                            </button>
+                        </div>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-1"></i>Close Preview
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Bulk selection functionality
@@ -468,6 +523,254 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     }
+
+    // Drag & Drop Reordering
+    let sortableInstance = null;
+    const enableReorderBtn = document.getElementById('enable-reorder-btn');
+    const slidersContainer = document.getElementById('sliders-container');
+
+    if (enableReorderBtn && slidersContainer) {
+        enableReorderBtn.addEventListener('click', function() {
+            if (!sortableInstance) {
+                // Enable drag & drop
+                sortableInstance = new Sortable(slidersContainer, {
+                    animation: 150,
+                    handle: '.slider-card',
+                    ghostClass: 'sortable-ghost',
+                    chosenClass: 'sortable-chosen',
+                    dragClass: 'sortable-drag',
+                    onEnd: function(evt) {
+                        const sliderItems = document.querySelectorAll('.slider-item');
+                        const sliderIds = Array.from(sliderItems).map(item => item.getAttribute('data-slider-id'));
+                        
+                        // Send reorder request
+                        fetch('{{ route("admin.sliders.reorder") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({
+                                slider_ids: sliderIds
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Show success message
+                                showNotification('Sliders reordered successfully!', 'success');
+                            } else {
+                                // Show error message
+                                showNotification('Failed to reorder sliders', 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showNotification('Failed to reorder sliders', 'error');
+                        });
+                    }
+                });
+                
+                // Update button text and style
+                enableReorderBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Reordering Enabled';
+                enableReorderBtn.className = 'btn btn-sm btn-success ms-3';
+                enableReorderBtn.style.color = '#ffffff !important';
+                enableReorderBtn.style.borderColor = '#10b981 !important';
+                enableReorderBtn.style.backgroundColor = '#10b981 !important';
+                
+                // Add visual indicators to slider cards
+                document.querySelectorAll('.slider-card').forEach(card => {
+                    card.style.cursor = 'move';
+                    card.title = 'Drag to reorder';
+                });
+                
+                showNotification('Drag & drop reordering enabled! Drag any slider to reorder.', 'info');
+            }
+        });
+    }
+
+    // Notification function
+    function showNotification(message, type) {
+        const alertClass = {
+            'success': 'alert-success',
+            'error': 'alert-danger',
+            'info': 'alert-info'
+        }[type] || 'alert-info';
+        
+        const notification = document.createElement('div');
+        notification.className = `alert ${alertClass} alert-dismissible fade show position-fixed`;
+        notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 5000);
+    }
+
+    // Preview functionality
+    window.previewSlider = function(sliderId) {
+        const modal = new bootstrap.Modal(document.getElementById('previewModal'));
+        modal.show();
+        
+        // Load slider data and create preview
+        loadSliderPreview(sliderId);
+    };
+
+    window.switchPreviewMode = function(mode) {
+        const previewContent = document.getElementById('preview-content');
+        const buttons = document.querySelectorAll('[id$="-preview"]');
+        
+        // Update button states
+        buttons.forEach(btn => {
+            btn.className = btn.className.replace('btn-outline-primary', 'btn-outline-secondary');
+        });
+        
+        const activeBtn = document.getElementById(mode + '-preview');
+        if (activeBtn) {
+            activeBtn.className = activeBtn.className.replace('btn-outline-secondary', 'btn-outline-primary');
+        }
+        
+        // Apply preview mode styles
+        previewContent.className = 'preview-' + mode;
+        
+        // Update preview container width
+        const container = previewContent.querySelector('.preview-container');
+        if (container) {
+            container.style.maxWidth = {
+                'desktop': '100%',
+                'tablet': '768px',
+                'mobile': '375px'
+            }[mode];
+            container.style.margin = '0 auto';
+        }
+    };
+
+    function loadSliderPreview(sliderId) {
+        const previewContent = document.getElementById('preview-content');
+        
+        // Find slider data from the current page
+        const sliderElement = document.querySelector(`[data-slider-id="${sliderId}"]`);
+        if (!sliderElement) {
+            previewContent.innerHTML = '<div class="text-center"><p style="color: #e53e3e;">Slider not found</p></div>';
+            return;
+        }
+        
+        // Extract slider data from the DOM
+        const sliderData = extractSliderData(sliderElement);
+        
+        // Generate preview HTML
+        const previewHTML = generateSliderPreviewHTML(sliderData);
+        
+        // Update preview content
+        previewContent.innerHTML = previewHTML;
+        
+        // Set default to desktop view
+        switchPreviewMode('desktop');
+    }
+
+    function extractSliderData(element) {
+        const title = element.querySelector('h5')?.textContent?.trim() || '';
+        const subtitle = element.querySelector('p')?.textContent?.trim() || '';
+        const image = element.querySelector('img')?.src || '';
+        const status = element.querySelector('.badge')?.textContent?.trim() || 'Active';
+        
+        // Try to extract link and button text from the slider data
+        const linkElement = element.querySelector('[style*="Link"]');
+        const buttonElement = element.querySelector('[style*="Button"]');
+        
+        const link = linkElement?.nextElementSibling?.textContent?.trim() || '';
+        const buttonText = buttonElement?.nextElementSibling?.textContent?.trim() || '';
+        
+        return {
+            title,
+            subtitle,
+            image,
+            link,
+            buttonText,
+            status
+        };
+    }
+
+    function generateSliderPreviewHTML(data) {
+        return `
+            <div class="preview-container" style="position: relative; width: 100%; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                <!-- Slider Preview -->
+                <div class="slider-preview" style="position: relative; height: 400px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    ${data.image ? `
+                        <img src="${data.image}" alt="${data.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                    ` : `
+                        <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center;">
+                            <i class="bi bi-image" style="font-size: 4rem; color: rgba(255,255,255,0.7);"></i>
+                        </div>
+                    `}
+                    
+                    <!-- Overlay Content -->
+                    <div class="slider-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">
+                        <div class="slider-content" style="text-align: center; color: white; padding: 2rem; max-width: 600px;">
+                            ${data.title ? `<h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">${data.title}</h2>` : ''}
+                            ${data.subtitle ? `<p style="font-size: 1.2rem; margin-bottom: 2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">${data.subtitle}</p>` : ''}
+                            ${data.buttonText ? `
+                                <a href="${data.link || '#'}" class="btn btn-primary btn-lg" style="background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%); border: none; padding: 12px 30px; border-radius: 25px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);">
+                                    ${data.buttonText}
+                                </a>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <!-- Status Badge -->
+                    <div style="position: absolute; top: 20px; right: 20px;">
+                        <span class="badge" style="background: ${getStatusColor(data.status)}; padding: 8px 16px; border-radius: 20px; font-weight: 600;">
+                            ${data.status}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Preview Info -->
+                <div style="padding: 1rem; background: #f8fafc; border-top: 1px solid #e2e8f0;">
+                    <div class="row text-center">
+                        <div class="col-md-3">
+                            <small style="color: #718096; font-weight: 600;">SLIDER ID</small>
+                            <div style="color: #1a202c; font-weight: 600;">#${sliderId}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <small style="color: #718096; font-weight: 600;">STATUS</small>
+                            <div style="color: #1a202c; font-weight: 600;">${data.status}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <small style="color: #718096; font-weight: 600;">HAS LINK</small>
+                            <div style="color: ${data.link ? '#10b981' : '#e53e3e'}; font-weight: 600;">
+                                ${data.link ? 'Yes' : 'No'}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <small style="color: #718096; font-weight: 600;">BUTTON</small>
+                            <div style="color: ${data.buttonText ? '#10b981' : '#e53e3e'}; font-weight: 600;">
+                                ${data.buttonText ? data.buttonText : 'None'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function getStatusColor(status) {
+        const colors = {
+            'Active': '#10b981',
+            'Scheduled': '#3182ce',
+            'Expired': '#6b7280',
+            'Inactive': '#ef4444'
+        };
+        return colors[status] || '#6b7280';
+    }
 });
 </script>
 @endpush
@@ -510,6 +813,49 @@ document.addEventListener('DOMContentLoaded', function() {
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
 
+    /* Drag & Drop Styles */
+    .sortable-ghost {
+        opacity: 0.4 !important;
+        background: #f0f9ff !important;
+        border: 2px dashed #3182ce !important;
+    }
+
+    .sortable-chosen {
+        transform: scale(1.02) !important;
+        box-shadow: 0 8px 25px rgba(49, 130, 206, 0.3) !important;
+        border-color: #3182ce !important;
+        z-index: 1000 !important;
+    }
+
+    .sortable-drag {
+        transform: rotate(5deg) !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .slider-item {
+        transition: all 0.3s ease !important;
+    }
+
+    .slider-card:hover {
+        cursor: move !important;
+    }
+
+    /* Notification Styles */
+    .alert.position-fixed {
+        animation: slideInRight 0.3s ease-out;
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
     /* Responsive Design */
     @media (max-width: 768px) {
         .slider-card {
@@ -527,6 +873,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .slider-image-container {
             height: 150px !important;
+        }
+
+        .alert.position-fixed {
+            top: 10px !important;
+            right: 10px !important;
+            left: 10px !important;
+            min-width: auto !important;
         }
     }
 </style>

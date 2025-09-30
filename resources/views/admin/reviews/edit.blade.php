@@ -12,7 +12,7 @@
                 Review #{{ $review->id }} • Created {{ $review->created_at->format('F d, Y') }}
             </p>
         </div>
-        <a href="{{ route('admin.reviews.show', $review) }}" class="btn btn-outline-secondary" 
+        <a href="{{ route('admin.reviews.show', $review) }}" class="btn btn-outline-secondary"
            style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
            onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
            onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
@@ -33,15 +33,15 @@
                     <form method="POST" action="{{ route('admin.reviews.update', $review) }}">
                         @csrf
                         @method('PUT')
-                        
+
                         <!-- User Selection -->
                         <div class="mb-4">
                             <label for="user_id" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                 Reviewer <span style="color: #e53e3e !important;">*</span>
                             </label>
-                            <select class="form-control @error('user_id') is-invalid @enderror" 
-                                    id="user_id" 
-                                    name="user_id" 
+                            <select class="form-control @error('user_id') is-invalid @enderror"
+                                    id="user_id"
+                                    name="user_id"
                                     required
                                     style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;">
                                 <option value="">Select a user...</option>
@@ -61,15 +61,15 @@
                             <label for="product_id" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                 Product <span style="color: #e53e3e !important;">*</span>
                             </label>
-                            <select class="form-control @error('product_id') is-invalid @enderror" 
-                                    id="product_id" 
-                                    name="product_id" 
+                            <select class="form-control @error('product_id') is-invalid @enderror"
+                                    id="product_id"
+                                    name="product_id"
                                     required
                                     style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                     onchange="updateProductPreview(this)">
                                 <option value="">Select a product...</option>
                                 @foreach($products as $product)
-                                    <option value="{{ $product->id }}" 
+                                    <option value="{{ $product->id }}"
                                             data-name="{{ $product->name }}"
                                             data-price="{{ $product->regular_price }}"
                                             data-category="{{ $product->category->name ?? 'No Category' }}"
@@ -111,10 +111,10 @@
                             <label for="title" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                 Review Title <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
                             </label>
-                            <input type="text" 
-                                   class="form-control @error('title') is-invalid @enderror" 
-                                   id="title" 
-                                   name="title" 
+                            <input type="text"
+                                   class="form-control @error('title') is-invalid @enderror"
+                                   id="title"
+                                   name="title"
                                    value="{{ old('title', $review->title) }}"
                                    style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
                                    placeholder="Enter a title for the review (e.g., 'Great product!', 'Exceeded expectations')">
@@ -128,9 +128,9 @@
                             <label for="comment" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
                                 Review Comment <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
                             </label>
-                            <textarea class="form-control @error('comment') is-invalid @enderror" 
-                                      id="comment" 
-                                      name="comment" 
+                            <textarea class="form-control @error('comment') is-invalid @enderror"
+                                      id="comment"
+                                      name="comment"
                                       rows="6"
                                       style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; resize: vertical !important;"
                                       placeholder="Write a detailed review about the product...">{{ old('comment', $review->comment) }}</textarea>
@@ -138,6 +138,65 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                             <small class="form-text" style="color: #718096 !important; font-size: 12px !important; margin-top: 6px !important;">Share your experience with the product. Be specific and helpful to other customers.</small>
+                        </div>
+
+                        <!-- Pros and Cons -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="pros" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
+                                    Pros <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
+                                </label>
+                                <textarea class="form-control @error('pros') is-invalid @enderror"
+                                          id="pros"
+                                          name="pros"
+                                          rows="3"
+                                          style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; resize: vertical !important;"
+                                          placeholder="What did you like about this product?">{{ old('pros', $review->pros) }}</textarea>
+                                @error('pros')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cons" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
+                                    Cons <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
+                                </label>
+                                <textarea class="form-control @error('cons') is-invalid @enderror"
+                                          id="cons"
+                                          name="cons"
+                                          rows="3"
+                                          style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; line-height: 1.6 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important; resize: vertical !important;"
+                                          placeholder="What could be improved?">{{ old('cons', $review->cons) }}</textarea>
+                                @error('cons')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Recommendation and Purchase Verification -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-check" style="padding: 1rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: 10px; border: 1px solid #e0f2fe;">
+                                    <input class="form-check-input" type="checkbox" name="would_recommend" id="would_recommend" value="1" {{ old('would_recommend', $review->would_recommend) ? 'checked' : '' }} style="margin-top: 4px;">
+                                    <label class="form-check-label" for="would_recommend" style="color: #1a202c !important; font-weight: 600 !important; font-size: 14px !important; margin-left: 8px;">
+                                        <i class="bi bi-thumbs-up me-2" style="color: #10b981;"></i>I would recommend this product
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="purchase_verified" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
+                                    Purchase Verification <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
+                                </label>
+                                <input type="text"
+                                       class="form-control @error('purchase_verified') is-invalid @enderror"
+                                       id="purchase_verified"
+                                       name="purchase_verified"
+                                       value="{{ old('purchase_verified', $review->purchase_verified) }}"
+                                       style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important; transition: all 0.2s ease !important;"
+                                       placeholder="e.g., Order #12345, Verified Purchase">
+                                @error('purchase_verified')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Approval Status -->
@@ -154,13 +213,13 @@
                         </div>
 
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="{{ route('admin.reviews.show', $review) }}" class="btn btn-outline-secondary" 
+                            <a href="{{ route('admin.reviews.show', $review) }}" class="btn btn-outline-secondary"
                                style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 14px 24px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                                onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
                                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
                                 <i class="bi bi-x-circle me-2"></i>Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary" 
+                            <button type="submit" class="btn btn-primary"
                                     style="background: linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important; border: 2px solid #3182ce !important; color: #ffffff !important; padding: 14px 24px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2) !important; transition: all 0.2s ease !important;"
                                     onmouseover="this.style.background='linear-gradient(135deg, #2c5aa0 0%, #2a4a8a 100%) !important'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 8px rgba(49, 130, 206, 0.3) !important';"
                                     onmouseout="this.style.background='linear-gradient(135deg, #3182ce 0%, #2c5aa0 100%) !important'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(49, 130, 206, 0.2) !important';">
@@ -190,19 +249,19 @@
                                 {{ $review->status_badge }}
                             </span>
                         </div>
-                        
+
                         @if($review->title)
                             <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 16px !important; margin-bottom: 8px !important;">
                                 "{{ $review->title }}"
                             </h6>
                         @endif
-                        
+
                         @if($review->comment)
                             <p style="color: #4a5568 !important; font-size: 14px !important; line-height: 1.6 !important; margin-bottom: 12px !important;">
                                 {{ Str::limit($review->comment, 150) }}
                             </p>
                         @endif
-                        
+
                         <div style="padding: 10px !important; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important; border-radius: 8px !important;">
                             <small style="color: #718096 !important; font-size: 12px !important;">
                                 <strong>Product:</strong> {{ $review->product->name }}<br>
@@ -260,7 +319,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Rating selection functionality
     const ratingOptions = document.querySelectorAll('.rating-option');
-    
+
     ratingOptions.forEach(option => {
         option.addEventListener('click', function() {
             // Remove active class from all options
@@ -268,16 +327,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 opt.style.borderColor = '#e2e8f0';
                 opt.style.backgroundColor = '#ffffff';
             });
-            
+
             // Add active class to selected option
             this.style.borderColor = '#3182ce';
             this.style.backgroundColor = '#f0f9ff';
-            
+
             // Check the radio button
             const radio = this.querySelector('input[type="radio"]');
             radio.checked = true;
         });
-        
+
         // Check if this option should be pre-selected
         const radio = option.querySelector('input[type="radio"]');
         if (radio.checked) {
@@ -291,12 +350,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateProductPreview(select) {
     const selectedOption = select.options[select.selectedIndex];
     const preview = document.getElementById('product-preview');
-    
+
     if (selectedOption.value) {
         const name = selectedOption.dataset.name;
         const price = selectedOption.dataset.price;
         const category = selectedOption.dataset.category;
-        
+
         preview.innerHTML = `
             <div class="product-icon" style="background: #3182ce !important; width: 60px !important; height: 60px !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; margin: 0 auto 12px auto !important;">
                 <i class="bi bi-box" style="color: #ffffff !important; font-size: 24px !important;"></i>
@@ -325,7 +384,7 @@ document.addEventListener('DOMContentLoaded', function() {
         border-color: #cbd5e0 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .form-control:focus {
         background: #ffffff !important;
         border: 2px solid #3182ce !important;
@@ -334,42 +393,42 @@ document.addEventListener('DOMContentLoaded', function() {
         outline: none !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .form-control::placeholder {
         color: #718096 !important;
         opacity: 1 !important;
         font-weight: 400 !important;
     }
-    
+
     .rating-option {
         transition: all 0.2s ease !important;
     }
-    
+
     .rating-option:hover {
         border-color: #3182ce !important;
         background-color: #f0f9ff !important;
         transform: translateY(-1px) !important;
     }
-    
+
     .current-review-preview {
         transition: all 0.2s ease !important;
     }
-    
+
     .product-icon {
         transition: all 0.2s ease !important;
     }
-    
+
     .product-icon:hover {
         transform: scale(1.1) !important;
     }
-    
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .rating-selection {
             flex-direction: column !important;
             gap: 8px !important;
         }
-        
+
         .rating-option {
             width: 100% !important;
             justify-content: center !important;

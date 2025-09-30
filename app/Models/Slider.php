@@ -8,7 +8,7 @@ class Slider extends Model
 {
     protected $fillable = [
         'title', 'subtitle', 'image', 'link', 'button_text', 
-        'is_active', 'order', 'start_date', 'end_date'
+        'is_active', 'order', 'priority', 'start_date', 'end_date'
     ];
     
     protected $casts = [
@@ -24,7 +24,7 @@ class Slider extends Model
     
     public function scopeOrdered($query)
     {
-        return $query->orderBy('order');
+        return $query->orderBy('priority', 'desc')->orderBy('order');
     }
 
     public function scopeCurrentlyActive($query)
@@ -99,5 +99,29 @@ class Slider extends Model
             return asset('storage/' . $this->image);
         }
         return asset('images/placeholder-slider.jpg');
+    }
+
+    public function getPriorityLabelAttribute()
+    {
+        return match($this->priority) {
+            0 => 'Normal',
+            1 => 'Low',
+            3 => 'Medium',
+            5 => 'High',
+            10 => 'Highest',
+            default => 'Normal'
+        };
+    }
+
+    public function getPriorityColorAttribute()
+    {
+        return match($this->priority) {
+            0 => '#6b7280',
+            1 => '#10b981',
+            3 => '#f59e0b',
+            5 => '#ef4444',
+            10 => '#8b5cf6',
+            default => '#6b7280'
+        };
     }
 }

@@ -295,6 +295,43 @@ window.handleReviewSearchBlur = function(input) {
                             </p>
                         @endif
 
+                        <!-- Pros and Cons -->
+                        @if($review->pros || $review->cons)
+                            <div class="row mb-3">
+                                @if($review->pros)
+                                    <div class="col-6">
+                                        <div style="padding: 8px 12px !important; background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important; border-radius: 6px !important; border-left: 3px solid #10b981 !important;">
+                                            <small style="color: #065f46 !important; font-weight: 600 !important; font-size: 10px !important; text-transform: uppercase !important;">Pros</small>
+                                            <div style="color: #064e3b !important; font-size: 12px !important; font-weight: 500 !important;">{{ Str::limit($review->pros, 50) }}</div>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if($review->cons)
+                                    <div class="col-6">
+                                        <div style="padding: 8px 12px !important; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important; border-radius: 6px !important; border-left: 3px solid #ef4444 !important;">
+                                            <small style="color: #991b1b !important; font-weight: 600 !important; font-size: 10px !important; text-transform: uppercase !important;">Cons</small>
+                                            <div style="color: #7f1d1d !important; font-size: 12px !important; font-weight: 500 !important;">{{ Str::limit($review->cons, 50) }}</div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        @endif
+
+                        <!-- Recommendation and Purchase Verification -->
+                        <div class="d-flex gap-2 mb-3">
+                            @if($review->would_recommend !== null)
+                                <span class="badge" style="background: {{ $review->recommendation_color }} !important; color: #ffffff !important; font-size: 10px !important; padding: 4px 8px !important; border-radius: 12px !important;">
+                                    <i class="bi bi-{{ $review->would_recommend ? 'thumbs-up' : 'thumbs-down' }} me-1"></i>
+                                    {{ $review->would_recommend ? 'Recommends' : 'Not Recommended' }}
+                                </span>
+                            @endif
+                            @if($review->purchase_verified)
+                                <span class="badge" style="background: #10b981 !important; color: #ffffff !important; font-size: 10px !important; padding: 4px 8px !important; border-radius: 12px !important;">
+                                    <i class="bi bi-check-circle me-1"></i>Verified
+                                </span>
+                            @endif
+                        </div>
+
                         <!-- Product and User Info -->
                         <div class="mb-3" style="padding: 12px !important; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important; border-radius: 8px !important;">
                             <div class="row">
@@ -357,6 +394,12 @@ window.handleReviewSearchBlur = function(input) {
                                onmouseover="this.style.backgroundColor='#0891b2 !important'; this.style.color='#ffffff !important';"
                                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#0891b2 !important';">
                                 <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ route('admin.reviews.contacts', $review) }}" class="btn btn-sm btn-outline-success flex-fill"
+                               style="color: #10b981 !important; border-color: #10b981 !important; background: #ffffff !important; padding: 8px 12px !important; border-radius: 6px !important; font-size: 12px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
+                               onmouseover="this.style.backgroundColor='#10b981 !important'; this.style.color='#ffffff !important';"
+                               onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#10b981 !important';">
+                                <i class="bi bi-chat-dots"></i>
                             </a>
                             <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" class="d-inline flex-fill"
                                   onsubmit="return confirm('Are you sure you want to delete this review?')">

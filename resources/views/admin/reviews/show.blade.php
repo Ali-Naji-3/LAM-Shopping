@@ -19,7 +19,7 @@
                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important';">
                 <i class="bi bi-pencil me-2"></i>Edit Review
             </a>
-            <a href="{{ route('admin.reviews.index') }}" class="btn btn-outline-secondary" 
+            <a href="{{ route('admin.reviews.index') }}" class="btn btn-outline-secondary"
                style="color: #4a5568 !important; border-color: #4a5568 !important; background: #ffffff !important; padding: 12px 20px !important; border-radius: 10px !important; font-weight: 600 !important; font-size: 14px !important; border-width: 2px !important; transition: all 0.2s ease !important; text-decoration: none !important;"
                onmouseover="this.style.backgroundColor='#4a5568 !important'; this.style.color='#ffffff !important';"
                onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#4a5568 !important';">
@@ -55,7 +55,7 @@
                             </h4>
                         </div>
                     @endif
-                    
+
                     @if($review->comment)
                         <div class="review-comment" style="color: #2d3748 !important; font-size: 16px !important; line-height: 1.8 !important; padding: 1.5rem !important; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important; border-radius: 10px !important; border-left: 4px solid #3182ce !important;">
                             {{ $review->comment }}
@@ -169,14 +169,14 @@
                                 </button>
                             </form>
                         @endif
-                        
+
                         <a href="{{ route('admin.reviews.edit', $review) }}" class="btn btn-outline-primary w-100"
                            style="color: #3182ce !important; border-color: #3182ce !important; background: #ffffff !important; padding: 12px 16px !important; border-radius: 8px !important; font-weight: 600 !important; text-decoration: none !important;"
                            onmouseover="this.style.backgroundColor='#3182ce !important'; this.style.color='#ffffff !important';"
                            onmouseout="this.style.backgroundColor='#ffffff !important'; this.style.color='#3182ce !important';">
                             <i class="bi bi-pencil me-2"></i>Edit Review
                         </a>
-                        
+
                         <form method="POST" action="{{ route('admin.reviews.destroy', $review) }}" onsubmit="return confirm('Are you sure you want to delete this review?')">
                             @csrf
                             @method('DELETE')
@@ -270,30 +270,30 @@
     .review-comment {
         transition: all 0.2s ease !important;
     }
-    
+
     .review-comment:hover {
         transform: translateY(-1px) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .stat-item {
         transition: all 0.2s ease !important;
     }
-    
+
     .stat-item:hover {
         transform: translateY(-1px) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .related-review {
         transition: all 0.2s ease !important;
     }
-    
+
     .related-review:hover {
         transform: translateY(-1px) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
-    
+
     .rating-stars {
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
     }

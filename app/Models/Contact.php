@@ -12,7 +12,8 @@ class Contact extends Model
         'category_id',
         'brand_id',
         'attribute_id',
-        'warehouse_id', // Newly added
+        'warehouse_id',
+        'review_id', // Newly added
         'user_id',
         'subject',
         'message',
@@ -42,9 +43,14 @@ class Contact extends Model
         return $this->belongsTo(Attribute::class);
     }
 
-    public function warehouse(): BelongsTo // Newly added
+    public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function review(): BelongsTo // Newly added
+    {
+        return $this->belongsTo(Review::class);
     }
 
     public function user(): BelongsTo

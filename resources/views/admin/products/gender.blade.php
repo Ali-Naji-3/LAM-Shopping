@@ -120,8 +120,8 @@
                         <label class="form-label">Search {{ $gender }} Products</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" name="search" class="form-control" 
-                                   placeholder="Search products..." 
+                            <input type="text" name="search" class="form-control"
+                                   placeholder="Search products..."
                                    value="{{ request('search') }}">
                         </div>
                     </div>
@@ -192,7 +192,7 @@
                                 </div>
                             @endif
                         </div>
-                        
+
                         <div class="card-body">
                             <div class="product-pricing">
                                 <div class="price-current">${{ number_format($product->regular_price, 2) }}</div>
@@ -201,7 +201,7 @@
                                     <div class="price-discount">-{{ $product->discount_percentage }}%</div>
                                 @endif
                             </div>
-                            
+
                             <div class="product-details">
                                 <div class="detail-item">
                                     <i class="fas fa-folder"></i>
@@ -223,18 +223,18 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                         <div class="card-footer">
                             <div class="product-actions">
-                                <a href="{{ route('admin.products.show', $product) }}" 
+                                <a href="{{ route('admin.products.show', $product) }}"
                                    class="btn btn-sm btn-info" title="View Details">
                                     <i class="fas fa-eye"></i> View
                                 </a>
-                                <a href="{{ route('admin.products.edit', $product) }}" 
+                                <a href="{{ route('admin.products.edit', $product) }}"
                                    class="btn btn-sm btn-warning" title="Edit Product">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
-                                <a href="{{ route('admin.inventory.index') }}?search={{ $product->sku }}" 
+                                <a href="{{ route('admin.inventory.index') }}?search={{ $product->sku }}"
                                    class="btn btn-sm btn-success" title="View Inventory">
                                     <i class="fas fa-warehouse"></i> Stock
                                 </a>
@@ -248,7 +248,7 @@
                         <div class="empty-icon">{{ $theme['icon'] }}</div>
                         <h4>No {{ $gender }} Products Found</h4>
                         <p>Start by creating products in {{ strtolower($gender) }}'s categories.</p>
-                        <a href="{{ route('admin.products.create') }}" 
+                        <a href="{{ route('admin.products.create') }}"
                            class="btn btn-primary">
                             <i class="fas fa-plus"></i> Create First Product
                         </a>

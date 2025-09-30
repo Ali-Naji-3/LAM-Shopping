@@ -96,7 +96,7 @@ class OrdersController extends Controller
     {
         $users = User::orderBy('name')->get();
         $products = Product::with(['category', 'brand'])->orderBy('name')->get();
-        
+
         return view('admin.orders.create', compact('users', 'products'));
     }
 
@@ -145,13 +145,13 @@ class OrdersController extends Controller
     public function show(Order $order)
     {
         $order->load(['user', 'orderItems.product.category', 'orderItems.product.brand', 'transactions']);
-        
+
         // Calculate order analytics
         $orderAnalytics = [
             'items_count' => $order->orderItems()->count(),
             'total_quantity' => $order->orderItems()->sum('quantity'),
-            'average_item_price' => $order->orderItems()->count() > 0 ? 
-                $order->orderItems()->sum('price') / $order->orderItems()->sum('quantity') : 0,
+            // 'average_item_price' => $order->orderItems()->count() > 0 ?
+            //     $order->orderItems()->sum('price') / $order->orderItems()->sum('quantity') : 0,
             'transactions_count' => $this->safeCount(function() use ($order) {
                 return $order->transactions()->count();
             }),
@@ -170,7 +170,7 @@ class OrdersController extends Controller
     {
         $order->load(['user', 'orderItems']);
         $users = User::orderBy('name')->get();
-        
+
         return view('admin.orders.edit', compact('order', 'users'));
     }
 
@@ -243,7 +243,7 @@ class OrdersController extends Controller
                 } else {
                     return redirect()->back()->with('error', 'Please select a status for bulk update.');
                 }
-                
+
             case 'update_payment_status':
                 if ($request->filled('bulk_payment_status')) {
                     $orders->update(['payment_status' => $request->bulk_payment_status]);
@@ -251,7 +251,7 @@ class OrdersController extends Controller
                 } else {
                     return redirect()->back()->with('error', 'Please select a payment status for bulk update.');
                 }
-                
+
             case 'delete':
                 $orders->delete();
                 return redirect()->back()->with('success', 'Selected orders deleted successfully!');
@@ -268,7 +268,7 @@ class OrdersController extends Controller
         ]);
 
         $order->update(['status' => $request->status]);
-        
+
         return redirect()->back()->with('success', "Order status updated to {$request->status}!");
     }
 
@@ -282,7 +282,7 @@ class OrdersController extends Controller
         ]);
 
         $order->update(['payment_status' => $request->payment_status]);
-        
+
         return redirect()->back()->with('success', "Payment status updated to {$request->payment_status}!");
     }
 
@@ -300,23 +300,23 @@ class OrdersController extends Controller
             'delivered_orders' => Order::where('status', 'delivered')->count(),
             'cancelled_orders' => Order::where('status', 'cancelled')->count(),
             'refunded_orders' => Order::where('status', 'refunded')->count(),
-            
+
             'paid_orders' => Order::where('payment_status', 'paid')->count(),
             'pending_payments' => Order::where('payment_status', 'pending')->count(),
             'failed_payments' => Order::where('payment_status', 'failed')->count(),
             'refunded_payments' => Order::where('payment_status', 'refunded')->count(),
-            
+
             'total_revenue' => Order::where('payment_status', 'paid')->sum('total_amount'),
             'pending_revenue' => Order::where('payment_status', 'pending')->sum('total_amount'),
             'average_order_value' => Order::avg('total_amount') ?? 0,
-            'completion_rate' => Order::count() > 0 ? 
+            'completion_rate' => Order::count() > 0 ?
                 round((Order::where('status', 'delivered')->count() / Order::count()) * 100, 1) : 0,
-            
+
             'recent_orders' => Order::with(['user', 'orderItems'])
                 ->orderBy('created_at', 'desc')
                 ->limit(10)
                 ->get(),
-            
+
             'top_customers' => $this->safeCount(function() {
                 return User::withCount('orders')
                     ->withSum('orders', 'total_amount')
@@ -324,7 +324,7 @@ class OrdersController extends Controller
                     ->limit(10)
                     ->get();
             }),
-            
+
             'monthly_revenue' => $this->getMonthlyRevenue(),
             'status_distribution' => $this->getStatusDistribution(),
         ];
@@ -344,7 +344,7 @@ class OrdersController extends Controller
                 ->whereYear('created_at', $date->year)
                 ->whereMonth('created_at', $date->month)
                 ->sum('total_amount');
-            
+
             $monthlyData[] = [
                 'month' => $date->format('M Y'),
                 'revenue' => $revenue,
@@ -353,7 +353,7 @@ class OrdersController extends Controller
                     ->count()
             ];
         }
-        
+
         return $monthlyData;
     }
 
@@ -364,7 +364,7 @@ class OrdersController extends Controller
     {
         $statuses = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled', 'refunded'];
         $distribution = [];
-        
+
         foreach ($statuses as $status) {
             $count = Order::where('status', $status)->count();
             $distribution[] = [
@@ -373,7 +373,7 @@ class OrdersController extends Controller
                 'percentage' => Order::count() > 0 ? round(($count / Order::count()) * 100, 1) : 0
             ];
         }
-        
+
         return $distribution;
     }
 }

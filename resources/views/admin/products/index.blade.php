@@ -256,7 +256,7 @@ function confirmDeleteProduct(productId, productName) {
                                         <img src="{{ asset('storage/' . $product->image) }}"
                                              alt="{{ $product->name }}"
                                              class="img-fluid"
-                                             style="max-height: 120px; max-width: 100%; object-fit: contain; border-radius: 8px;">
+                                             style="max-height: 120px; max-width: 100%; object-fit: contain; border-radius: 8px;"onerror="this.src='https://via.placeholder.com/150?text=No+Image'" >
                                     @else
                                         <div class="d-flex align-items-center justify-content-center"
                                              style="height: 120px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px;">
@@ -395,7 +395,7 @@ function confirmDeleteProduct(productId, productName) {
     </div>
 </div>
 
-@push('styles')
+{{-- @push('styles')
 <style>
     /* CLEAN PRODUCTS PAGE - Professional Styling */
     .product-card {
@@ -427,5 +427,8 @@ function confirmDeleteProduct(productId, productName) {
         transform: translateY(-1px) !important;
     }
 </style>
-@endpush
+@endpush --}}
+
+
+
 @endsection
