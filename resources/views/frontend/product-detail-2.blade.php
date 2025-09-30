@@ -11,11 +11,11 @@
 	                <div class="all">
 	                    <div class="slider">
 	                        <div class="owl-carousel owl-theme main">
-	                            @if($product->image)
-	                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item-box"></div>
-	                            @else
-	                                <div style="background-image: url(img/products/product_placeholder_square_medium.jpg);" class="item-box"></div>
-	                            @endif
+                            @if($product->image)
+                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item-box"></div>
+                            @else
+                                <div style="background-image: url({{ asset('img/products/product_placeholder_square_medium.jpg') }});" class="item-box"></div>
+                            @endif
                             @if($product->gallery_images && is_array($product->gallery_images))
                                 @foreach($product->gallery_images as $image)
                                     <div style="background-image: url({{ asset('storage/' . $image) }});" class="item-box"></div>
@@ -27,11 +27,11 @@
 	                    </div>
 	                    <div class="slider-two">
 	                        <div class="owl-carousel owl-theme thumbs">
-	                            @if($product->image)
-	                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item active"></div>
-	                            @else
-	                                <div style="background-image: url(img/products/product_placeholder_square_medium.jpg);" class="item active"></div>
-	                            @endif
+                            @if($product->image)
+                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item active"></div>
+                            @else
+                                <div style="background-image: url({{ asset('img/products/product_placeholder_square_medium.jpg') }});" class="item active"></div>
+                            @endif
                             @if($product->gallery_images && is_array($product->gallery_images))
                                 @foreach($product->gallery_images as $image)
                                     <div style="background-image: url({{ asset('storage/' . $image) }});" class="item"></div>
@@ -316,9 +316,13 @@
 	                            <div class="row justify-content-between">
 	                                <div class="col-lg-6">
 	                                    <h3>Details</h3>
-	                                    <p>Lorem ipsum dolor sit amet, in eleifend <strong>inimicus elaboraret</strong> his, harum efficiendi mel ne. Sale percipit vituperata ex mel, sea ne essent aeterno sanctus, nam ea laoreet civibus electram. Ea vis eius explicari. Quot iuvaret ad has.</p>
-	                                    <p>Vis ei ipsum conclusionemque. Te enim suscipit recusabo mea, ne vis mazim aliquando, everti insolens at sit. Cu vel modo unum quaestio, in vide dicta has. Ut his laudem explicari adversarium, nisl <strong>laboramus hendrerit</strong> te his, alia lobortis vis ea.</p>
-	                                    <p>Perfecto eleifend sea no, cu audire voluptatibus eam. An alii praesent sit, nobis numquam principes ea eos, cu autem constituto suscipiantur eam. Ex graeci elaboraret pro. Mei te omnis tantas, nobis viderer vivendo ex has.</p>
+	                                    @if($product->description)
+	                                        <div style="line-height: 1.8; color: #4a5568;">
+	                                            {!! nl2br(e($product->description)) !!}
+	                                        </div>
+	                                    @else
+	                                        <p class="text-muted">No product description available.</p>
+	                                    @endif
 	                                </div>
                                 <div class="col-lg-5">
                                     <h3>Specifications</h3>

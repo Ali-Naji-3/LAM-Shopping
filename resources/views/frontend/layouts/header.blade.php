@@ -5,7 +5,7 @@
             <div class="row small-gutters">
                 <div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
                     <div id="logo">
-                        <a href="{{ url('/') }}"><img src="img/logo.svg" alt="" width="100"
+                        <a href="{{ url('/') }}"><img src="{{ asset('img/logo.svg') }}" alt="" width="100"
                                 height="35"></a>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
                     <!-- Mobile menu button -->
                     <div class="main-menu">
                         <div id="header_menu">
-                            <a href="{{ url('/') }}"><img src="img/logo_black.svg" alt="" width="100"
+                            <a href="{{ url('/') }}"><img src="{{ asset('img/logo_black.svg') }}" alt="" width="100"
                                     height="35"></a>
                             <a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
                         </div>
@@ -108,8 +108,8 @@
                                     <ul>
                                         <li>
                                             <a href="{{ url('product-detail-2') }}">
-                                                <figure><img src="img/products/product_placeholder_square_small.jpg"
-                                                        data-src="img/products/shoes/thumb/1.jpg" alt=""
+                                                <figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}"
+                                                        data-src="{{ asset('img/products/shoes/thumb/1.jpg') }}" alt=""
                                                         width="50" height="50" class="lazy"></figure>
                                                 <strong><span>1x Armor Air x Fear</span>$90.00</strong>
                                             </a>
@@ -117,8 +117,8 @@
                                         </li>
                                         <li>
                                             <a href="{{ url('product-detail-2') }}">
-                                                <figure><img src="img/products/product_placeholder_square_small.jpg"
-                                                        data-src="img/products/shoes/thumb/2.jpg" alt=""
+                                                <figure><img src="{{ asset('img/products/product_placeholder_square_small.jpg') }}"
+                                                        data-src="{{ asset('img/products/shoes/thumb/2.jpg') }}" alt=""
                                                         width="50" height="50" class="lazy"></figure>
                                                 <strong><span>1x Armor Okwahn II</span>$110.00</strong>
                                             </a>

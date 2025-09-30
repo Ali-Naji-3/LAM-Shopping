@@ -242,7 +242,7 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
-            'stock' => 'nullable|integer|min:0',
+            'stock' => 'required|integer|min:1',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'status' => 'nullable|boolean',
