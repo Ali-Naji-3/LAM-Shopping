@@ -73,6 +73,7 @@ class SlidersController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'type' => 'required|in:hero,brand,banner',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -126,6 +127,7 @@ class SlidersController extends Controller
     public function update(Request $request, Slider $slider)
     {
         $validated = $request->validate([
+            'type' => 'required|in:hero,brand,banner',
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',

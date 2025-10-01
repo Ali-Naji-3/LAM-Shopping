@@ -152,7 +152,8 @@
 	$('#brands').owlCarousel({
 		autoplay:true,
 		items: 2,
-		loop: true,
+		loop: false,  // Changed to false to prevent duplicate clones
+		rewind: true, // Rewind to beginning instead of infinite loop
 		margin: 10,
 		dots:false,
 		nav:false,

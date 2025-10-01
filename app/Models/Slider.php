@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Slider extends Model
 {
     protected $fillable = [
-        'title', 'subtitle', 'image', 'link', 'button_text', 
+        'type', 'title', 'subtitle', 'image', 'link', 'button_text', 
         'is_active', 'order', 'priority', 'start_date', 'end_date'
     ];
     
@@ -25,6 +25,11 @@ class Slider extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('priority', 'desc')->orderBy('order');
+    }
+
+    public function scopeOfType($query, $type)
+    {
+        return $query->where('type', $type);
     }
 
     public function scopeCurrentlyActive($query)

@@ -8,6 +8,7 @@ use App\Http\Controllers\Frontend\FunctionController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ReviewController;
+use App\Http\Controllers\Frontend\OrderController;
 use App\Http\Controllers\Admin\DashboardController;
 
 use App\Http\Controllers\Admin\CategoryController;
@@ -186,6 +187,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::post('attributes/{attribute}/contacts', [AttributeController::class, 'storeContact'])->name('admin.attributes.contacts.store');
     Route::get('attributes/{attribute}/analytics', [AttributeController::class, 'analytics'])->name('admin.attributes.analytics');
 
+    // API Routes for Attribute Integration (used in product pages)
+    Route::get('api/attributes/{slug}/values', [AttributeController::class, 'getAttributeValues'])->name('api.attributes.values');
+    Route::get('api/attributes/{slug}/popular', [AttributeController::class, 'getPopularValues'])->name('api.attributes.popular');
+
     // Attribute Values Management - Complete CRUD System
     Route::resource('attributeValues', AttributeValuesController::class)->names([
         'index' => 'admin.attributeValues.index',
@@ -301,11 +306,12 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     ]);
 
     // Additional Warehouses Routes
+    Route::get('warehouses/analytics/overview', [WarehousesController::class, 'analyticsOverview'])->name('admin.warehouses.analytics');
     Route::post('warehouses/bulk-action', [WarehousesController::class, 'bulkActions'])->name('admin.warehouses.bulk');
     Route::patch('warehouses/{warehouse}/toggle-status', [WarehousesController::class, 'toggleStatus'])->name('admin.warehouses.toggleStatus');
     Route::get('warehouses/{warehouse}/inventory', [WarehousesController::class, 'inventory'])->name('admin.warehouses.inventory');
     Route::get('warehouses/{warehouse}/contacts', [WarehousesController::class, 'contacts'])->name('admin.warehouses.contacts');
-    Route::get('warehouses/{warehouse}/analytics', [WarehousesController::class, 'analytics'])->name('admin.warehouses.analytics');
+    Route::get('warehouses/{warehouse}/analytics', [WarehousesController::class, 'warehouseAnalytics'])->name('admin.warehouses.warehouse.analytics');
 
     // Inventory Management - Complete CRUD System
     Route::resource('inventory', InventoryController::class)->names([
@@ -354,8 +360,10 @@ Route::get('/girls', [FunctionController::class, 'girls'])->name('listing.girls'
 
 // Simple pages
 Route::get('/product-detail-2', [FunctionController::class, 'productDetail2'])->name('frontend.product-detail-2');
-Route::get('/cart', [FunctionController::class, 'cart'])->name('frontend.cart');
-Route::get('/checkout', [FunctionController::class, 'checkout'])->name('frontend.checkout');
+// Cart route is defined above with CartController (line 40)
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('frontend.checkout');
+Route::post('/checkout/place-order', [OrderController::class, 'placeOrder'])->name('frontend.order.place');
+Route::get('/order/confirmation/{order}', [OrderController::class, 'confirmation'])->name('frontend.order.confirmation');
 Route::get('/confirm', [FunctionController::class, 'confirm'])->name('frontend.confirm');
 Route::get('/account', [FunctionController::class, 'account'])->name('frontend.account');
 Route::get('/track-order', [FunctionController::class, 'trackOrder'])->name('frontend.track-order');

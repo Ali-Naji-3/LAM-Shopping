@@ -347,6 +347,14 @@ class WarehousesController extends Controller
             $query->where('location', 'like', "%{$request->location}%");
         }
 
+        // Calculate total inventory value
+        $totalInventoryValue = $this->safeCount(function() {
+            return DB::table('inventory')
+                ->join('products', 'inventory.product_id', '=', 'products.id')
+                ->selectRaw('SUM(inventory.quantity * products.regular_price) as total_value')
+                ->value('total_value') ?? 0;
+        });
+
         return [
             'total_warehouses' => $query->count(),
             'active_warehouses' => $query->where('is_active', true)->count(),
@@ -356,6 +364,7 @@ class WarehousesController extends Controller
                 return $query->withCount('inventory')->get()->sum('inventory_count');
             }),
             'managed_warehouses' => $query->whereNotNull('manager')->count(),
+            'total_inventory_value' => $totalInventoryValue,
         ];
     }
 

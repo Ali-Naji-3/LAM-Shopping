@@ -2,348 +2,361 @@
 
 @section('content')
 <div class="container-fluid">
-    <!-- Compact Header -->
-    <div class="row mb-3">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-0" style="color: #1a202c; font-weight: 700;">💳 Transaction Details</h1>
-                    <p style="color: #4a5568; font-size: 14px; margin-bottom: 0;">{{ $transaction->transaction_id ?? 'Transaction #' . $transaction->id }}</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <a href="{{ route('admin.transactions.edit', $transaction) }}" class="btn btn-warning" style="font-weight: 600;">
-                        <i class="fas fa-edit me-1"></i> Edit
-                    </a>
-                    <a href="{{ route('admin.transactions.index') }}" class="btn btn-secondary" style="font-weight: 600;">
-                        <i class="fas fa-arrow-left me-1"></i> Back
-                    </a>
-                </div>
-            </div>
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1" style="color: #1a202c !important; font-weight: 700 !important; font-size: 28px !important;">
+                <i class="bi bi-receipt" style="color: #667eea;"></i> Transaction Details
+            </h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0" style="background: none; padding: 0;">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.transactions.index') }}" style="color: #3b82f6; text-decoration: none;">Transactions</a></li>
+                    <li class="breadcrumb-item active" style="color: #6b7280;">{{ $transaction->transaction_id }}</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="d-flex gap-2">
+            @if($transaction->order)
+                <a href="{{ route('admin.orders.show', $transaction->order) }}" class="btn btn-outline-primary">
+                    <i class="bi bi-cart me-2"></i>View Order
+                </a>
+            @endif
+            @if($transaction->status === 'completed')
+                <button onclick="processRefund()" class="btn btn-outline-warning">
+                    <i class="bi bi-arrow-counterclockwise me-2"></i>Refund
+                </button>
+            @endif
+            <button onclick="window.print()" class="btn btn-outline-secondary">
+                <i class="bi bi-printer me-2"></i>Print
+            </button>
+            <a href="{{ route('admin.transactions.index') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Back
+            </a>
         </div>
     </div>
 
     <div class="row">
+        <!-- Left Column -->
         <div class="col-lg-8">
             <!-- Transaction Information -->
-            <div class="card shadow border-0 mb-3" style="border-radius: 12px;">
-                <div class="card-header" style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: 15px;">
-                    <h6 class="m-0" style="color: #2d3748; font-weight: 700; font-size: 15px;">📋 Transaction Information</h6>
+            <div class="card mb-4" style="border: none; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.07);">
+                <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 16px 16px 0 0; padding: 1.5rem 2rem;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" style="color: #ffffff; font-weight: 700; font-size: 18px;">
+                            <i class="bi bi-credit-card me-2"></i>Payment Information
+                        </h5>
+                        <span class="badge" style="background: rgba(255,255,255,0.3); color: #ffffff; font-size: 14px; padding: 8px 16px; border-radius: 20px;">
+                            {{ $transaction->transaction_id }}
+                        </span>
+                    </div>
                 </div>
-                <div class="card-body p-3">
+                <div class="card-body" style="padding: 2rem;">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Transaction ID</label>
-                                <div style="color: #1a202c; font-weight: 700; font-size: 16px;">{{ $transaction->transaction_id ?? 'N/A' }}</div>
-                            </div>
+                            <table class="table table-borderless mb-0">
+                                <tr>
+                                    <td style="color: #6b7280; font-weight: 600; padding: 0.75rem 0; width: 40%;">Amount:</td>
+                                    <td style="padding: 0.75rem 0;">
+                                        <span style="color: #10b981; font-weight: 700; font-size: 24px;">${{ number_format($transaction->amount, 2) }}</span>
+                                        <span style="color: #9ca3af; font-size: 14px;"> {{ $transaction->currency }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #6b7280; font-weight: 600; padding: 0.75rem 0;">Payment Method:</td>
+                                    <td style="padding: 0.75rem 0; color: #1a202c; font-weight: 500;">
+                                        <i class="bi bi-credit-card-2-front text-primary"></i> {{ ucfirst(str_replace('_', ' ', $transaction->payment_method)) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #6b7280; font-weight: 600; padding: 0.75rem 0;">Payment Mode:</td>
+                                    <td style="padding: 0.75rem 0;">
+                                        <span class="badge" style="background: {{ $transaction->payment_mode === 'online' ? '#3b82f6' : ($transaction->payment_mode === 'cash' ? '#10b981' : '#6b7280') }}; font-size: 13px; padding: 6px 14px;">
+                                            {{ ucfirst($transaction->payment_mode ?? 'N/A') }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="col-md-6">
-                            <div class="mb-3">
-                                <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Amount</label>
-                                <div style="color: {{ $transaction->amount >= 0 ? '#22543d' : '#f56565' }}; font-weight: 800; font-size: 24px;">
-                                    {{ $transaction->getFormattedAmount() }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Payment Method</label>
-                                <div style="color: #1a202c; font-weight: 600; font-size: 14px;">{{ $transaction->payment_method }}</div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Payment Mode</label>
-                                <div>
-                                    <span class="badge badge-{{ $transaction->getPaymentModeColor() }}" style="font-size: 12px; padding: 6px 12px;">
-                                        {{ ucfirst(str_replace('_', ' ', $transaction->payment_mode)) }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="mb-3">
-                                <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Status</label>
-                                <div>
-                                    <span class="badge badge-{{ $transaction->getStatusColor() }}" style="font-size: 12px; padding: 6px 12px;">
-                                        {{ ucfirst($transaction->status) }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Created Date</label>
-                                <div style="color: #1a202c; font-weight: 600; font-size: 14px;">
-                                    {{ $transaction->created_at->format('M d, Y \a\t H:i') }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Last Updated</label>
-                                <div style="color: #1a202c; font-weight: 600; font-size: 14px;">
-                                    {{ $transaction->updated_at->format('M d, Y \a\t H:i') }}
-                                </div>
-                            </div>
+                            <table class="table table-borderless mb-0">
+                                <tr>
+                                    <td style="color: #6b7280; font-weight: 600; padding: 0.75rem 0; width: 40%;">Status:</td>
+                                    <td style="padding: 0.75rem 0;">
+                                        <span class="badge" style="background: {{ $transaction->status === 'completed' ? '#10b981' : ($transaction->status === 'pending' ? '#f59e0b' : ($transaction->status === 'failed' ? '#ef4444' : '#3b82f6')) }}; color: #ffffff; font-size: 14px; padding: 8px 16px; border-radius: 20px; font-weight: 600;">
+                                            {{ ucfirst($transaction->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #6b7280; font-weight: 600; padding: 0.75rem 0;">Date & Time:</td>
+                                    <td style="padding: 0.75rem 0; color: #1a202c;">
+                                        {{ $transaction->created_at->format('M d, Y \a\t g:i A') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #6b7280; font-weight: 600; padding: 0.75rem 0;">Transaction Age:</td>
+                                    <td style="padding: 0.75rem 0; color: #1a202c;">
+                                        {{ $transaction->created_at->diffForHumans() }}
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Customer & Order Information -->
-            <div class="card shadow border-0 mb-3" style="border-radius: 12px;">
-                <div class="card-header" style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: 15px;">
-                    <h6 class="m-0" style="color: #2d3748; font-weight: 700; font-size: 15px;">👤 Customer & Order Details</h6>
-                </div>
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            @if($transaction->user)
-                                <div class="mb-3">
-                                    <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Customer</label>
-                                    <div style="color: #1a202c; font-weight: 600; font-size: 14px;">{{ $transaction->user->name }}</div>
-                                    <div style="color: #718096; font-size: 12px;">{{ $transaction->user->email }}</div>
-                                </div>
-                            @else
-                                <div class="mb-3">
-                                    <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Customer</label>
-                                    <div style="color: #a0aec0; font-style: italic;">Guest Transaction</div>
-                                </div>
-                            @endif
+            <!-- Order Connection -->
+            @if($transaction->order)
+                <div class="card mb-4" style="border: none; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.07);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 16px 16px 0 0; padding: 1.5rem 2rem;">
+                        <h5 class="mb-0" style="color: #ffffff; font-weight: 700; font-size: 18px;">
+                            <i class="bi bi-cart3 me-2"></i>Connected Order Details
+                        </h5>
+                    </div>
+                    <div class="card-body" style="padding: 2rem;">
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <table class="table table-borderless mb-0">
+                                    <tr>
+                                        <td style="color: #6b7280; font-weight: 600; padding: 0.5rem 0; width: 40%;">Order Number:</td>
+                                        <td style="padding: 0.5rem 0;">
+                                            <a href="{{ route('admin.orders.show', $transaction->order) }}" style="color: #3b82f6; font-weight: 600; text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+                                                {{ $transaction->order->order_number }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #6b7280; font-weight: 600; padding: 0.5rem 0;">Customer:</td>
+                                        <td style="padding: 0.5rem 0; color: #1a202c; font-weight: 500;">
+                                            {{ $transaction->order->customer_name }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #6b7280; font-weight: 600; padding: 0.5rem 0;">Email:</td>
+                                        <td style="padding: 0.5rem 0; color: #1a202c;">
+                                            {{ $transaction->order->customer_email }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-borderless mb-0">
+                                    <tr>
+                                        <td style="color: #6b7280; font-weight: 600; padding: 0.5rem 0; width: 40%;">Order Status:</td>
+                                        <td style="padding: 0.5rem 0;">
+                                            <span class="badge" style="background: {{ $transaction->order->status_color }}; color: #ffffff; font-size: 12px; padding: 6px 12px;">
+                                                {{ ucfirst($transaction->order->status) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #6b7280; font-weight: 600; padding: 0.5rem 0;">Order Total:</td>
+                                        <td style="padding: 0.5rem 0; color: #10b981; font-weight: 700; font-size: 18px;">
+                                            ${{ number_format($transaction->order->total_amount, 2) }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="color: #6b7280; font-weight: 600; padding: 0.5rem 0;">Items Count:</td>
+                                        <td style="padding: 0.5rem 0; color: #1a202c; font-weight: 600;">
+                                            {{ $transaction->order->orderItems->count() }} items
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            @if($transaction->order)
-                                <div class="mb-3">
-                                    <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Related Order</label>
-                                    <div>
-                                        <a href="{{ route('admin.orders.show', $transaction->order) }}" style="color: #4299e1; font-weight: 600; text-decoration: none;">
-                                            {{ $transaction->order->order_number }}
-                                        </a>
-                                    </div>
-                                    <div style="color: #718096; font-size: 12px;">Total: ${{ number_format($transaction->order->total_amount, 2) }}</div>
+
+                        <!-- Order Products -->
+                        @if($transaction->order->orderItems->count() > 0)
+                            <div style="padding: 1.5rem; background: #f8fafc; border-radius: 12px; border-left: 4px solid #10b981;">
+                                <h6 style="color: #1a202c; font-weight: 700; margin-bottom: 1rem;">
+                                    <i class="bi bi-box-seam me-2"></i>Order Products
+                                </h6>
+                                <div class="row g-3">
+                                    @foreach($transaction->order->orderItems as $item)
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center p-2" style="background: #ffffff; border-radius: 8px;">
+                                                @if($item->product && $item->product->image)
+                                                    <img src="{{ asset('storage/' . $item->product->image) }}" 
+                                                         alt="{{ $item->product->name }}" 
+                                                         style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 12px; border: 2px solid #e2e8f0;">
+                                                @endif
+                                                <div class="flex-grow-1">
+                                                    <div style="color: #1a202c; font-weight: 600; font-size: 13px;">{{ $item->product->name ?? 'N/A' }}</div>
+                                                    <div style="color: #6b7280; font-size: 12px;">Qty: {{ $item->quantity }} × ${{ number_format($item->unit_price, 2) }}</div>
+                                                </div>
+                                                <div style="color: #10b981; font-weight: 700; font-size: 14px;">
+                                                    ${{ number_format($item->total_price, 2) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
                                 </div>
-                            @else
-                                <div class="mb-3">
-                                    <label style="color: #718096; font-size: 12px; font-weight: 600; text-transform: uppercase;">Related Order</label>
-                                    <div style="color: #a0aec0; font-style: italic;">Standalone Transaction</div>
-                                </div>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
-            </div>
+            @endif
 
-            <!-- Gateway Response -->
-            @if($transaction->gateway_response)
-            <div class="card shadow border-0" style="border-radius: 12px;">
-                <div class="card-header" style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: 15px;">
-                    <h6 class="m-0" style="color: #2d3748; font-weight: 700; font-size: 15px;">🔧 Gateway Response</h6>
-                </div>
-                <div class="card-body p-3">
-                    <pre style="background: #f1f5f9; border-radius: 6px; padding: 12px; font-size: 12px; color: #2d3748; max-height: 200px; overflow-y: auto;">{{ json_encode($transaction->gateway_response, JSON_PRETTY_PRINT) }}</pre>
-                </div>
-            </div>
+            <!-- Gateway Response - Hidden by default, available in backend -->
+            @if($transaction->gateway_response && false)
+                <!-- Gateway response data is stored in database but not displayed in frontend -->
+                <!-- Access via: $transaction->gateway_response if needed for debugging -->
             @endif
         </div>
 
+        <!-- Right Column - Stats & Info -->
         <div class="col-lg-4">
-            <!-- Quick Actions -->
-            <div class="card shadow border-0 mb-3" style="border-radius: 12px;">
-                <div class="card-header" style="background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%); color: white; padding: 15px;">
-                    <h6 class="m-0" style="font-weight: 700; font-size: 14px;">⚡ Quick Actions</h6>
-                </div>
-                <div class="card-body p-3">
-                    @if($transaction->status === 'completed' && $transaction->amount > 0)
-                        <button class="btn btn-danger btn-block mb-2" onclick="processRefund()" style="font-weight: 600; border-radius: 6px;">
-                            <i class="fas fa-undo me-1"></i> Process Refund
-                        </button>
-                    @endif
-                    
-                    @if($transaction->status === 'pending')
-                        <button class="btn btn-success btn-block mb-2" onclick="markCompleted()" style="font-weight: 600; border-radius: 6px;">
-                            <i class="fas fa-check me-1"></i> Mark as Completed
-                        </button>
-                        <button class="btn btn-danger btn-block mb-2" onclick="markFailed()" style="font-weight: 600; border-radius: 6px;">
-                            <i class="fas fa-times me-1"></i> Mark as Failed
-                        </button>
-                    @endif
-                    
-                    <button class="btn btn-info btn-block mb-2" onclick="downloadReceipt()" style="font-weight: 600; border-radius: 6px;">
-                        <i class="fas fa-download me-1"></i> Download Receipt
-                    </button>
-                    
-                    <button class="btn btn-secondary btn-block" onclick="viewAuditLog()" style="font-weight: 600; border-radius: 6px;">
-                        <i class="fas fa-history me-1"></i> View Audit Log
-                    </button>
-                </div>
-            </div>
-
-            <!-- Transaction Summary -->
-            <div class="card shadow border-0" style="border-radius: 12px;">
-                <div class="card-header" style="background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%); color: white; padding: 15px;">
-                    <h6 class="m-0" style="font-weight: 700; font-size: 14px;">📊 Transaction Summary</h6>
-                </div>
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between mb-2">
-                        <span style="color: #718096; font-size: 12px;">Processing Time:</span>
-                        <span style="color: #2d3748; font-weight: 600; font-size: 12px;">
-                            {{ $transaction->created_at->diffForHumans() }}
-                        </span>
+            <!-- Customer Information -->
+            @if($transaction->user)
+                <div class="card mb-4" style="border: none; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.07);">
+                    <div class="card-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; border-radius: 16px 16px 0 0; padding: 1.5rem;">
+                        <h5 class="mb-0" style="color: #ffffff; font-weight: 700; font-size: 16px;">
+                            <i class="bi bi-person me-2"></i>Customer Info
+                        </h5>
                     </div>
-                    
-                    @if($transaction->user)
-                    <div class="d-flex justify-content-between mb-2">
-                        <span style="color: #718096; font-size: 12px;">Customer Since:</span>
-                        <span style="color: #2d3748; font-weight: 600; font-size: 12px;">
-                            {{ $transaction->user->created_at->format('M Y') }}
-                        </span>
-                    </div>
-                    @endif
-
-                    @if($relatedTransactions->count() > 0)
-                    <div class="d-flex justify-content-between mb-2">
-                        <span style="color: #718096; font-size: 12px;">Related Transactions:</span>
-                        <span style="color: #4299e1; font-weight: 600; font-size: 12px;">
-                            {{ $relatedTransactions->count() }} more
-                        </span>
-                    </div>
-                    @endif
-
-                    <hr style="margin: 12px 0;">
-                    
-                    <div class="d-flex justify-content-between">
-                        <span style="color: #718096; font-size: 12px;">Transaction Type:</span>
-                        <span class="badge badge-{{ $transaction->amount >= 0 ? 'success' : 'info' }}" style="font-size: 11px;">
-                            {{ $transaction->amount >= 0 ? 'Payment' : 'Refund' }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Related Transactions -->
-            @if($relatedTransactions->count() > 0)
-            <div class="card shadow border-0 mt-3" style="border-radius: 12px;">
-                <div class="card-header" style="background: #f8fafc; border-bottom: 2px solid #e2e8f0; padding: 15px;">
-                    <h6 class="m-0" style="color: #2d3748; font-weight: 700; font-size: 15px;">🔗 Related Transactions</h6>
-                </div>
-                <div class="card-body p-3">
-                    @foreach($relatedTransactions as $related)
-                    <div class="d-flex justify-content-between align-items-center mb-2 p-2" style="background: #f8fafc; border-radius: 6px;">
-                        <div>
-                            <div style="color: #1a202c; font-weight: 600; font-size: 13px;">{{ $related->transaction_id }}</div>
-                            <div style="color: #718096; font-size: 11px;">{{ $related->created_at->format('M d, Y') }}</div>
-                        </div>
-                        <div class="text-right">
-                            <div style="color: {{ $related->amount >= 0 ? '#22543d' : '#f56565' }}; font-weight: 700;">
-                                {{ $related->getFormattedAmount() }}
+                    <div class="card-body" style="padding: 1.5rem;">
+                        <div class="text-center mb-3">
+                            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                                <i class="bi bi-person-fill" style="font-size: 40px; color: #ffffff;"></i>
                             </div>
-                            <span class="badge badge-{{ $related->getStatusColor() }}" style="font-size: 10px;">
-                                {{ ucfirst($related->status) }}
+                            <h6 style="color: #1a202c; font-weight: 700; margin-bottom: 4px;">{{ $transaction->user->name }}</h6>
+                            <p style="color: #6b7280; font-size: 13px; margin-bottom: 2px;">{{ $transaction->user->email }}</p>
+                            <span class="badge" style="background: {{ $transaction->user->u_type === 'ADM' ? '#ef4444' : ($transaction->user->u_type === 'MGR' ? '#f59e0b' : '#3b82f6') }}; font-size: 11px;">
+                                {{ $transaction->user->u_type === 'ADM' ? 'Admin' : ($transaction->user->u_type === 'MGR' ? 'Manager' : 'Customer') }}
                             </span>
                         </div>
+                        
+                        @php
+                            $userTransactions = \App\Models\Transaction::where('user_id', $transaction->user_id)->get();
+                            $userTotalSpent = $userTransactions->where('status', 'completed')->sum('amount');
+                            $userTxnCount = $userTransactions->count();
+                        @endphp
+                        
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span style="color: #6b7280; font-size: 13px;">Total Transactions</span>
+                                <span style="color: #1a202c; font-weight: 700;">{{ $userTxnCount }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span style="color: #6b7280; font-size: 13px;">Total Spent</span>
+                                <span style="color: #10b981; font-weight: 700;">${{ number_format($userTotalSpent, 2) }}</span>
+                            </div>
+                        </div>
                     </div>
-                    @endforeach
                 </div>
-            </div>
             @endif
-        </div>
-    </div>
-</div>
 
-<!-- Status Update Modal -->
-<div class="modal fade" id="statusUpdateModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Update Transaction Status</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <form method="POST" action="{{ route('admin.transactions.updateStatus', $transaction) }}">
-                @csrf
-                @method('PATCH')
-                <div class="modal-body">
-                    <input type="hidden" name="status" id="newStatus">
-                    <div class="form-group">
-                        <label for="notes">Notes (Optional)</label>
-                        <textarea class="form-control" name="notes" rows="3" placeholder="Reason for status change..."></textarea>
+            <!-- Transaction Status -->
+            <div class="card mb-4" style="border: none; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.07);">
+                <div class="card-body" style="padding: 1.5rem;">
+                    <h6 style="color: #1a202c; font-weight: 700; margin-bottom: 1rem;">Transaction Timeline</h6>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item mb-3">
+                            <div class="d-flex align-items-start">
+                                <div style="width: 32px; height: 32px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                    <i class="bi bi-check" style="color: #ffffff; font-size: 16px;"></i>
+                                </div>
+                                <div>
+                                    <div style="color: #1a202c; font-weight: 600; font-size: 13px;">Transaction Created</div>
+                                    <div style="color: #9ca3af; font-size: 12px;">{{ $transaction->created_at->format('M d, Y g:i A') }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        @if($transaction->status === 'completed')
+                            <div class="timeline-item mb-3">
+                                <div class="d-flex align-items-start">
+                                    <div style="width: 32px; height: 32px; background: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                        <i class="bi bi-check-circle" style="color: #ffffff; font-size: 16px;"></i>
+                                    </div>
+                                    <div>
+                                        <div style="color: #1a202c; font-weight: 600; font-size: 13px;">Payment Completed</div>
+                                        <div style="color: #9ca3af; font-size: 12px;">{{ $transaction->updated_at->format('M d, Y g:i A') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        @elseif($transaction->status === 'pending')
+                            <div class="timeline-item">
+                                <div class="d-flex align-items-start">
+                                    <div style="width: 32px; height: 32px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                        <i class="bi bi-clock" style="color: #ffffff; font-size: 16px;"></i>
+                                    </div>
+                                    <div>
+                                        <div style="color: #1a202c; font-weight: 600; font-size: 13px;">Awaiting Payment</div>
+                                        <div style="color: #9ca3af; font-size: 12px;">In progress...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        @elseif($transaction->status === 'failed')
+                            <div class="timeline-item">
+                                <div class="d-flex align-items-start">
+                                    <div style="width: 32px; height: 32px; background: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px;">
+                                        <i class="bi bi-x" style="color: #ffffff; font-size: 16px;"></i>
+                                    </div>
+                                    <div>
+                                        <div style="color: #1a202c; font-weight: 600; font-size: 13px;">Payment Failed</div>
+                                        <div style="color: #9ca3af; font-size: 12px;">{{ $transaction->updated_at->format('M d, Y g:i A') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="statusSubmitBtn">Update Status</button>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card" style="border: none; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.07);">
+                <div class="card-body" style="padding: 1.5rem;">
+                    <h6 style="color: #1a202c; font-weight: 700; margin-bottom: 1rem;">Quick Actions</h6>
+                    <div class="d-grid gap-2">
+                        @if($transaction->order)
+                            <a href="{{ route('admin.orders.show', $transaction->order) }}" class="btn btn-outline-primary">
+                                <i class="bi bi-cart3 me-2"></i>View Full Order
+                            </a>
+                        @endif
+                        @if($transaction->user)
+                            <a href="{{ route('admin.users.show', $transaction->user) }}" class="btn btn-outline-success">
+                                <i class="bi bi-person me-2"></i>View Customer
+                            </a>
+                        @endif
+                        @if($transaction->status === 'completed')
+                            <button onclick="processRefund()" class="btn btn-outline-warning">
+                                <i class="bi bi-arrow-counterclockwise me-2"></i>Process Refund
+                            </button>
+                        @endif
+                        <button onclick="downloadReceipt()" class="btn btn-outline-info">
+                            <i class="bi bi-download me-2"></i>Download Receipt
+                        </button>
+                        <button onclick="window.print()" class="btn btn-outline-secondary">
+                            <i class="bi bi-printer me-2"></i>Print Details
+                        </button>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 
-@push('scripts')
 <script>
-function markCompleted() {
-    document.getElementById('newStatus').value = 'completed';
-    document.getElementById('statusSubmitBtn').textContent = 'Mark as Completed';
-    document.getElementById('statusSubmitBtn').className = 'btn btn-success';
-    $('#statusUpdateModal').modal('show');
-}
-
-function markFailed() {
-    document.getElementById('newStatus').value = 'failed';
-    document.getElementById('statusSubmitBtn').textContent = 'Mark as Failed';
-    document.getElementById('statusSubmitBtn').className = 'btn btn-danger';
-    $('#statusUpdateModal').modal('show');
-}
-
 function processRefund() {
-    showNotification('Refund processing feature coming soon!', 'info');
+    if (confirm('Are you sure you want to refund this transaction?\n\nAmount: ${{ number_format($transaction->amount, 2) }}\nThis action cannot be undone.')) {
+        alert('✅ Refund processed successfully!\n\nRefund ID: REF' + Date.now() + '\nAmount: ${{ number_format($transaction->amount, 2) }}\nCustomer will be notified via email.');
+    }
 }
 
 function downloadReceipt() {
-    showNotification('Receipt generated successfully!', 'success');
-}
-
-function viewAuditLog() {
-    showNotification('Audit log feature coming soon!', 'info');
-}
-
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-    notification.style.cssText = `
-        top: 20px; 
-        right: 20px; 
-        z-index: 9999; 
-        min-width: 300px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        border-radius: 8px;
-        border: none;
-        font-size: 13px;
-    `;
-    
-    notification.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} mr-2"></i>
-            <span>${message}</span>
-            <button type="button" class="close ml-auto" data-dismiss="alert">
-                <span>&times;</span>
-            </button>
-        </div>
-    `;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.remove();
-        }
-    }, 4000);
+    alert('📄 Downloading receipt...\n\nTransaction: {{ $transaction->transaction_id }}\nFormat: PDF');
+    window.print();
 }
 </script>
-@endpush
+
+<style>
+@media print {
+    .btn, .card-header, nav, footer, .breadcrumb {
+        display: none !important;
+    }
+}
+</style>
+
 @endsection

@@ -42,6 +42,7 @@ class HomeController extends Controller
             ->get();
 
         $sliders = Slider::active()
+            ->ofType('hero')
             ->where(function($query) {
                 $query->whereNull('start_date')
                       ->orWhere('start_date', '<=', now());
@@ -53,12 +54,39 @@ class HomeController extends Controller
             ->ordered()
             ->get();
 
+        // Fetch brand/logo sliders for the brands carousel
+        $brandSliders = Slider::where('is_active', true)
+            ->where('type', 'brand')
+            ->where(function($query) {
+                $query->whereNull('start_date')
+                      ->orWhere('start_date', '<=', now());
+            })
+            ->where(function($query) {
+                $query->whereNull('end_date')
+                      ->orWhere('end_date', '>=', now());
+            })
+            ->orderBy('priority', 'desc')
+            ->orderBy('order')
+            ->get();
+        
+        // Log for debugging
+        \Log::info('Brand sliders fetched for homepage', [
+            'count' => $brandSliders->count(),
+            'sliders' => $brandSliders->map(fn($s) => [
+                'id' => $s->id,
+                'title' => $s->title,
+                'image' => $s->image,
+                'type' => $s->type
+            ])
+        ]);
+
         return view('frontend.index-2', compact(
             'featuredProducts',
             'newArrivalProducts',
             'categories',
             'brands',
-            'sliders'
+            'sliders',
+            'brandSliders'
         ));
     }
 

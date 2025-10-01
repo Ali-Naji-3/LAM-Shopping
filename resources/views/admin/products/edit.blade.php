@@ -138,23 +138,6 @@
 
                                     <!-- Hidden inputs for form submission -->
                                     <div id="color-inputs"></div>
-
-                                    <!-- Quick Color Presets -->
-                                    <div class="mt-3">
-                                        <h6>Quick Color Presets:</h6>
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Black', '#000000')">Black</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('White', '#ffffff')">White</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Red', '#ff0000')">Red</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Blue', '#0000ff')">Blue</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Green', '#00ff00')">Green</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Yellow', '#ffff00')">Yellow</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Pink', '#ffc0cb')">Pink</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Gray', '#808080')">Gray</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Brown', '#a52a2a')">Brown</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Navy', '#000080')">Navy</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -227,23 +210,6 @@
 
                                     <!-- Hidden inputs for form submission -->
                                     <div id="size-inputs"></div>
-
-                                    <!-- Quick Size Presets -->
-                                    <div class="mt-3">
-                                        <h6>Quick Size Presets:</h6>
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XS', 'Chest: 32-34 inches')">XS</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('S', 'Chest: 34-36 inches')">S</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('M', 'Chest: 36-38 inches')">M</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('L', 'Chest: 38-40 inches')">L</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XL', 'Chest: 40-42 inches')">XL</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XXL', 'Chest: 42-44 inches')">XXL</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('28', 'Waist: 28 inches')">28</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('30', 'Waist: 30 inches')">30</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('32', 'Waist: 32 inches')">32</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('34', 'Waist: 34 inches')">34</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -270,97 +236,146 @@
 
                         <!-- New Arrival Controls -->
                         <div class="mb-4">
-                            <h5 class="text-primary mb-3">New Arrival Settings</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check mb-3">
-                                        <input type="hidden" name="is_new_arrival" value="0">
-                                        <input class="form-check-input" type="checkbox" id="is_new_arrival" name="is_new_arrival" value="1" {{ old('is_new_arrival', $product->is_new_arrival) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_new_arrival">
-                                            <strong>Mark as New Arrival</strong>
-                                        </label>
-                                        <small class="form-text text-muted d-block">Manually mark this product as a new arrival</small>
-                                        <div id="new-arrival-info" class="alert alert-warning mt-2" style="display:none;">
-                                            <i class="ti-info-circle"></i>
-                                            <strong>Note:</strong> This will automatically remove the oldest new arrival product to make room for this one (max 8 products).
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <h5 class="mb-0 text-white">
+                                        <i class="fas fa-star-half-alt me-2"></i>New Arrival Settings
+                                    </h5>
+                                    <small class="text-white-50">Control how this product appears in new arrivals section</small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="p-3 rounded" style="background-color: #f8f9fa; border-left: 4px solid #667eea;">
+                                                <div class="form-check">
+                                                    <input type="hidden" name="is_new_arrival" value="0">
+                                                    <input class="form-check-input" type="checkbox" id="is_new_arrival" name="is_new_arrival" value="1" {{ old('is_new_arrival', $product->is_new_arrival) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="is_new_arrival">
+                                                        <strong class="text-dark"><i class="fas fa-tag me-1"></i>Mark as New Arrival</strong>
+                                                    </label>
+                                                    <div>
+                                                        <small class="text-muted">Manually mark this product as a new arrival</small>
+                                                    </div>
+                                                </div>
+                                                <div id="new-arrival-info" class="alert alert-warning mt-2 mb-0" style="display:none;">
+                                                    <i class="fas fa-info-circle"></i>
+                                                    <strong>Note:</strong> This will automatically remove the oldest new arrival product to make room for this one (max 8 products).
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="p-3 rounded" style="background-color: #f8f9fa; border-left: 4px solid #764ba2;">
+                                                <div class="form-check">
+                                                    <input type="hidden" name="featured_new_arrival" value="0">
+                                                    <input class="form-check-input" type="checkbox" id="featured_new_arrival" name="featured_new_arrival" value="1" {{ old('featured_new_arrival', $product->featured_new_arrival) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="featured_new_arrival">
+                                                        <strong class="text-dark"><i class="fas fa-certificate me-1"></i>Featured New Arrival</strong>
+                                                    </label>
+                                                    <div>
+                                                        <small class="text-muted">Give this product special highlighting</small>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check mb-3">
-                                        <input type="hidden" name="featured_new_arrival" value="0">
-                                        <input class="form-check-input" type="checkbox" id="featured_new_arrival" name="featured_new_arrival" value="1" {{ old('featured_new_arrival', $product->featured_new_arrival) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="featured_new_arrival">
-                                            <strong>Featured New Arrival</strong>
-                                        </label>
-                                        <small class="form-text text-muted d-block">Give this product special highlighting</small>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="new_arrival_until" class="form-label fw-bold">
+                                                <i class="fas fa-calendar-times me-1 text-primary"></i>New Arrival Until <span class="badge bg-secondary badge-sm">Optional</span>
+                                            </label>
+                                            <input type="datetime-local" class="form-control @error('new_arrival_until') is-invalid @enderror" id="new_arrival_until" name="new_arrival_until" value="{{ old('new_arrival_until', $product->new_arrival_until ? $product->new_arrival_until->format('Y-m-d\TH:i') : '') }}">
+                                            @error('new_arrival_until')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <small class="form-text text-muted">
+                                                <i class="fas fa-lightbulb text-warning"></i> Leave empty for permanent new arrival status
+                                            </small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="new_arrival_priority" class="form-label fw-bold">
+                                                <i class="fas fa-sort-amount-up me-1 text-success"></i>Priority Order
+                                            </label>
+                                            <select class="form-control @error('new_arrival_priority') is-invalid @enderror" id="new_arrival_priority" name="new_arrival_priority">
+                                                <option value="0" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 0 ? 'selected' : '' }}>⚪ Normal (0)</option>
+                                                <option value="1" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 1 ? 'selected' : '' }}>🟡 Low (1)</option>
+                                                <option value="3" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 3 ? 'selected' : '' }}>🟠 Medium (3)</option>
+                                                <option value="5" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 5 ? 'selected' : '' }}>🔴 High (5)</option>
+                                                <option value="10" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 10 ? 'selected' : '' }}>⭐ Highest (10)</option>
+                                            </select>
+                                            @error('new_arrival_priority')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <small class="form-text text-muted">
+                                                <i class="fas fa-arrow-up text-success"></i> Higher priority products appear first
+                                            </small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-info mb-0" style="border-left: 4px solid #17a2b8;">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        <strong>Current Status:</strong>
+                                        @if($product->is_currently_new_arrival)
+                                            <span class="badge bg-success">Currently showing as New Arrival</span>
+                                        @else
+                                            <span class="badge bg-secondary">Not currently showing as New Arrival</span>
+                                        @endif
+                                        @if($product->created_at->diffInDays() < 30)
+                                            <br><small>Product was created {{ $product->created_at->diffForHumans() }} (auto-qualifies)</small>
+                                        @endif
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="new_arrival_until" class="form-label">New Arrival Until (Optional)</label>
-                                    <input type="datetime-local" class="form-control @error('new_arrival_until') is-invalid @enderror" id="new_arrival_until" name="new_arrival_until" value="{{ old('new_arrival_until', $product->new_arrival_until ? $product->new_arrival_until->format('Y-m-d\TH:i') : '') }}">
-                                    @error('new_arrival_until')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <small class="form-text text-muted">Leave empty for permanent new arrival status</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="new_arrival_priority" class="form-label">Priority Order</label>
-                                    <select class="form-control @error('new_arrival_priority') is-invalid @enderror" id="new_arrival_priority" name="new_arrival_priority">
-                                        <option value="0" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 0 ? 'selected' : '' }}>Normal (0)</option>
-                                        <option value="1" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 1 ? 'selected' : '' }}>Low (1)</option>
-                                        <option value="3" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 3 ? 'selected' : '' }}>Medium (3)</option>
-                                        <option value="5" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 5 ? 'selected' : '' }}>High (5)</option>
-                                        <option value="10" {{ old('new_arrival_priority', $product->new_arrival_priority ?? 0) == 10 ? 'selected' : '' }}>Highest (10)</option>
-                                    </select>
-                                    @error('new_arrival_priority')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <small class="form-text text-muted">Higher priority products appear first</small>
-                                </div>
-                            </div>
-                            <div class="alert alert-info mt-3">
-                                <i class="ti-info-circle"></i>
-                                <strong>Current Status:</strong>
-                                @if($product->is_currently_new_arrival)
-                                    <span class="badge bg-success">Currently showing as New Arrival</span>
-                                @else
-                                    <span class="badge bg-secondary">Not currently showing as New Arrival</span>
-                                @endif
-                                @if($product->created_at->diffInDays() < 30)
-                                    <br><small>Product was created {{ $product->created_at->diffForHumans() }} (auto-qualifies)</small>
-                                @endif
                             </div>
                         </div>
 
                             <!-- Countdown Timer Settings -->
                         <div class="mb-4">
-                            <label class="form-label">Countdown Timer Settings</label>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="enable_countdown" name="enable_countdown" value="1" {{ old('enable_countdown', $product->enable_countdown) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="enable_countdown">
-                                            Enable Countdown Timer
-                                        </label>
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <h5 class="mb-0 text-white">
+                                        <i class="fas fa-clock me-2"></i>Countdown Timer Settings
+                                    </h5>
+                                    <small class="text-white-50">Add urgency with a countdown timer on product page</small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="p-3 rounded" style="background-color: #fff5f5; border-left: 4px solid #f5576c;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="enable_countdown" name="enable_countdown" value="1" {{ old('enable_countdown', $product->enable_countdown) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="enable_countdown">
+                                                        <strong class="text-dark"><i class="fas fa-stopwatch me-1"></i>Enable Countdown Timer</strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="countdown_date" class="form-label fw-bold">
+                                                <i class="fas fa-calendar-check me-1 text-danger"></i>Countdown End Date
+                                            </label>
+                                            <input type="datetime-local" class="form-control @error('countdown_date') is-invalid @enderror" id="countdown_date" name="countdown_date" value="{{ old('countdown_date', $product->countdown_date ? $product->countdown_date->format('Y-m-d\TH:i') : '') }}">
+                                            @error('countdown_date')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-light border mb-3" style="border-left: 4px solid #f093fb !important;">
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle text-info me-1"></i>
+                                            Set when the countdown timer should expire. Multiple products can share the same countdown date.
+                                        </small>
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-center gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill" onclick="setCommonCountdown()">
+                                            <i class="fas fa-calendar-alt me-1"></i> Set Common Sale End Date
+                                        </button>
+                                        <small class="text-muted">
+                                            <i class="fas fa-bolt text-warning"></i> Quick set for seasonal sales
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="countdown_date" class="form-label">Countdown End Date</label>
-                                    <input type="datetime-local" class="form-control @error('countdown_date') is-invalid @enderror" id="countdown_date" name="countdown_date" value="{{ old('countdown_date', $product->countdown_date ? $product->countdown_date->format('Y-m-d\TH:i') : '') }}">
-                                    @error('countdown_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <small class="form-text text-muted">Set when the countdown timer should expire. Multiple products can share the same countdown date.</small>
-                            <div class="mt-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setCommonCountdown()">
-                                    <i class="ti-calendar"></i> Set Common Sale End Date
-                                </button>
-                                <small class="text-muted ms-2">Quick set for seasonal sales</small>
                             </div>
                         </div>
 
@@ -615,9 +630,12 @@ function addPresetColor(name, hex) {
 }
 
 function removeColor(index) {
-    selectedColors.splice(index, 1);
-    updateColorsPreview();
-    console.log('Color removed at index:', index);
+    const color = selectedColors[index];
+    if (confirm(`Are you sure you want to remove "${color.name}" color?`)) {
+        selectedColors.splice(index, 1);
+        updateColorsPreview();
+        console.log('Color removed at index:', index);
+    }
 }
 
 function removeExistingColor(colorId) {
@@ -656,8 +674,14 @@ function updateColorsPreview() {
             <span class="fw-bold">${color.name}</span>
             <small class="text-muted">(${color.hex})</small>
             <small class="text-muted">Stock: ${color.stock}</small>
-            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeColor(${index})">
-                <i class="fas fa-times"></i>
+            <button type="button" 
+                    class="btn btn-sm btn-danger rounded-pill ms-auto" 
+                    onclick="removeColor(${index})"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Remove this color"
+                    style="transition: all 0.3s ease; padding: 0.25rem 0.75rem;">
+                <i class="fas fa-trash-alt me-1"></i>Remove
             </button>
         `;
         colorsList.appendChild(colorElement);
@@ -685,6 +709,12 @@ function updateColorsPreview() {
         colorInputs.appendChild(nameInput);
         colorInputs.appendChild(hexInput);
         colorInputs.appendChild(stockInput);
+    });
+
+    // Reinitialize tooltips after updating the DOM
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 }
 
@@ -735,9 +765,12 @@ function addPresetSize(name, guide) {
 }
 
 function removeSize(index) {
-    selectedSizes.splice(index, 1);
-    updateSizesPreview();
-    console.log('Size removed at index:', index);
+    const size = selectedSizes[index];
+    if (confirm(`Are you sure you want to remove size "${size.name}"?`)) {
+        selectedSizes.splice(index, 1);
+        updateSizesPreview();
+        console.log('Size removed at index:', index);
+    }
 }
 
 function removeExistingSize(sizeId) {
@@ -775,8 +808,14 @@ function updateSizesPreview() {
             <span class="fw-bold">${size.name}</span>
             <small class="text-muted">Stock: ${size.stock}</small>
             ${size.guide ? `<small class="text-muted">Guide: ${size.guide}</small>` : ''}
-            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSize(${index})">
-                <i class="fas fa-times"></i>
+            <button type="button" 
+                    class="btn btn-sm btn-danger rounded-pill ms-auto" 
+                    onclick="removeSize(${index})"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Remove this size"
+                    style="transition: all 0.3s ease; padding: 0.25rem 0.75rem;">
+                <i class="fas fa-trash-alt me-1"></i>Remove
             </button>
         `;
         sizesList.appendChild(sizeElement);
@@ -807,6 +846,12 @@ function updateSizesPreview() {
         sizeInputs.appendChild(stockInput);
         sizeInputs.appendChild(guideInput);
     });
+
+    // Reinitialize tooltips after updating the DOM
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 }
 
 // Initialize color and size management
@@ -832,6 +877,12 @@ document.addEventListener('DOMContentLoaded', function() {
             newArrivalInfo.style.display = 'block';
         }
     }
+
+    // Initialize Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 });
 </script>
 @endsection

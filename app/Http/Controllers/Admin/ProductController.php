@@ -325,8 +325,42 @@ class ProductController extends Controller
 
         $product = Product::create($productData);
 
+            // Handle color attributes and track statistics
+            $colorStats = ['new' => 0, 'reused' => 0];
+            if ($request->has('colors') && is_array($request->colors)) {
+                $colorStats = $this->handleColorAttributes($product, $request->colors);
+            }
+
+            // Handle size attributes and track statistics
+            $sizeStats = ['new' => 0, 'reused' => 0];
+            if ($request->has('sizes') && is_array($request->sizes)) {
+                $sizeStats = $this->handleSizeAttributes($product, $request->sizes);
+            }
+
+            // Build success message with attribute sync info
+            $message = "Product '{$product->name}' created successfully!";
+            
+            // Add attribute sync summary
+            $syncMessages = [];
+            if ($colorStats['new'] > 0) {
+                $syncMessages[] = "<strong>{$colorStats['new']} new color(s)</strong> added to global library";
+            }
+            if ($colorStats['reused'] > 0) {
+                $syncMessages[] = "{$colorStats['reused']} existing color(s) reused";
+            }
+            if ($sizeStats['new'] > 0) {
+                $syncMessages[] = "<strong>{$sizeStats['new']} new size(s)</strong> added to global library";
+            }
+            if ($sizeStats['reused'] > 0) {
+                $syncMessages[] = "{$sizeStats['reused']} existing size(s) reused";
+            }
+            
+            if (!empty($syncMessages)) {
+                $message .= "<br><small class='text-muted'>📊 Sync: " . implode(' • ', $syncMessages) . "</small>";
+            }
+
             return redirect()->route('admin.products.index')
-                ->with('success', "Product '{$product->name}' created successfully!");
+                ->with('success', $message);
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('Validation failed', [
@@ -506,14 +540,52 @@ class ProductController extends Controller
             $this->manageNewArrivalLimit($product);
         }
 
-        // Handle color attributes
-        $this->handleColorAttributesUpdate($product, $request);
+        // Handle color attributes and track statistics
+        $colorStats = ['new' => 0, 'reused' => 0];
+        if ($request->has('colors') && is_array($request->colors)) {
+            $colorStats = $this->handleColorAttributes($product, $request->colors);
+        }
+        
+        // Handle color deletions
+        if ($request->has('delete_colors') && is_array($request->delete_colors)) {
+            ProductAttribute::whereIn('id', $request->delete_colors)->delete();
+        }
 
-        // Handle size attributes update
-        $this->handleSizeAttributesUpdate($product, $request);
+        // Handle size attributes and track statistics  
+        $sizeStats = ['new' => 0, 'reused' => 0];
+        if ($request->has('sizes') && is_array($request->sizes)) {
+            $sizeStats = $this->handleSizeAttributes($product, $request->sizes);
+        }
+        
+        // Handle size deletions
+        if ($request->has('delete_sizes') && is_array($request->delete_sizes)) {
+            ProductAttribute::whereIn('id', $request->delete_sizes)->delete();
+        }
+
+        // Build success message with attribute sync info
+        $message = "Product '{$product->name}' updated successfully!";
+        
+        // Add attribute sync summary
+        $syncMessages = [];
+        if ($colorStats['new'] > 0) {
+            $syncMessages[] = "<strong>{$colorStats['new']} new color(s)</strong> added to global library";
+        }
+        if ($colorStats['reused'] > 0) {
+            $syncMessages[] = "{$colorStats['reused']} existing color(s) reused";
+        }
+        if ($sizeStats['new'] > 0) {
+            $syncMessages[] = "<strong>{$sizeStats['new']} new size(s)</strong> added to global library";
+        }
+        if ($sizeStats['reused'] > 0) {
+            $syncMessages[] = "{$sizeStats['reused']} existing size(s) reused";
+        }
+        
+        if (!empty($syncMessages)) {
+            $message .= "<br><small class='text-muted'>📊 Sync: " . implode(' • ', $syncMessages) . "</small>";
+        }
 
         return redirect()->route('admin.products.index')
-            ->with('success', 'Product updated successfully!');
+            ->with('success', $message);
     }
 
     /**
@@ -884,6 +956,9 @@ class ProductController extends Controller
      */
     private function handleColorAttributes(Product $product, array $colors)
     {
+        $newlyCreatedColors = [];
+        $reusedColors = [];
+        
         // Get or create the Color attribute
         $colorAttribute = Attribute::firstOrCreate(
             ['slug' => 'color'],
@@ -902,8 +977,27 @@ class ProductController extends Controller
                     [
                         'attribute_id' => $colorAttribute->id,
                         'value' => $colorData['name']
+                    ],
+                    [
+                        'display_value' => $colorData['name'],
+                        'hex_code' => $colorData['hex'] ?? null
                     ]
                 );
+
+                // Track if this was a new color added to global library
+                if ($attributeValue->wasRecentlyCreated) {
+                    $newlyCreatedColors[] = $colorData['name'];
+                    \Log::info("✨ NEW color added to global library", [
+                        'color_name' => $colorData['name'],
+                        'color_hex' => $colorData['hex']
+                    ]);
+                } else {
+                    // Update hex code if provided and different
+                    if (isset($colorData['hex']) && $attributeValue->hex_code !== $colorData['hex']) {
+                        $attributeValue->update(['hex_code' => $colorData['hex']]);
+                    }
+                    $reusedColors[] = $colorData['name'];
+                }
 
                 // Create or get the product attribute relationship (prevents duplicates)
                 $productAttribute = ProductAttribute::firstOrCreate([
@@ -914,19 +1008,27 @@ class ProductController extends Controller
                 ]);
 
                 if ($productAttribute->wasRecentlyCreated) {
-                    \Log::info("Color attribute added to product", [
+                    \Log::info("Color attribute linked to product", [
                         'product_id' => $product->id,
-                        'color_name' => $colorData['name'],
-                        'color_hex' => $colorData['hex']
-                    ]);
-                } else {
-                    \Log::info("Color attribute already exists, skipping", [
-                        'product_id' => $product->id,
+                        'product_name' => $product->name,
                         'color_name' => $colorData['name']
                     ]);
                 }
             }
         }
+        
+        // Store summary in session for display
+        if (!empty($newlyCreatedColors)) {
+            session()->flash('colors_created', $newlyCreatedColors);
+        }
+        if (!empty($reusedColors)) {
+            session()->flash('colors_reused', $reusedColors);
+        }
+        
+        return [
+            'new' => count($newlyCreatedColors),
+            'reused' => count($reusedColors)
+        ];
     }
 
     /**
@@ -968,6 +1070,9 @@ class ProductController extends Controller
      */
     private function handleSizeAttributes(Product $product, array $sizes)
     {
+        $newlyCreatedSizes = [];
+        $reusedSizes = [];
+        
         // Get or create the Size attribute
         $sizeAttribute = Attribute::firstOrCreate(
             ['slug' => 'size'],
@@ -986,8 +1091,21 @@ class ProductController extends Controller
                     [
                         'attribute_id' => $sizeAttribute->id,
                         'value' => $sizeData['name']
+                    ],
+                    [
+                        'display_value' => $sizeData['name']
                     ]
                 );
+
+                // Track if this was a new size added to global library
+                if ($attributeValue->wasRecentlyCreated) {
+                    $newlyCreatedSizes[] = $sizeData['name'];
+                    \Log::info("✨ NEW size added to global library", [
+                        'size_name' => $sizeData['name']
+                    ]);
+                } else {
+                    $reusedSizes[] = $sizeData['name'];
+                }
 
                 // Create or get the product attribute relationship (prevents duplicates)
                 $productAttribute = ProductAttribute::firstOrCreate([
@@ -998,19 +1116,28 @@ class ProductController extends Controller
                 ]);
 
                 if ($productAttribute->wasRecentlyCreated) {
-                    \Log::info("Size attribute added to product", [
+                    \Log::info("Size attribute linked to product", [
                         'product_id' => $product->id,
+                        'product_name' => $product->name,
                         'size_name' => $sizeData['name'],
                         'size_guide' => $sizeData['guide'] ?? null
-                    ]);
-                } else {
-                    \Log::info("Size attribute already exists, skipping", [
-                        'product_id' => $product->id,
-                        'size_name' => $sizeData['name']
                     ]);
                 }
             }
         }
+        
+        // Store summary in session for display
+        if (!empty($newlyCreatedSizes)) {
+            session()->flash('sizes_created', $newlyCreatedSizes);
+        }
+        if (!empty($reusedSizes)) {
+            session()->flash('sizes_reused', $reusedSizes);
+        }
+        
+        return [
+            'new' => count($newlyCreatedSizes),
+            'reused' => count($reusedSizes)
+        ];
     }
 
     /**

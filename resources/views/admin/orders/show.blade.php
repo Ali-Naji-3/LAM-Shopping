@@ -162,45 +162,188 @@
                 </div>
             </div>
 
-            <!-- Order Items -->
+            <!-- Shopping Cart Details -->
             @if($order->orderItems && $order->orderItems->count() > 0)
                 <div class="card mb-4" style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;">
-                    <div class="card-header" style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important; border-bottom: 1px solid #e2e8f0 !important; border-radius: 12px 12px 0 0 !important; padding: 1.5rem 2rem !important;">
-                        <h5 class="mb-0" style="color: #1a202c !important; font-weight: 600 !important; font-size: 18px !important;">
-                            <i class="bi bi-box me-2" style="color: #3182ce !important;"></i>Order Items ({{ $order->orderItems->count() }})
-                        </h5>
+                    <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; border-bottom: none !important; border-radius: 12px 12px 0 0 !important; padding: 1.5rem 2rem !important;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0" style="color: #ffffff !important; font-weight: 700 !important; font-size: 18px !important;">
+                                <i class="bi bi-cart3 me-2"></i>Shopping Cart Details
+                            </h5>
+                            <span class="badge" style="background: rgba(255,255,255,0.3) !important; color: #ffffff !important; font-size: 14px !important; padding: 8px 16px !important; border-radius: 20px !important; font-weight: 600 !important;">
+                                {{ $order->orderItems->count() }} {{ $order->orderItems->count() == 1 ? 'Item' : 'Items' }}
+                            </span>
+                        </div>
                     </div>
-                    <div class="card-body" style="padding: 2rem !important;">
-                        @foreach($order->orderItems as $item)
-                            <div class="order-item" style="padding: 1rem !important; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important; border-radius: 10px !important; margin-bottom: 1rem !important; border: 1px solid #e2e8f0 !important; transition: all 0.2s ease !important;"
-                                 onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 2px 8px rgba(0, 0, 0, 0.1) !important';"
-                                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="flex-grow-1">
-                                        <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 16px !important; margin-bottom: 4px !important;">
-                                            {{ $item->product->name ?? 'Product Not Found' }}
-                                        </h6>
-                                        <div class="item-details" style="color: #4a5568 !important; font-size: 13px !important; line-height: 1.5 !important;">
-                                            <div><strong>SKU:</strong> {{ $item->product->sku ?? 'N/A' }}</div>
-                                            @if($item->product && $item->product->category)
-                                                <div><strong>Category:</strong> {{ $item->product->category->name }}</div>
-                                            @endif
-                                            @if($item->product && $item->product->brand)
-                                                <div><strong>Brand:</strong> {{ $item->product->brand->name }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="item-pricing text-end">
-                                        <div style="color: #10b981 !important; font-weight: 700 !important; font-size: 16px !important; margin-bottom: 4px !important;">
-                                            ${{ number_format($item->price, 2) }}
-                                        </div>
-                                        <div style="color: #4a5568 !important; font-size: 13px !important;">
-                                            Qty: {{ $item->quantity }} • Total: ${{ number_format($item->price * $item->quantity, 2) }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
+                    <div class="card-body" style="padding: 0 !important;">
+                        <!-- Cart Items Table -->
+                        <div class="table-responsive">
+                            <table class="table mb-0" style="border-collapse: separate; border-spacing: 0;">
+                                <thead style="background: #f8f9fa !important; border-bottom: 2px solid #e9ecef !important;">
+                                    <tr>
+                                        <th style="padding: 1rem 1.5rem !important; color: #495057 !important; font-weight: 700 !important; font-size: 12px !important; text-transform: uppercase !important; letter-spacing: 0.5px !important;">Product</th>
+                                        <th style="padding: 1rem 1.5rem !important; color: #495057 !important; font-weight: 700 !important; font-size: 12px !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; text-align: center;">Unit Price</th>
+                                        <th style="padding: 1rem 1.5rem !important; color: #495057 !important; font-weight: 700 !important; font-size: 12px !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; text-align: center;">Quantity</th>
+                                        <th style="padding: 1rem 1.5rem !important; color: #495057 !important; font-weight: 700 !important; font-size: 12px !important; text-transform: uppercase !important; letter-spacing: 0.5px !important; text-align: right;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($order->orderItems as $index => $item)
+                                        <tr style="border-bottom: 1px solid #f1f3f5 !important; transition: all 0.2s ease !important;"
+                                            onmouseover="this.style.backgroundColor='#f8f9fa'"
+                                            onmouseout="this.style.backgroundColor='transparent'">
+                                            <td style="padding: 1.5rem !important;">
+                                                <div class="d-flex align-items-center gap-3">
+                                                    <!-- Product Image -->
+                                                    <div class="product-image" style="width: 80px; height: 80px; flex-shrink: 0; border-radius: 8px; overflow: hidden; border: 2px solid #e9ecef;">
+                                                        @if($item->product && $item->product->image)
+                                                            <img src="{{ asset('storage/' . $item->product->image) }}" 
+                                                                 alt="{{ $item->product->name }}" 
+                                                                 style="width: 100%; height: 100%; object-fit: cover;">
+                                                        @else
+                                                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%); display: flex; align-items: center; justify-content: center;">
+                                                                <i class="bi bi-image" style="font-size: 2rem; color: #adb5bd;"></i>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <!-- Product Details -->
+                                                    <div class="flex-grow-1">
+                                                        <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 15px !important; margin-bottom: 6px !important;">
+                                                            {{ $item->product->name ?? 'Product Not Found' }}
+                                                        </h6>
+                                                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 4px;">
+                                                            @if($item->product && $item->product->sku)
+                                                                <span class="badge" style="background: #e9ecef !important; color: #495057 !important; font-size: 11px !important; padding: 4px 8px !important; border-radius: 4px !important; font-weight: 500 !important;">
+                                                                    SKU: {{ $item->product->sku }}
+                                                                </span>
+                                                            @endif
+                                                            @if($item->product && $item->product->category)
+                                                                <span class="badge" style="background: #e0f2fe !important; color: #0369a1 !important; font-size: 11px !important; padding: 4px 8px !important; border-radius: 4px !important; font-weight: 500 !important;">
+                                                                    {{ $item->product->category->name }}
+                                                                </span>
+                                                            @endif
+                                                            @if($item->product && $item->product->brand)
+                                                                <span class="badge" style="background: #f3e8ff !important; color: #7c3aed !important; font-size: 11px !important; padding: 4px 8px !important; border-radius: 4px !important; font-weight: 500 !important;">
+                                                                    {{ $item->product->brand->name }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                        @if($item->product)
+                                                            @php
+                                                                $productColors = $item->product->productAttributes()
+                                                                    ->whereHas('attributeValue.attribute', function($q) {
+                                                                        $q->where('slug', 'color');
+                                                                    })
+                                                                    ->with('attributeValue')
+                                                                    ->get();
+                                                                $productSizes = $item->product->productAttributes()
+                                                                    ->whereHas('attributeValue.attribute', function($q) {
+                                                                        $q->where('slug', 'size');
+                                                                    })
+                                                                    ->with('attributeValue')
+                                                                    ->get();
+                                                            @endphp
+                                                            <div style="font-size: 12px; color: #6c757d;">
+                                                                @if($productColors->count() > 0)
+                                                                    <span><i class="bi bi-palette"></i> 
+                                                                        @foreach($productColors as $color)
+                                                                            {{ $color->attributeValue->value }}{{ !$loop->last ? ', ' : '' }}
+                                                                        @endforeach
+                                                                    </span>
+                                                                @endif
+                                                                @if($productSizes->count() > 0)
+                                                                    <span class="ms-2"><i class="bi bi-rulers"></i> 
+                                                                        @foreach($productSizes as $size)
+                                                                            {{ $size->attributeValue->value }}{{ !$loop->last ? ', ' : '' }}
+                                                                        @endforeach
+                                                                    </span>
+                                                                @endif
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 1.5rem !important; text-align: center; vertical-align: middle;">
+                                                <div style="color: #1a202c !important; font-weight: 600 !important; font-size: 16px !important;">
+                                                    ${{ number_format($item->unit_price, 2) }}
+                                                </div>
+                                                @if($item->product && $item->product->regular_price > $item->unit_price)
+                                                    <div style="color: #ef4444 !important; font-size: 12px !important; text-decoration: line-through;">
+                                                        ${{ number_format($item->product->regular_price, 2) }}
+                                                    </div>
+                                                @endif
+                                            </td>
+                                            <td style="padding: 1.5rem !important; text-align: center; vertical-align: middle;">
+                                                <div class="quantity-badge" style="display: inline-flex; align-items: center; justify-content: center; min-width: 50px; padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; color: #ffffff; font-weight: 700; font-size: 14px;">
+                                                    {{ $item->quantity }}
+                                                </div>
+                                            </td>
+                                            <td style="padding: 1.5rem !important; text-align: right; vertical-align: middle;">
+                                                <div style="color: #10b981 !important; font-weight: 700 !important; font-size: 18px !important;">
+                                                    ${{ number_format($item->total_price, 2) }}
+                                                </div>
+                                                @if($item->quantity > 1)
+                                                    <div style="color: #6c757d !important; font-size: 11px !important;">
+                                                        ${{ number_format($item->unit_price, 2) }} × {{ $item->quantity }}
+                                                    </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <!-- Cart Summary Footer -->
+                                <tfoot style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important; border-top: 2px solid #dee2e6 !important;">
+                                    <tr>
+                                        <td colspan="3" style="padding: 1.5rem !important; text-align: right;">
+                                            <strong style="color: #495057 !important; font-size: 15px !important;">Subtotal:</strong>
+                                        </td>
+                                        <td style="padding: 1.5rem !important; text-align: right;">
+                                            <strong style="color: #1a202c !important; font-size: 16px !important;">${{ number_format($order->subtotal, 2) }}</strong>
+                                        </td>
+                                    </tr>
+                                    @if($order->tax_amount > 0)
+                                    <tr>
+                                        <td colspan="3" style="padding: 0.5rem 1.5rem !important; text-align: right;">
+                                            <strong style="color: #495057 !important; font-size: 14px !important;">Tax:</strong>
+                                        </td>
+                                        <td style="padding: 0.5rem 1.5rem !important; text-align: right;">
+                                            <strong style="color: #1a202c !important; font-size: 14px !important;">${{ number_format($order->tax_amount, 2) }}</strong>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @if($order->shipping_amount > 0)
+                                    <tr>
+                                        <td colspan="3" style="padding: 0.5rem 1.5rem !important; text-align: right;">
+                                            <strong style="color: #495057 !important; font-size: 14px !important;">Shipping:</strong>
+                                        </td>
+                                        <td style="padding: 0.5rem 1.5rem !important; text-align: right;">
+                                            <strong style="color: #1a202c !important; font-size: 14px !important;">${{ number_format($order->shipping_amount, 2) }}</strong>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    @if($order->discount_amount > 0)
+                                    <tr>
+                                        <td colspan="3" style="padding: 0.5rem 1.5rem !important; text-align: right;">
+                                            <strong style="color: #495057 !important; font-size: 14px !important;">Discount:</strong>
+                                        </td>
+                                        <td style="padding: 0.5rem 1.5rem !important; text-align: right;">
+                                            <strong style="color: #ef4444 !important; font-size: 14px !important;">-${{ number_format($order->discount_amount, 2) }}</strong>
+                                        </td>
+                                    </tr>
+                                    @endif
+                                    <tr style="border-top: 2px solid #dee2e6 !important;">
+                                        <td colspan="3" style="padding: 1.5rem !important; text-align: right;">
+                                            <strong style="color: #1a202c !important; font-size: 18px !important; font-weight: 700 !important;">TOTAL:</strong>
+                                        </td>
+                                        <td style="padding: 1.5rem !important; text-align: right;">
+                                            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; padding: 12px 20px; border-radius: 8px; display: inline-block;">
+                                                <strong style="font-size: 22px !important; font-weight: 700 !important;">${{ number_format($order->total_amount, 2) }}</strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                 </div>
             @else

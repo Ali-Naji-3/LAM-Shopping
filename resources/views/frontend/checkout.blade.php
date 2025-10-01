@@ -1,247 +1,339 @@
 @extends('frontend.layouts.layout')
 @section('content')
-	<main class="bg_gray">
+<main class="bg_gray">
+    <div class="container margin_30">
+        <div class="page_header">
+            <div class="breadcrumbs">
+                <ul>
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li><a href="{{ route('cart.index') }}">Cart</a></li>
+                    <li>Checkout</li>
+                </ul>
+            </div>
+            <h1>Checkout</h1>
+        </div>
+        <!-- /page_header -->
 
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-	<div class="container margin_30">
-		<div class="page_header">
-			<div class="breadcrumbs">
-				<ul>
-					<li><a href="#">Home</a></li>
-					<li><a href="#">Category</a></li>
-					<li>Page active</li>
-				</ul>
-		</div>
-		<h1>Sign In or Create an Account</h1>
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h6>Please fix the following errors:</h6>
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
-	</div>
-	<!-- /page_header -->
-			<div class="row">
-				<div class="col-lg-4 col-md-6">
-					<div class="step first">
-						<h3>1. User Info and Billing address</h3>
-					<ul class="nav nav-tabs" id="tab_checkout" role="tablist">
-					  <li class="nav-item">
-						<a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#tab_1" role="tab" aria-controls="tab_1" aria-selected="true">Register</a>
-					  </li>
-					  <li class="nav-item">
-						<a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#tab_2" role="tab" aria-controls="tab_2" aria-selected="false">Login</a>
-					  </li>
-					</ul>
-					<div class="tab-content checkout">
-						<div class="tab-pane fade show active" id="tab_1" role="tabpanel" aria-labelledby="tab_1">
-							<div class="form-group">
-								<input type="email" class="form-control" placeholder="Email">
-							</div>
-							<div class="form-group">
-								<input type="password" class="form-control" placeholder="Password">
-							</div>
-							<hr>
-							<div class="row no-gutters">
-								<div class="col-6 form-group pr-1">
-									<input type="text" class="form-control" placeholder="Name">
-								</div>
-								<div class="col-6 form-group pl-1">
-									<input type="text" class="form-control" placeholder="Last Name">
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Full Address">
-							</div>
-							<div class="row no-gutters">
-								<div class="col-6 form-group pr-1">
-									<input type="text" class="form-control" placeholder="City">
-								</div>
-								<div class="col-6 form-group pl-1">
-									<input type="text" class="form-control" placeholder="Postal code">
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="row no-gutters">
-								<div class="col-md-12 form-group">
-									<div class="custom-select-form">
-										<select class="wide add_bottom_15" name="country" id="country">
-											<option value="" selected>Country</option>
-											<option value="Europe">Europe</option>
-											<option value="United states">United states</option>
-											<option value="Asia">Asia</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Telephone">
-							</div>
-							<hr>
-							<div class="form-group">
-								<label class="container_check" id="other_addr">Other billing address
-								  <input type="checkbox">
-								  <span class="checkmark"></span>
-								</label>
-							</div>
-							<div id="other_addr_c" class="pt-2">
-							<div class="row no-gutters">
-								<div class="col-6 form-group pr-1">
-									<input type="text" class="form-control" placeholder="Name">
-								</div>
-								<div class="col-6 form-group pl-1">
-									<input type="text" class="form-control" placeholder="Last Name">
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Full Address">
-							</div>
-							<div class="row no-gutters">
-								<div class="col-6 form-group pr-1">
-									<input type="text" class="form-control" placeholder="City">
-								</div>
-								<div class="col-6 form-group pl-1">
-									<input type="text" class="form-control" placeholder="Postal code">
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="row no-gutters">
-								<div class="col-md-12 form-group">
-									<div class="custom-select-form">
-										<select class="wide add_bottom_15" name="country" id="country_2">
-											<option value="" selected>Country</option>
-											<option value="Europe">Europe</option>
-											<option value="United states">United states</option>
-											<option value="Asia">Asia</option>
-										</select>
-									</div>
-								</div>
-							</div>
-							<!-- /row -->
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Telephone">
-							</div>
-							</div>
-							<!-- /other_addr_c -->
-							<hr>
-						</div>
-						<!-- /tab_1 -->
-					  <div class="tab-pane fade" id="tab_2" role="tabpanel" aria-labelledby="tab_2" style="position: relative;">
-						  <a href="#0" class="social_bt facebook">Login con Facebook</a>
-						  <a href="#0" class="social_bt google">Login con Google</a>
-						  <div class="form-group">
-								<input type="email" class="form-control" placeholder="Email">
-							</div>
-							<div class="form-group">
-								<input type="password" class="form-control" placeholder="Password" name="password_in" id="password_in">
-							</div>
-						  	<div class="clearfix add_bottom_15">
-								<div class="checkboxes float-start">
-									<label class="container_check">Remember me
-										<input type="checkbox">
-										<span class="checkmark"></span>
-									</label>
-								</div>
-								<div class="float-end"><a id="forgot" href="#0">Lost Password?</a></div>
-							</div>
-							  <div id="forgot_pw">
-								<div class="form-group">
-									<input type="email" class="form-control" name="email_forgot" id="email_forgot" placeholder="Type your email">
-								</div>
-								<p>A new password will be sent shortly.</p>
-								<div class="text-center"><input type="submit" value="Reset Password" class="btn_1"></div>
-							</div>
-							<hr>
-						  	<input type="submit" class="btn_1 full-width" value="Login">
-						</div>
-						<!-- /tab_2 -->
-					</div>
-					</div>
-					<!-- /step -->
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="step middle payments">
-						<h3>2. Payment and Shipping</h3>
-							<ul>
-								<li>
-									<label class="container_radio">Credit Card<a href="#0" class="info" data-bs-toggle="modal" data-bs-target="#payments_method"></a>
-										<input type="radio" name="payment" checked>
-										<span class="checkmark"></span>
-									</label>
-								</li>
-								<li>
-									<label class="container_radio">Paypal<a href="#0" class="info" data-bs-toggle="modal" data-bs-target="#payments_method"></a>
-										<input type="radio" name="payment">
-										<span class="checkmark"></span>
-									</label>
-								</li>
-								<li>
-									<label class="container_radio">Cash on delivery<a href="#0" class="info" data-bs-toggle="modal" data-bs-target="#payments_method"></a>
-										<input type="radio" name="payment">
-										<span class="checkmark"></span>
-									</label>
-								</li>
-								<li>
-									<label class="container_radio">Bank Transfer<a href="#0" class="info" data-bs-toggle="modal" data-bs-target="#payments_method"></a>
-										<input type="radio" name="payment">
-										<span class="checkmark"></span>
-									</label>
-								</li>
-							</ul>
-							<div class="payment_info d-none d-sm-block"><figure><img src="img/cards_all.svg" alt=""></figure>	<p>Sensibus reformidans interpretaris sit ne, nec errem nostrum et, te nec meliore philosophia. At vix quidam periculis. Solet tritani ad pri, no iisque definitiones sea.</p></div>
+        <form action="{{ route('frontend.order.place') }}" method="POST" id="checkout-form">
+            @csrf
+            <div class="row">
+                <!-- Left Column: Billing & Shipping -->
+                <div class="col-lg-8">
+                    <!-- Customer Information -->
+                    <div class="step first">
+                        <h3>1. Customer Information</h3>
+                        <div class="tab-content checkout">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="customer_name">Full Name *</label>
+                                    <input type="text" 
+                                           class="form-control @error('customer_name') is-invalid @enderror" 
+                                           id="customer_name" 
+                                           name="customer_name" 
+                                           placeholder="John Doe" 
+                                           value="{{ old('customer_name', $user->name ?? '') }}"
+                                           required>
+                                    @error('customer_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="customer_email">Email *</label>
+                                    <input type="email" 
+                                           class="form-control @error('customer_email') is-invalid @enderror" 
+                                           id="customer_email" 
+                                           name="customer_email" 
+                                           placeholder="john@example.com" 
+                                           value="{{ old('customer_email', $user->email ?? '') }}"
+                                           required>
+                                    @error('customer_email')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-							<h6 class="pb-2">Shipping Method</h6>
+                            <div class="form-group">
+                                <label for="customer_phone">Phone Number *</label>
+                                <input type="tel" 
+                                       class="form-control @error('customer_phone') is-invalid @enderror" 
+                                       id="customer_phone" 
+                                       name="customer_phone" 
+                                       placeholder="+1234567890" 
+                                       value="{{ old('customer_phone') }}"
+                                       required>
+                                @error('customer_phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
+                            <hr>
 
-						<ul>
-								<li>
-									<label class="container_radio">Standard shipping<a href="#0" class="info" data-bs-toggle="modal" data-bs-target="#payments_method"></a>
-										<input type="radio" name="shipping" checked>
-										<span class="checkmark"></span>
-									</label>
-								</li>
-								<li>
-									<label class="container_radio">Express shipping<a href="#0" class="info" data-bs-toggle="modal" data-bs-target="#payments_method"></a>
-										<input type="radio" name="shipping">
-										<span class="checkmark"></span>
-									</label>
-								</li>
+                            <!-- Shipping Address -->
+                            <h5 class="mt-4 mb-3">Shipping Address</h5>
+                            <div class="form-group">
+                                <label for="shipping_address">Street Address *</label>
+                                <input type="text" 
+                                       class="form-control @error('shipping_address') is-invalid @enderror" 
+                                       id="shipping_address" 
+                                       name="shipping_address" 
+                                       placeholder="123 Main Street, Apartment 4B" 
+                                       value="{{ old('shipping_address') }}"
+                                       required>
+                                @error('shipping_address')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-							</ul>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <label for="shipping_city">City *</label>
+                                    <input type="text" 
+                                           class="form-control @error('shipping_city') is-invalid @enderror" 
+                                           id="shipping_city" 
+                                           name="shipping_city" 
+                                           placeholder="New York" 
+                                           value="{{ old('shipping_city') }}"
+                                           required>
+                                    @error('shipping_city')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="shipping_postal_code">Postal Code *</label>
+                                    <input type="text" 
+                                           class="form-control @error('shipping_postal_code') is-invalid @enderror" 
+                                           id="shipping_postal_code" 
+                                           name="shipping_postal_code" 
+                                           placeholder="10001" 
+                                           value="{{ old('shipping_postal_code') }}"
+                                           required>
+                                    @error('shipping_postal_code')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
 
-					</div>
-					<!-- /step -->
+                            <div class="form-group">
+                                <label for="shipping_country">Country *</label>
+                                <select class="form-control @error('shipping_country') is-invalid @enderror" 
+                                        id="shipping_country" 
+                                        name="shipping_country" 
+                                        required>
+                                    <option value="">Select Country</option>
+                                    <option value="United States" {{ old('shipping_country') == 'United States' ? 'selected' : '' }}>United States</option>
+                                    <option value="Canada" {{ old('shipping_country') == 'Canada' ? 'selected' : '' }}>Canada</option>
+                                    <option value="United Kingdom" {{ old('shipping_country') == 'United Kingdom' ? 'selected' : '' }}>United Kingdom</option>
+                                    <option value="Australia" {{ old('shipping_country') == 'Australia' ? 'selected' : '' }}>Australia</option>
+                                    <option value="Germany" {{ old('shipping_country') == 'Germany' ? 'selected' : '' }}>Germany</option>
+                                    <option value="France" {{ old('shipping_country') == 'France' ? 'selected' : '' }}>France</option>
+                                    <option value="Other" {{ old('shipping_country') == 'Other' ? 'selected' : '' }}>Other</option>
+                                </select>
+                                @error('shipping_country')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
-				</div>
-				<div class="col-lg-4 col-md-6">
-					<div class="step last">
-						<h3>3. Order Summary</h3>
-					<div class="box_general summary">
-						<ul>
-							<li class="clearfix"><em>1x Armor Air X Fear</em>  <span>$145.00</span></li>
-							<li class="clearfix"><em>2x Armor Air Zoom Alpha</em> <span>$115.00</span></li>
-						</ul>
-						<ul>
-							<li class="clearfix"><em><strong>Subtotal</strong></em>  <span>$450.00</span></li>
-							<li class="clearfix"><em><strong>Shipping</strong></em> <span>$0</span></li>
+                            <div class="form-group">
+                                <label class="container_check">
+                                    Use different billing address
+                                    <input type="checkbox" id="other_billing_address">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
 
-						</ul>
-						<div class="total clearfix">TOTAL <span>$450.00</span></div>
-						<div class="form-group">
-								<label class="container_check">Register to the Newsletter.
-								  <input type="checkbox" checked>
-								  <span class="checkmark"></span>
-								</label>
-							</div>
+                            <!-- Billing Address (Hidden by default) -->
+                            <div id="billing_address_fields" style="display: none;">
+                                <h5 class="mt-4 mb-3">Billing Address</h5>
+                                <div class="form-group">
+                                    <label for="billing_address">Street Address</label>
+                                    <input type="text" class="form-control" id="billing_address" name="billing_address" value="{{ old('billing_address') }}">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label for="billing_city">City</label>
+                                        <input type="text" class="form-control" id="billing_city" name="billing_city" value="{{ old('billing_city') }}">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label for="billing_postal_code">Postal Code</label>
+                                        <input type="text" class="form-control" id="billing_postal_code" name="billing_postal_code" value="{{ old('billing_postal_code') }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="billing_country">Country</label>
+                                    <select class="form-control" id="billing_country" name="billing_country">
+                                        <option value="">Select Country</option>
+                                        <option value="United States">United States</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="United Kingdom">United Kingdom</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="France">France</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /step -->
 
-						<a href="{{ url('confirm') }}" class="btn_1 full-width">Confirm and Pay</a>
-					</div>
-					<!-- /box_general -->
-					</div>
-					<!-- /step -->
-				</div>
-			</div>
-			<!-- /row -->
-		</div>
-		<!-- /container -->
-	</main>
-    @endsection
+                    <!-- Payment & Shipping Methods -->
+                    <div class="step middle payments mt-4">
+                        <h3>2. Payment and Shipping</h3>
+                        
+                        <h6 class="pb-2">Payment Method *</h6>
+                        <ul>
+                            <li>
+                                <label class="container_radio">Credit Card
+                                    <input type="radio" name="payment_method" value="credit_card" {{ old('payment_method') == 'credit_card' ? 'checked' : 'checked' }} required>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="container_radio">PayPal
+                                    <input type="radio" name="payment_method" value="paypal" {{ old('payment_method') == 'paypal' ? 'checked' : '' }}>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="container_radio">Cash on Delivery
+                                    <input type="radio" name="payment_method" value="cash_on_delivery" {{ old('payment_method') == 'cash_on_delivery' ? 'checked' : '' }}>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="container_radio">Bank Transfer
+                                    <input type="radio" name="payment_method" value="bank_transfer" {{ old('payment_method') == 'bank_transfer' ? 'checked' : '' }}>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </li>
+                        </ul>
 
+                        <h6 class="pb-2 mt-4">Shipping Method *</h6>
+                        <ul>
+                            <li>
+                                <label class="container_radio">Standard Shipping ($10.00)
+                                    <input type="radio" name="shipping_method" value="standard" {{ old('shipping_method') == 'standard' ? 'checked' : 'checked' }} required>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </li>
+                            <li>
+                                <label class="container_radio">Express Shipping ($20.00)
+                                    <input type="radio" name="shipping_method" value="express" {{ old('shipping_method') == 'express' ? 'checked' : '' }}>
+                                    <span class="checkmark"></span>
+                                </label>
+                            </li>
+                        </ul>
+
+                        <div class="form-group mt-4">
+                            <label for="notes">Order Notes (Optional)</label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Special instructions for your order...">{{ old('notes') }}</textarea>
+                        </div>
+                    </div>
+                    <!-- /step -->
+                </div>
+
+                <!-- Right Column: Order Summary -->
+                <div class="col-lg-4">
+                    <div class="step last">
+                        <h3>3. Order Summary</h3>
+                        <div class="box_general summary">
+                            <ul>
+                                @foreach($cart as $item)
+                                    <li class="clearfix">
+                                        <em>{{ $item['qty'] }}x {{ $item['name'] }}</em>
+                                        <span>${{ number_format($item['price'] * $item['qty'], 2) }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                            <ul>
+                                <li class="clearfix">
+                                    <em><strong>Subtotal</strong></em>
+                                    <span id="subtotal-display">${{ number_format($subtotal, 2) }}</span>
+                                </li>
+                                <li class="clearfix">
+                                    <em><strong>Tax (10%)</strong></em>
+                                    <span>${{ number_format($tax, 2) }}</span>
+                                </li>
+                                <li class="clearfix">
+                                    <em><strong>Shipping</strong></em>
+                                    <span id="shipping-display">${{ number_format($shipping, 2) }}</span>
+                                </li>
+                            </ul>
+                            <div class="total clearfix">
+                                TOTAL <span id="total-display">${{ number_format($total, 2) }}</span>
+                            </div>
+                            
+                            <button type="submit" class="btn_1 full-width" id="place-order-btn">
+                                <i class="bi bi-lock"></i> Confirm and Place Order
+                            </button>
+                        </div>
+                        <!-- /box_general -->
+                    </div>
+                    <!-- /step -->
+                </div>
+            </div>
+            <!-- /row -->
+        </form>
+    </div>
+    <!-- /container -->
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle billing address fields
+    const billingCheckbox = document.getElementById('other_billing_address');
+    const billingFields = document.getElementById('billing_address_fields');
+    
+    if (billingCheckbox) {
+        billingCheckbox.addEventListener('change', function() {
+            billingFields.style.display = this.checked ? 'block' : 'none';
+        });
+    }
+
+    // Update shipping cost when shipping method changes
+    const shippingInputs = document.querySelectorAll('input[name="shipping_method"]');
+    const shippingDisplay = document.getElementById('shipping-display');
+    const totalDisplay = document.getElementById('total-display');
+    const subtotal = {{ $subtotal }};
+    const tax = {{ $tax }};
+
+    shippingInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            const shipping = this.value === 'express' ? 20.00 : 10.00;
+            const total = subtotal + tax + shipping;
+            
+            shippingDisplay.textContent = '$' + shipping.toFixed(2);
+            totalDisplay.textContent = '$' + total.toFixed(2);
+        });
+    });
+
+    // Form submission
+    const form = document.getElementById('checkout-form');
+    const submitBtn = document.getElementById('place-order-btn');
+    
+    form.addEventListener('submit', function() {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+    });
+});
+</script>
+@endsection

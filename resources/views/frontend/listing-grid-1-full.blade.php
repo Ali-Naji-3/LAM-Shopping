@@ -218,9 +218,9 @@
 							@endif
 							<a href="{{ route('product.detail', $product->slug) }}">
 								@if($product->image)
-									<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+									<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
 								@else
-									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
+									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
 								@endif
 							</a>
 							@if($product->enable_countdown && $product->countdown_date)

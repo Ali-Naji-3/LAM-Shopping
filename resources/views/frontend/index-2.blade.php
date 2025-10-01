@@ -144,9 +144,9 @@
 								@endif
 								<a href="{{ route('product.detail', $product->slug) }}">
 									@if($product->image)
-										<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+										<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
 									@else
-										<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
+										<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
 									@endif
 								</a>
 								@if($product->enable_countdown && $product->countdown_date)
@@ -215,29 +215,94 @@
 		<!-- /featured -->
 
 		<div class="bg_gray">
-			<div class="container margin_30">
-				<div id="brands" class="owl-carousel owl-theme" >
-					<div class="item">
-						<a href="#0"><img src="{{asset('img/hero/clothes.png')}}" data-src="{{asset('img/hero/clothes.png')}}" alt="" class="owl-lazy"></a>
-					</div><!-- /item -->
-					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_2.png" alt="" class="owl-lazy"></a>
-					</div><!-- /item -->
-					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_3.png" alt="" class="owl-lazy"></a>
-					</div><!-- /item -->
-					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_4.png" alt="" class="owl-lazy"></a>
-					</div><!-- /item -->
-					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_5.png" alt="" class="owl-lazy"></a>
-					</div><!-- /item -->
-					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_6.png" alt="" class="owl-lazy"></a>
-					</div><!-- /item -->
-				</div><!-- /carousel -->
-			</div><!-- /container -->
+			<div class="container-fluid">
+				<div class="brands-marquee-wrapper" style="overflow: hidden; padding: 30px 0; position: relative;">
+					<!-- Marquee Effect -->
+					<div class="brands-marquee" style="display: flex; gap: 60px; animation: marquee 30s linear infinite; will-change: transform;">
+						@forelse($brandSliders as $brandSlider)
+						<div class="brand-item" style="flex-shrink: 0; display: flex; align-items: center; justify-content: center; min-width: 180px;">
+							<a href="{{ $brandSlider->link ?: '#0' }}" 
+							   @if($brandSlider->link) target="_blank" @endif
+							   style="display: block; transition: transform 0.3s ease; text-decoration: none;"
+							   onmouseover="this.style.transform='scale(1.1)'"
+							   onmouseout="this.style.transform='scale(1)'">
+								<img src="{{ asset('storage/' . $brandSlider->image) }}" 
+								     alt="{{ $brandSlider->title ?: 'Brand' }}" 
+								     style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1; transition: transform 0.3s ease;">
+							</a>
+						</div>
+						@empty
+						<!-- Fallback to default brand images if no sliders -->
+						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
+							<a href="#0"><img src="{{asset('img/hero/clothes.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+						</div>
+						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
+							<a href="#0"><img src="{{asset('img/brands/logo_2.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+						</div>
+						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
+							<a href="#0"><img src="{{asset('img/brands/logo_3.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+						</div>
+						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
+							<a href="#0"><img src="{{asset('img/brands/logo_4.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+						</div>
+						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
+							<a href="#0"><img src="{{asset('img/brands/logo_5.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+						</div>
+						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
+							<a href="#0"><img src="{{asset('img/brands/logo_6.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+						</div>
+						@endforelse
+						
+						<!-- Duplicate items for seamless loop -->
+						@if($brandSliders->count() > 0)
+							@foreach($brandSliders as $brandSlider)
+							<div class="brand-item" style="flex-shrink: 0; display: flex; align-items: center; justify-content: center; min-width: 180px;">
+								<a href="{{ $brandSlider->link ?: '#0' }}" 
+								   @if($brandSlider->link) target="_blank" @endif
+								   style="display: block; transition: transform 0.3s ease;"
+								   onmouseover="this.style.transform='scale(1.1)'"
+								   onmouseout="this.style.transform='scale(1)'">
+									<img src="{{ asset('storage/' . $brandSlider->image) }}" 
+									     alt="{{ $brandSlider->title ?: 'Brand' }}" 
+									     style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1; transition: transform 0.3s ease;">
+								</a>
+							</div>
+							@endforeach
+						@endif
+					</div>
+				</div>
+			</div>
 		</div>
+
+		<style>
+		@keyframes marquee {
+			0% {
+				transform: translateX(0);
+			}
+			100% {
+				transform: translateX(-50%);
+			}
+		}
+
+		.brands-marquee-wrapper:hover .brands-marquee {
+			animation-play-state: paused;
+		}
+
+		.brands-marquee {
+			display: inline-flex !important;
+		}
+
+		/* Responsive adjustments */
+		@media (max-width: 768px) {
+			.brand-item {
+				min-width: 120px !important;
+			}
+			
+			.brand-item img {
+				max-height: 60px !important;
+			}
+		}
+		</style>
 
 
 	</main>
