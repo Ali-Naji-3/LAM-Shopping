@@ -28,12 +28,11 @@ class OrderController extends Controller
         });
 
         $shipping = 10.00; // Default shipping cost
-        $tax = $subtotal * 0.1; // 10% tax
-        $total = $subtotal + $shipping + $tax;
+        $total = $subtotal + $shipping;
 
         $user = Auth::user();
 
-        return view('frontend.checkout', compact('cart', 'subtotal', 'shipping', 'tax', 'total', 'user'));
+        return view('frontend.checkout', compact('cart', 'subtotal', 'shipping', 'total', 'user'));
     }
 
     /**
@@ -72,8 +71,7 @@ class OrderController extends Controller
         });
 
         $shipping_amount = $request->shipping_method === 'express' ? 20.00 : 10.00;
-        $tax_amount = $subtotal * 0.1; // 10% tax
-        $total_amount = $subtotal + $shipping_amount + $tax_amount;
+        $total_amount = $subtotal + $shipping_amount;
 
         try {
             DB::beginTransaction();
@@ -97,7 +95,6 @@ class OrderController extends Controller
                     : null,
                 'locality' => $validated['shipping_city'],
                 'subtotal' => $subtotal,
-                'tax_amount' => $tax_amount,
                 'shipping_amount' => $shipping_amount,
                 'discount_amount' => 0,
                 'total_amount' => $total_amount,

@@ -162,7 +162,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label for="color_stock" class="form-label">Stock <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="color_stock" placeholder="Quantity" min="1" required>
+                                            <input type="number" class="form-control" id="color_stock" placeholder="Quantity" min="1" value="1" required>
                                             <small class="text-muted">Minimum 1 item required</small>
                                         </div>
                                         <div class="col-md-2 d-flex align-items-end">
@@ -235,7 +235,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label for="size_stock" class="form-label">Stock <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="size_stock" placeholder="Quantity" min="1" required>
+                                            <input type="number" class="form-control" id="size_stock" placeholder="Quantity" min="1" value="1" required>
                                             <small class="text-muted">Minimum 1 item required</small>
                                         </div>
                                         <div class="col-md-3">
@@ -533,19 +533,7 @@
 // Simple Gallery System
 let galleryImages = [];
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🖼️ Simple gallery system loaded');
-
-    const galleryInput = document.getElementById('gallery-images');
-    if (galleryInput) {
-        galleryInput.addEventListener('change', function(event) {
-            console.log('📸 Files selected:', event.target.files.length);
-            const files = Array.from(event.target.files);
-            galleryImages = [...galleryImages, ...files];
-            updateGalleryPreview();
-        });
-    }
-});
+// Gallery system will be initialized in main DOMContentLoaded
 
 function updateGalleryPreview() {
     console.log('🖼️ Updating gallery preview with', galleryImages.length, 'images');
@@ -688,14 +676,22 @@ function setCommonSalePrice() {
 
 // Color Management Functions
 let selectedColors = [];
+let existingColors = [];
 
 // Size Management Functions
 let selectedSizes = [];
+let existingSizes = [];
 
 function addColor() {
     const colorName = document.getElementById('color_name').value.trim();
     const colorHex = document.getElementById('color_hex').value;
-    const colorStock = parseInt(document.getElementById('color_stock').value) || 0;
+    let colorStock = parseInt(document.getElementById('color_stock').value) || 0;
+    
+    // Auto-set stock to 1 if empty or invalid
+    if (colorStock <= 0) {
+        colorStock = 1;
+        document.getElementById('color_stock').value = '1';
+    }
 
     if (!colorName) {
         alert('Please enter a color name');
@@ -744,7 +740,7 @@ function addColor() {
     // Clear inputs
     document.getElementById('color_name').value = '';
     document.getElementById('color_hex').value = '#000000';
-    document.getElementById('color_stock').value = '';
+    document.getElementById('color_stock').value = '1';
 
     // Update preview
     updateColorsPreview();
@@ -785,7 +781,7 @@ function showColorSyncNotification(message, type) {
 function addPresetColor(name, hex) {
     document.getElementById('color_name').value = name;
     document.getElementById('color_hex').value = hex;
-    document.getElementById('color_stock').value = 10; // Default stock
+    document.getElementById('color_stock').value = '1'; // Default stock
     addColor();
 }
 
@@ -869,8 +865,14 @@ function updateColorsPreview() {
 // Size Management Functions
 function addSize() {
     const sizeName = document.getElementById('size_name').value.trim();
-    const sizeStock = parseInt(document.getElementById('size_stock').value) || 0;
+    let sizeStock = parseInt(document.getElementById('size_stock').value) || 0;
     const sizeGuide = document.getElementById('size_guide').value.trim();
+    
+    // Auto-set stock to 1 if empty or invalid
+    if (sizeStock <= 0) {
+        sizeStock = 1;
+        document.getElementById('size_stock').value = '1';
+    }
 
     if (!sizeName) {
         alert('Please enter a size name');
@@ -918,7 +920,7 @@ function addSize() {
 
     // Clear inputs
     document.getElementById('size_name').value = '';
-    document.getElementById('size_stock').value = '';
+    document.getElementById('size_stock').value = '1';
     document.getElementById('size_guide').value = '';
 
     // Update preview
@@ -960,7 +962,7 @@ function showSizeSyncNotification(message, type) {
 function addPresetSize(name, guide) {
     document.getElementById('size_name').value = name;
     document.getElementById('size_guide').value = guide;
-    document.getElementById('size_stock').value = 10; // Default stock
+    document.getElementById('size_stock').value = '1'; // Default stock
     addSize();
 }
 
@@ -1043,9 +1045,6 @@ function updateSizesPreview() {
 // ================================================================
 // ATTRIBUTE INTEGRATION SYSTEM - Connects to Attribute Management
 // ================================================================
-
-let existingColors = [];
-let existingSizes = [];
 
 // Load existing colors and sizes from database
 async function loadAttributeData() {
@@ -1160,14 +1159,14 @@ function showPopularSizes(sizes) {
 function quickAddColor(name, hex) {
     document.getElementById('color_name').value = name;
     document.getElementById('color_hex').value = hex || '#000000';
-    document.getElementById('color_stock').value = 10;
+    document.getElementById('color_stock').value = '1';
     document.getElementById('color_stock').focus();
 }
 
 // Quick add size from popular list
 function quickAddSize(name) {
     document.getElementById('size_name').value = name;
-    document.getElementById('size_stock').value = 10;
+    document.getElementById('size_stock').value = '1';
     document.getElementById('size_stock').focus();
 }
 
@@ -1183,8 +1182,22 @@ document.addEventListener('input', function(e) {
     }
 });
 
-// New Arrival Auto-Remove Functionality
+// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔄 Create page JavaScript loaded');
+    
+    // Initialize gallery system
+    const galleryInput = document.getElementById('gallery-images');
+    if (galleryInput) {
+        galleryInput.addEventListener('change', function(event) {
+            console.log('📸 Files selected:', event.target.files.length);
+            const files = Array.from(event.target.files);
+            galleryImages = [...galleryImages, ...files];
+            updateGalleryPreview();
+        });
+    }
+    
+    // Initialize color and size management
     updateColorsPreview();
     updateSizesPreview();
     
@@ -1233,6 +1246,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 });
+
 </script>
 @endsection
         

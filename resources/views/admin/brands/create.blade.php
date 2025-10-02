@@ -63,6 +63,42 @@
                             </div>
                         </div>
 
+                        <!-- Brand Image -->
+                        <div class="mb-4">
+                            <label for="image" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
+                                Brand Logo/Image
+                                <small style="color: #718096 !important; font-weight: 400 !important; font-size: 12px !important;">(optional - max 2MB, JPG/PNG/GIF)</small>
+                            </label>
+                            <div class="image-upload-container" style="border: 2px dashed #e2e8f0 !important; border-radius: 12px !important; padding: 2rem !important; text-align: center !important; background: #f8fafc !important; transition: all 0.3s ease !important;" 
+                                 onmouseover="this.style.borderColor='#3182ce !important'; this.style.backgroundColor='#f0f8ff !important';"
+                                 onmouseout="this.style.borderColor='#e2e8f0 !important'; this.style.backgroundColor='#f8fafc !important';">
+                                <input type="file" 
+                                       class="form-control @error('image') is-invalid @enderror" 
+                                       id="image" 
+                                       name="image" 
+                                       accept="image/*"
+                                       onchange="previewImage(this)"
+                                       style="display: none !important;">
+                                <div id="image-preview" style="display: none !important; margin-bottom: 1rem !important;">
+                                    <img id="preview-img" src="" alt="Preview" style="max-width: 200px !important; max-height: 200px !important; border-radius: 8px !important; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;">
+                                </div>
+                                <div id="upload-placeholder">
+                                    <i class="bi bi-cloud-upload" style="font-size: 48px !important; color: #a0aec0 !important; margin-bottom: 1rem !important;"></i>
+                                    <p style="color: #4a5568 !important; font-weight: 500 !important; margin-bottom: 0.5rem !important;">Click to upload brand image</p>
+                                    <p style="color: #718096 !important; font-size: 12px !important; margin-bottom: 0 !important;">or drag and drop here</p>
+                                </div>
+                                <button type="button" 
+                                        class="btn btn-outline-primary btn-sm" 
+                                        onclick="document.getElementById('image').click()"
+                                        style="margin-top: 1rem !important; padding: 8px 16px !important; border-radius: 6px !important; font-weight: 500 !important;">
+                                    <i class="bi bi-upload me-1"></i>Choose Image
+                                </button>
+                            </div>
+                            @error('image')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <!-- Description -->
                         <div class="mb-4">
                             <label for="description" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
@@ -146,6 +182,55 @@
         border-color: #3182ce !important;
         box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2) !important;
     }
+    
+    /* Image upload styling */
+    .image-upload-container {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .image-upload-container:hover {
+        border-color: #3182ce !important;
+        background-color: #f0f8ff !important;
+    }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+// Image preview functionality
+function previewImage(input) {
+    const preview = document.getElementById('image-preview');
+    const previewImg = document.getElementById('preview-img');
+    const placeholder = document.getElementById('upload-placeholder');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+        };
+        
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        preview.style.display = 'none';
+        placeholder.style.display = 'block';
+    }
+}
+
+// Database connection status
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔗 Brand Create Page Loaded');
+    console.log('📊 Database Connection Status:');
+    console.log('   - Form Action: {{ route("admin.brands.store") }}');
+    console.log('   - Method: POST');
+    console.log('   - Enctype: multipart/form-data');
+    console.log('   - Image Upload: Enabled');
+    console.log('   - Max File Size: 2MB');
+    console.log('   - Accepted Formats: JPG, PNG, GIF');
+});
+</script>
 @endpush
 @endsection
