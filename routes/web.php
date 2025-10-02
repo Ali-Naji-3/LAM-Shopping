@@ -42,6 +42,7 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::get('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
+
 Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
 
 Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');

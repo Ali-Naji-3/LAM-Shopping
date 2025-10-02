@@ -139,6 +139,7 @@
                                         name="shipping_country" 
                                         required>
                                     <option value="">Select Country</option>
+                                    <option value="Lebanon" {{ old('shipping_country') == 'Lebanon' ? 'selected' : '' }}>Lebanon</option>
                                     <option value="United States" {{ old('shipping_country') == 'United States' ? 'selected' : '' }}>United States</option>
                                     <option value="Canada" {{ old('shipping_country') == 'Canada' ? 'selected' : '' }}>Canada</option>
                                     <option value="United Kingdom" {{ old('shipping_country') == 'United Kingdom' ? 'selected' : '' }}>United Kingdom</option>
@@ -181,6 +182,7 @@
                                     <label for="billing_country">Country</label>
                                     <select class="form-control" id="billing_country" name="billing_country">
                                         <option value="">Select Country</option>
+                                        <option value="Lebanon">Lebanon</option>
                                         <option value="United States">United States</option>
                                         <option value="Canada">Canada</option>
                                         <option value="United Kingdom">United Kingdom</option>
@@ -270,10 +272,6 @@
                                     <span id="subtotal-display">${{ number_format($subtotal, 2) }}</span>
                                 </li>
                                 <li class="clearfix">
-                                    <em><strong>Tax (10%)</strong></em>
-                                    <span>${{ number_format($tax, 2) }}</span>
-                                </li>
-                                <li class="clearfix">
                                     <em><strong>Shipping</strong></em>
                                     <span id="shipping-display">${{ number_format($shipping, 2) }}</span>
                                 </li>
@@ -314,12 +312,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const shippingDisplay = document.getElementById('shipping-display');
     const totalDisplay = document.getElementById('total-display');
     const subtotal = {{ $subtotal }};
-    const tax = {{ $tax }};
 
     shippingInputs.forEach(input => {
         input.addEventListener('change', function() {
             const shipping = this.value === 'express' ? 20.00 : 10.00;
-            const total = subtotal + tax + shipping;
+            const total = subtotal + shipping;
             
             shippingDisplay.textContent = '$' + shipping.toFixed(2);
             totalDisplay.textContent = '$' + total.toFixed(2);

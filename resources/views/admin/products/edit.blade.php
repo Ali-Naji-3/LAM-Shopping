@@ -65,11 +65,40 @@
                         <!-- Color Management Section -->
                         <div class="mb-4">
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">🎨 Color Management</h5>
-                                    <small class="text-muted">Add colors for this product. These will appear as color dots on the frontend.</small>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-0">🎨 Color Management</h5>
+                                        <small class="text-muted">Add colors for this product. These will appear as color dots on the frontend.</small>
+                                    </div>
+                                    <a href="{{ route('admin.attributes.values', ['attribute' => 1]) }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        <i class="fas fa-cog me-1"></i> Manage All Colors
+                                    </a>
                                 </div>
                                 <div class="card-body">
+                                    <!-- Popular Colors Quick Select -->
+                                    <div id="popular-colors-section" class="mb-3" style="display:none;">
+                                        <div class="alert alert-light border">
+                                            <strong><i class="fas fa-fire text-danger me-1"></i>Popular Colors:</strong>
+                                            <div id="popular-colors-list" class="d-flex flex-wrap gap-2 mt-2">
+                                                <!-- Populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Database Connection Status -->
+                                    <div id="database-status" class="alert alert-info border-left mb-3" style="border-left: 4px solid #17a2b8 !important;">
+                                        <i class="fas fa-database me-1"></i>
+                                        <strong>Database Status:</strong> 
+                                        <span id="database-message">Loading colors and sizes from database...</span>
+                                    </div>
+
+                                    <!-- Auto-Sync Notification -->
+                                    <div id="color-sync-notification" class="alert alert-success border-left" style="display:none; border-left: 4px solid #28a745 !important;">
+                                        <i class="fas fa-sync-alt me-1"></i>
+                                        <strong>Auto-Sync Active:</strong> 
+                                        <span id="color-sync-message">New colors will be added to your global color library automatically!</span>
+                                    </div>
+
                                     <!-- Current Colors Display -->
                                     @php
                                         $currentColors = $product->productAttributes()
@@ -111,7 +140,18 @@
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="color_name" class="form-label">Color Name</label>
-                                            <input type="text" class="form-control" id="color_name" placeholder="e.g., Navy Blue, Forest Green">
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="color_name" 
+                                                   list="existing-colors" 
+                                                   placeholder="e.g., Navy Blue, Forest Green"
+                                                   autocomplete="off">
+                                            <datalist id="existing-colors">
+                                                <!-- Populated dynamically from database -->
+                                            </datalist>
+                                            <small class="text-muted">
+                                                <i class="fas fa-sync text-success"></i> <strong>Auto-syncs to global library</strong> • Start typing to see existing colors
+                                            </small>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="color_hex" class="form-label">Color Code</label>
@@ -119,13 +159,23 @@
                                         </div>
                                         <div class="col-md-3">
                                             <label for="color_stock" class="form-label">Stock <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="color_stock" placeholder="Quantity" min="1" required>
+                                            <input type="number" class="form-control" id="color_stock" placeholder="Quantity" min="1" value="1" required>
                                             <small class="text-muted">Minimum 1 item required</small>
                                         </div>
                                         <div class="col-md-2 d-flex align-items-end">
                                             <button type="button" class="btn btn-primary w-100" onclick="addColor()">
                                                 <i class="fas fa-plus"></i> Add
                                             </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Debug Test Buttons -->
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <small class="text-muted">Debug: </small>
+                                            <button type="button" class="btn btn-sm btn-outline-info" onclick="testAddColor()">Test Color Function</button>
+                                            <button type="button" class="btn btn-sm btn-outline-info" onclick="testAddSize()">Test Size Function</button>
+                                            <button type="button" class="btn btn-sm btn-outline-warning" onclick="logArrays()">Log Arrays</button>
                                         </div>
                                     </div>
 
@@ -152,11 +202,33 @@
                         <!-- Size Management Section -->
                         <div class="mb-4">
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">📏 Size Management</h5>
-                                    <small class="text-muted">Add sizes for this product. These will appear as size buttons on the frontend.</small>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-0">📏 Size Management</h5>
+                                        <small class="text-muted">Add sizes for this product. These will appear as size buttons on the frontend.</small>
+                                    </div>
+                                    <a href="{{ route('admin.attributes.values', ['attribute' => 2]) }}" class="btn btn-sm btn-outline-success" target="_blank">
+                                        <i class="fas fa-cog me-1"></i> Manage All Sizes
+                                    </a>
                                 </div>
                                 <div class="card-body">
+                                    <!-- Popular Sizes Quick Select -->
+                                    <div id="popular-sizes-section" class="mb-3" style="display:none;">
+                                        <div class="alert alert-light border">
+                                            <strong><i class="fas fa-fire text-warning me-1"></i>Popular Sizes:</strong>
+                                            <div id="popular-sizes-list" class="d-flex flex-wrap gap-2 mt-2">
+                                                <!-- Populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Auto-Sync Notification -->
+                                    <div id="size-sync-notification" class="alert alert-success border-left mb-3" style="display:none; border-left: 4px solid #28a745 !important;">
+                                        <i class="fas fa-sync-alt me-1"></i>
+                                        <strong>Auto-Sync Active:</strong> 
+                                        <span id="size-sync-message">New sizes will be added to your global size library automatically!</span>
+                                    </div>
+
                                     <!-- Current Sizes Display -->
                                     @php
                                         $currentSizes = $product->productAttributes()
@@ -190,11 +262,22 @@
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="size_name" class="form-label">Size Name</label>
-                                            <input type="text" class="form-control" id="size_name" placeholder="e.g., Small, Medium, Large, XL">
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="size_name" 
+                                                   list="existing-sizes"
+                                                   placeholder="e.g., Small, Medium, Large, XL"
+                                                   autocomplete="off">
+                                            <datalist id="existing-sizes">
+                                                <!-- Populated dynamically from database -->
+                                            </datalist>
+                                            <small class="text-muted">
+                                                <i class="fas fa-sync text-success"></i> <strong>Auto-syncs to global library</strong> • Start typing to see existing sizes
+                                            </small>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="size_stock" class="form-label">Stock <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" id="size_stock" placeholder="Quantity" min="1" required>
+                                            <input type="number" class="form-control" id="size_stock" placeholder="Quantity" min="1" value="1" required>
                                             <small class="text-muted">Minimum 1 item required</small>
                                         </div>
                                         <div class="col-md-3">
@@ -441,76 +524,97 @@
 @endpush
 
 <script>
-// Simple Gallery System
-let galleryImages = [];
+console.log('🔄 Edit page JavaScript loaded');
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🖼️ Simple gallery system loaded');
+// Global variables
+let selectedColors = [];
+let selectedSizes = [];
+let existingColors = [];
+let existingSizes = [];
 
-    const galleryInput = document.getElementById('gallery-images');
-    if (galleryInput) {
-        galleryInput.addEventListener('change', function(event) {
-            console.log('📸 Files selected:', event.target.files.length);
-            const files = Array.from(event.target.files);
-            galleryImages = [...galleryImages, ...files];
-            updateGalleryPreview();
-        });
+// Core Functions - Defined First
+function addColor() {
+    const colorName = document.getElementById('color_name').value.trim();
+    const colorHex = document.getElementById('color_hex').value;
+    let colorStock = parseInt(document.getElementById('color_stock').value) || 0;
+    
+    if (colorStock <= 0) colorStock = 1;
+    if (!colorName) { alert('Please enter a color name'); return; }
+    if (colorStock < 1) { alert('Stock quantity must be at least 1'); return; }
+    if (selectedColors.some(color => color.name.toLowerCase() === colorName.toLowerCase())) {
+        alert('This color has already been added'); return;
     }
-});
 
-function updateGalleryPreview() {
-    console.log('🖼️ Updating gallery preview with', galleryImages.length, 'images');
+    const newColor = { name: colorName, hex: colorHex, stock: colorStock };
+    selectedColors.push(newColor);
+    
+    document.getElementById('color_name').value = '';
+    document.getElementById('color_hex').value = '#000000';
+    document.getElementById('color_stock').value = '1';
+    
+    updateColorsPreview();
+    console.log('Color added:', newColor);
+}
 
-    const galleryPreview = document.getElementById('gallery-preview');
-    const galleryGrid = document.getElementById('gallery-grid');
-    const galleryCount = document.getElementById('gallery-count');
+function addSize() {
+    const sizeName = document.getElementById('size_name').value.trim();
+    let sizeStock = parseInt(document.getElementById('size_stock').value) || 0;
+    const sizeGuide = document.getElementById('size_guide').value.trim();
+    
+    if (sizeStock <= 0) sizeStock = 1;
+    if (!sizeName) { alert('Please enter a size name'); return; }
+    if (sizeStock < 1) { alert('Stock quantity must be at least 1'); return; }
+    if (selectedSizes.some(size => size.name.toLowerCase() === sizeName.toLowerCase())) {
+        alert('This size has already been added'); return;
+    }
 
-    if (galleryImages.length > 0) {
-        console.log('✅ Showing gallery preview');
+    const newSize = { name: sizeName, stock: sizeStock, guide: sizeGuide };
+    selectedSizes.push(newSize);
+    
+    document.getElementById('size_name').value = '';
+    document.getElementById('size_stock').value = '1';
+    document.getElementById('size_guide').value = '';
+    
+    updateSizesPreview();
+    console.log('Size added:', newSize);
+}
 
-        if (galleryPreview) {
-            galleryPreview.style.display = 'block';
-        }
-        if (galleryCount) {
-            galleryCount.textContent = galleryImages.length;
-        }
-        if (galleryGrid) {
-            galleryGrid.innerHTML = '';
-        }
-
-        galleryImages.forEach((file, index) => {
-            console.log('📸 Processing image', index + 1, ':', file.name);
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                console.log('✅ Image loaded:', file.name);
-
-                if (galleryGrid) {
-                    const col = document.createElement('div');
-                    col.className = 'col-md-3 col-sm-4 col-6';
-                    col.innerHTML = `
-                        <div style="border: 1px solid #ddd; border-radius: 8px; padding: 8px; background: white;">
-                            <img src="${e.target.result}" alt="${file.name}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 4px;">
-                            <div style="margin-top: 8px; font-size: 12px; color: #666;">
-                                ${file.name}
-                            </div>
-                        </div>
-                    `;
-                    galleryGrid.appendChild(col);
-                    console.log('✅ Image added to grid:', file.name);
-                }
-            };
-            reader.readAsDataURL(file);
-        });
-    } else {
-        console.log('❌ Hiding gallery preview - no images');
-        if (galleryPreview) {
-            galleryPreview.style.display = 'none';
-        }
+function removeColor(index) {
+    if (confirm('Remove this color?')) {
+        selectedColors.splice(index, 1);
+        updateColorsPreview();
     }
 }
 
-// Function to set common countdown dates
+function removeSize(index) {
+    if (confirm('Remove this size?')) {
+        selectedSizes.splice(index, 1);
+        updateSizesPreview();
+    }
+}
+
+function removeExistingColor(colorId) {
+    if (confirm('Remove this color?')) {
+        const deleteInput = document.createElement('input');
+        deleteInput.type = 'hidden';
+        deleteInput.name = 'delete_colors[]';
+        deleteInput.value = colorId;
+        document.getElementById('color-inputs').appendChild(deleteInput);
+        event.target.closest('.d-flex').remove();
+    }
+}
+
+function removeExistingSize(sizeId) {
+    if (confirm('Remove this size?')) {
+        const deleteInput = document.createElement('input');
+        deleteInput.type = 'hidden';
+        deleteInput.name = 'delete_sizes[]';
+        deleteInput.value = sizeId;
+        document.getElementById('size-inputs').appendChild(deleteInput);
+        event.target.closest('.d-flex').remove();
+    }
+}
+
 function setCommonCountdown() {
     const enableCheckbox = document.getElementById('enable_countdown');
     const dateInput = document.getElementById('countdown_date');
@@ -545,306 +649,54 @@ function setCommonCountdown() {
     }
 }
 
-// Function to set common sale prices
-function setCommonSalePrice() {
-    console.log('Set Common Sale Price button clicked!'); // Debug log
-
-    const salePriceInput = document.getElementById('sale_price');
-    const regularPriceInput = document.getElementById('price');
-
-    // Check if elements exist
-    if (!salePriceInput || !regularPriceInput) {
-        alert('Error: Form elements not found. Please refresh the page.');
-        return;
-    }
-
-    // Get current regular price
-    const regularPrice = parseFloat(regularPriceInput.value) || 0;
-
-    if (regularPrice <= 0) {
-        alert('Please set a regular price first before setting sale price.');
-        return;
-    }
-
-    // Common sale price options (percentage off)
-    const options = [
-        { percent: 10, label: '10% off' },
-        { percent: 20, label: '20% off' },
-        { percent: 30, label: '30% off' },
-        { percent: 50, label: '50% off' }
-    ];
-
-    // Create a custom popup with better visibility
-    const popupMessage = `Choose a common sale price:\n\n1. ${options[0].label} → $${(regularPrice * 0.9).toFixed(2)}\n2. ${options[1].label} → $${(regularPrice * 0.8).toFixed(2)}\n3. ${options[2].label} → $${(regularPrice * 0.7).toFixed(2)}\n4. ${options[3].label} → $${(regularPrice * 0.5).toFixed(2)}\n\nEnter 1, 2, 3, or 4:`;
-
-    console.log('Showing popup with options:', popupMessage); // Debug log
-
-    const choice = prompt(popupMessage);
-
-    console.log('User choice:', choice); // Debug log
-
-    if (choice && ['1', '2', '3', '4'].includes(choice)) {
-        const selectedOption = options[parseInt(choice) - 1];
-        const salePrice = regularPrice * (1 - selectedOption.percent / 100);
-
-        salePriceInput.value = salePrice.toFixed(2);
-
-        alert(`✅ Sale price set to ${selectedOption.label} ($${salePrice.toFixed(2)})`);
-        console.log('Sale price set successfully!', { selectedOption, salePrice }); // Debug log
-    } else if (choice !== null) {
-        alert('❌ Invalid choice. Please enter 1, 2, 3, or 4.');
-        console.log('Invalid choice entered:', choice); // Debug log
-    }
-}
-
-// Color Management Functions
-let selectedColors = [];
-
-function addColor() {
-    const colorName = document.getElementById('color_name').value.trim();
-    const colorHex = document.getElementById('color_hex').value;
-    const colorStock = parseInt(document.getElementById('color_stock').value) || 0;
-
-    if (!colorName) {
-        alert('Please enter a color name');
-        return;
-    }
-
-    // Validate stock quantity - must be at least 1
-    if (colorStock < 1) {
-        alert('❌ Stock quantity must be at least 1 item for each color');
-        document.getElementById('color_stock').focus();
-        document.getElementById('color_stock').style.borderColor = '#e53e3e';
-        document.getElementById('color_stock').style.boxShadow = '0 0 0 2px rgba(229, 62, 62, 0.2)';
-        return;
-    }
-
-    // Reset stock input styling
-    document.getElementById('color_stock').style.borderColor = '#e2e8f0';
-    document.getElementById('color_stock').style.boxShadow = 'none';
-
-    // Check if color already exists
-    if (selectedColors.some(color => color.name.toLowerCase() === colorName.toLowerCase())) {
-        alert('This color has already been added');
-        return;
-    }
-
-    // Add color to array
-    const newColor = {
-        name: colorName,
-        hex: colorHex,
-        stock: parseInt(colorStock)
-    };
-
-    selectedColors.push(newColor);
-
-    // Clear inputs
-    document.getElementById('color_name').value = '';
-    document.getElementById('color_hex').value = '#000000';
-    document.getElementById('color_stock').value = '';
-
-    // Update preview
-    updateColorsPreview();
-
-    console.log('Color added:', newColor);
-}
-
-function addPresetColor(name, hex) {
-    document.getElementById('color_name').value = name;
-    document.getElementById('color_hex').value = hex;
-    document.getElementById('color_stock').value = 10; // Default stock
-    addColor();
-}
-
-function removeColor(index) {
-    const color = selectedColors[index];
-    if (confirm(`Are you sure you want to remove "${color.name}" color?`)) {
-        selectedColors.splice(index, 1);
-        updateColorsPreview();
-        console.log('✅ Color removed at index:', index, 'Remaining colors:', selectedColors.length);
-        
-        // Show success notification
-        showColorSyncNotification(`"${color.name}" color removed successfully`, 'removed');
-    }
-}
-
-function removeExistingColor(colorId) {
-    if (confirm('Are you sure you want to remove this color?')) {
-        // Create a hidden input to mark this color for deletion
-        const deleteInput = document.createElement('input');
-        deleteInput.type = 'hidden';
-        deleteInput.name = 'delete_colors[]';
-        deleteInput.value = colorId;
-        document.getElementById('color-inputs').appendChild(deleteInput);
-
-        // Remove from display
-        event.target.closest('.d-flex').remove();
-
-        console.log('Color marked for deletion:', colorId);
-    }
-}
-
+// Helper Functions
 function updateColorsPreview() {
     const colorsList = document.getElementById('colors-list');
     const colorInputs = document.getElementById('color-inputs');
-
+    
     if (selectedColors.length === 0) {
-        colorsList.innerHTML = '<span class="text-muted">No new colors added yet</span>';
+        colorsList.innerHTML = '<span class="text-muted">No colors added yet</span>';
+        colorInputs.innerHTML = '';
         return;
     }
 
-    // Update colors list display
     colorsList.innerHTML = '';
     selectedColors.forEach((color, index) => {
         const colorElement = document.createElement('div');
         colorElement.className = 'd-flex align-items-center gap-2 p-2 border rounded';
         colorElement.style.backgroundColor = '#f8f9fa';
         colorElement.innerHTML = `
-            <div class="color-dot-preview" style="width: 20px; height: 20px; border-radius: 50%; background-color: ${color.hex}; border: 2px solid #e2e8f0;"></div>
+            <div style="width: 20px; height: 20px; border-radius: 50%; background-color: ${color.hex}; border: 2px solid #e2e8f0;"></div>
             <span class="fw-bold">${color.name}</span>
             <small class="text-muted">(${color.hex})</small>
             <small class="text-muted">Stock: ${color.stock}</small>
-            <button type="button" 
-                    class="btn btn-sm btn-danger rounded-pill ms-auto remove-color-btn" 
-                    data-color-index="${index}"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    title="Remove this color"
-                    style="transition: all 0.3s ease; padding: 0.25rem 0.75rem;">
-                <i class="fas fa-trash-alt me-1"></i>Remove
-            </button>
+            <button type="button" class="btn btn-sm btn-danger rounded-pill ms-auto" onclick="removeColor(${index})">Remove</button>
         `;
         colorsList.appendChild(colorElement);
     });
-
-    // Update hidden inputs for form submission
+    
     colorInputs.innerHTML = '';
     selectedColors.forEach((color, index) => {
-        // Create hidden inputs for each color
-        const nameInput = document.createElement('input');
-        nameInput.type = 'hidden';
-        nameInput.name = `colors[${index}][name]`;
-        nameInput.value = color.name;
-
-        const hexInput = document.createElement('input');
-        hexInput.type = 'hidden';
-        hexInput.name = `colors[${index}][hex]`;
-        hexInput.value = color.hex;
-
-        const stockInput = document.createElement('input');
-        stockInput.type = 'hidden';
-        stockInput.name = `colors[${index}][stock]`;
-        stockInput.value = color.stock;
-
-        colorInputs.appendChild(nameInput);
-        colorInputs.appendChild(hexInput);
-        colorInputs.appendChild(stockInput);
+        ['name', 'hex', 'stock'].forEach(field => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = `colors[${index}][${field}]`;
+            input.value = color[field];
+            colorInputs.appendChild(input);
+        });
     });
-
-    // Reinitialize tooltips after updating the DOM
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-}
-
-// Size Management Functions
-let selectedSizes = [];
-
-function addSize() {
-    const sizeName = document.getElementById('size_name').value.trim();
-    const sizeStock = parseInt(document.getElementById('size_stock').value) || 0;
-    const sizeGuide = document.getElementById('size_guide').value.trim();
-
-    if (!sizeName) {
-        alert('Please enter a size name');
-        return;
-    }
-
-    // Validate stock quantity - must be at least 1
-    if (sizeStock < 1) {
-        alert('❌ Stock quantity must be at least 1 item for each size');
-        document.getElementById('size_stock').focus();
-        document.getElementById('size_stock').style.borderColor = '#e53e3e';
-        document.getElementById('size_stock').style.boxShadow = '0 0 0 2px rgba(229, 62, 62, 0.2)';
-        return;
-    }
-
-    // Reset stock input styling
-    document.getElementById('size_stock').style.borderColor = '#e2e8f0';
-    document.getElementById('size_stock').style.boxShadow = 'none';
-
-    // Check if size already exists
-    if (selectedSizes.some(size => size.name.toLowerCase() === sizeName.toLowerCase())) {
-        alert('This size has already been added');
-        return;
-    }
-
-    // Add size to array
-    const newSize = {
-        name: sizeName,
-        stock: parseInt(sizeStock),
-        guide: sizeGuide
-    };
-
-    selectedSizes.push(newSize);
-
-    // Clear inputs
-    document.getElementById('size_name').value = '';
-    document.getElementById('size_stock').value = '';
-    document.getElementById('size_guide').value = '';
-
-    // Update preview
-    updateSizesPreview();
-
-    console.log('Size added:', newSize);
-}
-
-function addPresetSize(name, guide) {
-    document.getElementById('size_name').value = name;
-    document.getElementById('size_guide').value = guide;
-    document.getElementById('size_stock').value = 10; // Default stock
-    addSize();
-}
-
-function removeSize(index) {
-    const size = selectedSizes[index];
-    if (confirm(`Are you sure you want to remove size "${size.name}"?`)) {
-        selectedSizes.splice(index, 1);
-        updateSizesPreview();
-        console.log('✅ Size removed at index:', index, 'Remaining sizes:', selectedSizes.length);
-        
-        // Show success notification
-        showSizeSyncNotification(`"${size.name}" size removed successfully`, 'removed');
-    }
-}
-
-function removeExistingSize(sizeId) {
-    if (confirm('Are you sure you want to remove this size?')) {
-        // Create a hidden input to mark this size for deletion
-        const deleteInput = document.createElement('input');
-        deleteInput.type = 'hidden';
-        deleteInput.name = 'delete_sizes[]';
-        deleteInput.value = sizeId;
-        document.getElementById('size-inputs').appendChild(deleteInput);
-
-        // Remove from display
-        event.target.closest('.d-flex').remove();
-
-        console.log('Size marked for deletion:', sizeId);
-    }
 }
 
 function updateSizesPreview() {
     const sizesList = document.getElementById('sizes-list');
     const sizeInputs = document.getElementById('size-inputs');
-
+    
     if (selectedSizes.length === 0) {
-        sizesList.innerHTML = '<span class="text-muted">No new sizes added yet</span>';
+        sizesList.innerHTML = '<span class="text-muted">No sizes added yet</span>';
+        sizeInputs.innerHTML = '';
         return;
     }
-
-    // Update sizes list display
+    
     sizesList.innerHTML = '';
     selectedSizes.forEach((size, index) => {
         const sizeElement = document.createElement('div');
@@ -854,159 +706,312 @@ function updateSizesPreview() {
             <span class="fw-bold">${size.name}</span>
             <small class="text-muted">Stock: ${size.stock}</small>
             ${size.guide ? `<small class="text-muted">Guide: ${size.guide}</small>` : ''}
-            <button type="button" 
-                    class="btn btn-sm btn-danger rounded-pill ms-auto remove-size-btn" 
-                    data-size-index="${index}"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    title="Remove this size"
-                    style="transition: all 0.3s ease; padding: 0.25rem 0.75rem;">
-                <i class="fas fa-trash-alt me-1"></i>Remove
-            </button>
+            <button type="button" class="btn btn-sm btn-danger rounded-pill ms-auto" onclick="removeSize(${index})">Remove</button>
         `;
         sizesList.appendChild(sizeElement);
     });
-
-    // Update hidden inputs for form submission
-    const existingSizeInputs = sizeInputs.querySelectorAll('input[name^="sizes["]');
-    existingSizeInputs.forEach(input => input.remove());
-
+    
+    sizeInputs.innerHTML = '';
     selectedSizes.forEach((size, index) => {
-        // Create hidden inputs for each size
-        const nameInput = document.createElement('input');
-        nameInput.type = 'hidden';
-        nameInput.name = `sizes[${index}][name]`;
-        nameInput.value = size.name;
-
-        const stockInput = document.createElement('input');
-        stockInput.type = 'hidden';
-        stockInput.name = `sizes[${index}][stock]`;
-        stockInput.value = size.stock;
-
-        const guideInput = document.createElement('input');
-        guideInput.type = 'hidden';
-        guideInput.name = `sizes[${index}][guide]`;
-        guideInput.value = size.guide;
-
-        sizeInputs.appendChild(nameInput);
-        sizeInputs.appendChild(stockInput);
-        sizeInputs.appendChild(guideInput);
-    });
-
-    // Reinitialize tooltips after updating the DOM
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
+        ['name', 'stock', 'guide'].forEach(field => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = `sizes[${index}][${field}]`;
+            input.value = size[field];
+            sizeInputs.appendChild(input);
+        });
     });
 }
 
-// Initialize color and size management
+// Gallery System
+let galleryImages = [];
+
 document.addEventListener('DOMContentLoaded', function() {
+    const galleryInput = document.getElementById('gallery-images');
+    if (galleryInput) {
+        galleryInput.addEventListener('change', function(event) {
+            const files = Array.from(event.target.files);
+            galleryImages = [...galleryImages, ...files];
+            updateGalleryPreview();
+        });
+    }
+    
+    // Load existing colors and sizes from database
+    loadAttributeData();
+    
     updateColorsPreview();
     updateSizesPreview();
-    
-    // Event delegation for remove buttons
-    document.addEventListener('click', function(e) {
-        // Handle color remove button clicks
-        if (e.target.closest('.remove-color-btn')) {
-            const button = e.target.closest('.remove-color-btn');
-            const index = parseInt(button.getAttribute('data-color-index'));
-            removeColor(index);
-        }
+});
+
+// Load existing colors and sizes from database
+async function loadAttributeData() {
+    try {
+        console.log('🔄 Loading attribute data from database...');
         
-        // Handle size remove button clicks
-        if (e.target.closest('.remove-size-btn')) {
-            const button = e.target.closest('.remove-size-btn');
-            const index = parseInt(button.getAttribute('data-size-index'));
-            removeSize(index);
+        // Load colors from API
+        const colorResponse = await fetch('/admin/api/attributes/color/values');
+        if (colorResponse.ok) {
+            const colorData = await colorResponse.json();
+            existingColors = colorData.values || [];
+            populateColorAutocomplete();
+            console.log('✅ Colors loaded:', existingColors.length);
+        } else {
+            console.warn('⚠️ Failed to load colors:', colorResponse.status);
         }
-    });
 
-    // Handle new arrival checkbox
-    const newArrivalCheckbox = document.getElementById('is_new_arrival');
-    const newArrivalInfo = document.getElementById('new-arrival-info');
+        // Load popular colors
+        const popularColorsResponse = await fetch('/admin/api/attributes/color/popular');
+        if (popularColorsResponse.ok) {
+            const popularData = await popularColorsResponse.json();
+            showPopularColors(popularData.popular_values || []);
+            console.log('✅ Popular colors loaded');
+        }
 
-    if (newArrivalCheckbox && newArrivalInfo) {
-        newArrivalCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                newArrivalInfo.style.display = 'block';
-            } else {
-                newArrivalInfo.style.display = 'none';
-            }
-        });
+        // Load sizes from API
+        const sizeResponse = await fetch('/admin/api/attributes/size/values');
+        if (sizeResponse.ok) {
+            const sizeData = await sizeResponse.json();
+            existingSizes = sizeData.values || [];
+            populateSizeAutocomplete();
+            console.log('✅ Sizes loaded:', existingSizes.length);
+        } else {
+            console.warn('⚠️ Failed to load sizes:', sizeResponse.status);
+        }
 
-        // Show info if checkbox is already checked (from old values)
-        if (newArrivalCheckbox.checked) {
-            newArrivalInfo.style.display = 'block';
+        // Load popular sizes
+        const popularSizesResponse = await fetch('/admin/api/attributes/size/popular');
+        if (popularSizesResponse.ok) {
+            const popularData = await popularSizesResponse.json();
+            showPopularSizes(popularData.popular_values || []);
+            console.log('✅ Popular sizes loaded');
+        }
+
+        console.log('✅ Attribute data loaded successfully');
+        console.log('📊 Database Summary:');
+        console.log('   - Colors available:', existingColors.length);
+        console.log('   - Sizes available:', existingSizes.length);
+        console.log('   - Color names:', existingColors.map(c => c.value).join(', '));
+        console.log('   - Size names:', existingSizes.map(s => s.value).join(', '));
+        
+        // Update database status in UI
+        updateDatabaseStatus('success', `✅ Database connected! Found ${existingColors.length} colors and ${existingSizes.length} sizes.`);
+    } catch (error) {
+        console.error('❌ Error loading attribute data:', error);
+        console.log('🔧 Troubleshooting:');
+        console.log('   1. Check if database is connected');
+        console.log('   2. Run: php artisan db:seed --class=AttributeSeeder');
+        console.log('   3. Check if attributes table exists');
+        console.log('   4. Verify API routes are working');
+        
+        // Update database status in UI
+        updateDatabaseStatus('error', '❌ Database connection failed. Check console for details.');
+    }
+}
+
+// Update database status in UI
+function updateDatabaseStatus(type, message) {
+    const statusDiv = document.getElementById('database-status');
+    const messageSpan = document.getElementById('database-message');
+    
+    if (statusDiv && messageSpan) {
+        messageSpan.textContent = message;
+        
+        if (type === 'success') {
+            statusDiv.className = 'alert alert-success border-left mb-3';
+            statusDiv.style.borderLeft = '4px solid #28a745';
+        } else if (type === 'error') {
+            statusDiv.className = 'alert alert-danger border-left mb-3';
+            statusDiv.style.borderLeft = '4px solid #dc3545';
+        } else {
+            statusDiv.className = 'alert alert-info border-left mb-3';
+            statusDiv.style.borderLeft = '4px solid #17a2b8';
         }
     }
+}
 
-    // Initialize Bootstrap tooltips
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
+// Populate color autocomplete datalist
+function populateColorAutocomplete() {
+    const datalist = document.getElementById('existing-colors');
+    if (!datalist) return;
+    
+    datalist.innerHTML = '';
+    existingColors.forEach(color => {
+        const option = document.createElement('option');
+        option.value = color.value;
+        option.setAttribute('data-hex', color.hex_code || '#000000');
+        option.setAttribute('data-usage', color.usage_count || 0);
+        datalist.appendChild(option);
     });
+    console.log('✅ Color autocomplete populated with', existingColors.length, 'colors');
+}
+
+// Populate size autocomplete datalist
+function populateSizeAutocomplete() {
+    const datalist = document.getElementById('existing-sizes');
+    if (!datalist) return;
+    
+    datalist.innerHTML = '';
+    existingSizes.forEach(size => {
+        const option = document.createElement('option');
+        option.value = size.value;
+        option.setAttribute('data-usage', size.usage_count || 0);
+        datalist.appendChild(option);
+    });
+    console.log('✅ Size autocomplete populated with', existingSizes.length, 'sizes');
+}
+
+// Show popular colors as quick-select buttons
+function showPopularColors(colors) {
+    if (colors.length === 0) return;
+    
+    const section = document.getElementById('popular-colors-section');
+    const list = document.getElementById('popular-colors-list');
+    if (!section || !list) return;
+    
+    list.innerHTML = '';
+    colors.slice(0, 8).forEach(color => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-sm btn-outline-secondary me-2 mb-2';
+        btn.innerHTML = `
+            <span class="d-inline-block me-1" style="width: 12px; height: 12px; background: ${color.hex_code || '#cccccc'}; border: 1px solid #ddd; border-radius: 2px;"></span>
+            ${color.value} <small class="text-muted">(${color.usage_count} products)</small>
+        `;
+        btn.onclick = () => quickAddColor(color.value, color.hex_code);
+        list.appendChild(btn);
+    });
+    
+    section.style.display = 'block';
+    console.log('✅ Popular colors displayed:', colors.length);
+}
+
+// Show popular sizes as quick-select buttons
+function showPopularSizes(sizes) {
+    if (sizes.length === 0) return;
+    
+    const section = document.getElementById('popular-sizes-section');
+    const list = document.getElementById('popular-sizes-list');
+    if (!section || !list) return;
+    
+    list.innerHTML = '';
+    sizes.slice(0, 8).forEach(size => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-sm btn-outline-secondary me-2 mb-2';
+        btn.innerHTML = `${size.value} <small class="text-muted">(${size.usage_count} products)</small>`;
+        btn.onclick = () => quickAddSize(size.value);
+        list.appendChild(btn);
+    });
+    
+    section.style.display = 'block';
+    console.log('✅ Popular sizes displayed:', sizes.length);
+}
+
+// Quick add color from popular list
+function quickAddColor(name, hex) {
+    document.getElementById('color_name').value = name;
+    document.getElementById('color_hex').value = hex || '#000000';
+    document.getElementById('color_stock').value = '1';
+    document.getElementById('color_stock').focus();
+    console.log('✅ Quick add color:', name, hex);
+}
+
+// Quick add size from popular list
+function quickAddSize(name) {
+    document.getElementById('size_name').value = name;
+    document.getElementById('size_stock').value = '1';
+    document.getElementById('size_stock').focus();
+    console.log('✅ Quick add size:', name);
+}
+
+// Auto-fill hex code when existing color is selected
+document.addEventListener('input', function(e) {
+    if (e.target.id === 'color_name') {
+        const colorName = e.target.value;
+        const existingColor = existingColors.find(c => c.value.toLowerCase() === colorName.toLowerCase());
+        if (existingColor && existingColor.hex_code) {
+            document.getElementById('color_hex').value = existingColor.hex_code;
+            console.log(`✅ Auto-filled hex code for "${colorName}":`, existingColor.hex_code);
+        }
+    }
+});
+
+function updateGalleryPreview() {
+    const galleryPreview = document.getElementById('gallery-preview');
+    const galleryGrid = document.getElementById('gallery-grid');
+    const galleryCount = document.getElementById('gallery-count');
+
+    if (galleryImages.length > 0) {
+        galleryPreview.style.display = 'block';
+        galleryCount.textContent = galleryImages.length;
+        galleryGrid.innerHTML = '';
+
+        galleryImages.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const col = document.createElement('div');
+                col.className = 'col-md-3 col-sm-4 col-6';
+                col.innerHTML = `
+                    <div style="border: 1px solid #ddd; border-radius: 8px; padding: 8px; background: white;">
+                        <img src="${e.target.result}" alt="${file.name}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 4px;">
+                        <div style="margin-top: 8px; font-size: 12px; color: #666;">${file.name}</div>
+                    </div>
+                `;
+                galleryGrid.appendChild(col);
+            };
+            reader.readAsDataURL(file);
+        });
+    } else {
+        galleryPreview.style.display = 'none';
+    }
 }
 
 // Notification Functions
 function showColorSyncNotification(message, type) {
     const notification = document.getElementById('color-sync-notification');
     const messageSpan = document.getElementById('color-sync-message');
-    
-    if (!notification || !messageSpan) {
-        console.warn('Color sync notification elements not found');
-        return;
-    }
-    
+    if (notification && messageSpan) {
     messageSpan.textContent = message;
-    
-    if (type === 'new') {
-        notification.className = 'alert alert-success border-left mb-3';
-        notification.style.borderLeft = '4px solid #28a745';
-    } else if (type === 'removed') {
-        notification.className = 'alert alert-warning border-left mb-3';
-        notification.style.borderLeft = '4px solid #f59e0b';
-    } else {
-        notification.className = 'alert alert-info border-left mb-3';
-        notification.style.borderLeft = '4px solid #17a2b8';
-    }
-    
     notification.style.display = 'block';
-    
-    // Auto-hide after 4 seconds
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 4000);
+        setTimeout(() => { notification.style.display = 'none'; }, 4000);
+    }
 }
 
 function showSizeSyncNotification(message, type) {
     const notification = document.getElementById('size-sync-notification');
     const messageSpan = document.getElementById('size-sync-message');
-    
-    if (!notification || !messageSpan) {
-        console.warn('Size sync notification elements not found');
-        return;
+    if (notification && messageSpan) {
+        messageSpan.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(() => { notification.style.display = 'none'; }, 4000);
     }
-    
-    messageSpan.textContent = message;
-    
-    if (type === 'new') {
-        notification.className = 'alert alert-success border-left mb-3';
-        notification.style.borderLeft = '4px solid #28a745';
-    } else if (type === 'removed') {
-        notification.className = 'alert alert-warning border-left mb-3';
-        notification.style.borderLeft = '4px solid #f59e0b';
-    } else {
-        notification.className = 'alert alert-info border-left mb-3';
-        notification.style.borderLeft = '4px solid #17a2b8';
-    }
-    
-    notification.style.display = 'block';
-    
-    // Auto-hide after 4 seconds
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 4000);
 }
+
+// Test Functions
+window.testAddColor = function() {
+    console.log('Testing addColor function...');
+    if (typeof addColor === 'function') {
+        console.log('✅ addColor function is available');
+    } else {
+        console.error('❌ addColor function is NOT available');
+    }
+};
+
+window.testAddSize = function() {
+    console.log('Testing addSize function...');
+    if (typeof addSize === 'function') {
+        console.log('✅ addSize function is available');
+    } else {
+        console.error('❌ addSize function is NOT available');
+    }
+};
+
+window.logArrays = function() {
+    console.log('Selected Colors:', selectedColors);
+    console.log('Selected Sizes:', selectedSizes);
+};
+
+console.log('🔍 Functions loaded - addColor:', typeof addColor, 'addSize:', typeof addSize);
+
 </script>
 @endsection
