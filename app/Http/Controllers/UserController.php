@@ -10,17 +10,17 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
-class UserController extends Controller implements HasMiddleware
+class UserController extends Controller //implements HasMiddleware
 {
-       public static function middleware()
-      {
-         return [
-             new Middleware('permission:view users' ,only: ['index']),
-        new Middleware('permission:view users' ,only: ['edit']),
-            new Middleware('permission:view users' ,only: ['create']),
-     new Middleware('permission:view users' ,only: ['destroy']),
-         ];
-     }
+    //    public static function middleware()
+    //   {
+    //      return [
+    //          new Middleware('permission:view users' ,only: ['index']),
+    //     new Middleware('permission:view users' ,only: ['edit']),
+    //         new Middleware('permission:view users' ,only: ['create']),
+    //  new Middleware('permission:view users' ,only: ['destroy']),
+    //      ];
+    //  }
     public function index()
     {
         $users = User::latest()->paginate(10);

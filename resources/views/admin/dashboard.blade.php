@@ -89,6 +89,11 @@
             <span class="icon">📋</span>
             <span>Order Items</span>
         </a></li>
+        <li><a href="{{ route('admin.settings.edit') }}">
+            <span class="icon">📋</span>
+            <span>Settings</span>
+        </a></li>
+
         <li class="nav-item">
   <a
     class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('permissions.*') || request()->routeIs('roles.*') || request()->routeIs('users.*') ? 'active' : '' }}"

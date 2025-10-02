@@ -2,29 +2,30 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Frontend\FunctionController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\Frontend\HomeController;
-use App\Http\Controllers\Frontend\ReviewController;
-use App\Http\Controllers\Frontend\OrderController;
-use App\Http\Controllers\Admin\DashboardController;
-
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\OrdersController;
+
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\AttributeController;
-use App\Http\Controllers\Admin\AttributeValuesController;
-use App\Http\Controllers\Admin\ProductAttributesController;
 use App\Http\Controllers\Admin\ReviewsController;
 use App\Http\Controllers\Admin\SlidersController;
-use App\Http\Controllers\Admin\OrdersController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Frontend\ReviewController;
 use App\Http\Controllers\Admin\OrderItemsController;
 use App\Http\Controllers\Admin\WarehousesController;
-use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Frontend\FunctionController;
 use App\Http\Controllers\Admin\TransactionsController;
-use App\Http\Controllers\CartController;
+use App\Http\Controllers\Admin\AttributeValuesController;
+use App\Http\Controllers\Admin\ProductAttributesController;
+use App\Http\Controllers\Frontend\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +84,15 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('regi
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::prefix('admin')->name('admin.')->group(function() {
+    // صفحة تعديل الـ Settings (Tab dashboard)
+    Route::get('/settings/edit', [SettingController::class, 'edit'])->name('settings.edit');
+
+    // صفحة index لو كنت تريد عرض الإعدادات بشكل عام
+
+    // لتحديث الإعدادات
+    Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+});
 // Admin Routes (protected by auth and admin middleware)
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
@@ -371,6 +381,7 @@ Route::get('/help', [FunctionController::class, 'help'])->name('frontend.help');
 Route::get('/my-orders', [FunctionController::class, 'myOrders'])->name('frontend.my-orders');
 Route::get('/profile-page', [FunctionController::class, 'profilePage'])->name('frontend.profile-page');
 Route::get('/my-wishlist', [FunctionController::class, 'myWishlist'])->name('frontend.my-wishlist');
+ Route::get('/settings', [FunctionController::class, 'index'])->name('settings.index');
 
 // Reviews
 Route::get('/leave-review/{product?}', [ReviewController::class, 'show'])->name('frontend.leave-review');
@@ -394,4 +405,3 @@ Route::get('/{page}', function ($page) {
 })->where('page', '.*\.html');
 
 Route::get("/admin/dependencies/analyze", [App\Http\Controllers\Admin\DependencyController::class, "analyze"])->name("admin.dependencies.analyze");
-        

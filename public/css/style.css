@@ -66,6 +66,11 @@
             --button-border-radius: 8px;
         }
 
+        #email_newsletter::placeholder {
+    color: white;
+    opacity: 1; /* Ensure full white, some browsers reduce opacity */
+}
+
         body {
             background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             color: var(--text-primary);

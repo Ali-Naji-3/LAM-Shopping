@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Product;
-use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Product;
+use App\Models\Setting;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class FunctionController extends Controller
 {
     /**
      * Boys Collection
      */
+    public function index()
+{
+
+    $setting = Setting::first();
+    return view('frontend.index-2', compact('setting'));
+}
+
     public function listingGrid2Full()
     {
         $products = Product::active()
