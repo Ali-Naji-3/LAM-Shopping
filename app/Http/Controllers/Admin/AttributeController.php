@@ -41,18 +41,18 @@ class AttributeController extends Controller
             }
 
             $values = AttributeValue::where('attribute_id', $attribute->id)
-                ->with(['productAttributes' => function($q) {
-                    $q->select('id', 'attribute_value_id', 'product_id');
+                ->with(['products' => function($q) {
+                    $q->select('products.id', 'products.name');
                 }])
                 ->get()
                 ->map(function($value) {
                     return [
                         'id' => $value->id,
                         'value' => $value->value,
-                        'display_value' => $value->display_value,
-                        'hex_code' => $value->hex_code,
-                        'usage_count' => $value->productAttributes->count(),
-                        'products' => $value->productAttributes->pluck('product_id')
+                        'display_value' => $value->value, // Use value as display_value if not set
+                        'hex_code' => null, // Add hex_code if needed
+                        'usage_count' => $value->products->count(),
+                        'products' => $value->products->pluck('id')
                     ];
                 });
 
@@ -62,7 +62,11 @@ class AttributeController extends Controller
                 'values' => $values
             ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to fetch values'], 500);
+            \Log::error('API Error in getAttributeValues', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => 'Failed to fetch values: ' . $e->getMessage()], 500);
         }
     }
 
@@ -79,16 +83,16 @@ class AttributeController extends Controller
             }
 
             $values = AttributeValue::where('attribute_id', $attribute->id)
-                ->withCount('productAttributes')
-                ->orderBy('product_attributes_count', 'desc')
+                ->withCount('products')
+                ->orderBy('products_count', 'desc')
                 ->limit($limit)
                 ->get()
                 ->map(function($value) {
                     return [
                         'value' => $value->value,
-                        'display_value' => $value->display_value,
-                        'hex_code' => $value->hex_code,
-                        'usage_count' => $value->product_attributes_count
+                        'display_value' => $value->value, // Use value as display_value if not set
+                        'hex_code' => null, // Add hex_code if needed
+                        'usage_count' => $value->products_count
                     ];
                 });
 

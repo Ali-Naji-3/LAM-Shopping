@@ -73,6 +73,25 @@ Route::get('/editproduct', [DashboardController::class, 'edit_product'])->name('
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [HomeController::class, 'products'])->name('products');
+
+// Product Category Routes (MUST BE BEFORE /product/{slug} route)
+Route::get('/product/listing-grid-2-full', function() {
+    return redirect()->route('listing.grid2full');
+})->name('product.listing.grid2full');
+
+Route::get('/product/listing-grid-1-full', function() {
+    return redirect()->route('listing.grid1full');
+})->name('product.listing.grid1full');
+
+Route::get('/product/listing-grid-3', function() {
+    return redirect()->route('listing.grid3');
+})->name('product.listing.grid3');
+
+Route::get('/product/girls', function() {
+    return redirect()->route('listing.girls');
+})->name('product.listing.girls');
+
+// Generic product detail route (MUST BE AFTER specific product routes)
 Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('product.detail');
 
 // Category Frontend Routes
@@ -93,6 +112,13 @@ Route::prefix('admin')->name('admin.')->group(function() {
     // لتحديث الإعدادات
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
+
+// Public API Routes for Attribute Integration (used in product pages)
+Route::prefix('admin/api')->group(function () {
+    Route::get('attributes/{slug}/values', [App\Http\Controllers\Admin\AttributeController::class, 'getAttributeValues'])->name('api.attributes.values');
+    Route::get('attributes/{slug}/popular', [App\Http\Controllers\Admin\AttributeController::class, 'getPopularValues'])->name('api.attributes.popular');
+});
+
 // Admin Routes (protected by auth and admin middleware)
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
@@ -197,9 +223,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::post('attributes/{attribute}/contacts', [AttributeController::class, 'storeContact'])->name('admin.attributes.contacts.store');
     Route::get('attributes/{attribute}/analytics', [AttributeController::class, 'analytics'])->name('admin.attributes.analytics');
 
-    // API Routes for Attribute Integration (used in product pages)
-    Route::get('api/attributes/{slug}/values', [AttributeController::class, 'getAttributeValues'])->name('api.attributes.values');
-    Route::get('api/attributes/{slug}/popular', [AttributeController::class, 'getPopularValues'])->name('api.attributes.popular');
+    // API Routes moved to public section above
 
     // Attribute Values Management - Complete CRUD System
     Route::resource('attributeValues', AttributeValuesController::class)->names([
