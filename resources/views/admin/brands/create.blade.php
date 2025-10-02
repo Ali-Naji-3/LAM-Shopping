@@ -18,8 +18,8 @@
         </a>
     </div>
 
-    <div class="row">
-        <div class="col-lg-8">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
             <!-- Main Form Card -->
             <div class="card" style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;">
                 <div class="card-body" style="padding: 2rem !important;">
@@ -112,33 +112,6 @@
                             </button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <!-- Brand Guidelines Card -->
-            <div class="card" style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;">
-                <div class="card-header" style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important; border-bottom: 1px solid #e2e8f0 !important; border-radius: 12px 12px 0 0 !important; padding: 1rem 1.5rem !important;">
-                    <h5 class="mb-0" style="color: #1a202c !important; font-weight: 600 !important; font-size: 16px !important;">
-                        <i class="bi bi-info-circle me-2" style="color: #3182ce !important;"></i>Brand Guidelines
-                    </h5>
-                </div>
-                <div class="card-body" style="padding: 2rem !important;">
-                    <div class="mb-4" style="padding: 1.25rem !important; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; border-radius: 10px !important; border-left: 4px solid #3182ce !important;">
-                        <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 15px !important; margin-bottom: 1rem !important;">🏷️ Brand Naming</h6>
-                        <ul style="margin-bottom: 0 !important; padding-left: 1.25rem !important;">
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.5rem !important;">Use official brand names</li>
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.5rem !important;">Keep names consistent</li>
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">Use clear, recognizable names</li>
-                        </ul>
-                    </div>
-                    
-                    <div style="padding: 1.25rem !important; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%) !important; border-radius: 10px !important; border-left: 4px solid #8b5cf6 !important;">
-                        <p style="color: #1a202c !important; font-size: 14px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">
-                            Each brand can receive customer inquiries and support requests. After creating this brand, you can manage brand-specific contacts and analytics.
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>

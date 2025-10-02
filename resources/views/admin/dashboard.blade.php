@@ -35,57 +35,57 @@
             <h4>Collection Store</h4>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ route('admin.dashboard') }}" class="active">
+            <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <span class="icon">📊</span>
                 <span>Dashboard</span>
             </a></li>
 
             <!-- CATALOG MANAGEMENT -->
             <li class="nav-section-title">CATALOG</li>
-            <li><a href="{{ route('admin.categories.index') }}">
+            <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                 <span class="icon">📂</span>
                 <span>Categories</span>
             </a></li>
-            <li><a href="{{ route('admin.brands.index') }}">
+            <li><a href="{{ route('admin.brands.index') }}" class="{{ request()->routeIs('admin.brands.*') ? 'active' : '' }}">
                 <span class="icon">🏷️</span>
                 <span>Brands</span>
             </a></li>
-            <li><a href="{{ route('admin.products.index') }}">
+            <li><a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                 <span class="icon">🛍️</span>
                 <span>Products</span>
             </a></li>
 
-                    <li><a href="{{ route('admin.attributes.index') }}">
+                    <li><a href="{{ route('admin.attributes.index') }}" class="{{ request()->routeIs('admin.attributes.*') ? 'active' : '' }}">
                         <span class="icon">🔧</span>
                         <span>Attributes</span>
                     </a></li>
-                    <li><a href="{{ route('admin.attributeValues.index') }}">
+                    <li><a href="{{ route('admin.attributeValues.index') }}" class="{{ request()->routeIs('admin.attributeValues.*') ? 'active' : '' }}">
                         <span class="icon">📝</span>
                         <span>Attribute Values</span>
                     </a></li>
-            <li><a href="{{ route('admin.productAttributes.index') }}">
+            <li><a href="{{ route('admin.productAttributes.index') }}" class="{{ request()->routeIs('admin.productAttributes.*') ? 'active' : '' }}">
                 <span class="icon">🔗</span>
                 <span>Product Attributes</span>
             </a></li>
-            <li><a href="{{ route('admin.reviews.index') }}">
+            <li><a href="{{ route('admin.reviews.index') }}" class="{{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
                 <span class="icon">⭐</span>
                 <span>Reviews</span>
             </a></li>
 
             <!-- CONTENT MANAGEMENT -->
             <li class="nav-section-title">CONTENT</li>
-            <li><a href="{{ route('admin.sliders.index') }}">
+            <li><a href="{{ route('admin.sliders.index') }}" class="{{ request()->routeIs('admin.sliders.*') ? 'active' : '' }}">
                 <span class="icon">🖼️</span>
                 <span>Sliders</span>
             </a></li>
 
         <!-- ORDER MANAGEMENT -->
         <li class="nav-section-title">ORDERS</li>
-        <li><a href="{{ route('admin.orders.index') }}">
+        <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
             <span class="icon">📦</span>
             <span>Orders</span>
         </a></li>
-        <li><a href="{{ route('admin.orderItems.index') }}">
+        <li><a href="{{ route('admin.orderItems.index') }}" class="{{ request()->routeIs('admin.orderItems.*') ? 'active' : '' }}">
             <span class="icon">📋</span>
             <span>Order Items</span>
         </a></li>
@@ -96,27 +96,27 @@
 
         <li class="nav-item">
   <a
-    class="nav-link d-flex justify-content-between align-items-center"
+    class="nav-link d-flex justify-content-between align-items-center {{ request()->routeIs('permissions.*') || request()->routeIs('roles.*') || request()->routeIs('users.*') ? 'active' : '' }}"
     data-bs-toggle="collapse"
     data-bs-target="#adminSettings"
     role="button"
-    aria-expanded="false"
+    aria-expanded="{{ request()->routeIs('permissions.*') || request()->routeIs('roles.*') || request()->routeIs('users.*') ? 'true' : 'false' }}"
     aria-controls="adminSettings"
   >
     <span><span class="me-2">🏷️</span> SettingAdmin</span>
     <span class="small">▸</span>
   </a>
 
-  <div class="collapse" id="adminSettings">
+  <div class="collapse {{ request()->routeIs('permissions.*') || request()->routeIs('roles.*') || request()->routeIs('users.*') ? 'show' : '' }}" id="adminSettings">
     <ul class="nav flex-column ms-3">
       <li class="nav-item">
-        <a href="{{ route('permissions.index') }}" class="nav-link">Permissions</a>
+        <a href="{{ route('permissions.index') }}" class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}">Permissions</a>
       </li>
       <li class="nav-item">
-        <a href="{{route('roles.index')}}" class="nav-link">Roles</a>
+        <a href="{{route('roles.index')}}" class="nav-link {{ request()->routeIs('roles.*') ? 'active' : '' }}">Roles</a>
       </li>
       <li class="nav-item">
-        <a href="{{route('users.index')}}" class="nav-link">Users</a>
+        <a href="{{route('users.index')}}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">Users</a>
       </li>
     </ul>
   </div>
@@ -125,18 +125,18 @@
 
         <!-- INVENTORY MANAGEMENT -->
         <li class="nav-section-title">INVENTORY</li>
-        <li><a href="{{ route('admin.warehouses.index') }}">
+        <li><a href="{{ route('admin.warehouses.index') }}" class="{{ request()->routeIs('admin.warehouses.*') ? 'active' : '' }}">
             <span class="icon">🏪</span>
             <span>Warehouses</span>
         </a></li>
-        <li><a href="{{ route('admin.inventory.index') }}">
+        <li><a href="{{ route('admin.inventory.index') }}" class="{{ request()->routeIs('admin.inventory.*') ? 'active' : '' }}">
             <span class="icon">📦</span>
             <span>Inventory</span>
         </a></li>
 
             <!-- FINANCIAL -->
             <li class="nav-section-title">FINANCIAL</li>
-            <li><a href="{{ route('admin.transactions.index') }}">
+            <li><a href="{{ route('admin.transactions.index') }}" class="{{ request()->routeIs('admin.transactions.*') ? 'active' : '' }}">
                 <span class="icon">💳</span>
                 <span>Transactions</span>
             </a></li>

@@ -1,6 +1,20 @@
 @extends('admin.dashboard')
 
 @section('content')
+@php
+    // Helper function to safely get array data from settings
+    function getSettingArray($value, $default = []) {
+        if (is_array($value)) {
+            return $value;
+        }
+        if (is_string($value) && !empty($value)) {
+            $decoded = json_decode($value, true);
+            return is_array($decoded) ? $decoded : $default;
+        }
+        return $default;
+    }
+@endphp
+
 <div class="container-fluid">
     <h2 class="mb-4 text-dark">Website Settings</h2>
 
@@ -52,22 +66,31 @@
                 <!-- Menu Items -->
                 <h5 class="text-dark mt-4">Menu Items</h5>
                 @php
-                    $menuItems = !empty($setting->menu_items) ? json_decode($setting->menu_items, true) : [];
-
+                    $menuItems = getSettingArray($setting->menu_items);
                 @endphp
 
                 <div id="menu-items-wrapper">
                     @if(!empty($menuItems))
-                        @foreach($menuItems as $item)
-                            <div class="menu-item mb-2">
-                                <input type="text" name="menu_labels[]" placeholder="Label" class="form-control mb-1" value="{{ $item['label'] ?? '' }}">
-                                <input type="text" name="menu_links[]" placeholder="URL" class="form-control" value="{{ $item['link'] ?? '' }}">
+                        @foreach($menuItems as $index => $item)
+                            <div class="menu-item mb-2 d-flex gap-2">
+                                <div class="flex-grow-1">
+                                    <input type="text" name="menu_labels[]" placeholder="Label" class="form-control mb-1" value="{{ $item['label'] ?? '' }}">
+                                    <input type="text" name="menu_links[]" placeholder="URL" class="form-control" value="{{ $item['link'] ?? '' }}">
+                                </div>
+                                <button type="button" class="btn btn-danger btn-sm remove-menu-item" style="height: fit-content; margin-top: auto;">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
                             </div>
                         @endforeach
                     @else
-                        <div class="menu-item mb-2">
-                            <input type="text" name="menu_labels[]" placeholder="Label" class="form-control mb-1">
-                            <input type="text" name="menu_links[]" placeholder="URL" class="form-control">
+                        <div class="menu-item mb-2 d-flex gap-2">
+                            <div class="flex-grow-1">
+                                <input type="text" name="menu_labels[]" placeholder="Label" class="form-control mb-1">
+                                <input type="text" name="menu_links[]" placeholder="URL" class="form-control">
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-menu-item" style="height: fit-content; margin-top: auto;">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
                         </div>
                     @endif
                 </div>
@@ -78,10 +101,15 @@
                     document.getElementById('add-menu-item').addEventListener('click', function(){
                         let wrapper = document.getElementById('menu-items-wrapper');
                         let div = document.createElement('div');
-                        div.classList.add('menu-item', 'mb-2');
+                        div.classList.add('menu-item', 'mb-2', 'd-flex', 'gap-2');
                         div.innerHTML = `
-                            <input type="text" name="menu_labels[]" placeholder="Label" class="form-control mb-1">
-                            <input type="text" name="menu_links[]" placeholder="URL" class="form-control">
+                            <div class="flex-grow-1">
+                                <input type="text" name="menu_labels[]" placeholder="Label" class="form-control mb-1">
+                                <input type="text" name="menu_links[]" placeholder="URL" class="form-control">
+                            </div>
+                            <button type="button" class="btn btn-danger btn-sm remove-menu-item" style="height: fit-content; margin-top: auto;">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
                         `;
                         wrapper.appendChild(div);
                     });
@@ -146,7 +174,7 @@
 
     <div id="sliders-wrapper">
         @php
-            $sliders = json_decode($setting->sliders ?? '[]', true);
+            $sliders = getSettingArray($setting->sliders);
         @endphp
 
         @foreach($sliders as $index => $slider)
@@ -233,8 +261,7 @@
 {{-- Footer Links --}}
 <div class="mb-3">
           @php
-   $footer= !empty(  $setting->footer_links) ? json_decode(  $setting->footer_links, true) : [];
-
+   $footer = getSettingArray($setting->footer_links);
                 @endphp
     <label class="form-label text-dark">Footer Links</label>
     <div id="footer-links">
@@ -252,12 +279,19 @@
                            value="{{ $link['url'] ?? '' }}"
                            class="form-control text-dark"
                            placeholder="URL">
+                    
+                    <button type="button" class="btn btn-danger btn-sm remove-footer-link">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
                 </div>
             @endforeach
         @else
             <div class="footer-link mb-2 d-flex gap-2">
                 <input type="text" name="footer_links[0][title]" class="form-control text-dark" placeholder="Title">
                 <input type="text" name="footer_links[0][url]" class="form-control text-dark" placeholder="URL">
+                <button type="button" class="btn btn-danger btn-sm remove-footer-link">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
             </div>
         @endif
     </div>
@@ -268,8 +302,7 @@
 <div class="mb-3">
 
                 @php
-   $cat= !empty(  $setting->footer_categories) ? json_decode(  $setting->footer_categories, true) : [];
-
+   $cat = getSettingArray($setting->footer_categories);
                 @endphp
     <label class="form-label text-dark">Footer Categories</label>
     <div id="footer-categories">
@@ -287,12 +320,19 @@
                            value="{{ $category['url'] ?? '' }}"
                            class="form-control text-dark"
                            placeholder="Category URL">
+                    
+                    <button type="button" class="btn btn-danger btn-sm remove-footer-category">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
                 </div>
             @endforeach
         @else
             <div class="footer-category mb-2 d-flex gap-2">
                 <input type="text" name="footer_categories[0][title]" class="form-control text-dark" placeholder="Category Title">
                 <input type="text" name="footer_categories[0][url]" class="form-control text-dark" placeholder="Category URL">
+                <button type="button" class="btn btn-danger btn-sm remove-footer-category">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
             </div>
         @endif
     </div>
@@ -310,6 +350,9 @@
             <div class="footer-link mb-2 d-flex gap-2">
                 <input type="text" name="footer_links[${linkIndex}][title]" class="form-control text-dark" placeholder="Title">
                 <input type="text" name="footer_links[${linkIndex}][url]" class="form-control text-dark" placeholder="URL">
+                <button type="button" class="btn btn-danger btn-sm remove-footer-link">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
             </div>`;
         container.insertAdjacentHTML('beforeend', html);
         linkIndex++;
@@ -321,10 +364,40 @@
             <div class="footer-category mb-2 d-flex gap-2">
                 <input type="text" name="footer_categories[${categoryIndex}][title]" class="form-control text-dark" placeholder="Category Title">
                 <input type="text" name="footer_categories[${categoryIndex}][url]" class="form-control text-dark" placeholder="Category URL">
+                <button type="button" class="btn btn-danger btn-sm remove-footer-category">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
             </div>`;
         container.insertAdjacentHTML('beforeend', html);
         categoryIndex++;
     }
+
+    // Add event listeners for remove buttons when document is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        // Remove footer links
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-footer-link') || e.target.closest('.remove-footer-link')) {
+                const button = e.target.classList.contains('remove-footer-link') ? e.target : e.target.closest('.remove-footer-link');
+                button.closest('.footer-link').remove();
+            }
+        });
+
+        // Remove footer categories
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-footer-category') || e.target.closest('.remove-footer-category')) {
+                const button = e.target.classList.contains('remove-footer-category') ? e.target : e.target.closest('.remove-footer-category');
+                button.closest('.footer-category').remove();
+            }
+        });
+
+        // Remove menu items
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-menu-item') || e.target.closest('.remove-menu-item')) {
+                const button = e.target.classList.contains('remove-menu-item') ? e.target : e.target.closest('.remove-menu-item');
+                button.closest('.menu-item').remove();
+            }
+        });
+    });
 </script>
 
 
@@ -379,7 +452,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Payment Methods (JSON)</label>
-                    <textarea name="payment_methods" class="form-control">{{ $setting->payment_methods ?? '' }}</textarea>
+                    <textarea name="payment_methods" class="form-control">{{ is_array($setting->payment_methods) ? json_encode($setting->payment_methods, JSON_PRETTY_PRINT) : ($setting->payment_methods ?? '') }}</textarea>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save Other</button>

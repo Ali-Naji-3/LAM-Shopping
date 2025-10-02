@@ -15,8 +15,13 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isManager())) {
-            return $next($request);
+        if (auth()->check()) {
+            $user = auth()->user();
+            
+            // Check if user has admin access via u_type OR admin role
+            if ($user->isAdmin() || $user->isManager() || $user->hasRole('admin')) {
+                return $next($request);
+            }
         }
 
         return redirect('/')->with('error', 'You do not have permission to access this area.');

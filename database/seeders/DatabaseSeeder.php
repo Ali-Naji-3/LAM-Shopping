@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
 
         // Run the real data seeder
         $this->call([
-
+            AdminPermissionsSeeder::class,
             PermissionSeeder::class,
             AdminSeeder::class,
             ProductAttributeSeeder::class,

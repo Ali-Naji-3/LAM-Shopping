@@ -11,11 +11,11 @@
 	                <div class="all">
 	                    <div class="slider">
 	                        <div class="owl-carousel owl-theme main">
-	                            @if($product->image)
-	                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item-box"></div>
-	                            @else
-	                                <div style="background-image: url(img/products/product_placeholder_square_medium.jpg);" class="item-box"></div>
-	                            @endif
+                            @if($product->image)
+                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item-box"></div>
+                            @else
+                                <div style="background-image: url({{ asset('img/products/product_placeholder_square_medium.jpg') }});" class="item-box"></div>
+                            @endif
                             @if($product->gallery_images && is_array($product->gallery_images))
                                 @foreach($product->gallery_images as $image)
                                     <div style="background-image: url({{ asset('storage/' . $image) }});" class="item-box"></div>
@@ -27,11 +27,11 @@
 	                    </div>
 	                    <div class="slider-two">
 	                        <div class="owl-carousel owl-theme thumbs">
-	                            @if($product->image)
-	                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item active"></div>
-	                            @else
-	                                <div style="background-image: url(img/products/product_placeholder_square_medium.jpg);" class="item active"></div>
-	                            @endif
+                            @if($product->image)
+                                <div style="background-image: url({{ asset('storage/' . $product->image) }});" class="item active"></div>
+                            @else
+                                <div style="background-image: url({{ asset('img/products/product_placeholder_square_medium.jpg') }});" class="item active"></div>
+                            @endif
                             @if($product->gallery_images && is_array($product->gallery_images))
                                 @foreach($product->gallery_images as $image)
                                     <div style="background-image: url({{ asset('storage/' . $image) }});" class="item"></div>
@@ -121,115 +121,99 @@
 	                        </a>
 	                    </div>
 	                    <div class="prod_options">
+	                        @php
+	                            $colorAttribute = \App\Models\Attribute::where('slug', 'color')->first();
+	                            $productColors = $product->productAttributes()
+	                                ->whereHas('attributeValue.attribute', function($q) {
+	                                    $q->where('slug', 'color');
+	                                })
+	                                ->with('attributeValue')
+	                                ->get();
+
+	                            $sizeAttribute = \App\Models\Attribute::where('slug', 'size')->first();
+	                            $productSizes = $product->productAttributes()
+	                                ->whereHas('attributeValue.attribute', function($q) {
+	                                    $q->where('slug', 'size');
+	                                })
+	                                ->with('attributeValue')
+	                                ->get();
+	                        @endphp
+
+	                        @if($productColors->count() > 0)
 	                        <div class="row">
 	                            <label class="col-xl-5 col-lg-5  col-md-6 col-6 pt-0"><strong>Color</strong></label>
 	                            <div class="col-xl-4 col-lg-5 col-md-6 col-6 colors">
 	                                <ul class="color-dots-list">
-	                                    @php
-	                                        $colorAttribute = \App\Models\Attribute::where('slug', 'color')->first();
-	                                        $productColors = $product->productAttributes()
-	                                            ->whereHas('attributeValue.attribute', function($q) {
-	                                                $q->where('slug', 'color');
-	                                            })
-	                                            ->with('attributeValue')
-	                                            ->get();
-	                                    @endphp
+	                                    @foreach($productColors as $index => $productColor)
+	                                        @php
+	                                            $colorValue = $productColor->attributeValue->value;
 
-	                                    @if($productColors->count() > 0)
-	                                        @foreach($productColors as $index => $productColor)
-	                                            @php
-	                                                $colorValue = $productColor->attributeValue->value;
-
-
-	                                                // Color mapping
-	                                                $colorMap = [
-	                                                    'black' => '#000000',
-	                                                    'white' => '#ffffff',
-	                                                    'red' => '#ff0000',
-	                                                    'blue' => '#0000ff',
-	                                                    'green' => '#00ff00',
-	                                                    'yellow' => '#ffff00',
-	                                                    'pink' => '#ffc0cb',
-	                                                    'gray' => '#808080',
-	                                                    'brown' => '#a52a2a',
-	                                                    'navy' => '#000080',
-	                                                    'purple' => '#800080',
-	                                                    'orange' => '#ffa500',
-	                                                    'beige' => '#f5f5dc',
-	                                                    'maroon' => '#800000',
-	                                                    'teal' => '#008080',
-	                                                    'lime' => '#00ff00',
-	                                                    'cyan' => '#00ffff',
-	                                                    'magenta' => '#ff00ff',
-	                                                    'silver' => '#c0c0c0',
-	                                                    'gold' => '#ffd700'
-	                                                ];
-	                                                $colorHex = $colorMap[strtolower($colorValue)] ?? '#cccccc';
-	                                                $isFirst = $index === 0;
-	                                            @endphp
-	                                            <li>
-	                                                <a href="#0"
-	                                                   class="color-dot {{ $isFirst ? 'active' : '' }}"
-	                                                   data-color="{{ $colorValue }}"
-	                                                   data-hex="{{ $colorHex }}"
-	                                                   data-product-id="{{ $product->id }}"
-	                                                   style="background-color: {{ $colorHex }};"
-	                                                   title="{{ ucfirst($colorValue) }}">
-	                                                </a>
-	                                            </li>
-	                                        @endforeach
-	                                    @else
-	                                        <!-- Fallback colors if no database colors -->
-	                                        <li><a href="#0" class="color color_1 active"></a></li>
-	                                        <li><a href="#0" class="color color_2"></a></li>
-	                                        <li><a href="#0" class="color color_3"></a></li>
-	                                        <li><a href="#0" class="color color_4"></a></li>
-	                                    @endif
+	                                            // Color mapping
+	                                            $colorMap = [
+	                                                'black' => '#000000',
+	                                                'white' => '#ffffff',
+	                                                'red' => '#ff0000',
+	                                                'blue' => '#0000ff',
+	                                                'green' => '#00ff00',
+	                                                'yellow' => '#ffff00',
+	                                                'pink' => '#ffc0cb',
+	                                                'gray' => '#808080',
+	                                                'brown' => '#a52a2a',
+	                                                'navy' => '#000080',
+	                                                'purple' => '#800080',
+	                                                'orange' => '#ffa500',
+	                                                'beige' => '#f5f5dc',
+	                                                'maroon' => '#800000',
+	                                                'teal' => '#008080',
+	                                                'lime' => '#00ff00',
+	                                                'cyan' => '#00ffff',
+	                                                'magenta' => '#ff00ff',
+	                                                'silver' => '#c0c0c0',
+	                                                'gold' => '#ffd700'
+	                                            ];
+	                                            $colorHex = $colorMap[strtolower($colorValue)] ?? '#cccccc';
+	                                            $isFirst = $index === 0;
+	                                        @endphp
+	                                        <li>
+	                                            <a href="#0"
+	                                               class="color-dot {{ $isFirst ? 'active' : '' }}"
+	                                               data-color="{{ $colorValue }}"
+	                                               data-hex="{{ $colorHex }}"
+	                                               data-product-id="{{ $product->id }}"
+	                                               style="background-color: {{ $colorHex }};"
+	                                               title="{{ ucfirst($colorValue) }}">
+	                                            </a>
+	                                        </li>
+	                                    @endforeach
 	                                </ul>
 	                            </div>
 	                        </div>
+	                        @endif
+
+	                        @if($productSizes->count() > 0)
                         <div class="row">
                             <label class="col-xl-5 col-lg-5 col-md-6 col-6"><strong>Size</strong> - Size Guide <a href="#0" data-bs-toggle="modal" data-bs-target="#size-modal"><i class="ti-help-alt"></i></a></label>
                             <div class="col-xl-4 col-lg-5 col-md-6 col-6">
                                 <div class="size-selection-container">
-                                    @php
-                                        $sizeAttribute = \App\Models\Attribute::where('slug', 'size')->first();
-                                        $productSizes = $product->productAttributes()
-                                            ->whereHas('attributeValue.attribute', function($q) {
-                                                $q->where('slug', 'size');
-                                            })
-                                            ->with('attributeValue')
-                                            ->get();
-                                    @endphp
-
-                                    @if($productSizes->count() > 0)
-                                        <div class="size-buttons-container">
-                                            @foreach($productSizes as $index => $productSize)
-                                                @php
-                                                    $sizeValue = $productSize->attributeValue->value;
-                                                    $isFirst = $index === 0;
-                                                @endphp
-                                                <button type="button"
-                                                        class="size-button {{ $isFirst ? 'active' : '' }}"
-                                                        data-size="{{ $sizeValue }}"
-                                                        data-product-id="{{ $product->id }}"
-                                                        title="{{ $sizeValue }}">
-                                                    {{ $sizeValue }}
-                                                </button>
-                                            @endforeach
-                                        </div>
-                                    @else
-                                        <!-- Fallback sizes if no database sizes -->
-                                        <div class="size-buttons-container">
-                                            <button type="button" class="size-button active" data-size="S">S</button>
-                                            <button type="button" class="size-button" data-size="M">M</button>
-                                            <button type="button" class="size-button" data-size="L">L</button>
-                                            <button type="button" class="size-button" data-size="XL">XL</button>
-                                        </div>
-                                    @endif
+                                    <div class="size-buttons-container">
+                                        @foreach($productSizes as $index => $productSize)
+                                            @php
+                                                $sizeValue = $productSize->attributeValue->value;
+                                                $isFirst = $index === 0;
+                                            @endphp
+                                            <button type="button"
+                                                    class="size-button {{ $isFirst ? 'active' : '' }}"
+                                                    data-size="{{ $sizeValue }}"
+                                                    data-product-id="{{ $product->id }}"
+                                                    title="{{ $sizeValue }}">
+                                                {{ $sizeValue }}
+                                            </button>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        @endif
 	                        <div class="row">
 	                            <label class="col-xl-5 col-lg-5  col-md-6 col-6"><strong>Quantity</strong></label>
 	                            <div class="col-xl-4 col-lg-5 col-md-6 col-6">
@@ -316,9 +300,13 @@
 	                            <div class="row justify-content-between">
 	                                <div class="col-lg-6">
 	                                    <h3>Details</h3>
-	                                    <p>Lorem ipsum dolor sit amet, in eleifend <strong>inimicus elaboraret</strong> his, harum efficiendi mel ne. Sale percipit vituperata ex mel, sea ne essent aeterno sanctus, nam ea laoreet civibus electram. Ea vis eius explicari. Quot iuvaret ad has.</p>
-	                                    <p>Vis ei ipsum conclusionemque. Te enim suscipit recusabo mea, ne vis mazim aliquando, everti insolens at sit. Cu vel modo unum quaestio, in vide dicta has. Ut his laudem explicari adversarium, nisl <strong>laboramus hendrerit</strong> te his, alia lobortis vis ea.</p>
-	                                    <p>Perfecto eleifend sea no, cu audire voluptatibus eam. An alii praesent sit, nobis numquam principes ea eos, cu autem constituto suscipiantur eam. Ex graeci elaboraret pro. Mei te omnis tantas, nobis viderer vivendo ex has.</p>
+	                                    @if($product->description)
+	                                        <div style="line-height: 1.8; color: #4a5568;">
+	                                            {!! nl2br(e($product->description)) !!}
+	                                        </div>
+	                                    @else
+	                                        <p class="text-muted">No product description available.</p>
+	                                    @endif
 	                                </div>
                                 <div class="col-lg-5">
                                     <h3>Specifications</h3>
@@ -351,59 +339,92 @@
 	                    <div class="card-header" role="tab" id="heading-B">
 	                        <h5 class="mb-0">
 	                            <a class="collapsed" data-bs-toggle="collapse" href="#collapse-B" aria-expanded="false" aria-controls="collapse-B">
-	                                Reviews
+	                                Reviews ({{ $product->reviews->where('is_approved', true)->count() }})
 	                            </a>
 	                        </h5>
 	                    </div>
 	                    <div id="collapse-B" class="collapse" role="tabpanel" aria-labelledby="heading-B">
 	                        <div class="card-body">
-	                            <div class="row justify-content-between">
-	                                <div class="col-lg-6">
-	                                    <div class="review_content">
-	                                        <div class="clearfix add_bottom_10">
-	                                            <span class="rating"><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><em>5.0/5.0</em></span>
-	                                            <em>Published 54 minutes ago</em>
+	                            @php
+	                                $approvedReviews = $product->reviews->where('is_approved', true)->sortByDesc('created_at');
+	                            @endphp
+
+	                            @if($approvedReviews->count() > 0)
+	                                <!-- Reviews Summary -->
+	                                <div class="mb-4 p-3" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px; border-left: 4px solid #667eea;">
+	                                    <div class="row text-center">
+	                                        <div class="col-md-4">
+	                                            <h2 class="mb-0" style="color: #667eea; font-weight: 700;">{{ number_format($product->average_rating, 1) }}</h2>
+	                                            <div class="rating mb-1">
+	                                                @for($i = 1; $i <= 5; $i++)
+	                                                    <i class="icon-star {{ $i <= $product->average_rating ? 'voted' : '' }}"></i>
+	                                                @endfor
+	                                            </div>
+	                                            <small class="text-muted">Average Rating</small>
 	                                        </div>
-	                                        <h4>"Commpletely satisfied"</h4>
-	                                        <p>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea. Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his.</p>
+	                                        <div class="col-md-4">
+	                                            <h2 class="mb-0" style="color: #10b981; font-weight: 700;">{{ $approvedReviews->count() }}</h2>
+	                                            <small class="text-muted">Total Reviews</small>
+	                                        </div>
+	                                        <div class="col-md-4">
+	                                            <h2 class="mb-0" style="color: #f59e0b; font-weight: 700;">{{ $approvedReviews->where('would_recommend', true)->count() }}</h2>
+	                                            <small class="text-muted">Recommended</small>
+	                                        </div>
 	                                    </div>
 	                                </div>
-	                                <div class="col-lg-6">
-	                                    <div class="review_content">
-	                                        <div class="clearfix add_bottom_10">
-	                                            <span class="rating"><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star empty"></i><i class="icon-star empty"></i><em>4.0/5.0</em></span>
-	                                            <em>Published 1 day ago</em>
+
+	                                <!-- Real Reviews from Database -->
+	                                <div class="row justify-content-between">
+	                                    @foreach($approvedReviews->take(4) as $review)
+	                                        <div class="col-lg-6 mb-4">
+	                                            <div class="review_content" style="padding: 20px; background: #ffffff; border: 1px solid #e9ecef; border-radius: 8px; transition: all 0.3s ease;">
+	                                                <div class="clearfix add_bottom_10">
+	                                                    <span class="rating">
+	                                                        @for($i = 1; $i <= 5; $i++)
+	                                                            <i class="icon-star {{ $i <= $review->rating ? '' : 'empty' }}"></i>
+	                                                        @endfor
+	                                                        <em>{{ $review->rating }}.0/5.0</em>
+	                                                    </span>
+	                                                    <em>Published {{ $review->created_at->diffForHumans() }}</em>
+	                                                </div>
+	                                                @if($review->title)
+	                                                    <h4>"{{ $review->title }}"</h4>
+	                                                @endif
+	                                                <p>{{ $review->comment }}</p>
+	                                                <div class="d-flex gap-2 flex-wrap">
+	                                                    <small class="text-muted"><i class="ti-user"></i> {{ $review->user->name }}</small>
+	                                                    @if($review->would_recommend)
+	                                                        <small class="badge bg-success">Recommends</small>
+	                                                    @endif
+	                                                    @if($review->purchase_verified)
+	                                                        <small class="badge bg-primary">Verified Purchase</small>
+	                                                    @endif
+	                                                </div>
+	                                            </div>
 	                                        </div>
-	                                        <h4>"Always the best"</h4>
-	                                        <p>Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his.</p>
-	                                    </div>
+	                                    @endforeach
 	                                </div>
-	                            </div>
-	                            <!-- /row -->
-	                            <div class="row justify-content-between">
-	                                <div class="col-lg-6">
-	                                    <div class="review_content">
-	                                        <div class="clearfix add_bottom_10">
-	                                            <span class="rating"><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star empty"></i><em>4.5/5.0</em></span>
-	                                            <em>Published 3 days ago</em>
-	                                        </div>
-	                                        <h4>"Outstanding"</h4>
-	                                        <p>Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea. Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his.</p>
+	                                <!-- /row -->
+
+	                                @if($approvedReviews->count() > 4)
+	                                    <div class="text-center mb-3">
+	                                        <p class="text-muted">Showing 4 of {{ $approvedReviews->count() }} reviews</p>
 	                                    </div>
+	                                @endif
+	                            @else
+	                                <!-- No Reviews Yet -->
+	                                <div class="text-center py-5">
+	                                    <i class="ti-star" style="font-size: 4rem; color: #e9ecef;"></i>
+	                                    <h4 class="mt-3">No Reviews Yet</h4>
+	                                    <p class="text-muted">Be the first to review this product!</p>
 	                                </div>
-	                                <div class="col-lg-6">
-	                                    <div class="review_content">
-	                                        <div class="clearfix add_bottom_10">
-	                                            <span class="rating"><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><i class="icon-star"></i><em>5.0/5.0</em></span>
-	                                            <em>Published 4 days ago</em>
-	                                        </div>
-	                                        <h4>"Excellent"</h4>
-	                                        <p>Sit commodo veritus te, erat legere fabulas has ut. Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his.</p>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                            <!-- /row -->
-	                            <p class="text-end"><a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}" class="btn_1">Leave a review</a></p>
+	                            @endif
+
+	                            <p class="text-end mt-3">
+	                                <a href="{{ route('frontend.leave-review', ['product' => $product->id]) }}" class="btn_1">
+	                                    <i class="ti-star"></i> Leave a review
+	                                </a>
+	                            </p>
 	                        </div>
 	                        <!-- /card-body -->
 	                    </div>

@@ -36,6 +36,11 @@ class Product extends Model
         'deleted_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'image_url',
+        'gallery_images_urls',
+    ];
+
     // Auto-generate slug from name if not provided
     public function setNameAttribute($value)
     {
@@ -206,6 +211,24 @@ class Product extends Model
     }
 
     // Helper methods
+    public function getImageUrlAttribute()
+    {
+        if ($this->image) {
+            return asset('storage/' . $this->image);
+        }
+        return null;
+    }
+
+    public function getGalleryImagesUrlsAttribute()
+    {
+        if ($this->gallery_images && is_array($this->gallery_images)) {
+            return array_map(function($image) {
+                return asset('storage/' . $image);
+            }, $this->gallery_images);
+        }
+        return [];
+    }
+
     public function getEffectivePriceAttribute()
     {
         return $this->sale_price ?? $this->regular_price;

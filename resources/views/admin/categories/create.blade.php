@@ -18,8 +18,8 @@
         </a>
     </div>
 
-    <div class="row">
-        <div class="col-lg-8">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
             <!-- Main Form Card -->
             <div class="card" style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;">
                 <div class="card-body" style="padding: 2rem !important;">
@@ -188,67 +188,6 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <!-- Category Guidelines Card - Clean Professional Design -->
-            <div class="card mb-4" style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;">
-                <div class="card-header" style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important; border-bottom: 1px solid #e2e8f0 !important; border-radius: 12px 12px 0 0 !important; padding: 1rem 1.5rem !important;">
-                    <h5 class="mb-0" style="color: #1a202c !important; font-weight: 600 !important; font-size: 16px !important;">
-                        <i class="bi bi-info-circle me-2" style="color: #3182ce !important;"></i>Category Guidelines
-                    </h5>
-                </div>
-                <div class="card-body" style="padding: 2rem !important;">
-                    <div class="mb-4" style="padding: 1.25rem !important; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important; border-radius: 10px !important; border-left: 4px solid #3182ce !important;">
-                        <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 15px !important; margin-bottom: 1rem !important;">📝 Naming Tips</h6>
-                        <ul style="margin-bottom: 0 !important; padding-left: 1.25rem !important;">
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.5rem !important;">Use clear, descriptive names</li>
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.5rem !important;">Keep names concise but informative</li>
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">Use consistent naming conventions</li>
-                        </ul>
-                    </div>
-
-                    <div class="mb-4" style="padding: 1.25rem !important; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important; border-radius: 10px !important; border-left: 4px solid #10b981 !important;">
-                        <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 15px !important; margin-bottom: 1rem !important;">🏗️ Hierarchy Structure</h6>
-                        <ul style="margin-bottom: 0 !important; padding-left: 1.25rem !important;">
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.5rem !important;">Root categories for main sections</li>
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.5rem !important;">Sub-categories for specific products</li>
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">Maximum 3 levels recommended</li>
-                        </ul>
-                    </div>
-
-                    <div class="mb-3" style="padding: 1.25rem !important; background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%) !important; border-radius: 10px !important; border-left: 4px solid #f59e0b !important;">
-                        <h6 style="color: #1a202c !important; font-weight: 600 !important; font-size: 15px !important; margin-bottom: 1rem !important;">🖼️ Image Guidelines</h6>
-                        <ul style="margin-bottom: 0 !important; padding-left: 1.25rem !important;">
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.5rem !important;">Recommended size: 400x400px</li>
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.5rem !important;">Use high-quality images</li>
-                            <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">Consistent style across categories</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Contact Integration Card - Clean Professional Design -->
-            <div class="card" style="background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 12px !important; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;">
-                <div class="card-header" style="background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%) !important; border-bottom: 1px solid #e2e8f0 !important; border-radius: 12px 12px 0 0 !important; padding: 1rem 1.5rem !important;">
-                    <h5 class="mb-0" style="color: #1a202c !important; font-weight: 600 !important; font-size: 16px !important;">
-                        <i class="bi bi-envelope me-2" style="color: #3182ce !important;"></i>Contact Integration
-                    </h5>
-                </div>
-                <div class="card-body" style="padding: 2rem !important;">
-                    <div style="padding: 1.25rem !important; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%) !important; border-radius: 10px !important; border-left: 4px solid #8b5cf6 !important; margin-bottom: 1.5rem !important;">
-                        <p style="color: #1a202c !important; font-size: 14px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">
-                            Each category can receive customer inquiries and support requests. After creating this category, you can:
-                        </p>
-                    </div>
-                    <ul style="margin-bottom: 0 !important; padding-left: 1.25rem !important;">
-                        <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.75rem !important;">📧 Manage category-specific contacts</li>
-                        <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.75rem !important;">📊 Track customer inquiries</li>
-                        <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0.75rem !important;">🤖 Set up automated responses</li>
-                        <li style="color: #2d3748 !important; font-size: 13px !important; font-weight: 500 !important; line-height: 1.6 !important; margin-bottom: 0 !important;">📈 Monitor contact analytics</li>
-                    </ul>
                 </div>
             </div>
         </div>

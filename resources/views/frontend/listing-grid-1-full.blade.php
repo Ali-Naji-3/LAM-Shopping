@@ -218,9 +218,9 @@
 							@endif
 							<a href="{{ route('product.detail', $product->slug) }}">
 								@if($product->image)
-									<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+									<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
 								@else
-									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}">
+									<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
 								@endif
 							</a>
 							@if($product->enable_countdown && $product->countdown_date)
@@ -230,14 +230,14 @@
 						<a href="{{ route('product.detail', $product->slug) }}">
 							<h3>{{ $product->name }}</h3>
 						</a>
-						<div class="price_box">
-							@if($product->sale_price && $product->sale_price < $product->price)
-								<span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
-								<span class="old_price">${{ number_format($product->price, 2) }}</span>
-							@else
-								<span class="new_price">${{ number_format($product->price, 2) }}</span>
-							@endif
-						</div>
+					<div class="price_box">
+						@if($product->sale_price && $product->sale_price < $product->regular_price)
+							<span class="new_price">${{ number_format($product->sale_price, 2) }}</span>
+							<span class="old_price">${{ number_format($product->regular_price, 2) }}</span>
+						@else
+							<span class="new_price">${{ number_format($product->regular_price, 2) }}</span>
+						@endif
+					</div>
 						<ul>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to favorites"><i class="ti-heart"></i><span>Add to favorites</span></a></li>
 							<li><a href="#0" class="tooltip-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to compare"><i class="ti-control-shuffle"></i><span>Add to compare</span></a></li>

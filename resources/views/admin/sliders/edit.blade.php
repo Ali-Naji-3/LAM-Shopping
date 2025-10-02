@@ -34,12 +34,36 @@
                         @csrf
                         @method('PUT')
                         
+                        <!-- Slider Type -->
+                        <div class="mb-4">
+                            <label for="type" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
+                                Slider Type <span style="color: #e53e3e !important;">*</span>
+                            </label>
+                            <select class="form-control @error('type') is-invalid @enderror" 
+                                    id="type" 
+                                    name="type"
+                                    required
+                                    style="background: #ffffff !important; border: 2px solid #e2e8f0 !important; color: #1a202c !important; padding: 14px 18px !important; border-radius: 10px !important; font-size: 15px !important; font-weight: 500 !important;">
+                                <option value="">Select slider type...</option>
+                                <option value="hero" {{ old('type', $slider->type) == 'hero' ? 'selected' : '' }}>🎯 Hero Slider (Homepage Main Slider)</option>
+                                <option value="brand" {{ old('type', $slider->type) == 'brand' ? 'selected' : '' }}>🏢 Brand/Logo Carousel (Bottom Section)</option>
+                                <option value="banner" {{ old('type', $slider->type) == 'banner' ? 'selected' : '' }}>📢 Banner Slider</option>
+                            </select>
+                            @error('type')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <small class="text-muted mt-1 d-block">
+                                <i class="bi bi-info-circle"></i> 
+                                Choose where this slider will appear on the website
+                            </small>
+                        </div>
+
                         <!-- Basic Information -->
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-4">
                                     <label for="title" class="form-label" style="color: #2d3748 !important; font-weight: 600 !important; font-size: 14px !important; margin-bottom: 10px !important;">
-                                        Title <small style="color: #718096 !important; font-weight: 400 !important;">(optional)</small>
+                                        Title <small style="color: #718096 !important; font-weight: 400 !important;">(optional for brands)</small>
                                     </label>
                                     <input type="text" 
                                            class="form-control @error('title') is-invalid @enderror" 

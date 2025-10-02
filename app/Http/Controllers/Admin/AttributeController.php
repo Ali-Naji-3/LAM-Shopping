@@ -29,6 +29,79 @@ class AttributeController extends Controller
     }
 
     /**
+     * API: Get attribute values for autocomplete (used in product pages)
+     */
+    public function getAttributeValues($attributeSlug)
+    {
+        try {
+            $attribute = Attribute::where('slug', $attributeSlug)->first();
+            
+            if (!$attribute) {
+                return response()->json(['error' => 'Attribute not found'], 404);
+            }
+
+            $values = AttributeValue::where('attribute_id', $attribute->id)
+                ->with(['productAttributes' => function($q) {
+                    $q->select('id', 'attribute_value_id', 'product_id');
+                }])
+                ->get()
+                ->map(function($value) {
+                    return [
+                        'id' => $value->id,
+                        'value' => $value->value,
+                        'display_value' => $value->display_value,
+                        'hex_code' => $value->hex_code,
+                        'usage_count' => $value->productAttributes->count(),
+                        'products' => $value->productAttributes->pluck('product_id')
+                    ];
+                });
+
+            return response()->json([
+                'attribute' => $attribute->name,
+                'slug' => $attribute->slug,
+                'values' => $values
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch values'], 500);
+        }
+    }
+
+    /**
+     * API: Get popular/frequently used attribute values
+     */
+    public function getPopularValues($attributeSlug, $limit = 10)
+    {
+        try {
+            $attribute = Attribute::where('slug', $attributeSlug)->first();
+            
+            if (!$attribute) {
+                return response()->json(['error' => 'Attribute not found'], 404);
+            }
+
+            $values = AttributeValue::where('attribute_id', $attribute->id)
+                ->withCount('productAttributes')
+                ->orderBy('product_attributes_count', 'desc')
+                ->limit($limit)
+                ->get()
+                ->map(function($value) {
+                    return [
+                        'value' => $value->value,
+                        'display_value' => $value->display_value,
+                        'hex_code' => $value->hex_code,
+                        'usage_count' => $value->product_attributes_count
+                    ];
+                });
+
+            return response()->json([
+                'attribute' => $attribute->name,
+                'popular_values' => $values
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to fetch popular values'], 500);
+        }
+    }
+
+    /**
      * Display a listing of attributes.
      */
     public function index(Request $request)

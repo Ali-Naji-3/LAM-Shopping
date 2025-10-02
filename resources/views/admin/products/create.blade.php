@@ -12,135 +12,149 @@
                     <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        <!-- Basic Information -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="name" class="form-label">Product Name *</label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" required>
-                                    @error('name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="slug" class="form-label">Slug</label>
-                                    <input type="text" class="form-control @error('slug') is-invalid @enderror" id="slug" name="slug" value="{{ old('slug') }}">
-                                    @error('slug')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                        <!-- ============================================ -->
+                        <!-- SECTION 1: BASIC PRODUCT INFORMATION -->
+                        <!-- ============================================ -->
+                        <div class="section-divider mb-5">
+                            <h4 class="section-title">
+                                <span class="badge bg-primary rounded-pill me-2">1</span>
+                                <i class="fas fa-info-circle me-2"></i>Basic Product Information
+                            </h4>
+                            <p class="text-muted small mb-4">Enter the essential product details and categorization</p>
+                            
+                            {{-- Basic Information Fields (Shared Component) --}}
+                            @include('admin.products.partials._basic_fields', ['product' => null, 'categories' => $categories, 'brands' => $brands])
+
+                            <!-- Description -->
+                            <div class="mb-4">
+                                <label for="description" class="form-label fw-bold">
+                                    <i class="fas fa-align-left me-1 text-primary"></i>Product Description
+                                </label>
+                                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5" placeholder="Describe your product in detail...">{{ old('description') }}</textarea>
+                                @error('description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-lightbulb text-warning"></i> Include key features, materials, and benefits
+                                </small>
                             </div>
                         </div>
 
-                        <!-- Category and Brand -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="category_id" class="form-label">Category *</label>
-                                    <select class="form-control @error('category_id') is-invalid @enderror" id="category_id" name="category_id" required>
-                                        <option value="">Select Category</option>
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                                {{ $category->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('category_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                        <!-- ============================================ -->
+                        <!-- SECTION 2: PRICING & INVENTORY -->
+                        <!-- ============================================ -->
+                        <div class="section-divider mb-5">
+                            <h4 class="section-title">
+                                <span class="badge bg-success rounded-pill me-2">2</span>
+                                <i class="fas fa-dollar-sign me-2"></i>Pricing & Inventory
+                            </h4>
+                            <p class="text-muted small mb-4">Set product pricing and stock information</p>
+                            
+                            {{-- Price and Stock Fields (Shared Component) --}}
+                            @include('admin.products.partials._price_fields', ['product' => null])
+                        </div>
+
+                        <!-- ============================================ -->
+                        <!-- SECTION 3: PRODUCT IMAGES -->
+                        <!-- ============================================ -->
+                        <div class="section-divider mb-5">
+                            <h4 class="section-title">
+                                <span class="badge bg-info rounded-pill me-2">3</span>
+                                <i class="fas fa-images me-2"></i>Product Images
+                            </h4>
+                            <p class="text-muted small mb-4">Upload high-quality product images</p>
+
+                            <!-- Primary Image -->
+                            <div class="mb-4">
+                                <label for="image" class="form-label fw-bold">
+                                    <i class="fas fa-image me-1 text-danger"></i>Primary Image <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*" required>
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-info-circle text-info"></i> This will be the main product image (JPG, PNG, WebP - max 5MB)
+                                </small>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="brand_id" class="form-label">Brand</label>
-                                    <select class="form-control @error('brand_id') is-invalid @enderror" id="brand_id" name="brand_id">
-                                        <option value="">Select Brand</option>
-                                        @foreach($brands as $brand)
-                                            <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>
-                                                {{ $brand->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('brand_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+
+                            <!-- Simple Gallery Images -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-th me-1 text-primary"></i>Gallery Images <span class="badge bg-secondary badge-sm">Optional</span>
+                                </label>
+                                <input type="file" id="gallery-images" name="gallery_images[]" accept="image/*" multiple class="form-control @error('gallery_images') is-invalid @enderror">
+                                <small class="form-text text-muted">
+                                    <i class="fas fa-images text-info"></i> Select multiple images for the gallery (JPG, PNG, WebP - max 5MB each)
+                                </small>
+                                @error('gallery_images')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Simple Gallery Preview -->
+                            <div id="gallery-preview" style="display: none; border: 1px solid #dee2e6; padding: 1rem; border-radius: 8px; background: #f8f9fa; margin-top: 1rem;">
+                                <h6><i class="fas fa-eye me-2"></i>Gallery Preview (<span id="gallery-count">0</span> images)</h6>
+                                <div id="gallery-grid" class="row g-2"></div>
                             </div>
                         </div>
 
-                        <!-- Price and Stock -->
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">Price *</label>
-                                    <input type="number" step="0.01" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}" required>
-                                    @error('price')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="sale_price" class="form-label">Sale Price</label>
-                                    <input type="number" step="0.01" class="form-control @error('sale_price') is-invalid @enderror" id="sale_price" name="sale_price" value="{{ old('sale_price') }}">
-                                    @error('sale_price')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <div class="mt-2">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="stock" class="form-label">Stock</label>
-                                    <input type="number" class="form-control @error('stock') is-invalid @enderror" id="stock" name="stock" value="{{ old('stock', 0) }}">
-                                    @error('stock')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Primary Image -->
-                        <div class="mb-4">
-                            <label for="image" class="form-label">Primary Image *</label>
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*" required>
-                            @error('image')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Simple Gallery Images -->
-                        <div class="mb-4">
-                            <label class="form-label">Gallery Images</label>
-                            <input type="file" id="gallery-images" name="gallery_images[]" accept="image/*" multiple class="form-control @error('gallery_images') is-invalid @enderror">
-                            <small class="form-text text-muted">Select multiple images for the gallery (JPG, PNG, WebP - max 5MB each)</small>
-                            @error('gallery_images')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Simple Gallery Preview -->
-                        <div id="gallery-preview" style="display: none; border: 1px solid #ddd; padding: 1rem; border-radius: 8px; background: #f8f9fa; margin-top: 1rem;">
-                            <h6>Gallery Preview (<span id="gallery-count">0</span> images)</h6>
-                            <div id="gallery-grid" class="row g-2"></div>
-                        </div>
+                        <!-- ============================================ -->
+                        <!-- SECTION 4: PRODUCT VARIANTS -->
+                        <!-- ============================================ -->
+                        <div class="section-divider mb-5">
+                            <h4 class="section-title">
+                                <span class="badge bg-warning rounded-pill me-2">4</span>
+                                <i class="fas fa-palette me-2"></i>Product Variants
+                            </h4>
+                            <p class="text-muted small mb-4">Define colors and sizes available for this product</p>
 
                         <!-- Color Management Section -->
                         <div class="mb-4">
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">🎨 Color Management</h5>
-                                    <small class="text-muted">Add colors for this product. These will appear as color dots on the frontend.</small>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-0">🎨 Color Management</h5>
+                                        <small class="text-muted">Add colors for this product. These will appear as color dots on the frontend.</small>
+                                    </div>
+                                    <a href="{{ route('admin.attributes.values') }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        <i class="fas fa-cog me-1"></i> Manage All Colors
+                                    </a>
                                 </div>
                                 <div class="card-body">
+                                    <!-- Popular Colors Quick Select -->
+                                    <div id="popular-colors-section" class="mb-3" style="display:none;">
+                                        <div class="alert alert-light border">
+                                            <strong><i class="fas fa-fire text-danger me-1"></i>Popular Colors:</strong>
+                                            <div id="popular-colors-list" class="d-flex flex-wrap gap-2 mt-2">
+                                                <!-- Populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Auto-Sync Notification -->
+                                    <div id="color-sync-notification" class="alert alert-success border-left" style="display:none; border-left: 4px solid #28a745 !important;">
+                                        <i class="fas fa-sync-alt me-1"></i>
+                                        <strong>Auto-Sync Active:</strong> 
+                                        <span id="color-sync-message">New colors will be added to your global color library automatically!</span>
+                                    </div>
+
                                     <!-- Color Input Section -->
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="color_name" class="form-label">Color Name</label>
-                                            <input type="text" class="form-control" id="color_name" placeholder="e.g., Navy Blue, Forest Green">
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="color_name" 
+                                                   list="existing-colors" 
+                                                   placeholder="e.g., Navy Blue, Forest Green"
+                                                   autocomplete="off">
+                                            <datalist id="existing-colors">
+                                                <!-- Populated dynamically from database -->
+                                            </datalist>
+                                            <small class="text-muted">
+                                                <i class="fas fa-sync text-success"></i> <strong>Auto-syncs to global library</strong> • Start typing to see existing colors
+                                            </small>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="color_hex" class="form-label">Color Code</label>
@@ -167,23 +181,6 @@
 
                                     <!-- Hidden inputs for form submission -->
                                     <div id="color-inputs"></div>
-
-                                    <!-- Quick Color Presets -->
-                                    <div class="mt-3">
-                                        <h6>Quick Color Presets:</h6>
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Black', '#000000')">Black</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('White', '#ffffff')">White</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Red', '#ff0000')">Red</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Blue', '#0000ff')">Blue</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Green', '#00ff00')">Green</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Yellow', '#ffff00')">Yellow</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Pink', '#ffc0cb')">Pink</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Gray', '#808080')">Gray</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Brown', '#a52a2a')">Brown</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetColor('Navy', '#000080')">Navy</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -191,16 +188,49 @@
                         <!-- Size Management Section -->
                         <div class="mb-4">
                             <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">📏 Size Management</h5>
-                                    <small class="text-muted">Add sizes for this product. These will appear as size buttons on the frontend.</small>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-0">📏 Size Management</h5>
+                                        <small class="text-muted">Add sizes for this product. These will appear as size buttons on the frontend.</small>
+                                    </div>
+                                    <a href="{{ route('admin.attributes.values') }}" class="btn btn-sm btn-outline-success" target="_blank">
+                                        <i class="fas fa-cog me-1"></i> Manage All Sizes
+                                    </a>
                                 </div>
                                 <div class="card-body">
+                                    <!-- Popular Sizes Quick Select -->
+                                    <div id="popular-sizes-section" class="mb-3" style="display:none;">
+                                        <div class="alert alert-light border">
+                                            <strong><i class="fas fa-fire text-warning me-1"></i>Popular Sizes:</strong>
+                                            <div id="popular-sizes-list" class="d-flex flex-wrap gap-2 mt-2">
+                                                <!-- Populated dynamically -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Auto-Sync Notification -->
+                                    <div id="size-sync-notification" class="alert alert-success border-left mb-3" style="display:none; border-left: 4px solid #28a745 !important;">
+                                        <i class="fas fa-sync-alt me-1"></i>
+                                        <strong>Auto-Sync Active:</strong> 
+                                        <span id="size-sync-message">New sizes will be added to your global size library automatically!</span>
+                                    </div>
+
                                     <!-- Size Input Section -->
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="size_name" class="form-label">Size Name</label>
-                                            <input type="text" class="form-control" id="size_name" placeholder="e.g., Small, Medium, Large, XL">
+                                            <input type="text" 
+                                                   class="form-control" 
+                                                   id="size_name" 
+                                                   list="existing-sizes"
+                                                   placeholder="e.g., Small, Medium, Large, XL"
+                                                   autocomplete="off">
+                                            <datalist id="existing-sizes">
+                                                <!-- Populated dynamically from database -->
+                                            </datalist>
+                                            <small class="text-muted">
+                                                <i class="fas fa-sync text-success"></i> <strong>Auto-syncs to global library</strong> • Start typing to see existing sizes
+                                            </small>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="size_stock" class="form-label">Stock</label>
@@ -227,139 +257,194 @@
 
                                     <!-- Hidden inputs for form submission -->
                                     <div id="size-inputs"></div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
 
-                                    <!-- Quick Size Presets -->
-                                    <div class="mt-3">
-                                        <h6>Quick Size Presets:</h6>
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XS', 'Chest: 32-34 inches')">XS</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('S', 'Chest: 34-36 inches')">S</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('M', 'Chest: 36-38 inches')">M</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('L', 'Chest: 38-40 inches')">L</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XL', 'Chest: 40-42 inches')">XL</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('XXL', 'Chest: 42-44 inches')">XXL</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('28', 'Waist: 28 inches')">28</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('30', 'Waist: 30 inches')">30</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('32', 'Waist: 32 inches')">32</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addPresetSize('34', 'Waist: 34 inches')">34</button>
+                        <!-- ============================================ -->
+                        <!-- SECTION 5: MARKETING & DISPLAY OPTIONS -->
+                        <!-- ============================================ -->
+                        <div class="section-divider mb-5">
+                            <h4 class="section-title">
+                                <span class="badge bg-purple rounded-pill me-2">5</span>
+                                <i class="fas fa-bullhorn me-2"></i>Marketing & Display Options
+                            </h4>
+                            <p class="text-muted small mb-4">Control product visibility and promotional features</p>
+
+                            <!-- Status -->
+                            <div class="mb-4">
+                                <div class="card border-left-primary shadow-sm" style="border-left: 4px solid #4e73df !important;">
+                                    <div class="card-body">
+                                        <div class="form-check form-switch">
+                                            <input type="hidden" name="status" value="0">
+                                            <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ old('status') ? 'checked' : '' }} style="width: 3rem; height: 1.5rem;">
+                                            <label class="form-check-label ms-2" for="status">
+                                                <strong><i class="fas fa-toggle-on me-1 text-success"></i>Product Status - Active</strong>
+                                                <div><small class="text-muted">Enable this to make the product visible on the storefront</small></div>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div class="mb-4">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="4">{{ old('description') }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <!-- Status -->
-                        <div class="mb-4">
-                            <div class="form-check">
-                                <input type="hidden" name="status" value="0">
-                                <input class="form-check-input" type="checkbox" id="status" name="status" value="1" {{ old('status') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="status">
-                                    Active
-                                </label>
-                            </div>
-                        </div>
 
                         <!-- New Arrival Controls -->
                         <div class="mb-4">
-                            <h5 class="text-primary mb-3">New Arrival Settings</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check mb-3">
-                                        <input type="hidden" name="is_new_arrival" value="0">
-                                        <input class="form-check-input" type="checkbox" id="is_new_arrival" name="is_new_arrival" value="1" {{ old('is_new_arrival') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="is_new_arrival">
-                                            <strong>Mark as New Arrival</strong>
-                                        </label>
-                                        <small class="form-text text-muted d-block">Manually mark this product as a new arrival</small>
-                                        <div id="new-arrival-info" class="alert alert-warning mt-2" style="display:none;">
-                                            <i class="ti-info-circle"></i>
-                                            <strong>Note:</strong> This will automatically remove the oldest new arrival product to make room for this one (max 8 products).
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <h5 class="mb-0 text-white">
+                                        <i class="fas fa-star-half-alt me-2"></i>New Arrival Settings
+                                    </h5>
+                                    <small class="text-white-50">Control how this product appears in new arrivals section</small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-md-6">
+                                            <div class="p-3 rounded" style="background-color: #f8f9fa; border-left: 4px solid #667eea;">
+                                                <div class="form-check">
+                                                    <input type="hidden" name="is_new_arrival" value="0">
+                                                    <input class="form-check-input" type="checkbox" id="is_new_arrival" name="is_new_arrival" value="1" {{ old('is_new_arrival') ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="is_new_arrival">
+                                                        <strong class="text-dark"><i class="fas fa-tag me-1"></i>Mark as New Arrival</strong>
+                                                    </label>
+                                                    <div>
+                                                        <small class="text-muted">Manually mark this product as a new arrival</small>
+                                                    </div>
+                                                </div>
+                                                <div id="new-arrival-info" class="alert alert-warning mt-2 mb-0" style="display:none;">
+                                                    <i class="fas fa-info-circle"></i>
+                                                    <strong>Note:</strong> This will automatically remove the oldest new arrival product to make room for this one (max 8 products).
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="p-3 rounded" style="background-color: #f8f9fa; border-left: 4px solid #764ba2;">
+                                                <div class="form-check">
+                                                    <input type="hidden" name="featured_new_arrival" value="0">
+                                                    <input class="form-check-input" type="checkbox" id="featured_new_arrival" name="featured_new_arrival" value="1" {{ old('featured_new_arrival') ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="featured_new_arrival">
+                                                        <strong class="text-dark"><i class="fas fa-certificate me-1"></i>Featured New Arrival</strong>
+                                                    </label>
+                                                    <div>
+                                                        <small class="text-muted">Give this product special highlighting</small>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check mb-3">
-                                        <input type="hidden" name="featured_new_arrival" value="0">
-                                        <input class="form-check-input" type="checkbox" id="featured_new_arrival" name="featured_new_arrival" value="1" {{ old('featured_new_arrival') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="featured_new_arrival">
-                                            <strong>Featured New Arrival</strong>
-                                        </label>
-                                        <small class="form-text text-muted d-block">Give this product special highlighting</small>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="new_arrival_until" class="form-label fw-bold">
+                                                <i class="fas fa-calendar-times me-1 text-primary"></i>New Arrival Until <span class="badge bg-secondary badge-sm">Optional</span>
+                                            </label>
+                                            <input type="datetime-local" class="form-control @error('new_arrival_until') is-invalid @enderror" id="new_arrival_until" name="new_arrival_until" value="{{ old('new_arrival_until') }}">
+                                            @error('new_arrival_until')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <small class="form-text text-muted">
+                                                <i class="fas fa-lightbulb text-warning"></i> Leave empty for permanent new arrival status
+                                            </small>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="new_arrival_priority" class="form-label fw-bold">
+                                                <i class="fas fa-sort-amount-up me-1 text-success"></i>Priority Order
+                                            </label>
+                                            <select class="form-control @error('new_arrival_priority') is-invalid @enderror" id="new_arrival_priority" name="new_arrival_priority">
+                                                <option value="0" {{ old('new_arrival_priority', 0) == 0 ? 'selected' : '' }}>⚪ Normal (0)</option>
+                                                <option value="1" {{ old('new_arrival_priority') == 1 ? 'selected' : '' }}>🟡 Low (1)</option>
+                                                <option value="3" {{ old('new_arrival_priority') == 3 ? 'selected' : '' }}>🟠 Medium (3)</option>
+                                                <option value="5" {{ old('new_arrival_priority') == 5 ? 'selected' : '' }}>🔴 High (5)</option>
+                                                <option value="10" {{ old('new_arrival_priority') == 10 ? 'selected' : '' }}>⭐ Highest (10)</option>
+                                            </select>
+                                            @error('new_arrival_priority')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                            <small class="form-text text-muted">
+                                                <i class="fas fa-arrow-up text-success"></i> Higher priority products appear first
+                                            </small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-info mb-0" style="border-left: 4px solid #17a2b8;">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        <strong>Tip:</strong> Products created within the last 30 days automatically qualify as new arrivals unless manually disabled.
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label for="new_arrival_until" class="form-label">New Arrival Until (Optional)</label>
-                                    <input type="datetime-local" class="form-control @error('new_arrival_until') is-invalid @enderror" id="new_arrival_until" name="new_arrival_until" value="{{ old('new_arrival_until') }}">
-                                    @error('new_arrival_until')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <small class="form-text text-muted">Leave empty for permanent new arrival status</small>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="new_arrival_priority" class="form-label">Priority Order</label>
-                                    <select class="form-control @error('new_arrival_priority') is-invalid @enderror" id="new_arrival_priority" name="new_arrival_priority">
-                                        <option value="0" {{ old('new_arrival_priority', 0) == 0 ? 'selected' : '' }}>Normal (0)</option>
-                                        <option value="1" {{ old('new_arrival_priority') == 1 ? 'selected' : '' }}>Low (1)</option>
-                                        <option value="3" {{ old('new_arrival_priority') == 3 ? 'selected' : '' }}>Medium (3)</option>
-                                        <option value="5" {{ old('new_arrival_priority') == 5 ? 'selected' : '' }}>High (5)</option>
-                                        <option value="10" {{ old('new_arrival_priority') == 10 ? 'selected' : '' }}>Highest (10)</option>
-                                    </select>
-                                    @error('new_arrival_priority')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    <small class="form-text text-muted">Higher priority products appear first</small>
-                                </div>
-                            </div>
-                            <div class="alert alert-info mt-3">
-                                <i class="ti-info-circle"></i>
-                                <strong>Tip:</strong> Products created within the last 30 days automatically qualify as new arrivals unless manually disabled.
                             </div>
                         </div>
 
                         <!-- Countdown Timer Settings -->
                         <div class="mb-4">
-                            <label class="form-label">Countdown Timer Settings</label>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="enable_countdown" name="enable_countdown" value="1" {{ old('enable_countdown') ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="enable_countdown">
-                                            Enable Countdown Timer
-                                        </label>
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-gradient" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                    <h5 class="mb-0 text-white">
+                                        <i class="fas fa-clock me-2"></i>Countdown Timer Settings
+                                    </h5>
+                                    <small class="text-white-50">Add urgency with a countdown timer on product page</small>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="p-3 rounded" style="background-color: #fff5f5; border-left: 4px solid #f5576c;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="enable_countdown" name="enable_countdown" value="1" {{ old('enable_countdown') ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="enable_countdown">
+                                                        <strong class="text-dark"><i class="fas fa-stopwatch me-1"></i>Enable Countdown Timer</strong>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="countdown_date" class="form-label fw-bold">
+                                                <i class="fas fa-calendar-check me-1 text-danger"></i>Countdown End Date
+                                            </label>
+                                            <input type="datetime-local" class="form-control @error('countdown_date') is-invalid @enderror" id="countdown_date" name="countdown_date" value="{{ old('countdown_date') }}">
+                                            @error('countdown_date')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="alert alert-light border mb-3" style="border-left: 4px solid #f093fb !important;">
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle text-info me-1"></i>
+                                            Set when the countdown timer should expire. Multiple products can share the same countdown date.
+                                        </small>
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-center gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary rounded-pill" onclick="setCommonCountdown()">
+                                            <i class="fas fa-calendar-alt me-1"></i> Set Common Sale End Date
+                                        </button>
+                                        <small class="text-muted">
+                                            <i class="fas fa-bolt text-warning"></i> Quick set for seasonal sales
+                                        </small>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="countdown_date" class="form-label">Countdown End Date</label>
-                                    <input type="datetime-local" class="form-control @error('countdown_date') is-invalid @enderror" id="countdown_date" name="countdown_date" value="{{ old('countdown_date') }}">
-                                    @error('countdown_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <small class="form-text text-muted">Set when the countdown timer should expire. Multiple products can share the same countdown date.</small>
-                            <div class="mt-2">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="setCommonCountdown()">
-                                    <i class="ti-calendar"></i> Set Common Sale End Date
-                                </button>
-                                <small class="text-muted ms-2">Quick set for seasonal sales</small>
                             </div>
                         </div>
+                        </div>
 
-                        <!-- Submit Button -->
-                        <div class="d-flex justify-content-end">
-                            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary me-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary" id="create-product-btn">Create Product</button>
+                        <!-- ============================================ -->
+                        <!-- SUBMIT ACTIONS -->
+                        <!-- ============================================ -->
+                        <div class="section-divider mt-5 pt-4" style="border-top: 3px solid #e3e6f0;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-info-circle text-info"></i> All fields marked with <span class="text-danger">*</span> are required
+                                    </p>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+                                        <i class="fas fa-times me-1"></i> Cancel
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg shadow-sm" id="create-product-btn">
+                                        <i class="fas fa-save me-1"></i> Create Product
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -367,6 +452,80 @@
         </div>
     </div>
 </div>
+
+<style>
+/* Section Divider Styles */
+.section-divider {
+    position: relative;
+    padding: 1.5rem 0;
+}
+
+.section-divider:not(:last-child):after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #e3e6f0, transparent);
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.section-title .badge {
+    font-size: 0.875rem;
+}
+
+.bg-purple {
+    background-color: #6f42c1 !important;
+}
+
+/* Card Enhancements */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Form Control Enhancements */
+.form-control:focus,
+.form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Better spacing for form groups */
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Improve button spacing */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Badge improvements */
+.badge-sm {
+    font-size: 0.7rem;
+    padding: 0.25em 0.6em;
+}
+</style>
 
 <script>
 // Simple Gallery System
@@ -541,20 +700,31 @@ function addColor() {
         return;
     }
 
-    // Check if color already exists
+    // Check if color already exists in this product
     if (selectedColors.some(color => color.name.toLowerCase() === colorName.toLowerCase())) {
-        alert('This color has already been added');
+        alert('This color has already been added to this product');
         return;
     }
 
+    // Check if this is a NEW color (not in global library)
+    const isNewColor = !existingColors.some(c => c.value.toLowerCase() === colorName.toLowerCase());
+    
     // Add color to array
     const newColor = {
         name: colorName,
         hex: colorHex,
-        stock: parseInt(colorStock)
+        stock: parseInt(colorStock),
+        isNew: isNewColor
     };
 
     selectedColors.push(newColor);
+
+    // Show sync notification if it's a new color
+    if (isNewColor) {
+        showColorSyncNotification(`"${colorName}" will be added to global library when you save!`, 'new');
+    } else {
+        showColorSyncNotification(`"${colorName}" already exists in library • Reusing existing value`, 'existing');
+    }
 
     // Clear inputs
     document.getElementById('color_name').value = '';
@@ -564,7 +734,28 @@ function addColor() {
     // Update preview
     updateColorsPreview();
 
-    console.log('Color added:', newColor);
+    console.log(isNewColor ? '✨ NEW color added:' : '♻️ Existing color reused:', newColor);
+}
+
+function showColorSyncNotification(message, type) {
+    const notification = document.getElementById('color-sync-notification');
+    const messageSpan = document.getElementById('color-sync-message');
+    messageSpan.textContent = message;
+    
+    if (type === 'new') {
+        notification.className = 'alert alert-success border-left mb-3';
+        notification.style.borderLeft = '4px solid #28a745';
+    } else {
+        notification.className = 'alert alert-info border-left mb-3';
+        notification.style.borderLeft = '4px solid #17a2b8';
+    }
+    
+    notification.style.display = 'block';
+    
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
 }
 
 function addPresetColor(name, hex) {
@@ -575,9 +766,12 @@ function addPresetColor(name, hex) {
 }
 
 function removeColor(index) {
-    selectedColors.splice(index, 1);
-    updateColorsPreview();
-    console.log('Color removed at index:', index);
+    const color = selectedColors[index];
+    if (confirm(`Are you sure you want to remove "${color.name}" color?`)) {
+        selectedColors.splice(index, 1);
+        updateColorsPreview();
+        console.log('Color removed at index:', index);
+    }
 }
 
 function updateColorsPreview() {
@@ -601,8 +795,14 @@ function updateColorsPreview() {
             <span class="fw-bold">${color.name}</span>
             <small class="text-muted">(${color.hex})</small>
             <small class="text-muted">Stock: ${color.stock}</small>
-            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeColor(${index})">
-                <i class="fas fa-times"></i>
+            <button type="button" 
+                    class="btn btn-sm btn-danger rounded-pill ms-auto" 
+                    onclick="removeColor(${index})"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Remove this color"
+                    style="transition: all 0.3s ease; padding: 0.25rem 0.75rem;">
+                <i class="fas fa-trash-alt me-1"></i>Remove
             </button>
         `;
         colorsList.appendChild(colorElement);
@@ -631,6 +831,12 @@ function updateColorsPreview() {
         colorInputs.appendChild(hexInput);
         colorInputs.appendChild(stockInput);
     });
+
+    // Reinitialize tooltips after updating the DOM
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 }
 
 // Size Management Functions
@@ -644,20 +850,31 @@ function addSize() {
         return;
     }
 
-    // Check if size already exists
+    // Check if size already exists in this product
     if (selectedSizes.some(size => size.name.toLowerCase() === sizeName.toLowerCase())) {
-        alert('This size has already been added');
+        alert('This size has already been added to this product');
         return;
     }
 
+    // Check if this is a NEW size (not in global library)
+    const isNewSize = !existingSizes.some(s => s.value.toLowerCase() === sizeName.toLowerCase());
+    
     // Add size to array
     const newSize = {
         name: sizeName,
         stock: parseInt(sizeStock),
-        guide: sizeGuide
+        guide: sizeGuide,
+        isNew: isNewSize
     };
 
     selectedSizes.push(newSize);
+
+    // Show sync notification if it's a new size
+    if (isNewSize) {
+        showSizeSyncNotification(`"${sizeName}" will be added to global library when you save!`, 'new');
+    } else {
+        showSizeSyncNotification(`"${sizeName}" already exists in library • Reusing existing value`, 'existing');
+    }
 
     // Clear inputs
     document.getElementById('size_name').value = '';
@@ -667,7 +884,28 @@ function addSize() {
     // Update preview
     updateSizesPreview();
 
-    console.log('Size added:', newSize);
+    console.log(isNewSize ? '✨ NEW size added:' : '♻️ Existing size reused:', newSize);
+}
+
+function showSizeSyncNotification(message, type) {
+    const notification = document.getElementById('size-sync-notification');
+    const messageSpan = document.getElementById('size-sync-message');
+    messageSpan.textContent = message;
+    
+    if (type === 'new') {
+        notification.className = 'alert alert-success border-left mb-3';
+        notification.style.borderLeft = '4px solid #28a745';
+    } else {
+        notification.className = 'alert alert-info border-left mb-3';
+        notification.style.borderLeft = '4px solid #17a2b8';
+    }
+    
+    notification.style.display = 'block';
+    
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
 }
 
 function addPresetSize(name, guide) {
@@ -678,9 +916,12 @@ function addPresetSize(name, guide) {
 }
 
 function removeSize(index) {
-    selectedSizes.splice(index, 1);
-    updateSizesPreview();
-    console.log('Size removed at index:', index);
+    const size = selectedSizes[index];
+    if (confirm(`Are you sure you want to remove size "${size.name}"?`)) {
+        selectedSizes.splice(index, 1);
+        updateSizesPreview();
+        console.log('Size removed at index:', index);
+    }
 }
 
 function updateSizesPreview() {
@@ -703,8 +944,14 @@ function updateSizesPreview() {
             <span class="fw-bold">${size.name}</span>
             <small class="text-muted">Stock: ${size.stock}</small>
             ${size.guide ? `<small class="text-muted">Guide: ${size.guide}</small>` : ''}
-            <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeSize(${index})">
-                <i class="fas fa-times"></i>
+            <button type="button" 
+                    class="btn btn-sm btn-danger rounded-pill ms-auto" 
+                    onclick="removeSize(${index})"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Remove this size"
+                    style="transition: all 0.3s ease; padding: 0.25rem 0.75rem;">
+                <i class="fas fa-trash-alt me-1"></i>Remove
             </button>
         `;
         sizesList.appendChild(sizeElement);
@@ -733,12 +980,164 @@ function updateSizesPreview() {
         sizeInputs.appendChild(stockInput);
         sizeInputs.appendChild(guideInput);
     });
+
+    // Reinitialize tooltips after updating the DOM
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 }
+
+// ================================================================
+// ATTRIBUTE INTEGRATION SYSTEM - Connects to Attribute Management
+// ================================================================
+
+let existingColors = [];
+let existingSize = [];
+
+// Load existing colors and sizes from database
+async function loadAttributeData() {
+    try {
+        // Load colors from API
+        const colorResponse = await fetch('{{ route('api.attributes.values', 'color') }}');
+        if (colorResponse.ok) {
+            const colorData = await colorResponse.json();
+            existingColors = colorData.values || [];
+            populateColorAutocomplete();
+        }
+
+        // Load popular colors
+        const popularColorsResponse = await fetch('{{ route('api.attributes.popular', 'color') }}');
+        if (popularColorsResponse.ok) {
+            const popularData = await popularColorsResponse.json();
+            showPopularColors(popularData.popular_values || []);
+        }
+
+        // Load sizes from API
+        const sizeResponse = await fetch('{{ route('api.attributes.values', 'size') }}');
+        if (sizeResponse.ok) {
+            const sizeData = await sizeResponse.json();
+            existingSizes = sizeData.values || [];
+            populateSizeAutocomplete();
+        }
+
+        // Load popular sizes
+        const popularSizesResponse = await fetch('{{ route('api.attributes.popular', 'size') }}');
+        if (popularSizesResponse.ok) {
+            const popularData = await popularSizesResponse.json();
+            showPopularSizes(popularData.popular_values || []);
+        }
+
+        console.log('✅ Attribute data loaded:', { colors: existingColors.length, sizes: existingSizes.length });
+    } catch (error) {
+        console.error('❌ Error loading attribute data:', error);
+    }
+}
+
+// Populate color autocomplete datalist
+function populateColorAutocomplete() {
+    const datalist = document.getElementById('existing-colors');
+    datalist.innerHTML = '';
+    
+    existingColors.forEach(color => {
+        const option = document.createElement('option');
+        option.value = color.value;
+        option.setAttribute('data-hex', color.hex_code || '#000000');
+        option.setAttribute('data-usage', color.usage_count || 0);
+        datalist.appendChild(option);
+    });
+}
+
+// Populate size autocomplete datalist
+function populateSizeAutocomplete() {
+    const datalist = document.getElementById('existing-sizes');
+    datalist.innerHTML = '';
+    
+    existingSizes.forEach(size => {
+        const option = document.createElement('option');
+        option.value = size.value;
+        option.setAttribute('data-usage', size.usage_count || 0);
+        datalist.appendChild(option);
+    });
+}
+
+// Show popular colors as quick-select buttons
+function showPopularColors(colors) {
+    if (colors.length === 0) return;
+    
+    const section = document.getElementById('popular-colors-section');
+    const list = document.getElementById('popular-colors-list');
+    list.innerHTML = '';
+    
+    colors.slice(0, 8).forEach(color => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-sm btn-outline-secondary';
+        btn.innerHTML = `
+            <span class="d-inline-block me-1" style="width: 12px; height: 12px; background: ${color.hex_code}; border: 1px solid #ddd; border-radius: 2px;"></span>
+            ${color.value} <small class="text-muted">(${color.usage_count} products)</small>
+        `;
+        btn.onclick = () => quickAddColor(color.value, color.hex_code);
+        list.appendChild(btn);
+    });
+    
+    section.style.display = 'block';
+}
+
+// Show popular sizes as quick-select buttons
+function showPopularSizes(sizes) {
+    if (sizes.length === 0) return;
+    
+    const section = document.getElementById('popular-sizes-section');
+    const list = document.getElementById('popular-sizes-list');
+    list.innerHTML = '';
+    
+    sizes.slice(0, 8).forEach(size => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-sm btn-outline-secondary';
+        btn.innerHTML = `${size.value} <small class="text-muted">(${size.usage_count} products)</small>`;
+        btn.onclick = () => quickAddSize(size.value);
+        list.appendChild(btn);
+    });
+    
+    section.style.display = 'block';
+}
+
+// Quick add color from popular list
+function quickAddColor(name, hex) {
+    document.getElementById('color_name').value = name;
+    document.getElementById('color_hex').value = hex || '#000000';
+    document.getElementById('color_stock').value = 10;
+    document.getElementById('color_stock').focus();
+}
+
+// Quick add size from popular list
+function quickAddSize(name) {
+    document.getElementById('size_name').value = name;
+    document.getElementById('size_stock').value = 10;
+    document.getElementById('size_stock').focus();
+}
+
+// Auto-fill hex code when existing color is selected
+document.addEventListener('input', function(e) {
+    if (e.target.id === 'color_name') {
+        const colorName = e.target.value;
+        const existingColor = existingColors.find(c => c.value.toLowerCase() === colorName.toLowerCase());
+        if (existingColor && existingColor.hex_code) {
+            document.getElementById('color_hex').value = existingColor.hex_code;
+            console.log(`✅ Auto-filled hex code for "${colorName}":`, existingColor.hex_code);
+        }
+    }
+});
 
 // New Arrival Auto-Remove Functionality
 document.addEventListener('DOMContentLoaded', function() {
     updateColorsPreview();
     updateSizesPreview();
+    
+    // Load attribute data from database
+    loadAttributeData();
 
     // Handle new arrival checkbox
     const newArrivalCheckbox = document.getElementById('is_new_arrival');
@@ -758,6 +1157,13 @@ document.addEventListener('DOMContentLoaded', function() {
             newArrivalInfo.style.display = 'block';
         }
     }
+
+    // Initialize Bootstrap tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 });
 </script>
 @endsection
+        
