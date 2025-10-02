@@ -118,8 +118,9 @@
                                             <input type="color" class="form-control" id="color_hex" value="#000000">
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="color_stock" class="form-label">Stock</label>
-                                            <input type="number" class="form-control" id="color_stock" placeholder="Quantity" min="0">
+                                            <label for="color_stock" class="form-label">Stock <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="color_stock" placeholder="Quantity" min="1" required>
+                                            <small class="text-muted">Minimum 1 item required</small>
                                         </div>
                                         <div class="col-md-2 d-flex align-items-end">
                                             <button type="button" class="btn btn-primary w-100" onclick="addColor()">
@@ -138,6 +139,12 @@
 
                                     <!-- Hidden inputs for form submission -->
                                     <div id="color-inputs"></div>
+                                    
+                                    <!-- Color Sync Notification -->
+                                    <div id="color-sync-notification" class="alert alert-info border-left mb-3" style="display: none;">
+                                        <i class="fas fa-sync-alt me-2"></i>
+                                        <span id="color-sync-message">Color management notification</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -186,8 +193,9 @@
                                             <input type="text" class="form-control" id="size_name" placeholder="e.g., Small, Medium, Large, XL">
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="size_stock" class="form-label">Stock</label>
-                                            <input type="number" class="form-control" id="size_stock" placeholder="Quantity" min="0">
+                                            <label for="size_stock" class="form-label">Stock <span class="text-danger">*</span></label>
+                                            <input type="number" class="form-control" id="size_stock" placeholder="Quantity" min="1" required>
+                                            <small class="text-muted">Minimum 1 item required</small>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="size_guide" class="form-label">Size Guide</label>
@@ -210,6 +218,12 @@
 
                                     <!-- Hidden inputs for form submission -->
                                     <div id="size-inputs"></div>
+                                    
+                                    <!-- Size Sync Notification -->
+                                    <div id="size-sync-notification" class="alert alert-info border-left mb-3" style="display: none;">
+                                        <i class="fas fa-sync-alt me-2"></i>
+                                        <span id="size-sync-message">Size management notification</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -589,12 +603,25 @@ let selectedColors = [];
 function addColor() {
     const colorName = document.getElementById('color_name').value.trim();
     const colorHex = document.getElementById('color_hex').value;
-    const colorStock = document.getElementById('color_stock').value || 0;
+    const colorStock = parseInt(document.getElementById('color_stock').value) || 0;
 
     if (!colorName) {
         alert('Please enter a color name');
         return;
     }
+
+    // Validate stock quantity - must be at least 1
+    if (colorStock < 1) {
+        alert('❌ Stock quantity must be at least 1 item for each color');
+        document.getElementById('color_stock').focus();
+        document.getElementById('color_stock').style.borderColor = '#e53e3e';
+        document.getElementById('color_stock').style.boxShadow = '0 0 0 2px rgba(229, 62, 62, 0.2)';
+        return;
+    }
+
+    // Reset stock input styling
+    document.getElementById('color_stock').style.borderColor = '#e2e8f0';
+    document.getElementById('color_stock').style.boxShadow = 'none';
 
     // Check if color already exists
     if (selectedColors.some(color => color.name.toLowerCase() === colorName.toLowerCase())) {
@@ -634,7 +661,10 @@ function removeColor(index) {
     if (confirm(`Are you sure you want to remove "${color.name}" color?`)) {
         selectedColors.splice(index, 1);
         updateColorsPreview();
-        console.log('Color removed at index:', index);
+        console.log('✅ Color removed at index:', index, 'Remaining colors:', selectedColors.length);
+        
+        // Show success notification
+        showColorSyncNotification(`"${color.name}" color removed successfully`, 'removed');
     }
 }
 
@@ -675,8 +705,8 @@ function updateColorsPreview() {
             <small class="text-muted">(${color.hex})</small>
             <small class="text-muted">Stock: ${color.stock}</small>
             <button type="button" 
-                    class="btn btn-sm btn-danger rounded-pill ms-auto" 
-                    onclick="removeColor(${index})"
+                    class="btn btn-sm btn-danger rounded-pill ms-auto remove-color-btn" 
+                    data-color-index="${index}"
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="Remove this color"
@@ -723,13 +753,26 @@ let selectedSizes = [];
 
 function addSize() {
     const sizeName = document.getElementById('size_name').value.trim();
-    const sizeStock = document.getElementById('size_stock').value || 0;
+    const sizeStock = parseInt(document.getElementById('size_stock').value) || 0;
     const sizeGuide = document.getElementById('size_guide').value.trim();
 
     if (!sizeName) {
         alert('Please enter a size name');
         return;
     }
+
+    // Validate stock quantity - must be at least 1
+    if (sizeStock < 1) {
+        alert('❌ Stock quantity must be at least 1 item for each size');
+        document.getElementById('size_stock').focus();
+        document.getElementById('size_stock').style.borderColor = '#e53e3e';
+        document.getElementById('size_stock').style.boxShadow = '0 0 0 2px rgba(229, 62, 62, 0.2)';
+        return;
+    }
+
+    // Reset stock input styling
+    document.getElementById('size_stock').style.borderColor = '#e2e8f0';
+    document.getElementById('size_stock').style.boxShadow = 'none';
 
     // Check if size already exists
     if (selectedSizes.some(size => size.name.toLowerCase() === sizeName.toLowerCase())) {
@@ -769,7 +812,10 @@ function removeSize(index) {
     if (confirm(`Are you sure you want to remove size "${size.name}"?`)) {
         selectedSizes.splice(index, 1);
         updateSizesPreview();
-        console.log('Size removed at index:', index);
+        console.log('✅ Size removed at index:', index, 'Remaining sizes:', selectedSizes.length);
+        
+        // Show success notification
+        showSizeSyncNotification(`"${size.name}" size removed successfully`, 'removed');
     }
 }
 
@@ -809,8 +855,8 @@ function updateSizesPreview() {
             <small class="text-muted">Stock: ${size.stock}</small>
             ${size.guide ? `<small class="text-muted">Guide: ${size.guide}</small>` : ''}
             <button type="button" 
-                    class="btn btn-sm btn-danger rounded-pill ms-auto" 
-                    onclick="removeSize(${index})"
+                    class="btn btn-sm btn-danger rounded-pill ms-auto remove-size-btn" 
+                    data-size-index="${index}"
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     title="Remove this size"
@@ -858,6 +904,23 @@ function updateSizesPreview() {
 document.addEventListener('DOMContentLoaded', function() {
     updateColorsPreview();
     updateSizesPreview();
+    
+    // Event delegation for remove buttons
+    document.addEventListener('click', function(e) {
+        // Handle color remove button clicks
+        if (e.target.closest('.remove-color-btn')) {
+            const button = e.target.closest('.remove-color-btn');
+            const index = parseInt(button.getAttribute('data-color-index'));
+            removeColor(index);
+        }
+        
+        // Handle size remove button clicks
+        if (e.target.closest('.remove-size-btn')) {
+            const button = e.target.closest('.remove-size-btn');
+            const index = parseInt(button.getAttribute('data-size-index'));
+            removeSize(index);
+        }
+    });
 
     // Handle new arrival checkbox
     const newArrivalCheckbox = document.getElementById('is_new_arrival');
@@ -883,6 +946,67 @@ document.addEventListener('DOMContentLoaded', function() {
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-});
+}
+
+// Notification Functions
+function showColorSyncNotification(message, type) {
+    const notification = document.getElementById('color-sync-notification');
+    const messageSpan = document.getElementById('color-sync-message');
+    
+    if (!notification || !messageSpan) {
+        console.warn('Color sync notification elements not found');
+        return;
+    }
+    
+    messageSpan.textContent = message;
+    
+    if (type === 'new') {
+        notification.className = 'alert alert-success border-left mb-3';
+        notification.style.borderLeft = '4px solid #28a745';
+    } else if (type === 'removed') {
+        notification.className = 'alert alert-warning border-left mb-3';
+        notification.style.borderLeft = '4px solid #f59e0b';
+    } else {
+        notification.className = 'alert alert-info border-left mb-3';
+        notification.style.borderLeft = '4px solid #17a2b8';
+    }
+    
+    notification.style.display = 'block';
+    
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
+}
+
+function showSizeSyncNotification(message, type) {
+    const notification = document.getElementById('size-sync-notification');
+    const messageSpan = document.getElementById('size-sync-message');
+    
+    if (!notification || !messageSpan) {
+        console.warn('Size sync notification elements not found');
+        return;
+    }
+    
+    messageSpan.textContent = message;
+    
+    if (type === 'new') {
+        notification.className = 'alert alert-success border-left mb-3';
+        notification.style.borderLeft = '4px solid #28a745';
+    } else if (type === 'removed') {
+        notification.className = 'alert alert-warning border-left mb-3';
+        notification.style.borderLeft = '4px solid #f59e0b';
+    } else {
+        notification.className = 'alert alert-info border-left mb-3';
+        notification.style.borderLeft = '4px solid #17a2b8';
+    }
+    
+    notification.style.display = 'block';
+    
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 4000);
+}
 </script>
 @endsection
