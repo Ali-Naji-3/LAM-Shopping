@@ -13,7 +13,7 @@
 					</div>
 				</div>
 			</div>
-			<img src="{{ asset('img/bg_cat_shoes.jpg') }}" class="img-fluid" alt="">
+			<img src=" {{asset('img/categories/all.png')}} " class="img-fluid" alt="">
 		</div>
 		<!-- /top_banner -->
 

@@ -1,30 +1,48 @@
 @extends('frontend.layouts.layout')
 @section('content')
 	<main>
-		<div class="header-video">
-			<div id="hero_video">
-				<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.5)">
-					<div class="container">
-						<div class="row justify-content-center justify-content-md-start">
-							<div class="col-lg-6">
-								<div class="slide-text white">
-									<h3>Armor Air<br>Max 720 Sage Low</h3>
-									<p>Limited items available at this price</p>
-									<a class="btn_1" href="#0" role="button">Shop Now</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<video autoplay muted loop playsinline class="header-video--media" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <source src="{{ asset('video/hero.mp4') }}" type="video/mp4">
+
+@php
+
+    $setting = \App\Models\Setting::first();
+
+@endphp
+
+<div class="header-video">
+    <div id="hero_video">
+        <div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.5)">
+            <div class="container">
+                <div class="row justify-content-center justify-content-md-start">
+                    <div class="col-lg-6">
+                        <div class="slide-text white">
+                            <h1 class="text-white">{{  $setting->hero_title }}</h1>
+                            <p>{{  $setting->hero_sub_title }}</p>
+                            <a href="#" class="btn btn-primary">
+                                {{ $setting->hero_button_text }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+       		<video autoplay muted loop playsinline class="header-video--media" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+    <source src="{{ asset('storage/'. $setting->hero_background) }}" type="video/mp4">
     Your browser does not support the video tag.
 </video>
-<!-- Fallback background image if video fails to load -->
-<div class="header-video--fallback" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background-image:url('{{ asset('img/hero/main.png') }}'); background-size:cover; background-position:center;"></div>
+        {{-- صورة fallback --}}
+        {{-- <div class="header-video--fallback"
+             style="display:none; position:absolute; top:0; left:0; width:100%; height:100%;
+                    background-image:url('{{ asset('img/hero/main.png') }}');
+                    background-size:cover; background-position:center;">
+        </div> --}}
 
-		</div>
+</div>
+
+
+
 		<!-- /header-video -->
 
 		<div class="feat">
@@ -65,10 +83,10 @@
 		<div class="container margin_60_35">
 			<div class="row small-gutters categories_grid">
 				<div class="col-sm-12 col-md-6">
-					<a href="{{ url('listing-grid-7-sidebar-right') }}">
-						<img src="{{ asset('img/hero/main.png') }}" data-src="{{ asset('img/hero/main.png') }}" alt="" class="img-fluid lazy">
+					<a href="{{ route('listing.girls') }}">
+						<img src="{{ asset('img/hero/grils.jpeg') }}" data-src="{{ asset('img/hero/grils.jpeg') }}" alt="" class="img-fluid lazy">
 						<div class="wrapper">
-							<h2>Collections</h2>
+							<h2>Grils</h2>
 							<p>115 Products</p>
 						</div>
 					</a>
@@ -107,6 +125,70 @@
 			</div>
 			<!--/categories_grid-->
 		</div>
+ {{-- @php
+    $setting = \App\Models\Setting::first();
+    $sliders = json_decode($setting->sliders ?? '[]', true);
+@endphp
+
+<div class="container margin_60_35">
+    <div class="row small-gutters categories_grid">
+        @foreach($sliders as $key => $slider)
+            <div class="col-sm-6 col-md-3 mb-3">
+                <a href="{{ $slider['link'] ?? '#' }}">
+                    <img src="{{ asset('storage/categories/' . ($slider['image'] ?? 'placeholder.jpg')) }}"
+                         alt="{{ $slider['name'] ?? $key }}"
+                         class="img-fluid lazy">
+                    <div class="wrapper">
+                        <h2>{{ $slider['name'] ?? $key }}</h2>
+                        <p>{{ $slider['products'] ?? 0 }} Products</p>
+                    </div>
+                </a>
+            </div>
+        @endforeach
+    </div>
+</div> --}}
+
+
+
+
+{{-- <div class="container margin_60_35">
+    <div class="row small-gutters categories_grid">
+        @foreach($categories as $key => $cat)
+            @if($key == 0)
+                <div class="col-sm-12 col-md-6">
+                    <a href="{{ $cat['link'] }}">
+                        <img src="{{ asset('img/hero/'.$cat['image']) }}" alt="{{ $cat['title'] }}" class="img-fluid lazy">
+                        <div class="wrapper">
+                            <h2>{{ $cat['title'] }}</h2>
+                            <p>{{ $cat['products'] }} Products</p>
+                        </div>
+                    </a>
+                </div>
+            @else
+                @if($key == 1)
+                    <div class="col-sm-12 col-md-6">
+                        <div class="row small-gutters mt-md-0 mt-sm-2">
+                @endif
+
+                        <div class="col-sm-{{ $key == 3 ? 12 : 6 }} mt-sm-{{ $key == 3 ? '2' : '0' }}">
+                            <a href="{{ $cat['link'] }}">
+                                <img src="{{ asset('img/hero/'.$cat['image']) }}" alt="{{ $cat['title'] }}" class="img-fluid lazy">
+                                <div class="wrapper">
+                                    <h2>{{ $cat['title'] }}</h2>
+                                    <p>{{ $cat['products'] }} Products</p>
+                                </div>
+                            </a>
+                        </div>
+
+                @if($key == 3)
+                        </div>
+                    </div>
+                @endif
+            @endif
+        @endforeach
+    </div>
+</div> --}}
+
 		<!-- /container -->
 
 		<hr class="mb-0">
@@ -193,7 +275,7 @@
 		</div>
 		<!-- /container -->
 
-		<div class="featured lazy" data-bg="url(img/featured_home.jpg)">
+		<div class="featured lazy" data-bg="url(img/hero/feature.jpeg)">
 			<div class="opacity-mask d-flex align-items-center" data-opacity-mask="rgba(0, 0, 0, 0.5)">
 				<div class="container margin_60">
 					<div class="row justify-content-center justify-content-md-start">
@@ -218,22 +300,22 @@
 			<div class="container margin_30">
 				<div id="brands" class="owl-carousel owl-theme" >
 					<div class="item">
-						<a href="#0"><img src="{{asset('img/hero/clothes.png')}}" data-src="{{asset('img/hero/clothes.png')}}" alt="" class="owl-lazy"></a>
+						<a href="#0"><img src="{{asset('img/categories/1.jpg')}}" data-src="{{asset('img/categories/1.jpg')}}" alt="" class="owl-lazy"></a>
 					</div><!-- /item -->
 					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_2.png" alt="" class="owl-lazy"></a>
+						<a href="#0"><img src="{{asset('img/categories/2.jpg')}}" data-src="{{asset('img/categories/2.jpg')}}" alt="" class="owl-lazy"></a>
 					</div><!-- /item -->
 					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_3.png" alt="" class="owl-lazy"></a>
+						<a href="#0"><img src="{{asset('img/categories/1.jpg')}}" data-src="{{asset('img/categories/1.jpg')}}" alt="" class="owl-lazy"></a>
 					</div><!-- /item -->
 					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_4.png" alt="" class="owl-lazy"></a>
+						<a href="#0"><img src="{{asset('img/categories/M1.jpg')}}" data-src="{{asset('img/categories/M1.jpg')}}" alt="" class="owl-lazy"></a>
 					</div><!-- /item -->
 					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_5.png" alt="" class="owl-lazy"></a>
+						<a href="#0"><img src="{{asset('img/categories/G1.jpg')}}" data-src="{{asset('img/categories/G1.jpg')}}" alt="" class="owl-lazy"></a>
 					</div><!-- /item -->
 					<div class="item">
-						<a href="#0"><img src="img/brands/placeholder_brands.png" data-src="img/brands/logo_6.png" alt="" class="owl-lazy"></a>
+						<a href="#0"><img src="{{asset('img/categories/G2.jpg')}}" data-src="{{asset('img/categories/G2.jpg')}}" alt="" class="owl-lazy"></a>
 					</div><!-- /item -->
 				</div><!-- /carousel -->
 			</div><!-- /container -->

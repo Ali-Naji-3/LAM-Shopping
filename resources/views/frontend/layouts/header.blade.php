@@ -1,12 +1,12 @@
 <header class="version_1">
     <div class="layer"></div><!-- Mobile menu overlay mask -->
-    <div class="main_header">
+    {{-- <div class="main_header">
         <div class="container">
             <div class="row small-gutters">
                 <div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
                     <div id="logo">
-                        <a href="{{ url('/') }}"><img src="img/logo.svg" alt="" width="100"
-                                height="35"></a>
+                        <a href="{{ url('/') }}"><img src="img/logo.jpeg" alt="" width="130"
+                                height="55"></a>
                     </div>
                 </div>
                 <nav class="col-xl-6 col-lg-7">
@@ -51,7 +51,93 @@
             </div>
             <!-- /row -->
         </div>
+    </div> --}}
+    @php
+    $setting = \App\Models\Setting::first();
+    $menuItems = $setting->menu_items ?? [];
+@endphp
+
+<div class="main_header">
+    <div class="container">
+        <div class="row small-gutters">
+            <!-- Logo -->
+            <div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
+                <div id="logo">
+                    <a href="{{ url('/') }}">
+                        <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('img/logo.jpeg') }}"
+                             alt="Logo" width="130" height="55">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="col-xl-6 col-lg-7">
+                <a class="open_close" href="javascript:void(0);">
+                    <div class="hamburger hamburger--spin">
+                        <div class="hamburger-box">
+                            <div class="hamburger-inner"></div>
+                        </div>
+                    </div>
+                </a>
+
+                <div class="main-menu">
+                    <div id="header_menu">
+                        <a href="{{ url('/') }}">
+                            <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('img/logo_black.svg') }}"
+                                 alt="Logo" width="100" height="35">
+                        </a>
+                        <a href="#" class="open_close" id="close_in"><i class="ti-close"></i></a>
+                    </div>
+
+                    @php
+                        // Decode JSON safely
+                        $menuItems = !empty($setting->menu_items) ? json_decode($setting->menu_items, true) : [];
+                        if (!is_array($menuItems)) {
+                            $menuItems = [];
+                        }
+                    @endphp
+
+                    <ul>
+                        @forelse($menuItems as $item)
+                            <li>
+                                <a href="{{ $item['link'] ?? '#' }}">{{ $item['label'] ?? '' }}</a>
+                            </li>
+                        @empty
+
+                            <li>
+                                <a href="{{ url('/') }}">Home</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('listing-grid-3') }}">Men</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('listing-grid-1-full') }}">Woman</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('listing-grid-2-full') }}">Boys</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('girls') }}">Girls</a>
+                            </li>
+
+                        @endforelse
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Phone -->
+            <div class="col-xl-3 col-lg-2 d-lg-flex align-items-center justify-content-end text-end">
+                @if(!empty($setting->phone))
+                    <a class="phone_top" href="tel://{{ $setting->phone }}">
+                       <strong><span>{{ $setting->name ?? 'Need Help?' }}</span> {{ $setting->phone }}</strong>
+                    </a>
+                @endif
+            </div>
+        </div>
     </div>
+</div>
+
+
     <!-- /main_header -->
 
     <div class="main_nav Sticky">

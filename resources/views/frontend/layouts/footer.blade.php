@@ -1,4 +1,4 @@
-<footer class="revealed">
+{{-- <footer class="revealed">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-3 col-md-6">
@@ -94,18 +94,148 @@
 				</div>
 			</div>
 		</div>
-	</footer>
-    <div class="modal fade" id="payments_method" tabindex="-1" role="dialog" aria-labelledby="payments_method_title" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title" id="payments_method_title">Payments Methods</h5>
-			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		  </div>
-		  <div class="modal-body">
-			<p>Lorem ipsum dolor sit amet, oratio possim ius cu. Labore prompta nominavi sea ei. Sea no animal saperet gloriatur, ius iusto ullamcorper ad. Qui ignota reformidans ei, vix in elit conceptam adipiscing, quaestio repudiandae delicatissimi vis ei. Fabulas accusamus no has.</p>
-			 <p>Et nam vidit zril, pri elaboraret suscipiantur ut. Duo mucius gloriatur at, in vis integre labitur dolores, mei omnis utinam labitur id. An eum prodesset appellantur. Ut alia nemore mei, at velit veniam vix, nonumy propriae conclusionemque ea cum.</p>
-		  </div>
-		</div>
-	  </div>
-	</div>
+	</footer> --}}
+
+@php
+    use Illuminate\Support\Str;
+
+    $setting = \App\Models\Setting::first();
+
+    $decodeSafe = function ($value) {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (empty($value)) {
+            return [];
+        }
+
+        $s = trim($value);
+        $decoded = @json_decode($s, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            return $decoded;
+        }
+
+        if (Str::startsWith($s, '{') && Str::endsWith($s, '}')) {
+            $s2 = '[' . $s . ']';
+            $decoded = @json_decode($s2, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+        }
+
+        $attempt = str_replace("'", '"', $s);
+        $decoded = @json_decode($attempt, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            return $decoded;
+        }
+
+        $s3 = preg_replace('/[\r\n\t]+/', '', $s);
+        $decoded = @json_decode($s3, true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            return $decoded;
+        }
+
+        $un = @unserialize($value);
+        if ($un !== false && is_array($un)) {
+            return $un;
+        }
+
+        return [];
+    };
+
+    $footer_links = $decodeSafe($setting->footer_links ?? '');
+    $footer_categories = $decodeSafe($setting->footer_categories ?? '');
+    $footer_socials = $decodeSafe($setting->footer_socials ?? '');
+@endphp
+
+<footer class="revealed">
+    <div class="container">
+        <div class="row">
+
+            {{-- Quick Links --}}
+            <div class="col-lg-3 col-md-6">
+                <h3>Quick Links</h3>
+                <div class="collapse dont-collapse-sm links">
+                    <ul>
+                        @if (!empty($footer_links) && is_array($footer_links))
+                            @foreach ($footer_links as $link)
+                                <li><a href="{{ url($link['url'] ?? '#') }}">{{ $link['title'] ?? 'No Name' }}</a></li>
+                            @endforeach
+                        @else
+                            <li>No links added</li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+
+            {{-- Categories --}}
+            <div class="col-lg-3 col-md-6">
+                <h3>Categories</h3>
+                <div class="collapse dont-collapse-sm links">
+                    <ul>
+                        @if (!empty($footer_categories) && is_array($footer_categories))
+                            @foreach ($footer_categories as $category)
+                                <li><a
+                                        href="{{ url($category['url'] ?? '#') }}">{{ $category['title'] ?? 'No Name' }}</a>
+                                </li>
+                            @endforeach
+                        @else
+                            <li>No categories added</li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+
+            {{-- Contacts --}}
+            <div class="col-lg-3 col-md-6">
+                <h3>Contacts</h3>
+                <div class="collapse dont-collapse-sm contacts">
+                    <ul>
+                        <li><i class="ti-home"></i>{{ $setting->contact_address ?? 'No address' }}</li>
+                        <li><i class="ti-headphone-alt"></i>{{ $setting->contact_phone ?? 'No phone' }}</li>
+                        <li><i class="ti-email"></i><a
+                                href="mailto:{{ $setting->contact_email ?? '#' }}">{{ $setting->contact_email ?? 'No email' }}</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            {{-- Newsletter & Socials --}}
+            <div class="col-lg-3 col-md-6">
+                <h3>Keep in touch</h3>
+                <div class="collapse dont-collapse-sm">
+                    <div id="newsletter" class="text-white">
+                        <div class="form-group">
+                            <input type="email" name="email_newsletter" id="email_newsletter"
+                                class="form-control text-white" placeholder="Your email">
+                            <button type="submit" id="submit-newsletter"><i class="ti-angle-double-right"></i></button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row add_bottom_25">
+                <div class="col-lg-6">
+                    <ul class="footer-selector clearfix">
+
+                        <li>
+                            @if (!empty($setting->footer_logo))
+                                <img src="{{ asset('storage/' . $setting->footer_logo) }}" alt="Footer Logo"
+                                    width="198" height="30">
+                            @endif
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6">
+                    <ul class="additional_links">
+
+                        <li><span>©
+                        <li>{{ $setting->footer_copyright ?? '#' }}</li> LAM</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
