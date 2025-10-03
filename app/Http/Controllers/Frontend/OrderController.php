@@ -9,6 +9,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -32,7 +33,10 @@ class OrderController extends Controller
 
         $user = Auth::user();
 
-        return view('frontend.checkout', compact('cart', 'subtotal', 'shipping', 'total', 'user'));
+        // Get reCAPTCHA site key
+        $recaptchaSiteKey = env('RECAPTCHA_SITE_KEY');
+
+        return view('frontend.checkout', compact('cart', 'subtotal', 'shipping', 'total', 'user', 'recaptchaSiteKey'));
     }
 
     /**
@@ -40,6 +44,21 @@ class OrderController extends Controller
      */
     public function placeOrder(Request $request)
     {
+        // Verify reCAPTCHA
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret'   => env('RECAPTCHA_SECRET_KEY'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+
+        $result = $response->json();
+
+        if (!($result['success'] ?? false)) {
+            return back()->withErrors(['captcha' => 'Please confirm you are not a robot.']);
+        }
+
+        // ✅ Captcha verified, continue with order logic
+        
         // Validate the request
         $validated = $request->validate([
             'customer_name' => 'required|string|max:255',

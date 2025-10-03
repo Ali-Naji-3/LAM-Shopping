@@ -1,4 +1,50 @@
 @extends('frontend.layouts.layout')
+
+@if($recaptchaSiteKey)
+@push('head')
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+@endpush
+@endif
+
+@push('scripts')
+<script>
+function onRecaptchaLoad() {
+    console.log('reCAPTCHA loaded successfully');
+    if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+        const recaptchaElement = document.querySelector('.g-recaptcha');
+        if (recaptchaElement) {
+            grecaptcha.render(recaptchaElement, {
+                'sitekey': '{{ $recaptchaSiteKey }}'
+            });
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if reCAPTCHA is already loaded
+    if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+        onRecaptchaLoad();
+    }
+    
+    // Form validation with reCAPTCHA check
+    const form = document.getElementById('reviewForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            const recaptchaContainer = document.querySelector('.g-recaptcha');
+            if (recaptchaContainer) {
+                const recaptchaResponse = document.querySelector('[name="g-recaptcha-response"]');
+                if (!recaptchaResponse || !recaptchaResponse.value) {
+                    e.preventDefault();
+                    alert('🔒 Please complete the security verification (reCAPTCHA) before submitting your review.');
+                    return false;
+                }
+            }
+        });
+    }
+});
+</script>
+@endpush
+
 @section('content')
     <main>
 
@@ -87,29 +133,6 @@
                             </div>
                             <!-- /rating_submit -->
 
-                            @guest
-                                <div class="form-group">
-                                    <label for="name">Your Name <span class="text-danger">*</span></label>
-                                    <input class="form-control @error('name') is-invalid @enderror" type="text" name="name" id="name"
-                                        placeholder="Enter your full name" value="{{ old('name') }}" required>
-                                    @error('name')
-                                        <div class="invalid-feedback d-block">
-                                            <i class="ti-alert"></i> {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="email">Your Email <span class="text-danger">*</span></label>
-                                    <input class="form-control @error('email') is-invalid @enderror" type="email" name="email" id="email"
-                                        placeholder="Enter your email address" value="{{ old('email') }}" required>
-                                    @error('email')
-                                        <div class="invalid-feedback d-block">
-                                            <i class="ti-alert"></i> {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-                            @endguest
 
                             <div class="form-group">
                                 <label for="title">Title of your review <span class="badge bg-secondary badge-sm">Optional</span></label>
@@ -146,6 +169,48 @@
                                     </label>
                                 </div>
                             </div>
+
+                            @if($recaptchaSiteKey)
+                            <div class="form-group">
+                                <label class="d-block">Security Verification <span class="text-danger">*</span></label>
+                                <div class="g-recaptcha" data-sitekey="{{ $recaptchaSiteKey }}"></div>
+                                <div id="recaptcha-error" class="text-danger small mt-2" style="display: none;">
+                                    <i class="ti-alert"></i> Please complete the security verification
+                                </div>
+                                <!-- Debug info -->
+                                <small class="text-muted">reCAPTCHA Site Key: {{ $recaptchaSiteKey }}</small>
+                            </div>
+                            
+                            <!-- Fallback script loading -->
+                            <script>
+                                function loadRecaptcha() {
+                                    if (typeof grecaptcha === 'undefined') {
+                                        console.log('Loading reCAPTCHA fallback...');
+                                        var script = document.createElement('script');
+                                        script.src = 'https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit';
+                                        script.async = true;
+                                        script.defer = true;
+                                        document.head.appendChild(script);
+                                    }
+                                }
+                                
+                                function onRecaptchaLoad() {
+                                    console.log('reCAPTCHA loaded successfully');
+                                    if (typeof grecaptcha !== 'undefined' && grecaptcha.render) {
+                                        grecaptcha.render(document.querySelector('.g-recaptcha'), {
+                                            'sitekey': '{{ $recaptchaSiteKey }}'
+                                        });
+                                    }
+                                }
+                                
+                                // Try to load reCAPTCHA
+                                loadRecaptcha();
+                            </script>
+                            @else
+                            <div class="alert alert-warning">
+                                <strong>Debug:</strong> reCAPTCHA site key not found. Please check your .env file.
+                            </div>
+                            @endif
 
                             <button type="submit" class="btn_1" id="submit-review-btn">Submit review</button>
                         </form>

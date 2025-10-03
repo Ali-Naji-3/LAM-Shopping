@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class ReviewController extends Controller
 {
@@ -28,14 +29,48 @@ class ReviewController extends Controller
         // Get some sample products if no specific product is selected
         $products = Product::with(['category', 'brand'])->limit(10)->get();
 
-        return view('frontend.leave-review', compact('product', 'products'));
+        // Get reCAPTCHA site key
+        $recaptchaSiteKey = env('RECAPTCHA_SITE_KEY');
+
+        return view('frontend.leave-review', compact('product', 'products', 'recaptchaSiteKey'));
     }
 
+    public function register(Request $request)
+    {
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret'   => env('RECAPTCHA_SECRET_KEY'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+    
+        $result = $response->json();
+    
+        if (!($result['success'] ?? false)) {
+            return back()->withErrors(['captcha' => 'Please confirm you are not a robot.']);
+        }
+    
+        // ✅ Captcha verified, continue with registration logic
+    }
     /**
      * Store a new review.
      */
     public function store(Request $request)
     {
+        // Verify reCAPTCHA
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret'   => env('RECAPTCHA_SECRET_KEY'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
+        ]);
+
+        $result = $response->json();
+
+        if (!($result['success'] ?? false)) {
+            return back()->withErrors(['captcha' => 'Please confirm you are not a robot.']);
+        }
+
+        // ✅ Captcha verified, continue with review logic
+        
         try {
             // Log incoming request
             \Log::info('📝 Review submission received', [
@@ -43,8 +78,7 @@ class ReviewController extends Controller
                 'rating' => $request->rating,
                 'has_title' => !empty($request->title),
                 'has_comment' => !empty($request->comment),
-                'name' => $request->name,
-                'email' => $request->email,
+                'user_id' => Auth::id(),
             ]);
 
             // Validate the request
@@ -53,52 +87,23 @@ class ReviewController extends Controller
                 'rating' => 'required|integer|min:1|max:5',
                 'title' => 'nullable|string|max:255',
                 'comment' => 'required|string|max:2000',
-                // Name and email only required for guest users
-                'name' => Auth::check() ? 'nullable|string|max:255' : 'required|string|max:255',
-                'email' => Auth::check() ? 'nullable|email|max:255' : 'required|email|max:255',
             ]);
 
             \Log::info('✅ Validation passed');
 
-            // Check if user is authenticated or create/get user
-            $user = null;
-            if (Auth::check()) {
-                $user = Auth::user();
-                \Log::info('👤 Using authenticated user', [
-                    'user_id' => $user->id,
-                    'user_name' => $user->name,
-                    'user_email' => $user->email
-                ]);
-            } else {
-                // For guest users, validate email and name were provided
-                if (!isset($validated['email']) || !isset($validated['name'])) {
-                    throw new \Exception('Name and email are required for guest users');
-                }
-                
-                // Try to find existing user by email or create new one
-                $user = User::where('email', $validated['email'])->first();
-                
-                if (!$user) {
-                    // Create a guest user account
-                    $user = User::create([
-                        'name' => $validated['name'],
-                        'email' => $validated['email'],
-                        'password' => bcrypt(str()->random(16)), // Random password
-                        'u_type' => 'USR', // Regular user
-                        'email_verified_at' => null,
-                    ]);
-                    \Log::info('👤 Created new guest user', [
-                        'user_id' => $user->id,
-                        'email' => $user->email,
-                        'name' => $user->name
-                    ]);
-                } else {
-                    \Log::info('👤 Using existing guest user', [
-                        'user_id' => $user->id,
-                        'email' => $user->email
-                    ]);
-                }
+            // Check if user is authenticated
+            if (!Auth::check()) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'You must be logged in to submit a review.');
             }
+            
+            $user = Auth::user();
+            \Log::info('👤 Using authenticated user', [
+                'user_id' => $user->id,
+                'user_name' => $user->name,
+                'user_email' => $user->email
+            ]);
 
             // Create the review
             $review = Review::create([

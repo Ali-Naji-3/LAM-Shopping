@@ -279,6 +279,16 @@
                             <div class="total clearfix">
                                 TOTAL <span id="total-display">${{ number_format($total, 2) }}</span>
                             </div>
+                            <form method="POST" action="{{ route('register') }}">
+    @csrf
+    <!-- Your fields here -->
+
+    <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+
+</form>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
                             
                             <button type="submit" class="btn_1 full-width" id="place-order-btn">
                                 <i class="bi bi-lock"></i> Confirm and Place Order
@@ -327,7 +337,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('checkout-form');
     const submitBtn = document.getElementById('place-order-btn');
     
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function(e) {
+        // Check reCAPTCHA if present
+        const recaptchaContainer = document.querySelector('.g-recaptcha');
+        if (recaptchaContainer) {
+            const recaptchaResponse = document.querySelector('[name="g-recaptcha-response"]');
+            if (!recaptchaResponse || !recaptchaResponse.value) {
+                e.preventDefault();
+                alert('🔒 Please complete the security verification (reCAPTCHA) before placing your order.');
+                return false;
+            }
+        }
+        
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
     });
