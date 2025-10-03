@@ -1,7 +1,7 @@
 (function ($) {
 
 	"use strict";
-		
+
 	// Sticky nav
 	var $headerStick = $('.Sticky');
 	$(window).on("scroll", function () {
@@ -41,7 +41,7 @@
 			$('.categories').removeClass('menu');
 		}
 	}).resize();
-	
+
 	// Mobile Mmenu
 	var $menu = $("#menu").mmenu({
 		"extensions": ["pagedim-black"],
@@ -56,7 +56,7 @@
 		offCanvas: {
 		  pageSelector: "#page"
 	   },
-		navbars: [{position:'bottom',content: ['<a href="#0">© 2024 Allaia</a>']}]}, 
+		navbars: [{position:'bottom',content: ['<a href="#0">© 2024 Allaia</a>']}]},
 		{
 		// configuration
 		clone: true,
@@ -66,7 +66,7 @@
 			}
 		}
 	});
-	
+
 	// Menu
 	$('a.open_close').on("click", function () {
 		$('.main-menu').toggleClass('show');
@@ -78,7 +78,7 @@
 	$('a.show-submenu-mega').on("click", function () {
 		$(this).next().toggleClass("show_mega");
 	});
-	
+
 	$('a.btn_search_mob').on("click", function () {
 		$('.search_mob_wp').slideToggle("fast");
 	});
@@ -127,7 +127,7 @@
 			}
 		}
 	});
-	
+
 	// Carousels
 	$('.carousel_centered').owlCarousel({
 		center: true,
@@ -198,23 +198,9 @@
 	});
 
 	/* Input incrementer*/
-	$(".numbers-row").append('<div class="inc button_inc">+</div><div class="dec button_inc">-</div>');
-	$(".button_inc").on("click", function () {
-		var $button = $(this);
-		var oldValue = $button.parent().find("input").val();
-		if ($button.text() == "+") {
-			var newVal = parseFloat(oldValue) + 1;
-		} else {
-			// Don't allow decrementing below zero
-			if (oldValue > 1) {
-				var newVal = parseFloat(oldValue) - 1;
-			} else {
-				newVal = 0;
-			}
-		}
-		$button.parent().find("input").val(newVal);
-	});
-	
+// append buttons once for each .numbers-row if not already present
+
+
 	/* Cart dropdown */
 	$('.dropdown-cart, .dropdown-access').hover(function () {
 		$(this).find('.dropdown-menu').stop(true, true).delay(50).fadeIn(300);
@@ -236,19 +222,19 @@
 	$('.opacity-mask').each(function(){
 		$(this).css('background-color', $(this).attr('data-opacity-mask'));
 	});
-	
+
 	/* Animation on scroll */
 	new WOW().init();
-	
+
 	// Forgot Password
 	$("#forgot").on("click", function () {
 		$("#forgot_pw").fadeToggle("fast");
 	});
-	
+
 	// Top panel on click: add to cart, search header
 	var $topPnl = $('.top_panel');
 	var $pnlMsk = $('.layer');
-	
+
 	$('.btn_add_to_cart a').on('click', function(){
 		$topPnl.addClass('show');
 		$pnlMsk.addClass('layer-is-visible');
@@ -261,7 +247,7 @@
 		$topPnl.removeClass('show');
 		$pnlMsk.removeClass('layer-is-visible');
 	});
-	
+
 	//Footer collapse
 	var $headingFooter = $('footer h3');
 	$(window).resize(function() {
@@ -274,7 +260,7 @@
 	$headingFooter.on("click", function () {
 		$(this).toggleClass('opened');
 	});
-	
+
 	/* Footer reveal */
 	if ($(window).width() >= 1024) {
 		$('footer.revealed').footerReveal({
@@ -304,7 +290,7 @@
 		var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 		return new bootstrap.Tooltip(tooltipTriggerEl)
 	})
-    
+
     // Modal Sign In
 	$('#sign-in').magnificPopup({
 		type: 'inline',
@@ -318,7 +304,7 @@
 		closeMarkup: '<button title="%title%" type="button" class="mfp-close"></button>',
 		mainClass: 'my-mfp-zoom-in'
 	});
-	
+
 	// Image popups
 	$('.magnific-gallery').each(function () {
 		$(this).magnificPopup({
@@ -331,7 +317,7 @@
 			removalDelay: 500, //delay removal by X to allow out-animation
 			callbacks: {
 				beforeOpen: function () {
-					// just a hack that adds mfp-anim class to markup 
+					// just a hack that adds mfp-anim class to markup
 					this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
 					this.st.mainClass = this.st.el.attr('data-effect');
 				}
@@ -351,6 +337,204 @@
             $(".popup_wrapper").fadeOut(300);
         })
     }, 1500);
-	
 
-})(window.jQuery); 
+
+})(window.jQuery);
+
+// AFTER!!!!!!!!!!
+/* =========================================================
+   ShopCart manager: init()  / destroy()  (clean)
+   - يمنع الربط المزدوج للأحداث
+   - يزيل الأزرار المضافة سابقًا
+   - يرد على طلبات Ajax معلقة (abort) بدل التكرار
+   ========================================================= */
+var ShopCart = (function(){
+  var _xhr = {}; // يخزن jqXHR لكل productId
+  var _inited = false;
+
+  // داخلي: append inc/dec إذا مفقودة
+  function _ensureButtons() {
+    $(".numbers-row").each(function() {
+      if ($(this).find(".button_inc").length === 0) {
+        $(this).append('<div class="inc button_inc" role="button" aria-label="Increase">+</div><div class="dec button_inc" role="button" aria-label="Decrease">-</div>');
+      }
+    });
+  }
+
+  // داخلي: remove buttons أُنشئت بواسطة السكربت
+  function _removeButtons() {
+    $(".numbers-row").find(".inc.button_inc, .dec.button_inc").remove();
+  }
+
+  // داخل init: نربط الأحداث بأسماء namespace ونضمن عدم الربط المزدوج
+  function init() {
+    if (_inited) {
+      // لو مشغّل مسبقًا نفذ تنظيف أولًا ثم نعيد تهيئة لنعيد كل شيء نظيف
+      destroy();
+    }
+
+    _ensureButtons();
+
+    // + / - (namespaced)
+    $(document).on("click.shopCart", ".button_inc", function (e) {
+      e.preventDefault();
+      var $btn = $(this);
+      var $container = $btn.closest(".numbers-row");
+      var $input = $container.find("input.quantity-input, input[type=number], input[type=text]").first();
+
+      var oldVal = parseInt($input.val(), 10);
+      if (isNaN(oldVal) || oldVal < 1) oldVal = 1;
+
+      var newVal = $btn.hasClass("inc") ? (oldVal + 1) : Math.max(1, oldVal - 1);
+      $input.val(newVal).trigger('change');
+
+      // propagate to hidden in form
+      var pid = $container.data('product-id') || $container.attr('data-product-id') || $container.find('input[name="product_id"]').val();
+      if (pid) {
+        var $form = $('.add-to-cart-form[data-product-id="' + pid + '"]');
+        if ($form.length) $form.find('input.hidden-qty[name="qty"]').val(newVal);
+      }
+    });
+
+    // typing sanitize
+    $(document).on('input.shopCart', '.numbers-row input', function() {
+      var v = $(this).val().replace(/[^0-9]/g, '');
+      if (v === '' || parseInt(v,10) < 1) v = '1';
+      $(this).val(v);
+
+      var $container = $(this).closest('.numbers-row');
+      var pid = $container.data('product-id') || $container.attr('data-product-id');
+      if (pid) {
+        var $form = $('.add-to-cart-form[data-product-id="' + pid + '"]');
+        if ($form.length) $form.find('input.hidden-qty[name="qty"]').val(v);
+      }
+    });
+
+    // Namespaced submit handler مع حماية من الطلبات المتكررة و abort للطلب السابق
+    $(document).on('submit.shopAdd', '.add-to-cart-form', function(e) {
+      e.preventDefault();
+      var $form = $(this);
+      var productId = $form.find('input[name="product_id"]').val();
+
+      // if a previous request for same product is in-flight -> abort it
+      if (_xhr[productId] && _xhr[productId].readyState && _xhr[productId].readyState !== 4) {
+        try { _xhr[productId].abort(); } catch(err) { /* ignore */ }
+        _xhr[productId] = null;
+      }
+
+      // read qty reliably
+      var qty = 1;
+      var $nr = $('.numbers-row[data-product-id="' + productId + '"]');
+      if ($nr.length === 0) $nr = $form.closest('.product-item, .product-card, .product, .card').find('.numbers-row');
+      if ($nr.length) {
+        var $qtyInput = $nr.find('input.quantity-input, input[type=number], input[type=text]').first();
+        if ($qtyInput.length) qty = parseInt($qtyInput.val(), 10) || 1;
+      } else {
+        var $hidden = $form.find('input.hidden-qty[name="qty"]');
+        if ($hidden.length) qty = parseInt($hidden.val(), 10) || 1;
+      }
+
+      // set hidden for fallback
+      var $hiddenQty = $form.find('input.hidden-qty[name="qty"]');
+      if ($hiddenQty.length === 0) {
+        $hiddenQty = $('<input>', {type: 'hidden', name: 'qty', 'class': 'hidden-qty', value: qty});
+        $form.append($hiddenQty);
+      } else {
+        $hiddenQty.val(qty);
+      }
+
+      // guard: إذا كان في علم processing على الفورم، امنع التكرار
+      if ($form.data('processing')) {
+        console.warn('Blocked duplicate add-to-cart for', productId);
+        return;
+      }
+      $form.data('processing', true);
+
+      var token = $('meta[name="csrf-token"]').attr('content');
+      var payload = {_token: token, product_id: productId, qty: qty};
+      var $btn = $form.find('button[type="submit"]');
+      $btn.prop('disabled', true).addClass('loading');
+
+      // نفّذ الطلب وخزن jqXHR حتى نقدر نلغيه لو استدعى الأمر
+      _xhr[productId] = $.ajax({
+        url: $form.attr('action') || window.location.href,
+        method: 'POST',
+        data: payload,
+        dataType: 'json'
+      });
+
+      _xhr[productId].done(function(res){
+        if (res && res.success) {
+          var cartCount = parseInt(res.cart_count, 10) || 0;
+          var $cartCountEl = $('#cart-count');
+          if ($cartCountEl.length) {
+            $cartCountEl.text(cartCount).attr('data-count', cartCount).attr('aria-hidden', cartCount ? 'false' : 'true');
+            $cartCountEl.addClass('pulse');
+            setTimeout(function(){ $cartCountEl.removeClass('pulse'); }, 800);
+          }
+          $form.trigger('addtocart:success', [productId, qty, res]);
+          $btn.text('Added ✓');
+          setTimeout(function(){ $btn.text('Add to Cart'); }, 900);
+        } else {
+          var msg = (res && res.message) ? res.message : 'خطأ أثناء إضافة المنتج';
+          alert(msg);
+        }
+      }).fail(function(xhr, status, err){
+        if (status !== 'abort') {
+          console.error('add-to-cart failed', status, err);
+          alert('فشل الاتصال بالخادم.');
+        }
+      }).always(function(){
+        $btn.prop('disabled', false).removeClass('loading');
+        $form.data('processing', false);
+        _xhr[productId] = null;
+      });
+    });
+
+    // cart link sync (optional)
+    $(document).on('click.shopCart', '#cart-link', function(e) {
+      // قم بطلب count لكن لا تمنع التنقل
+      $.getJSON("{{ url('/cart/count') }}").done(function(res){
+        if (res && typeof res.cart_count !== 'undefined') {
+          var c = parseInt(res.cart_count, 10) || 0;
+          $('#cart-count').text(c).attr('data-count', c).attr('aria-hidden', c ? 'false' : 'true');
+        }
+      }).fail(function(){ /* no-op */ });
+    });
+
+    _inited = true;
+  } // end init
+
+  // destroy: تنظيف كامل - يفك الربط ويزيل الأزرار ويوقف XHRات
+  function destroy() {
+    // unbind namespaced events
+    $(document).off('.shopCart'); // يلغي click.shopCart و input.shopCart وغيرها
+    $(document).off('submit.shopAdd');
+
+    // abort any in-flight requests
+    for (var pid in _xhr) {
+      if (_xhr.hasOwnProperty(pid) && _xhr[pid] && _xhr[pid].readyState && _xhr[pid].readyState !== 4) {
+        try { _xhr[pid].abort(); } catch(e) { /* ignore */ }
+      }
+    }
+    _xhr = {};
+
+    // remove buttons added by script
+    _removeButtons();
+
+    // remove any processing/data flags
+    $('.add-to-cart-form').each(function(){ $(this).removeData('processing'); });
+
+    _inited = false;
+  }
+
+  return {
+    init: init,
+    destroy: destroy,
+    _internal: { xhr: _xhr } // للتتبع لو حبيت
+  };
+})();
+
+// تهيئة فورية عند تحميل السكربت
+ShopCart.init();
+

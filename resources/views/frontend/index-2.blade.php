@@ -228,7 +228,7 @@
 									@if($product->image)
 										<img class="img-fluid lazy" src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
 									@else
-										<img class="img-fluid lazy" src="{{ asset('img/products/product_placeholder_square_medium.jpg') }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
+										<img class="img-fluid lazy" src="{{ asset('img/product.png') }}" alt="{{ $product->name }}" width="400" height="400" style="object-fit: cover;">
 									@endif
 								</a>
 								@if($product->enable_countdown && $product->countdown_date)
@@ -287,7 +287,7 @@
 									<span class="new_price">$90.00</span>
 									<span class="old_price">$170.00</span>
 								</div>
-								<a class="btn_1" href="listing-grid-1-full.html" role="button">Shop Now</a>
+								<a class="btn_1" href="#" role="button">Shop Now</a>
 							</div>
 						</div>
 					</div>
@@ -319,19 +319,19 @@
 							<a href="#0"><img src="{{asset('img/hero/clothes.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
 						</div>
 						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
-							<a href="#0"><img src="{{asset('img/brands/logo_2.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+							<a href="#0"><img src="{{asset('img/brands/puma.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
 						</div>
 						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
-							<a href="#0"><img src="{{asset('img/brands/logo_3.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+							<a href="#0"><img src="{{asset('img/brands/supreme.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
 						</div>
 						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
-							<a href="#0"><img src="{{asset('img/brands/logo_4.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+							<a href="#0"><img src="{{asset('img/brands/prada.jpg')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
 						</div>
 						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
-							<a href="#0"><img src="{{asset('img/brands/logo_5.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+							<a href="#0"><img src="{{asset('img/brands/adidas.jpg')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
 						</div>
 						<div class="brand-item" style="flex-shrink: 0; min-width: 180px;">
-							<a href="#0"><img src="{{asset('img/brands/logo_6.png')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
+							<a href="#0"><img src="{{asset('img/brands/dior.jpeg')}}" alt="" style="max-height: 100px; max-width: 180px; object-fit: contain; opacity: 1;"></a>
 						</div>
 						@endforelse
 

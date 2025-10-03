@@ -42,34 +42,11 @@ class DatabaseSeeder extends Seeder
         );
 
         // Run the real data seeder
-        $this->call([
-            AdminPermissionsSeeder::class,
-            PermissionSeeder::class,
-            AdminSeeder::class,
-            ProductAttributeSeeder::class,
-            // ProductSeeder::class,
-            BrandSeeder::class,
-            // CategorySeeder::class,
-            AttributeSeeder::class,
-            AttributeValueSeeder::class,
-            WarehouseSeeder::class,
-            // InventorySeeder::class,
-            ReviewSeeder::class,
-            OrderSeeder::class,
-            OrderItemSeeder::class,
-            TransactionSeeder::class,
-            SliderSeeder::class,
-            ContactSeeder::class,
-            UpdateCategoryFrontendUrlsSeeder::class,
-            // CoreDataSeeder::class,
-            AdminUserSeeder::class,
-            // EcommerceSeeder::class,
-
-
-
-
-        ]);
-
+     $this->call([
+    BrandSeeder::class,
+    CategorySeeder::class,
+    ProductSeeder::class,
+]);
         $this->command->info('🎉 Database seeded with REAL data successfully!');
         $this->command->info('🔑 Admin Login: admin@collection.com / admin123');
         $this->command->info('🔑 Manager Login: manager@collection.com / manager123');

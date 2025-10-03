@@ -64,8 +64,15 @@
             <div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
                 <div id="logo">
                     <a href="{{ url('/') }}">
-                        <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('img/logo.jpeg') }}"
-                             alt="Logo" width="130" height="55">
+       <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('img/logo.jpeg') }}"
+     alt="Logo" width="130" height="55"
+     style="filter: contrast(1.5) brightness(1.2);
+            image-rendering: -webkit-optimize-contrast;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            border-radius: 8px;
+            object-fit: contain;">
+
                     </a>
                 </div>
             </div>
@@ -96,6 +103,32 @@
                             $menuItems = [];
                         }
                     @endphp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     <ul>
                         @forelse($menuItems as $item)
@@ -182,11 +215,11 @@
                         <li>
                             <div class="dropdown dropdown-cart">
                                 <a href="{{ url('cart') }}" class="cart_bt">
-       <span id="cart-count" class="badge"
-          data-count="{{ collect(session('cart', []))->sum('qty') ?? 0 }}"
-          aria-hidden="{{ collect(session('cart', []))->sum('qty') ? 'false' : 'true' }}">
-        {{ collect(session('cart', []))->sum('qty') ?? 0 }}
-    </span>
+      <span id="cart-count" class="badge"
+        data-count="{{ collect(session('cart', []))->sum('qty') ?? 0 }}"
+        aria-hidden="{{ collect(session('cart', []))->sum('qty') ? 'false' : 'true' }}">
+    {{ collect(session('cart', []))->sum('qty') ?? 0 }}
+  </span>
 
 
                                 </a>

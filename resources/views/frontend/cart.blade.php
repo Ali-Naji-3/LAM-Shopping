@@ -30,7 +30,8 @@
                     <tr>
                         <td>
                             <div class="thumb_cart">
-                                <img src="{{ $item['image'] ?? 'img/products/product_placeholder_square_small.jpg' }}" alt="Image">
+  <img src="{{ isset($item['image']) ? asset('storage/' . $item['image']) : asset('img/product.png') }}"
+       class="card-img-top" alt="Product Image" style="height: 65px;width:55px ;object-fit: cover;">
                             </div>
                             <span class="item_cart">{{ $item['name'] }}</span>
                         </td>

@@ -260,7 +260,7 @@ function confirmDeleteProduct(productId, productName) {
                                     @else
                                         <div class="d-flex align-items-center justify-content-center"
                                              style="height: 120px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px;">
-                                            <i class="bi bi-box" style="color: #718096 !important; font-size: 2rem;"></i>
+                                            <img src="{{asset('img/product.png')}}" class="bi bi-box" style="color: #718096 !important; font-size: 2rem; max-height: 100px; max-width: 100%; object-fit: contain; display: block;">
                                         </div>
                                     @endif
 
