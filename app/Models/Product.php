@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
-    
+    protected $guarded = [];
     protected $fillable = [
-        'name', 'slug', 'sku', 'short_description', 'description', 
-        'regular_price', 'sale_price', 'featured', 'is_new_arrival', 'new_arrival_until', 
-        'featured_new_arrival', 'new_arrival_priority', 'status', 'quantity', 
+        'name', 'slug', 'sku', 'short_description', 'description',
+        'regular_price', 'sale_price', 'featured', 'is_new_arrival', 'new_arrival_until',
+        'featured_new_arrival', 'new_arrival_priority', 'status', 'quantity',
         'image', 'gallery_images', 'category_id', 'brand_id', 'weight', 'dimensions',
         'meta_title', 'meta_description', 'enable_countdown', 'countdown_date'
     ];
@@ -45,7 +45,7 @@ class Product extends Model
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = $value;
-        
+
         // Generate slug if not already set
         if (empty($this->attributes['slug'])) {
             $this->attributes['slug'] = \Str::slug($value);
@@ -58,51 +58,51 @@ class Product extends Model
         // When product is being deleted
         static::deleting(function ($product) {
             \Log::info("🗑️ Deleting product: {$product->name} (SKU: {$product->sku})");
-            
+
             // Check for active orders
             $activeOrdersCount = $product->orderItems()
                 ->join('orders', 'order_items.order_id', '=', 'orders.id')
                 ->whereIn('orders.status', ['pending', 'confirmed', 'processing', 'shipped'])
                 ->count();
-                
+
             if ($activeOrdersCount > 0) {
                 throw new \Exception("Cannot delete product '{$product->name}': {$activeOrdersCount} active orders contain this product. Please wait for orders to be delivered or cancel them first.");
             }
-            
+
             // Archive completed order items (for historical data)
             $completedOrderItems = $product->orderItems()
                 ->join('orders', 'order_items.order_id', '=', 'orders.id')
                 ->whereIn('orders.status', ['delivered', 'cancelled'])
                 ->count();
             \Log::info("📋 {$completedOrderItems} completed order items will be preserved for history");
-            
+
             // Clear inventory records
             $inventoryRecords = $product->inventory()->count();
             if ($inventoryRecords > 0) {
                 $product->inventory()->delete();
                 \Log::info("📦 Cleared {$inventoryRecords} inventory records");
             }
-            
+
             // Archive product reviews (soft delete)
             $reviewsCount = $product->reviews()->count();
             if ($reviewsCount > 0) {
                 $product->reviews()->delete(); // Soft delete if Review model uses SoftDeletes
                 \Log::info("⭐ Archived {$reviewsCount} product reviews");
             }
-            
+
             // Remove attribute assignments
             $attributesCount = $product->productAttributes()->count();
             if ($attributesCount > 0) {
                 $product->productAttributes()->delete();
                 \Log::info("🔧 Removed {$attributesCount} attribute assignments");
             }
-            
+
             // Update contacts related to this product
             $contactsCount = \DB::table('contacts')
                 ->where('subject', 'LIKE', "%{$product->name}%")
                 ->orWhere('message', 'LIKE', "%{$product->name}%")
                 ->count();
-            
+
             if ($contactsCount > 0) {
                 \DB::table('contacts')
                     ->where('subject', 'LIKE', "%{$product->name}%")
@@ -115,55 +115,55 @@ class Product extends Model
                 \Log::info("📞 Updated {$contactsCount} related contacts");
             }
         });
-        
+
         // When product is updated
         static::updated(function ($product) {
             if ($product->wasChanged('status')) {
                 \Log::info("📝 Product status changed: {$product->name} -> {$product->status}");
-                
+
                 if ($product->status === 'inactive' || $product->status === 'draft') {
                     // Remove from active inventory if product becomes inactive
                     $product->inventory()->where('quantity', '>', 0)->update(['quantity' => 0]);
                 }
             }
-            
+
             if ($product->wasChanged('regular_price') || $product->wasChanged('sale_price')) {
                 \Log::info("💰 Product pricing updated: {$product->name}");
-                
+
                 // Update any pending orders with new pricing (optional business logic)
                 $pendingOrderItems = $product->orderItems()
                     ->join('orders', 'order_items.order_id', '=', 'orders.id')
                     ->where('orders.status', 'pending')
                     ->count();
-                    
+
                 if ($pendingOrderItems > 0) {
                     \Log::info("⚠️ {$pendingOrderItems} pending orders may need price adjustment");
                 }
             }
-            
+
             if ($product->wasChanged('category_id')) {
                 \Log::info("📂 Product moved to new category: {$product->name}");
-                
+
                 // Update inventory records if needed
                 $product->inventory()->touch();
             }
         });
-        
+
         // When product is restored
         static::restored(function ($product) {
             \Log::info("♻️ Product restored: {$product->name}");
-            
+
             // Restore related reviews if they were soft deleted
             $product->reviews()->withTrashed()->restore();
-            
+
             // Optionally restore inventory to a default level
             $product->inventory()->update(['quantity' => 10]); // Default stock level
         });
-        
+
         // When product is created
         static::created(function ($product) {
             \Log::info("✨ New product created: {$product->name} (SKU: {$product->sku})");
-            
+
             // Auto-create inventory records in all warehouses
             $warehouses = \App\Models\Warehouse::where('is_active', true)->get();
             foreach ($warehouses as $warehouse) {
@@ -309,7 +309,7 @@ class Product extends Model
         if ($this->is_new_arrival) {
             return is_null($this->new_arrival_until) || $this->new_arrival_until >= now();
         }
-        
+
         return $this->created_at >= now()->subDays(30);
     }
 
@@ -318,11 +318,11 @@ class Product extends Model
         if ($this->featured_new_arrival && $this->is_currently_new_arrival) {
             return 'featured-new';
         }
-        
+
         if ($this->is_currently_new_arrival) {
             return 'new';
         }
-        
+
         return null;
     }
 }

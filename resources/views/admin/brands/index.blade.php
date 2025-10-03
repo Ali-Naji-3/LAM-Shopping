@@ -173,8 +173,8 @@ window.handleBrandSearchBlur = function(input) {
                                              style="max-height: 80px; max-width: 120px; object-fit: contain; border-radius: 8px;">
                                     @else
                                         <div class="d-flex align-items-center justify-content-center"
-                                             style="height: 80px; background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); border-radius: 8px;">
-                                            <i class="bi bi-award" style="color: #718096 !important; font-size: 2rem;"></i>
+                                             style="height: 80px; border-radius: 8px;">
+                                            <img src="{{ asset('img/brands.png') }}" alt="Brand placeholder" class="bi bi-award" style="color: #718096 !important; font-size: 2rem; max-height: 100px; max-width: 100%; object-fit: contain; display: block;">
                                         </div>
                                     @endif
                                 </div>

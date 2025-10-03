@@ -258,7 +258,7 @@ console.log('CRITICAL FIX: Global search functions defined at top of content');
                                         @else
                                             <div class="bg-secondary d-flex align-items-center justify-content-center"
                                                  style="width: 50px; height: 50px; border-radius: 4px;">
-                                                <i class="bi bi-image" style="color: var(--text-muted);"></i>
+                                                <img src="{{asset('img/category.png')}}" class="bi bi-image"  alt="Cateyory placeholder"  style="color: var(--text-muted);; font-size: 2rem; max-height: 100px; max-width: 100%; object-fit: contain; display: block;">
                                             </div>
                                         @endif
                                     </td>

@@ -238,7 +238,7 @@ video {
 
 @media (max-width: 1024px) {
   #hero_video {
-    background: lightgray url(../img/slides/slide_home_1.jpg);
+    /* background: lightgray url(../img/slides/slide_home_1.jpg); */
     background-size: cover;
     background-position: center;
   }

@@ -9,45 +9,45 @@ class CartController extends Controller
 {
     // إضافة منتج للسلة عبر Ajax
     public function add(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required|integer|exists:products,id',
-            'qty' => 'integer|min:1'
-        ]);
+{
+    $request->validate([
+        'product_id' => 'required|integer|exists:products,id',
+        'qty' => 'required|integer|min:1'
+    ]);
 
-        $productId = $request->input('product_id');
-        $qty = (int) $request->input('qty', 1);
+    $productId = (int) $request->input('product_id');
+    $qty = (int) $request->input('qty');
 
-        $cart = session()->get('cart', []);
+    $cart = session()->get('cart', []);
 
-        if (isset($cart[$productId])) {
-            $cart[$productId]['qty'] += $qty;
-        } else {
-            $product = Product::find($productId);
-            $cart[$productId] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => $product->regular_price ?? $product->price ?? 0,
-                'qty' => $qty,
-                'image' => $product->image ?? null,
-            ];
-        }
-
-        session()->put('cart', $cart);
-
-        $cart_count = collect($cart)->sum('qty');
-
-        // إذا كان الطلب Ajax أو يطالب JSON، رجع JSON
-        if ($request->ajax() || $request->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'cart_count' => $cart_count
-            ]);
-        }
-
-        // fallback: redirect للواجهات التقليدية
-        return redirect()->back();
+    if (isset($cart[$productId])) {
+        $cart[$productId]['qty'] += $qty;
+    } else {
+        $product = Product::find($productId);
+        $cart[$productId] = [
+            'id'    => $product->id,
+            'name'  => $product->name,
+            'price' => $product->regular_price ?? $product->price ?? 0,
+            'qty'   => $qty,
+            'image' => $product->image ?? null,
+        ];
     }
+
+    session()->put('cart', $cart);
+    session()->save(); // مهم: تأكد من حفظ الجلسة قبل الإرجاع
+
+    $cart_count = collect($cart)->sum('qty');
+
+    if ($request->ajax() || $request->wantsJson()) {
+        return response()->json([
+            'success' => true,
+            'cart_count' => (int) $cart_count
+        ]);
+    }
+
+    return redirect()->back();
+}
+
 
     public function index()
     {

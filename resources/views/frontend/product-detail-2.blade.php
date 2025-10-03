@@ -106,12 +106,12 @@
 	                <!-- /page_header -->
 	                <div class="prod_info">
 	                    <h1>{{ $product->name }}</h1>
-                    <x-dynamic-star-rating
+                    {{-- <x-dynamic-star-rating
                         :product="$product"
                         size="normal"
                         :show-count="true"
                         :show-average="true"
-                        class="product-rating" />
+                        class="product-rating" /> --}}
 	                    <p><small>SKU: {{ $product->sku }}</small><br>{{ $product->short_description ?: $product->description }}</p>
 
 	                    <!-- Quick Review Button -->
@@ -217,9 +217,17 @@
 	                        <div class="row">
 	                            <label class="col-xl-5 col-lg-5  col-md-6 col-6"><strong>Quantity</strong></label>
 	                            <div class="col-xl-4 col-lg-5 col-md-6 col-6">
-	                                <div class="numbers-row">
-	                                    <input type="text" value="1" id="quantity_1" class="qty2" name="quantity_1">
-	                                </div>
+	                                 <div class="numbers-row" data-product-id="{{ $product->id }}">
+      <input
+        type="text"
+        value="1"
+        id="quantity_{{ $product->id }}"
+        class="qty2 quantity-input"
+        inputmode="numeric"
+        pattern="[0-9]*"
+      >
+      <!-- الزرّات + / - يُنشئهم السكربت أو تضيفهم هنا -->
+    </div>
 	                            </div>
 	                        </div>
 	                    </div>
@@ -239,12 +247,13 @@
 	                            </div>
 	                        </div>
 	                       <div class="col-lg-4 col-md-6">
-<form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form">
+  <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form" data-product-id="{{ $product->id }}">
     @csrf
     <input type="hidden" name="product_id" value="{{ $product->id }}">
-    <input type="hidden" name="qty" value="1">
+    <!-- هذا الحقل يجب أن يكون موجودًا أو يُنشأ ويُحدّث بواسطة الجافاسكربت -->
+    <input type="hidden" name="qty" value="1" class="hidden-qty">
     <button type="submit" class="btn_1">Add to Cart</button>
-</form>
+  </form>
 
 </div>
 
