@@ -4,11 +4,11 @@
   </a>
 </p> -->
 
-<p align="center">
+<!-- <p align="center">
   <a href="#"><img src="https://img.shields.io/badge/Status-Active-brightgreen" alt="Project Status"></a>
   <a href="#"><img src="https://img.shields.io/badge/Laravel-Framework-red" alt="Laravel Version"></a>
   <a href="#"><img src="https://img.shields.io/badge/License-MIT-blue" alt="License"></a>
-</p>
+</p> -->
 
 # E-Commerce Dashboard Project
 
