@@ -67,8 +67,9 @@
     <img
         src="{{ $setting->logo ? asset('storage/' . $setting->logo) : asset('img/logo.jpeg') }}"
         alt="Logo"
-        width="130"
-        height="55"
+        width="103"
+        height="80"
+        style="object-fit:contain"
         onerror="this.onerror=null;this.src='{{ asset('img/logo.jpeg') }}';"
     >
 </a>
@@ -149,7 +150,7 @@
         <div class="container">
             <div class="row small-gutters">
                 <div class="col-xl-3 col-lg-3 col-md-3">
-                   
+
                 </div>
                 <div class="col-xl-6 col-lg-7 col-md-6 d-none d-md-block">
                     {{-- <div class="custom-search-input">

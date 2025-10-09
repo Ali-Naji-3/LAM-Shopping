@@ -233,7 +233,9 @@
                         <li>
                             @if (!empty($setting->footer_logo))
                                 <img src="{{ asset('storage/' . $setting->footer_logo) }}" alt="Footer Logo"
-                                    width="150" height="60"
+                                     width="103"
+        height="80"
+        style="object-fit:contain"
                                       onerror="this.onerror=null;this.src='{{ asset('img/logo.jpeg') }}';">
                             @endif
                         </li>

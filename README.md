@@ -39,10 +39,13 @@ This project is a full **e-Commerce platform** built with **Laravel**, including
 
 ## Screenshots
 
-![Admin Dashboard](link-to-dashboard-screenshot.png)  
-*Admin Dashboard with products, categories, and settings*
-![Frontend Screenshot](public/frontend.png)  
+
+![Frontend Screenshot](public/dash1.png)  
 *Frontend shopping interface with dynamic categories and cart*
+![Admin Dashboard](public/dash2.png)  
+*Admin Dashboard with products, categories, and settings*
+![Admin Dashboard](public/dash3.png)  
+*Admin Dashboard with products, categories, and settings*
 
 
 ## Technologies Used

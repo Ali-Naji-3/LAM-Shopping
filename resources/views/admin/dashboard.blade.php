@@ -31,7 +31,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
-            <img src="{{ asset('img/logoA.png') }}" alt="Collection Store">
+            <img src="{{ asset('img/Home.png') }}" alt="Collection Store">
             <h4>LAM Store</h4>
         </div>
         <ul class="nav-links">
