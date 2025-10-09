@@ -31,8 +31,8 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="logo">
-            <img src="{{ asset('img/logo.svg') }}" alt="Collection Store">
-            <h4>Collection Store</h4>
+            <img src="{{ asset('img/logoA.png') }}" alt="Collection Store">
+            <h4>LAM Store</h4>
         </div>
         <ul class="nav-links">
             <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">

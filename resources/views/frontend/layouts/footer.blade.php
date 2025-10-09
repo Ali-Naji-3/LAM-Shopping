@@ -156,35 +156,45 @@
             {{-- Quick Links --}}
             <div class="col-lg-3 col-md-6">
                 <h3>Quick Links</h3>
-                <div class="collapse dont-collapse-sm links">
-                    <ul>
-                        @if (!empty($footer_links) && is_array($footer_links))
-                            @foreach ($footer_links as $link)
-                                <li><a href="{{ url($link['url'] ?? '#') }}">{{ $link['title'] ?? 'No Name' }}</a></li>
-                            @endforeach
-                        @else
-                            <li>No links added</li>
-                        @endif
-                    </ul>
-                </div>
+             <div class="collapse dont-collapse-sm links">
+    <ul>
+        @if (!empty($footer_links) && is_array($footer_links))
+            @foreach ($footer_links as $link)
+                <li><a href="{{ url($link['url'] ?? '#') }}">{{ $link['title'] ?? 'No Name' }}</a></li>
+            @endforeach
+        @else
+            <li><a href="{{ url('/contact') }}">Contact Us</a></li>
+            <li><a href="{{ url('/blog') }}">Blog</a></li>
+            <li><a href="{{ url('/about') }}">About</a></li>
+            <li><a href="{{ url('/') }}">Home</a></li>
+        @endif
+    </ul>
+</div>
+
             </div>
 
             {{-- Categories --}}
             <div class="col-lg-3 col-md-6">
                 <h3>Categories</h3>
-                <div class="collapse dont-collapse-sm links">
-                    <ul>
-                        @if (!empty($footer_categories) && is_array($footer_categories))
-                            @foreach ($footer_categories as $category)
-                                <li><a
-                                        href="{{ url($category['url'] ?? '#') }}">{{ $category['title'] ?? 'No Name' }}</a>
-                                </li>
-                            @endforeach
-                        @else
-                            <li>No categories added</li>
-                        @endif
-                    </ul>
-                </div>
+             <div class="collapse dont-collapse-sm links">
+    <ul>
+        @if (!empty($footer_categories) && is_array($footer_categories))
+            @foreach ($footer_categories as $category)
+                <li>
+                    <a href="{{ url($category['url'] ?? '#') }}">
+                        {{ $category['title'] ?? 'No Name' }}
+                    </a>
+                </li>
+            @endforeach
+        @else
+            <li><a href="{{ url('/category/men') }}">Men</a></li>
+            <li><a href="{{ url('/category/women') }}">Women</a></li>
+            <li><a href="{{ url('/category/girls') }}">Girls</a></li>
+            <li><a href="{{ url('/category/boys') }}">Boys</a></li>
+        @endif
+    </ul>
+</div>
+
             </div>
 
             {{-- Contacts --}}
@@ -192,10 +202,10 @@
                 <h3>Contacts</h3>
                 <div class="collapse dont-collapse-sm contacts">
                     <ul>
-                        <li><i class="ti-home"></i>{{ $setting->contact_address ?? 'No address' }}</li>
-                        <li><i class="ti-headphone-alt"></i>{{ $setting->contact_phone ?? 'No phone' }}</li>
+                        <li><i class="ti-home"></i>{{ $setting->contact_address ?? 'Beirut' }}</li>
+                        <li><i class="ti-headphone-alt"></i>{{ $setting->contact_phone ?? '+961 70 63 90 58' }}</li>
                         <li><i class="ti-email"></i><a
-                                href="mailto:{{ $setting->contact_email ?? '#' }}">{{ $setting->contact_email ?? 'No email' }}</a>
+                                href="mailto:{{ $setting->contact_email ?? '#' }}">{{ $setting->contact_email ?? 'Lam123@gmail.com' }}</a>
                         </li>
 
                     </ul>
@@ -223,7 +233,8 @@
                         <li>
                             @if (!empty($setting->footer_logo))
                                 <img src="{{ asset('storage/' . $setting->footer_logo) }}" alt="Footer Logo"
-                                    width="198" height="30">
+                                    width="150" height="60"
+                                      onerror="this.onerror=null;this.src='{{ asset('img/logo.jpeg') }}';">
                             @endif
                         </li>
                     </ul>
@@ -232,7 +243,7 @@
                     <ul class="additional_links">
 
                         <li><span>©
-                        <li>{{ $setting->footer_copyright ?? '#' }}</li> LAM</span></li>
+                        <li>{{ $setting->footer_copyright ?? '2025' }}</li> LAM</span></li>
                     </ul>
                 </div>
             </div>

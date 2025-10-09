@@ -17,7 +17,7 @@ class AdminMiddleware
     {
         if (auth()->check()) {
             $user = auth()->user();
-            
+
             // Check if user has admin access via u_type OR admin role
             if ($user->isAdmin() || $user->isManager() || $user->hasRole('admin')) {
                 return $next($request);

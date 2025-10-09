@@ -33,7 +33,7 @@ class AuthController extends Controller
             if ($user->isAdmin() || $user->isManager()) {
                 return redirect()->intended('/admin/dashboard')->with('success', 'Welcome to Admin Dashboard!');
             } else {
-                return redirect()->intended('/')->with('success', 'Welcome back!');
+        return redirect('login')->with('success', 'Welcome back!');
             }
         }
 

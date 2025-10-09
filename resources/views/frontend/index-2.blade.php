@@ -15,10 +15,10 @@
                 <div class="row justify-content-center justify-content-md-start">
                     <div class="col-lg-6">
                         <div class="slide-text white">
-                            <h1 class="text-white">{{  $setting->hero_title??'' }}</h1>
-                            <p>{{  $setting->hero_sub_title??'' }}</p>
+                            <h1 class="text-white">{{  $setting->hero_title??'LAM Shoppings' }}</h1>
+                            <p>{{  $setting->hero_sub_title??'LAM' }}</p>
                             <a href="#" class="btn btn-primary">
-                                {{ $setting->hero_button_text??'' }}
+                                {{ $setting->hero_button_text??'Shop Now' }}
                             </a>
                         </div>
                     </div>
@@ -28,10 +28,18 @@
     </div>
 
 
-       		<video autoplay muted loop playsinline class="header-video--media" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <source src="{{ asset('storage/'. $setting->hero_background) }}" type="video/mp4">
-    Your browser does not support the video tag.
-</video>
+@if($setting->hero_background && file_exists(public_path('storage/' . $setting->hero_background)))
+    <video autoplay muted loop playsinline class="header-video--media" onerror="this.src='{{ asset('video/hero.mp4') }}';">
+        <source src="{{ asset('storage/' . $setting->hero_background) }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+@else
+    <video autoplay muted loop playsinline class="header-video--media">
+        <source src="{{ asset('video/hero.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+@endif
+
         {{-- صورة fallback --}}
         {{-- <div class="header-video--fallback"
              style="display:none; position:absolute; top:0; left:0; width:100%; height:100%;

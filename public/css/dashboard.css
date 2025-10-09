@@ -164,7 +164,7 @@
 
         .sidebar .logo img {
             max-width: 120px;
-            filter: brightness(0) invert(1);
+            /* filter: brightness(0) invert(1); */
         }
         .sidebar .nav-links {
             padding: var(--space-8) 0;

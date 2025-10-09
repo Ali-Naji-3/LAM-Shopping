@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
     BrandSeeder::class,
     CategorySeeder::class,
     ProductSeeder::class,
+    ReviewSeeder::class,
 ]);
         $this->command->info('🎉 Database seeded with REAL data successfully!');
         $this->command->info('🔑 Admin Login: admin@collection.com / admin123');

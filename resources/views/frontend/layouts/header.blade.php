@@ -63,17 +63,16 @@
             <!-- Logo -->
             <div class="col-xl-3 col-lg-3 d-lg-flex align-items-center">
                 <div id="logo">
-                    <a href="{{ url('/') }}">
-       <img src="{{ $setting->logo ? asset('storage/'.$setting->logo) : asset('img/logo.jpeg') }}"
-     alt="Logo" width="130" height="55"
-     style="filter: contrast(1.5) brightness(1.2);
-            image-rendering: -webkit-optimize-contrast;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            border-radius: 8px;
-            object-fit: contain;">
+             <a href="{{ url('/') }}">
+    <img
+        src="{{ $setting->logo ? asset('storage/' . $setting->logo) : asset('img/logo.jpeg') }}"
+        alt="Logo"
+        width="130"
+        height="55"
+        onerror="this.onerror=null;this.src='{{ asset('img/logo.jpeg') }}';"
+    >
+</a>
 
-                    </a>
                 </div>
             </div>
 
@@ -103,33 +102,6 @@
                             $menuItems = [];
                         }
                     @endphp
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     <ul>
                         @forelse($menuItems as $item)
                             <li>
@@ -160,11 +132,11 @@
 
             <!-- Phone -->
             <div class="col-xl-3 col-lg-2 d-lg-flex align-items-center justify-content-end text-end">
-                @if(!empty($setting->phone))
+
                     <a class="phone_top" href="tel://{{ $setting->phone }}">
-                       <strong><span>{{ $setting->name ?? 'Need Help?' }}</span> {{ $setting->phone }}</strong>
+                       <strong><span>{{ $setting->name ?? 'LAM Shopping' }}</span> {{ $setting->phone ?? '+961 81 195 971' }}</strong>
                     </a>
-                @endif
+
             </div>
         </div>
     </div>
@@ -177,38 +149,13 @@
         <div class="container">
             <div class="row small-gutters">
                 <div class="col-xl-3 col-lg-3 col-md-3">
-                    <nav class="categories">
-                        <ul class="clearfix">
-                            <li><span>
-                                    <a href="#">
-                                        <span class="hamburger hamburger--spin">
-                                            <span class="hamburger-box">
-                                                <span class="hamburger-inner"></span>
-                                            </span>
-                                        </span>
-                                        Categories
-                                    </a>
-                                </span>
-                                <div id="menu">
-                                    <ul>
-                                        <li><span><a
-                                                    href="{{ url('listing-grid-7-sidebar-right') }}">Collections</a></span>
-                                        </li>
-                                        <li><span><a href="{{ url('listing-grid-3') }}">Men</a></span></li>
-                                        <li><span><a href="{{ url('listing-grid-1-full') }}">Women</a></span></li>
-                                        <li><span><a href="{{ url('listing-grid-2-full') }}">Boys</a></span></li>
-                                        <li><span><a href="{{ url('girls') }}">Girls</a></span></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
+                   
                 </div>
                 <div class="col-xl-6 col-lg-7 col-md-6 d-none d-md-block">
-                    <div class="custom-search-input">
+                    {{-- <div class="custom-search-input">
                         <input type="text" placeholder="Search over 10.000 products">
                         <button type="submit"><i class="header-icon_search_custom"></i></button>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="col-xl-3 col-lg-2 col-md-3">
                     <ul class="top_tools">
@@ -259,7 +206,7 @@
                         <li>
                             <div class="dropdown dropdown-access">
                                 <a href="{{ url('login') }}" class="access_link"><span>Account</span></a>
-                                <div class="dropdown-menu">
+                                {{-- <div class="dropdown-menu">
                                     <a href="{{ url('login') }}" class="btn_1">Sign In or Sign Up</a>
                                     <ul>
                                         <li>
@@ -276,14 +223,14 @@
                                             <a href="{{ url('help') }}"><i class="ti-help-alt"></i>Help and Faq</a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                             <!-- /dropdown-access-->
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="javascript:void(0);" class="btn_search_mob"><span>Search</span></a>
-                        </li>
-                        <li>
+                        </li> --}}
+                        {{-- <li>
                             <a href="#menu" class="btn_cat_mob">
                                 <div class="hamburger hamburger--spin" id="hamburger">
                                     <div class="hamburger-box">
@@ -292,7 +239,7 @@
                                 </div>
                                 Categories
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </div>
